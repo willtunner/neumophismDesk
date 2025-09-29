@@ -1,13 +1,67 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class Home {
-  // Component logic can be added here
+  formData = {
+    fullName: '',
+    email: '',
+    age: null as number | null,
+    country: '',
+    bio: '',
+    newsletter: false,
+    terms: false,
+    notifications: true,
+    gender: '',
+    volume: 50,
+    brightness: 75,
+    darkMode: false,
+    autoSave: true,
+    publicProfile: false
+  };
+
+  constructor(private router: Router) {}
+
+  submitForm() {
+    console.log('Form submitted:', this.formData);
+    alert('Form data saved! Check console for details.');
+  }
+
+  resetForm() {
+    this.formData = {
+      fullName: '',
+      email: '',
+      age: null,
+      country: '',
+      bio: '',
+      newsletter: false,
+      terms: false,
+      notifications: true,
+      gender: '',
+      volume: 50,
+      brightness: 75,
+      darkMode: false,
+      autoSave: true,
+      publicProfile: false
+    };
+    console.log('Form reset');
+  }
+
+  showAlert() {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      alert('Account deletion requested!');
+    }
+  }
+
+  logout() {
+    this.router.navigate(['/login']);
+  }
 }

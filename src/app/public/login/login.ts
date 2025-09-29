@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,10 @@ export class Login {
   emailError = '';
   passwordError = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router
+  ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -87,19 +91,13 @@ export class Login {
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       const { email, password, remember } = this.form.value;
       console.log('Login successful:', { email, password, remember });
       
-      // Show success message
-      this.showSuccess = true;
-      
-      // Simulate redirect
-      setTimeout(() => {
-        console.log('Redirecting to dashboard...');
-        // this.router.navigate(['/dashboard']);
-      }, 2500);
+      // Navigate to home page
+      this.router.navigate(['/home']);
       
     } catch (error) {
       this.passwordError = 'Login failed. Please try again.';
