@@ -1,0 +1,52 @@
+<div class="form-group" [class.error]="isInvalid">
+  <div 
+    class="input-group"
+    [class.focused]="isFocused" 
+    [class.has-value]="hasValue"
+    [class.textarea-group]="isTextarea">
+
+    <!-- Input padrão -->
+    <input 
+      *ngIf="!isTextarea"
+      [id]="config.formControlName"
+      [type]="inputType"
+      [formControl]="control"
+      [placeholder]="config.placeholder || ' '"
+      [attr.min]="config.min"
+      [attr.max]="config.max"
+      [attr.minlength]="config.minLength"
+      [attr.maxlength]="config.maxLength"
+      [attr.step]="config.step"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      class="neu-input">
+    
+    <!-- Textarea -->
+    <textarea 
+      *ngIf="isTextarea"
+      [id]="config.formControlName"
+      [formControl]="control"
+      [placeholder]="config.placeholder || ' '"
+      [rows]="config.rows || 4"
+      [attr.minlength]="config.minLength"
+      [attr.maxlength]="config.maxLength"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      class="neu-textarea">
+    </textarea>
+    
+    <!-- Label -->
+    <label [for]="config.formControlName">
+      {{ config.label }}
+      <span *ngIf="config.required !== false" class="required-asterisk">*</span>
+    </label>
+
+    <!-- Ícone (sempre aparece) -->
+    <div class="input-icon" [innerHTML]="getIconSvg()"></div>
+  </div>
+
+  <!-- Mensagem de erro -->
+  <span class="error-message" [class.show]="isInvalid && errorMessage">
+    {{ errorMessage }}
+  </span>
+</div>

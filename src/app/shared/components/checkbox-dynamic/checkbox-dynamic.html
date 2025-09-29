@@ -1,0 +1,24 @@
+<div class="checkbox-dynamic" [ngClass]="{
+    'horizontal': config.layout === layout.HORIZONTAL,
+    'vertical': config.layout === layout.VERTICAL
+  }">
+    <label *ngIf="config.label" class="checkbox-group-label">{{ config.label }}</label>
+  
+    <div class="checkbox-group">
+      <label *ngFor="let option of config.options" class="checkbox-label">
+        <input
+          type="checkbox"
+          [checked]="isChecked(option)"
+          (change)="toggleSelection(option)"
+          [disabled]="option.disabled"
+        >
+        <div class="neu-checkbox">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <span>{{ option.label }}</span>
+      </label>
+    </div>
+  </div>
+  

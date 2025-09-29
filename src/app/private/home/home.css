@@ -769,3 +769,49 @@
     left: 42px;
   }
 }
+
+
+/* Estilos adicionais para o componente dinâmico */
+.preview-section {
+  margin-bottom: 20px;
+}
+
+.preview-section h3 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.preview-section pre {
+  background: var(--input-bg);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  color: var(--text-primary);
+  font-size: 13px;
+  overflow-x: auto;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Garantir que os inputs dinâmicos tenham o mesmo estilo */
+app-input-dynamic {
+  display: block;
+  width: 100%;
+}
+
+/* Responsividade para a nova seção */
+@media (max-width: 768px) {
+  .preview-section h3 {
+    font-size: 0.9rem;
+  }
+  
+  .preview-section pre {
+    padding: 12px;
+    font-size: 12px;
+    max-height: 150px;
+  }
+}
