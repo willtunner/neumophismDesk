@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ThemeService } from '../../services/theme';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,7 @@ export class Home {
     publicProfile: false
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private themeService: ThemeService) {}
 
   submitForm() {
     console.log('Form submitted:', this.formData);
@@ -63,5 +64,10 @@ export class Home {
 
   logout() {
     this.router.navigate(['/login']);
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleTheme();
+    this.formData.darkMode = this.themeService.isDarkTheme();
   }
 }
