@@ -106,41 +106,40 @@
       </div>
   
       <!-- Checkboxes -->
-          <!-- Checkboxes -->
-    <div class="component-section neu-container">
+      <div class="component-section neu-container">
         <h2>Checkboxes</h2>
         
         <div class="checkbox-group">
-            <label class="checkbox-label" [class.checked]="formData.newsletter" (click)="formData.newsletter = !formData.newsletter">
-              <input type="checkbox" [checked]="formData.newsletter" (change)="formData.newsletter = !formData.newsletter">
-              <div class="neu-checkbox">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              </div>
-              <span>Subscribe to newsletter</span>
-            </label>
-        
-            <label class="checkbox-label" [class.checked]="formData.terms" (click)="formData.terms = !formData.terms">
-              <input type="checkbox" [checked]="formData.terms" (change)="formData.terms = !formData.terms">
-              <div class="neu-checkbox">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              </div>
-              <span>Accept terms and conditions</span>
-            </label>
-        
-            <label class="checkbox-label" [class.checked]="formData.notifications" (click)="formData.notifications = !formData.notifications">
-              <input type="checkbox" [checked]="formData.notifications" (change)="formData.notifications = !formData.notifications">
-              <div class="neu-checkbox">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              </div>
-              <span>Enable notifications</span>
-            </label>
-          </div>
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="formData.newsletter">
+            <div class="neu-checkbox">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span>Subscribe to newsletter</span>
+          </label>
+  
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="formData.terms">
+            <div class="neu-checkbox">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span>Accept terms and conditions</span>
+          </label>
+  
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="formData.notifications">
+            <div class="neu-checkbox">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span>Enable notifications</span>
+          </label>
+        </div>
       </div>
   
       <!-- Radio Buttons -->
