@@ -1,45 +1,34 @@
-<div class="form-group" [class.error]="isInvalid">
-  <div 
-    class="rich-text-group"
-    [class.focused]="isFocused"
-    [class.has-value]="hasValue">
+<div class="rich-text-dynamic-container">
+  <div class="input-group">
+    <!-- Label flutuante -->
+    <label [class.focused]="focused || !empty">{{ config.placeholder }}</label>
     
-    <!-- Label -->
-    <label [for]="config.formControlName">
-      {{ config.label }}
-      <span *ngIf="config.required !== false" class="required-asterisk">*</span>
-    </label>
-
-    <!-- Container do Quill Editor -->
-    <div 
-      [id]="'quill-editor-' + config.formControlName"
-      class="neu-rich-text-editor"
-      (focus)="onFocus()"
-      (blur)="onBlur()">
+    <!-- Ícone -->
+    <div class="input-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" *ngIf="showImage">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
     </div>
 
-    <!-- Ícone -->
-    <div *ngIf="showImage" class="input-icon" [innerHTML]="safeIconSvg"></div>
+    <!-- Editor Quill -->
+    <div class="quill-wrapper">
+      <quill-editor
+        class="quill-editor"
+        [ngModel]="value"
+        (ngModelChange)="onContentChange($event)"
+        [modules]="quillModules"
+        [placeholder]="config.placeholder"
+        [styles]="editorStyles"
+        [readOnly]="disabled"
+        (onFocus)="onFocus()"
+        (onBlur)="onBlur()"
+        format="html"
+      >
+      </quill-editor>
+    </div>
   </div>
-
-  <!-- Contador de caracteres - SEMPRE visível se maxLength estiver configurado -->
-  <div *ngIf="config.maxLength" class="char-counter" [class.error]="charCount > config.maxLength">
-    {{ charCount }} / {{ config.maxLength }} caracteres
-    <span *ngIf="charCount > config.maxLength" class="char-limit-exceeded">
-      (Limite excedido!)
-    </span>
-  </div>
-
-  <!-- Contador de caracteres mínimo - visível apenas se minLength estiver configurado -->
-  <div *ngIf="config.minLength && !config.maxLength" class="char-counter" [class.error]="charCount < config.minLength">
-    {{ charCount }} / {{ config.minLength }} caracteres mínimos
-    <span *ngIf="charCount < config.minLength" class="char-minimum-warning">
-      (Mínimo não atingido!)
-    </span>
-  </div>
-
-  <!-- Mensagem de erro -->
-  <span class="error-message" [class.show]="isInvalid && errorMessage">
-    {{ errorMessage }}
-  </span>
 </div>

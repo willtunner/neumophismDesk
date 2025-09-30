@@ -1,62 +1,53 @@
-/* rich-text-dynamic.component.css */
-.form-group {
-  margin-bottom: 25px;
-  position: relative;
+.rich-text-dynamic-container {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-.rich-text-group {
+.input-group {
   position: relative;
   background: var(--input-bg);
   border-radius: 15px;
-  box-shadow: 
+  box-shadow:
     inset 8px 8px 16px var(--shadow-light),
     inset -8px -8px 16px var(--shadow-dark);
   transition: all 0.3s ease;
-  padding: 20px 24px;
-  padding-top: 65px;
+  padding: 8px 8px 8px 8px; /* Ajuste do padding para o Quill */
 }
 
-.rich-text-group:focus-within,
-.rich-text-group.focused {
-  box-shadow: 
+.input-group:focus-within {
+  box-shadow:
     inset 4px 4px 8px var(--shadow-light),
     inset -4px -4px 8px var(--shadow-dark);
 }
 
-.rich-text-group.error {
-  box-shadow: 
-    inset 8px 8px 16px rgba(255, 59, 92, 0.2),
-    inset -8px -8px 16px var(--shadow-dark),
-    0 0 0 2px var(--error-color) !important;
-}
-
-.rich-text-group label {
+/* Label flutuante */
+.input-group label {
   position: absolute;
   left: 55px;
-  top: 22px;
+  top: 20px;
   color: var(--text-secondary);
   font-size: 16px;
   font-weight: 400;
   pointer-events: none;
   transition: all 0.3s ease;
   z-index: 10;
+  background: var(--input-bg);
+  padding: 0 8px;
+  margin: 0;
 }
 
-.rich-text-group.has-value label,
-.rich-text-group.focused label {
-  top: 8px;
+.input-group label.focused {
+  top: -8px;
   font-size: 12px;
   color: var(--text-muted);
-}
-
-.required-asterisk {
-  color: var(--error-color);
+  transform: translateY(0);
 }
 
 .input-icon {
   position: absolute;
   left: 20px;
-  top: 25px;
+  top: 20px;
   width: 20px;
   height: 20px;
   color: var(--text-secondary);
@@ -69,213 +60,180 @@
   height: 100%;
 }
 
-.rich-text-group:focus-within .input-icon,
-.rich-text-group.focused .input-icon {
+.input-group:focus-within .input-icon {
   color: var(--text-muted);
 }
 
-/* Container do Quill Editor */
-.neu-rich-text-editor {
-  background: transparent;
-  border: none;
-  color: var(--text-primary);
-  font-family: inherit;
-  min-height: 200px;
+/* Container do Quill */
+.quill-wrapper {
+  margin-left: 35px; /* Espaço para o ícone */
+  margin-top: 15px; /* Espaço para o label */
+}
+
+/* Estilos do Quill Editor */
+.quill-editor {
   width: 100%;
-}
-
-/* Sobrescrevendo estilos do Quill para tema neumórfico */
-.ql-container {
-  border: none !important;
-  font-family: inherit !important;
-  font-size: 16px !important;
   background: transparent !important;
-}
-
-.ql-toolbar {
-  border: none !important;
-  border-bottom: 1px solid var(--shadow-light) !important;
-  background: transparent !important;
-  color: var(--text-primary) !important;
-}
-
-.ql-editor {
-  padding: 0 !important;
-  color: var(--text-primary) !important;
-  min-height: 150px !important;
-  background: transparent !important;
-}
-
-.ql-editor.ql-blank::before {
-  color: var(--text-secondary) !important;
-  font-style: normal !important;
-}
-
-/* Estilos para os botões da toolbar */
-.ql-toolbar .ql-stroke {
-  stroke: var(--text-primary) !important;
-  fill: none !important;
-}
-
-.ql-toolbar .ql-fill {
-  fill: var(--text-primary) !important;
-  stroke: none !important;
-}
-
-.ql-toolbar .ql-picker-label {
-  color: var(--text-primary) !important;
-}
-
-.ql-toolbar .ql-picker-options {
-  background: var(--input-bg) !important;
-  border: none !important;
-  border-radius: 10px !important;
-  box-shadow: 
-    8px 8px 16px var(--shadow-light),
-    -8px -8px 16px var(--shadow-dark) !important;
-  color: var(--text-primary) !important;
-}
-
-.ql-toolbar .ql-picker-item {
-  color: var(--text-primary) !important;
-}
-
-.ql-toolbar button:hover,
-.ql-toolbar button:focus,
-.ql-toolbar button.ql-active {
-  background: var(--shadow-light) !important;
-  border-radius: 5px !important;
-}
-
-/* Contador de caracteres */
-.char-counter {
-  text-align: right;
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 8px;
-  transition: all 0.3s ease;
-}
-
-.char-counter.error {
-  color: var(--error-color);
-  font-weight: 500;
-}
-
-/* Mensagem de erro */
-.error-message {
-  color: var(--error-color) !important;
-  font-size: 12px;
-  font-weight: 500;
-  margin-top: 8px;
-  margin-left: 20px;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-}
-
-.error-message.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .rich-text-group {
-    padding: 18px 20px;
-    padding-left: 50px;
-    padding-top: 32px;
-  }
   
-  .rich-text-group label {
-    left: 50px;
-    font-size: 15px;
-  }
-  
-  .input-icon {
-    left: 18px;
-    width: 18px;
-    height: 18px;
+  ::ng-deep .ql-toolbar {
+    background: var(--bg-primary);
+    border: none !important;
+    border-bottom: 1px solid var(--shadow-light) !important;
+    border-radius: 8px 8px 0 0;
+    padding: 12px 8px;
+    margin-bottom: 0;
   }
 
-  .ql-toolbar {
-    padding: 8px 0 !important;
+  ::ng-deep .ql-toolbar .ql-formats {
+    margin-right: 16px;
   }
 
-  .ql-toolbar .ql-formats {
-    margin-right: 8px !important;
+  ::ng-deep .ql-toolbar button {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    margin: 2px;
+    background: var(--bg-primary);
+    box-shadow: 
+      2px 2px 4px var(--shadow-light),
+      -2px -2px 4px var(--shadow-dark);
+    border: none;
+    transition: all 0.3s ease;
   }
-}
 
-@media (max-width: 480px) {
-  .rich-text-group {
-    padding: 16px 18px;
-    padding-left: 45px;
-    padding-top: 30px;
+  ::ng-deep .ql-toolbar button:hover {
+    box-shadow: 
+      inset 2px 2px 4px var(--shadow-light),
+      inset -2px -2px 4px var(--shadow-dark);
   }
-  
-  .rich-text-group label {
-    left: 45px;
+
+  ::ng-deep .ql-toolbar button.ql-active {
+    box-shadow: 
+      inset 2px 2px 4px var(--shadow-light),
+      inset -2px -2px 4px var(--shadow-dark);
+  }
+
+  ::ng-deep .ql-toolbar .ql-stroke {
+    stroke: var(--text-primary);
+  }
+
+  ::ng-deep .ql-toolbar .ql-fill {
+    fill: var(--text-primary);
+  }
+
+  ::ng-deep .ql-container {
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--input-bg);
+    border: none !important;
+    border-radius: 0 0 8px 8px;
+    color: var(--text-primary);
+    min-height: 120px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  ::ng-deep .ql-editor {
+    padding: 16px;
+    min-height: 120px;
+    line-height: 1.5;
+    color: var(--text-primary);
+  }
+
+  ::ng-deep .ql-editor.ql-blank::before {
+    color: var(--text-secondary);
+    font-style: normal;
     font-size: 14px;
   }
-  
+
+  ::ng-deep .ql-editor p {
+    margin-bottom: 12px;
+  }
+
+  ::ng-deep .ql-editor h1,
+  ::ng-deep .ql-editor h2,
+  ::ng-deep .ql-editor h3 {
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  ::ng-deep .ql-editor ul,
+  ::ng-deep .ql-editor ol {
+    padding-left: 20px;
+    margin-bottom: 12px;
+  }
+
+  ::ng-deep .ql-editor a {
+    color: var(--accent-color);
+    text-decoration: underline;
+  }
+
+  /* Scrollbar personalizada */
+  ::ng-deep .ql-container::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::ng-deep .ql-container::-webkit-scrollbar-track {
+    background: var(--shadow-light);
+    border-radius: 3px;
+  }
+
+  ::ng-deep .ql-container::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 3px;
+  }
+}
+
+/* Estados de desabilitado e erro */
+.input-group.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.input-group.error {
+  box-shadow:
+    inset 4px 4px 8px var(--error-color),
+    inset -4px -4px 8px var(--error-color);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .input-group {
+    padding: 6px 6px 6px 6px;
+  }
+
+  .input-group label {
+    left: 50px;
+    font-size: 14px;
+  }
+
   .input-icon {
-    left: 15px;
-    width: 16px;
-    height: 16px;
+    left: 18px;
+    top: 18px;
   }
 
-  .ql-toolbar {
-    display: flex;
-    flex-wrap: wrap;
+  .quill-wrapper {
+    margin-left: 32px;
+    margin-top: 12px;
   }
 
-  .ql-toolbar .ql-formats {
-    margin-bottom: 8px !important;
+  .quill-editor {
+    ::ng-deep .ql-toolbar {
+      padding: 8px 6px;
+    }
+
+    ::ng-deep .ql-toolbar .ql-formats {
+      margin-right: 12px;
+    }
+
+    ::ng-deep .ql-toolbar button {
+      width: 28px;
+      height: 28px;
+    }
+
+    ::ng-deep .ql-editor {
+      padding: 12px;
+      min-height: 100px;
+    }
   }
-}
-
-/* Estilos para o contador de caracteres */
-.char-counter {
-  text-align: right;
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 8px;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.char-counter.error {
-  color: var(--error-color);
-  font-weight: 500;
-}
-
-.char-limit-exceeded,
-.char-minimum-warning {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--error-color);
-}
-
-/* Melhorar a visibilidade das mensagens de erro */
-.error-message.show {
-  opacity: 1;
-  transform: translateY(0);
-  display: block;
-}
-
-.error-message {
-  display: none;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-}
-
-/* Indicador visual quando o campo está inválido */
-.form-group.error .rich-text-group {
-  box-shadow: 
-    inset 8px 8px 16px rgba(255, 59, 92, 0.2),
-    inset -8px -8px 16px var(--shadow-dark),
-    0 0 0 2px var(--error-color) !important;
 }
