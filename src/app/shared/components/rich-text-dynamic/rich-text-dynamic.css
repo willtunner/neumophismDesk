@@ -1,0 +1,235 @@
+/* rich-text-dynamic.component.css */
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.rich-text-group {
+  position: relative;
+  background: var(--input-bg);
+  border-radius: 15px;
+  box-shadow: 
+    inset 8px 8px 16px var(--shadow-light),
+    inset -8px -8px 16px var(--shadow-dark);
+  transition: all 0.3s ease;
+  padding: 20px 24px;
+  padding-top: 65px;
+}
+
+.rich-text-group:focus-within,
+.rich-text-group.focused {
+  box-shadow: 
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+}
+
+.rich-text-group.error {
+  box-shadow: 
+    inset 8px 8px 16px rgba(255, 59, 92, 0.2),
+    inset -8px -8px 16px var(--shadow-dark),
+    0 0 0 2px var(--error-color) !important;
+}
+
+.rich-text-group label {
+  position: absolute;
+  left: 55px;
+  top: 22px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 400;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.rich-text-group.has-value label,
+.rich-text-group.focused label {
+  top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.required-asterisk {
+  color: var(--error-color);
+}
+
+.input-icon {
+  position: absolute;
+  left: 20px;
+  top: 25px;
+  width: 20px;
+  height: 20px;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.input-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.rich-text-group:focus-within .input-icon,
+.rich-text-group.focused .input-icon {
+  color: var(--text-muted);
+}
+
+/* Container do Quill Editor */
+.neu-rich-text-editor {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  min-height: 200px;
+  width: 100%;
+}
+
+/* Sobrescrevendo estilos do Quill para tema neumórfico */
+.ql-container {
+  border: none !important;
+  font-family: inherit !important;
+  font-size: 16px !important;
+  background: transparent !important;
+}
+
+.ql-toolbar {
+  border: none !important;
+  border-bottom: 1px solid var(--shadow-light) !important;
+  background: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+.ql-editor {
+  padding: 0 !important;
+  color: var(--text-primary) !important;
+  min-height: 150px !important;
+  background: transparent !important;
+}
+
+.ql-editor.ql-blank::before {
+  color: var(--text-secondary) !important;
+  font-style: normal !important;
+}
+
+/* Estilos para os botões da toolbar */
+.ql-toolbar .ql-stroke {
+  stroke: var(--text-primary) !important;
+  fill: none !important;
+}
+
+.ql-toolbar .ql-fill {
+  fill: var(--text-primary) !important;
+  stroke: none !important;
+}
+
+.ql-toolbar .ql-picker-label {
+  color: var(--text-primary) !important;
+}
+
+.ql-toolbar .ql-picker-options {
+  background: var(--input-bg) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  box-shadow: 
+    8px 8px 16px var(--shadow-light),
+    -8px -8px 16px var(--shadow-dark) !important;
+  color: var(--text-primary) !important;
+}
+
+.ql-toolbar .ql-picker-item {
+  color: var(--text-primary) !important;
+}
+
+.ql-toolbar button:hover,
+.ql-toolbar button:focus,
+.ql-toolbar button.ql-active {
+  background: var(--shadow-light) !important;
+  border-radius: 5px !important;
+}
+
+/* Contador de caracteres */
+.char-counter {
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  transition: all 0.3s ease;
+}
+
+.char-counter.error {
+  color: var(--error-color);
+  font-weight: 500;
+}
+
+/* Mensagem de erro */
+.error-message {
+  color: var(--error-color) !important;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 8px;
+  margin-left: 20px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.error-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .rich-text-group {
+    padding: 18px 20px;
+    padding-left: 50px;
+    padding-top: 32px;
+  }
+  
+  .rich-text-group label {
+    left: 50px;
+    font-size: 15px;
+  }
+  
+  .input-icon {
+    left: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .ql-toolbar {
+    padding: 8px 0 !important;
+  }
+
+  .ql-toolbar .ql-formats {
+    margin-right: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .rich-text-group {
+    padding: 16px 18px;
+    padding-left: 45px;
+    padding-top: 30px;
+  }
+  
+  .rich-text-group label {
+    left: 45px;
+    font-size: 14px;
+  }
+  
+  .input-icon {
+    left: 15px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .ql-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .ql-toolbar .ql-formats {
+    margin-bottom: 8px !important;
+  }
+}

@@ -815,3 +815,45 @@ app-input-dynamic {
     max-height: 150px;
   }
 }
+
+
+/* Estilos para o preview do rich text */
+.rich-text-preview {
+  background: var(--input-bg);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.rich-text-preview .preview-content h4 {
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.rich-text-preview .preview-content div {
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.rich-text-preview .preview-content:last-child {
+  margin-bottom: 0;
+}
+
+/* Ajustes responsivos para rich text */
+@media (max-width: 768px) {
+  .rich-text-preview {
+    padding: 15px;
+    max-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rich-text-preview {
+    padding: 12px;
+    max-height: 200px;
+  }
+}

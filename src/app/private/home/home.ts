@@ -11,11 +11,20 @@ import { InputValidatorsService } from '../../services/input-validators';
 import { CheckboxDynamic } from '../../shared/components/checkbox-dynamic/checkbox-dynamic';
 import { CheckboxConfig } from '../../interfaces/checkbox-config.interface';
 import { CheckboxLayout, CheckboxSelection } from '../../enuns/checkbox-types.enum';
+import { RichTextDynamicComponent } from '../../shared/components/rich-text-dynamic/rich-text-dynamic';
+import { RichTextConfig } from '../../interfaces/rich-text-config.interface';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputDynamicComponent, CheckboxDynamic],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    ReactiveFormsModule, 
+    InputDynamicComponent, 
+    CheckboxDynamic,
+    RichTextDynamicComponent
+  ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
@@ -54,7 +63,7 @@ export class Home {
     publicProfile: false
   };
 
-  // Configurações para os inputs dinâmicos - ATUALIZADO com novos campos
+  // Configurações para os inputs dinâmicos
   inputConfigs = {
     // Para a seção "Dynamic Inputs"
     dynamicFullName: {
@@ -133,7 +142,7 @@ export class Home {
       }
     } as InputConfig,
 
-    // NOVOS: Para substituir os inputs originais de Number & Select
+    // Para substituir os inputs originais de Number & Select
     ageInput: {
       type: InputType.NUMBER,
       formControlName: 'ageInput',
@@ -148,7 +157,7 @@ export class Home {
       }
     } as InputConfig,
     countrySelect: {
-      type: InputType.TEXT, // Usando TEXT para select por enquanto
+      type: InputType.TEXT,
       formControlName: 'countrySelect',
       label: 'Country',
       required: false,
@@ -173,14 +182,53 @@ export class Home {
     } as InputConfig
   };
 
+  // NOVO: Configurações para Rich Text Editors
+  // NOVO: Configurações para Rich Text Editors
+richTextConfigs = {
+  basicEditor: {
+    formControlName: 'basicEditor',
+    label: 'Basic Description',
+    required: true,
+    placeholder: 'Write a basic description here...',
+    minLength: 10,
+    maxLength: 500,
+    toolbar: 'basic',
+    theme: 'snow',
+    height: 200,
+    customErrorMessages: {
+      required: 'Description is required',
+      minlength: 'Description must be at least 10 characters',
+      maxlength: 'Description cannot exceed 500 characters'
+    }
+    // Remover a propriedade formats ou usar apenas válidos
+  } as RichTextConfig,
+  advancedEditor: {
+    formControlName: 'advancedEditor',
+    label: 'Advanced Content',
+    required: false,
+    placeholder: 'Write your advanced content here...',
+    minLength: 20,
+    maxLength: 2000,
+    toolbar: 'full',
+    theme: 'snow',
+    height: 300,
+    customErrorMessages: {
+      minlength: 'Content must be at least 20 characters',
+      maxlength: 'Content cannot exceed 2000 characters'
+    }
+    // Remover a propriedade formats ou usar apenas válidos
+  } as RichTextConfig
+};
+
   constructor(
     private router: Router, 
     private themeService: ThemeService,
     private fb: FormBuilder,
     private validatorsService: InputValidatorsService
   ) {
-    // Inicializa o formulário reativo com TODOS os controles usando o serviço
+    // Inicializa o formulário reativo com TODOS os controles
     this.dynamicForm = this.fb.group({
+      // Inputs dinâmicos existentes
       dynamicFullName: ['', this.validatorsService.getDefaultValidators(InputType.USER, this.inputConfigs.dynamicFullName)],
       dynamicEmail: ['', this.validatorsService.getDefaultValidators(InputType.EMAIL, this.inputConfigs.dynamicEmail)],
       dynamicAge: [null, this.validatorsService.getDefaultValidators(InputType.NUMBER, this.inputConfigs.dynamicAge)],
@@ -189,7 +237,11 @@ export class Home {
       originalEmail: ['', this.validatorsService.getDefaultValidators(InputType.EMAIL, this.inputConfigs.originalEmail)],
       ageInput: [null, this.validatorsService.getDefaultValidators(InputType.NUMBER, this.inputConfigs.ageInput)],
       countrySelect: ['', this.validatorsService.getDefaultValidators(InputType.TEXT, this.inputConfigs.countrySelect)],
-      bioTextarea: ['', this.validatorsService.getDefaultValidators(InputType.TEXTAREA, this.inputConfigs.bioTextarea)]
+      bioTextarea: ['', this.validatorsService.getDefaultValidators(InputType.TEXTAREA, this.inputConfigs.bioTextarea)],
+      
+      // NOVOS: Rich Text Editors
+      basicEditor: ['', Validators.required],
+      advancedEditor: ['']
     });
   
     // Sincroniza o tema dark mode
@@ -233,7 +285,53 @@ export class Home {
     return this.dynamicForm.get(controlName) as FormControl;
   }
 
-  // Submissão do formulário dinâmico (seção Dynamic Inputs)
+  // NOVO: Método para preview do rich text
+  getRichTextPreview(): string {
+    const basicContent = this.dynamicForm.value.basicEditor;
+    const advancedContent = this.dynamicForm.value.advancedEditor;
+    
+    if (basicContent || advancedContent) {
+      return `
+        <div class="preview-content">
+          ${basicContent ? `<h4>Basic Editor:</h4><div>${basicContent}</div>` : ''}
+          ${advancedContent ? `<h4>Advanced Editor:</h4><div>${advancedContent}</div>` : ''}
+        </div>
+      `;
+    }
+    return '<p>No rich text content yet.</p>';
+  }
+
+  // NOVO: Submissão do formulário Rich Text
+  submitRichTextForm() {
+    const basicControl = this.getControl('basicEditor');
+    
+    if (basicControl.valid) {
+      console.log('Rich Text submitted:', {
+        basicContent: this.dynamicForm.value.basicEditor
+      });
+      alert('Rich text content saved! Check console for details.');
+    } else {
+      basicControl.markAsTouched();
+      alert('Please fix the errors in the rich text editor.');
+    }
+  }
+
+  // NOVO: Submissão do formulário Advanced Rich Text
+  submitAdvancedRichTextForm() {
+    const advancedControl = this.getControl('advancedEditor');
+    
+    if (advancedControl.valid) {
+      console.log('Advanced Rich Text submitted:', {
+        advancedContent: this.dynamicForm.value.advancedEditor
+      });
+      alert('Advanced rich text content saved! Check console for details.');
+    } else {
+      advancedControl.markAsTouched();
+      alert('Please fix the errors in the advanced rich text editor.');
+    }
+  }
+
+  // Métodos existentes...
   submitDynamicForm() {
     if (this.dynamicForm.valid) {
       console.log('Dynamic Form submitted:', {
@@ -249,7 +347,6 @@ export class Home {
     }
   }
 
-  // Submissão do formulário original (seção Text Inputs)
   submitOriginalForm() {
     if (this.dynamicForm.valid) {
       console.log('Original Form submitted:', {
@@ -263,7 +360,6 @@ export class Home {
     }
   }
 
-  // Submissão do formulário template-driven (mantido para compatibilidade)
   submitForm() {
     console.log('Template Form submitted:', this.formData);
     alert('Template form data saved! Check console for details.');

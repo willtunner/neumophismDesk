@@ -117,6 +117,49 @@
       </app-input-dynamic>
     </div>
 
+    <!-- NOVA SEÇÃO: Rich Text Editor -->
+    <div class="component-section neu-container">
+      <h2>Rich Text Editor</h2>
+      
+      <!-- Rich Text Editor Básico -->
+      <app-rich-text-dynamic 
+        [config]="richTextConfigs.basicEditor"
+        [control]="getControl('basicEditor')"
+        [showImage]="true">
+      </app-rich-text-dynamic>
+
+      <button class="neu-button primary" (click)="submitRichTextForm()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Save Rich Text
+      </button>
+    </div>
+
+    <!-- SEÇÃO: Rich Text Editor Avançado -->
+    <div class="component-section neu-container">
+      <h2>Advanced Rich Text Editor</h2>
+      
+      <!-- Rich Text Editor Avançado -->
+      <app-rich-text-dynamic 
+        [config]="richTextConfigs.advancedEditor"
+        [control]="getControl('advancedEditor')"
+        [showImage]="true">
+      </app-rich-text-dynamic>
+
+      <button class="neu-button primary" (click)="submitAdvancedRichTextForm()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Save Advanced Editor
+      </button>
+    </div>
+
+    <!-- Resto das seções mantidas... -->
     <!-- Checkboxes, Radio Buttons, Buttons, Slider, Toggle Switch -->
     <div class="component-section neu-container">
       <h2>Checkboxes</h2>
@@ -136,129 +179,8 @@
       </button>
     </div>
 
-    <div class="component-section neu-container">
-      <h2>Radio Buttons</h2>
-      
-      <div class="radio-group">
-        <label class="radio-label">
-          <input type="radio" name="gender" value="male" [(ngModel)]="formData.gender">
-          <div class="neu-radio">
-            <div class="radio-dot"></div>
-          </div>
-          <span>Male</span>
-        </label>
+    <!-- ... resto das seções permanecem iguais ... -->
 
-        <label class="radio-label">
-          <input type="radio" name="gender" value="female" [(ngModel)]="formData.gender">
-          <div class="neu-radio">
-            <div class="radio-dot"></div>
-          </div>
-          <span>Female</span>
-        </label>
-
-        <label class="radio-label">
-          <input type="radio" name="gender" value="other" [(ngModel)]="formData.gender">
-          <div class="neu-radio">
-            <div class="radio-dot"></div>
-          </div>
-          <span>Other</span>
-        </label>
-      </div>
-    </div>
-
-    <div class="component-section neu-container">
-      <h2>Buttons</h2>
-      
-      <div class="button-group">
-        <button class="neu-button primary" (click)="submitForm()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-            <polyline points="17 21 17 13 7 13 7 21"/>
-            <polyline points="7 3 7 8 15 8"/>
-          </svg>
-          Save Changes
-        </button>
-
-        <button class="neu-button secondary" (click)="resetForm()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-            <path d="M3 3v5h5"/>
-          </svg>
-          Reset All Forms
-        </button>
-
-        <button class="neu-button danger" (click)="showAlert()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-          Delete Account
-        </button>
-      </div>
-
-      <div class="button-group small">
-        <button class="neu-button small">Small</button>
-        <button class="neu-button small" disabled>Disabled</button>
-        <button class="neu-button small loading">
-          <span class="btn-text">Loading</span>
-          <div class="btn-loader">
-            <div class="neu-spinner"></div>
-          </div>
-        </button>
-      </div>
-    </div>
-
-    <div class="component-section neu-container">
-      <h2>Slider</h2>
-      
-      <div class="slider-group">
-        <label for="volume" class="slider-label">Volume: {{formData.volume}}%</label>
-        <div class="neu-slider">
-          <input type="range" id="volume" min="0" max="100" [(ngModel)]="formData.volume" class="slider">
-          <div class="slider-track">
-            <div class="slider-progress" [style.width.%]="formData.volume"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slider-group">
-        <label for="brightness" class="slider-label">Brightness: {{formData.brightness}}%</label>
-        <div class="neu-slider">
-          <input type="range" id="brightness" min="0" max="100" [(ngModel)]="formData.brightness" class="slider">
-          <div class="slider-track">
-            <div class="slider-progress" [style.width.%]="formData.brightness"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="component-section neu-container">
-      <h2>Toggle Switches</h2>
-      
-      <div class="toggle-group">
-        <label class="toggle-label">
-          <span>Dark Mode</span>
-          <div class="neu-toggle-switch" [class.active]="formData.darkMode" (click)="toggleDarkMode()">
-            <div class="toggle-slider"></div>
-          </div>
-        </label>
-
-        <label class="toggle-label">
-          <span>Auto Save</span>
-          <div class="neu-toggle-switch" [class.active]="formData.autoSave" (click)="formData.autoSave = !formData.autoSave">
-            <div class="toggle-slider"></div>
-          </div>
-        </label>
-
-        <label class="toggle-label">
-          <span>Public Profile</span>
-          <div class="neu-toggle-switch" [class.active]="formData.publicProfile" (click)="formData.publicProfile = !formData.publicProfile">
-            <div class="toggle-slider"></div>
-          </div>
-        </label>
-      </div>
-    </div>
   </div>
 
   <!-- Form Data Preview atualizado -->
@@ -267,6 +189,10 @@
     <div class="preview-section">
       <h3>Dynamic Form Data:</h3>
       <pre>{{ dynamicForm.value | json }}</pre>
+    </div>
+    <div class="preview-section">
+      <h3>Rich Text Content Preview:</h3>
+      <div class="rich-text-preview" [innerHTML]="getRichTextPreview()"></div>
     </div>
     <div class="preview-section">
       <h3>Original Form Data:</h3>

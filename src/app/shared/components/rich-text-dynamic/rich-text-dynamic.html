@@ -1,0 +1,34 @@
+<div class="form-group" [class.error]="isInvalid">
+    <div 
+      class="rich-text-group"
+      [class.focused]="isFocused"
+      [class.has-value]="hasValue">
+      
+      <!-- Label -->
+      <label [for]="config.formControlName">
+        {{ config.label }}
+        <span *ngIf="config.required !== false" class="required-asterisk">*</span>
+      </label>
+  
+      <!-- Container do Quill Editor -->
+      <div 
+        [id]="'quill-editor-' + config.formControlName"
+        class="neu-rich-text-editor quill-editor-styles"
+        (focus)="onFocus()"
+        (blur)="onBlur()">
+      </div>
+  
+      <!-- Ícone -->
+      <div *ngIf="showImage" class="input-icon" [innerHTML]="safeIconSvg"></div>
+    </div>
+  
+    <!-- Contador de caracteres -->
+    <div *ngIf="config.maxLength" class="char-counter" [class.error]="charCount > config.maxLength">
+      {{ charCount }} / {{ config.maxLength }} caracteres
+    </div>
+  
+    <!-- Mensagem de erro -->
+    <span class="error-message" [class.show]="isInvalid && errorMessage">
+      {{ errorMessage }}
+    </span>
+  </div>
