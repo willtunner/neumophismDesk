@@ -1,7 +1,7 @@
-<div class="rich-text-dynamic-container">
-  <div class="input-group">
+<div class="rich-text-dynamic-container" [class.error]="isInvalid">
+  <div class="input-group" [class.focused]="focused" [class.has-value]="hasValue">
     <!-- Label flutuante -->
-    <label [class.focused]="focused || !empty">{{ config.placeholder }}</label>
+    <label [class.focused]="focused || !empty">{{ config?.placeholder }}</label>
     
     <!-- Ícone -->
     <div class="input-icon">
@@ -21,7 +21,7 @@
         [ngModel]="value"
         (ngModelChange)="onContentChange($event)"
         [modules]="quillModules"
-        [placeholder]="config.placeholder"
+        [placeholder]="config?.placeholder!"
         [styles]="editorStyles"
         [readOnly]="disabled"
         (onFocus)="onFocus()"
@@ -31,4 +31,22 @@
       </quill-editor>
     </div>
   </div>
+
+  <!-- Contador de caracteres e limite -->
+  <div class="character-counter" *ngIf="showCount || showLimit">
+    <span *ngIf="showCount" class="character-count">
+      {{ characterCount }} character{{ characterCount !== 1 ? 's' : '' }}
+    </span>
+    <span *ngIf="showLimit" class="character-limit" [class.exceeded]="isLimitExceeded">
+      / {{ limit }}
+    </span>
+    <span *ngIf="showLimit && isLimitExceeded" class="limit-exceeded">
+      ({{ characterCount - limit }} over limit)
+    </span>
+  </div>
+
+  <!-- Mensagem de erro -->
+  <span class="error-message" [class.show]="isInvalid && errorMessage">
+    {{ errorMessage }}
+  </span>
 </div>

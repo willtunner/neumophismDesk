@@ -146,7 +146,9 @@
       <app-rich-text-dynamic 
         [config]="richTextConfigs.advancedEditor"
         [control]="getControl('advancedEditor')"
-        [showImage]="true">
+        [showImage]="true"
+        [count]="true"
+  [limit]="500">
       </app-rich-text-dynamic>
 
       <button class="neu-button primary" (click)="submitAdvancedRichTextForm()">
