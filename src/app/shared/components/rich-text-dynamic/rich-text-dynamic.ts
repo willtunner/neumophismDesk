@@ -6,7 +6,9 @@ import {
   OnInit,
   DoCheck,
   Injector,
-  OnDestroy
+  OnDestroy,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
@@ -14,7 +16,9 @@ import {
   NgControl,
   FormsModule,
   Validators,
-  FormControl
+  FormControl,
+  AbstractControl,
+  ValidatorFn
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { QuillModule } from 'ngx-quill';
@@ -34,18 +38,19 @@ import { RichTextConfig } from '../../../interfaces/rich-text-config.interface';
     }
   ]
 })
-export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, DoCheck, OnDestroy {
+export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, DoCheck, OnDestroy, OnChanges {
   @Input() config!: RichTextConfig;
   @Input() control!: FormControl;
   @Input() showImage: boolean = true;
-  @Input() count: boolean = false; // Novo: Mostrar contador
-  @Input() limit: number = 0; // Novo: Limite de caracteres
+  @Input() count: boolean = false;
+  @Input() limit: number = 0;
 
   value: string = '';
   focused: boolean = false;
   errorState: boolean = false;
   errorMessage: string = '';
   characterCount: number = 0;
+  touched: boolean = false;
   
   private destroyed$ = new Subject<void>();
   ngControl: NgControl | null = null;
@@ -78,7 +83,10 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
     backgroundColor: 'transparent'
   };
 
-  onChange = (_: any) => {};
+  // CORREÇÃO: Usar uma única fonte de verdade para o valor
+  private internalValue: string = '';
+
+  onChange = (value: any) => {};
   onTouched = () => {};
 
   constructor(private injector: Injector) {}
@@ -92,19 +100,28 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
       };
     }
 
-    // Configurar ngControl e validações
+    // Configurar ngControl
     setTimeout(() => {
       this.ngControl = this.injector.get(NgControl, null);
-      this.setupValidators();
     });
+
+    // Sincronizar com o FormControl do pai se existir
+    this.syncWithParentControl();
 
     // Inicializar contador
     this.updateCharacterCount();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    // Se o control mudar, re-sincronizar
+    if (changes['control'] && this.control) {
+      this.syncWithParentControl();
+    }
+  }
+
   ngDoCheck(): void {
-    if (this.ngControl) {
-      const newErrorState = !!this.ngControl.invalid && !!this.ngControl.touched;
+    if (this.control) {
+      const newErrorState = this.control.invalid && this.touched;
       if (newErrorState !== this.errorState) {
         this.errorState = newErrorState;
         this.updateErrorMessage();
@@ -117,48 +134,130 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
     this.destroyed$.complete();
   }
 
-  private setupValidators(): void {
-    if (!this.control) {
-      console.warn('FormControl não fornecido para o rich text dinâmico');
-      return;
+  // CORREÇÃO: Sincronizar com o FormControl do pai
+  private syncWithParentControl(): void {
+    if (!this.control) return;
+
+    // Sincronizar valor inicial do pai para o componente
+    if (this.control.value !== this.internalValue) {
+      this.internalValue = this.control.value || '';
+      this.value = this.internalValue;
+      this.updateCharacterCount();
     }
+
+    // Sincronizar validadores
+    this.setupValidators();
+
+    // Observar mudanças do FormControl pai
+    this.control.valueChanges.subscribe(value => {
+      if (value !== this.internalValue) {
+        this.internalValue = value || '';
+        this.value = this.internalValue;
+        this.updateCharacterCount();
+      }
+    });
+
+    // Observar status de touched
+    this.control.statusChanges.subscribe(() => {
+      if (this.control.touched && !this.touched) {
+        this.touched = true;
+        this.updateErrorMessage();
+      }
+    });
+  }
+
+  private setupValidators(): void {
+    if (!this.control) return;
 
     const validators = [];
 
     // Validação obrigatória
-    if (this.config.required) {
-      validators.push(Validators.required);
+    if (this.config?.required) {
+      validators.push(this.requiredValidator());
     }
 
     // Validação de comprimento mínimo
-    if (this.config.minLength) {
-      validators.push(Validators.minLength(this.config.minLength));
+    if (this.config?.minLength) {
+      validators.push(this.minLengthValidator());
     }
 
     // Validação de comprimento máximo
-    if (this.config.maxLength) {
-      validators.push(Validators.maxLength(this.config.maxLength));
+    if (this.config?.maxLength) {
+      validators.push(this.maxLengthValidator());
     }
 
     // Validação customizada para limite
     if (this.limit > 0) {
-      validators.push(this.limitValidator.bind(this));
+      validators.push(this.limitValidator());
     }
 
-    this.control.setValidators(validators);
-    this.control.updateValueAndValidity();
+    // Aplicar validadores apenas se houver algum
+    if (validators.length > 0) {
+      this.control.setValidators(validators);
+      this.control.updateValueAndValidity();
+    }
   }
 
-  private limitValidator(control: FormControl): { [key: string]: any } | null {
-    if (!control.value) return null;
-    
-    const textContent = this.stripHtml(control.value);
-    return textContent.length > this.limit ? { limitExceeded: true } : null;
+  // VALIDADOR REQUIRED
+  private requiredValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value = control.value;
+      
+      if (!value || value === '') {
+        return { required: true };
+      }
+      
+      const textContent = this.stripHtml(value);
+      const hasRealContent = textContent.trim().length > 0;
+      
+      return hasRealContent ? null : { required: true };
+    };
+  }
+
+  // VALIDADOR MIN LENGTH
+  private minLengthValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value = control.value;
+      
+      if (!value) {
+        return this.config.required ? 
+          { minlength: { requiredLength: this.config.minLength, actualLength: 0 } } : null;
+      }
+      
+      const textContent = this.stripHtml(value);
+      const actualLength = textContent.trim().length;
+      
+      return actualLength < (this.config.minLength || 0) ? 
+        { minlength: { requiredLength: this.config.minLength, actualLength } } : null;
+    };
+  }
+
+  // VALIDADOR MAX LENGTH
+  private maxLengthValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (!control.value) return null;
+      
+      const textContent = this.stripHtml(control.value);
+      const actualLength = textContent.length;
+      
+      return actualLength > (this.config.maxLength || 0) ? 
+        { maxlength: { requiredLength: this.config.maxLength, actualLength } } : null;
+    };
+  }
+
+  // VALIDADOR LIMITE
+  private limitValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (!control.value) return null;
+      
+      const textContent = this.stripHtml(control.value);
+      return textContent.length > this.limit ? { limitExceeded: true } : null;
+    };
   }
 
   private updateCharacterCount(): void {
-    if (this.value) {
-      const textContent = this.stripHtml(this.value);
+    if (this.internalValue) {
+      const textContent = this.stripHtml(this.internalValue);
       this.characterCount = textContent.length;
     } else {
       this.characterCount = 0;
@@ -166,20 +265,25 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
   }
 
   private stripHtml(html: string): string {
+    if (!html) return '';
+    
     const tmp = document.createElement('DIV');
     tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
+    
+    let text = tmp.textContent || tmp.innerText || '';
+    text = text.replace(/\s+/g, ' ').trim();
+    
+    return text;
   }
 
   private updateErrorMessage(): void {
-    if (this.control.invalid && this.control.touched) {
+    if (this.control?.invalid && this.touched) {
       const errors = this.control.errors;
       if (errors) {
         const firstErrorKey = Object.keys(errors)[0];
         const errorValue = errors[firstErrorKey];
         
-        // Verificar mensagens customizadas de forma type-safe
-        if (this.config.customErrorMessages) {
+        if (this.config?.customErrorMessages) {
           if (firstErrorKey === 'required' && this.config.customErrorMessages.required) {
             this.errorMessage = this.config.customErrorMessages.required;
           } else if (firstErrorKey === 'minlength' && this.config.customErrorMessages.minlength) {
@@ -192,16 +296,15 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
             this.errorMessage = 'Invalid value';
           }
         } else {
-          // Sem mensagens customizadas
           switch (firstErrorKey) {
             case 'required':
               this.errorMessage = 'This field is required';
               break;
             case 'minlength':
-              this.errorMessage = `Minimum length is ${errorValue.requiredLength} characters`;
+              this.errorMessage = `Minimum length is ${errorValue.requiredLength} characters (currently ${errorValue.actualLength})`;
               break;
             case 'maxlength':
-              this.errorMessage = `Maximum length is ${errorValue.requiredLength} characters`;
+              this.errorMessage = `Maximum length is ${errorValue.requiredLength} characters (currently ${errorValue.actualLength})`;
               break;
             case 'limitExceeded':
               this.errorMessage = `Character limit exceeded by ${this.characterCount - this.limit}`;
@@ -224,10 +327,13 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
     }
   }
 
-  // ControlValueAccessor
+  // CORREÇÃO: ControlValueAccessor - Sincronização bidirecional
   writeValue(value: any): void {
-    this.value = value || '';
-    this.updateCharacterCount();
+    if (value !== this.internalValue) {
+      this.internalValue = value || '';
+      this.value = this.internalValue;
+      this.updateCharacterCount();
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -244,18 +350,22 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
     }
   }
 
-  // Event handlers
+  // CORREÇÃO: Event handlers - Sincronizar com FormControl pai
   onContentChange(content: string): void {
-    this.value = content;
+    this.internalValue = content;
+    this.value = this.internalValue;
     this.updateCharacterCount();
-    this.onChange(this.value);
-    this.onTouched();
     
-    // Atualizar validações em tempo real
-    if (this.control) {
+    // Atualizar ControlValueAccessor
+    this.onChange(this.internalValue);
+    
+    // Atualizar FormControl pai se existir
+    if (this.control && this.control.value !== this.internalValue) {
+      this.control.setValue(this.internalValue);
       this.control.updateValueAndValidity();
-      this.updateErrorMessage();
     }
+    
+    this.updateErrorMessage();
   }
 
   onFocus(): void {
@@ -264,16 +374,28 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
 
   onBlur(): void {
     this.focused = false;
-    this.onTouched();
-    if (this.control) {
-      this.control.markAsTouched();
-      this.updateErrorMessage();
+    this.markAsTouched();
+  }
+
+  // Marcar como touched
+  markAsTouched(): void {
+    if (!this.touched) {
+      this.touched = true;
+      this.onTouched();
+      
+      if (this.control) {
+        this.control.markAsTouched();
+        this.control.updateValueAndValidity();
+        this.updateErrorMessage();
+      }
     }
   }
 
-  // Getters
+  // GETTERS
   get empty(): boolean {
-    return !this.value || this.value === '<p><br></p>' || this.value === '';
+    if (!this.internalValue) return true;
+    const textContent = this.stripHtml(this.internalValue);
+    return textContent.trim().length === 0;
   }
 
   get hasValue(): boolean {
@@ -285,7 +407,7 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
   }
 
   get isInvalid(): boolean {
-    return this.control?.invalid && this.control?.touched || false;
+    return this.control?.invalid && this.touched || false;
   }
 
   get showCount(): boolean {

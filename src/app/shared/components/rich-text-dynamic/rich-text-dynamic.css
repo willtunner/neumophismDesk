@@ -1,7 +1,15 @@
 .rich-text-dynamic-container {
   display: block;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.rich-text-dynamic-container.error .input-group {
+  box-shadow: 
+    inset 8px 8px 16px rgba(255, 59, 92, 0.2),
+    inset -8px -8px 16px var(--shadow-dark),
+    0 0 0 2px var(--error-color) !important;
 }
 
 .input-group {
@@ -12,20 +20,26 @@
     inset 8px 8px 16px var(--shadow-light),
     inset -8px -8px 16px var(--shadow-dark);
   transition: all 0.3s ease;
-  padding: 8px 8px 8px 8px; /* Ajuste do padding para o Quill */
+  padding: 8px;
 }
 
-.input-group:focus-within {
+.input-group.focused {
   box-shadow:
     inset 4px 4px 8px var(--shadow-light),
     inset -4px -4px 8px var(--shadow-dark);
 }
 
-/* Label flutuante */
+.input-group.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Label flutuante - MESMO PADRÃO DO INPUT-DYNAMIC */
 .input-group label {
   position: absolute;
   left: 55px;
-  top: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--text-secondary);
   font-size: 16px;
   font-weight: 400;
@@ -37,8 +51,9 @@
   margin: 0;
 }
 
-.input-group label.focused {
-  top: -8px;
+.input-group.has-value label,
+.input-group.focused label {
+  top: 8px;
   font-size: 12px;
   color: var(--text-muted);
   transform: translateY(0);
@@ -47,7 +62,8 @@
 .input-icon {
   position: absolute;
   left: 20px;
-  top: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 20px;
   height: 20px;
   color: var(--text-secondary);
@@ -60,180 +76,258 @@
   height: 100%;
 }
 
-.input-group:focus-within .input-icon {
+.input-group:focus-within .input-icon,
+.input-group.focused .input-icon {
   color: var(--text-muted);
 }
 
-/* Container do Quill */
-.quill-wrapper {
-  margin-left: 35px; /* Espaço para o ícone */
-  margin-top: 30px; /* Espaço para o label */
+/* === Ajuste visual para RICH TEXT com ícone === */
+.input-group .quill-wrapper {
+  margin-left: 35px;
+  margin-top: 15px;
+}
+
+.input-group.textarea-group .quill-wrapper {
+  margin-top: 25px;
+}
+
+.input-group.textarea-group .input-icon {
+  top: 25px;
+  transform: none;
+}
+
+.input-group.textarea-group label {
+  top: 22px;
+}
+
+.input-group.textarea-group.has-value label,
+.input-group.textarea-group.focused label {
+  top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 /* Estilos do Quill Editor */
-.quill-editor {
+::ng-deep .quill-editor {
   width: 100%;
   background: transparent !important;
-  
-  ::ng-deep .ql-toolbar {
-    background: var(--bg-primary);
-    border: none !important;
-    border-bottom: 1px solid var(--shadow-light) !important;
-    border-radius: 8px 8px 0 0;
-    padding: 12px 8px;
-    margin-bottom: 0;
-  }
-
-  ::ng-deep .ql-toolbar .ql-formats {
-    margin-right: 16px;
-  }
-
-  ::ng-deep .ql-toolbar button {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    margin: 2px;
-    background: var(--bg-primary);
-    box-shadow: 
-      2px 2px 4px var(--shadow-light),
-      -2px -2px 4px var(--shadow-dark);
-    border: none;
-    transition: all 0.3s ease;
-  }
-
-  ::ng-deep .ql-toolbar button:hover {
-    box-shadow: 
-      inset 2px 2px 4px var(--shadow-light),
-      inset -2px -2px 4px var(--shadow-dark);
-  }
-
-  ::ng-deep .ql-toolbar button.ql-active {
-    box-shadow: 
-      inset 2px 2px 4px var(--shadow-light),
-      inset -2px -2px 4px var(--shadow-dark);
-  }
-
-  ::ng-deep .ql-toolbar .ql-stroke {
-    stroke: var(--text-primary);
-  }
-
-  ::ng-deep .ql-toolbar .ql-fill {
-    fill: var(--text-primary);
-  }
-
-  ::ng-deep .ql-container {
-    font-family: inherit;
-    font-size: 14px;
-    background: var(--input-bg);
-    border: none !important;
-    border-radius: 0 0 8px 8px;
-    color: var(--text-primary);
-    min-height: 120px;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-
-  ::ng-deep .ql-editor {
-    padding: 16px;
-    min-height: 120px;
-    line-height: 1.5;
-    color: var(--text-primary);
-  }
-
-  ::ng-deep .ql-editor.ql-blank::before {
-    color: var(--text-secondary);
-    font-style: normal;
-    font-size: 14px;
-  }
-
-  ::ng-deep .ql-editor p {
-    margin-bottom: 12px;
-  }
-
-  ::ng-deep .ql-editor h1,
-  ::ng-deep .ql-editor h2,
-  ::ng-deep .ql-editor h3 {
-    color: var(--text-primary);
-    margin-bottom: 12px;
-  }
-
-  ::ng-deep .ql-editor ul,
-  ::ng-deep .ql-editor ol {
-    padding-left: 20px;
-    margin-bottom: 12px;
-  }
-
-  ::ng-deep .ql-editor a {
-    color: var(--accent-color);
-    text-decoration: underline;
-  }
-
-  /* Scrollbar personalizada */
-  ::ng-deep .ql-container::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  ::ng-deep .ql-container::-webkit-scrollbar-track {
-    background: var(--shadow-light);
-    border-radius: 3px;
-  }
-
-  ::ng-deep .ql-container::-webkit-scrollbar-thumb {
-    background: var(--text-muted);
-    border-radius: 3px;
-  }
 }
 
-/* Estados de desabilitado e erro */
-.input-group.disabled {
-  opacity: 0.6;
-  pointer-events: none;
+::ng-deep .quill-editor .ql-toolbar {
+  background: var(--bg-primary);
+  border: none !important;
+  border-bottom: 1px solid var(--shadow-light) !important;
+  border-radius: 8px 8px 0 0;
+  padding: 12px 8px;
 }
 
-.input-group.error {
-  box-shadow:
-    inset 4px 4px 8px var(--error-color),
-    inset -4px -4px 8px var(--error-color);
+::ng-deep .quill-editor .ql-toolbar .ql-formats {
+  margin-right: 16px;
 }
 
-/* Responsividade */
+::ng-deep .quill-editor .ql-toolbar button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  margin: 2px;
+  background: var(--bg-primary);
+  box-shadow: 
+    2px 2px 4px var(--shadow-light),
+    -2px -2px 4px var(--shadow-dark);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .quill-editor .ql-toolbar button:hover {
+  box-shadow: 
+    inset 2px 2px 4px var(--shadow-light),
+    inset -2px -2px 4px var(--shadow-dark);
+}
+
+::ng-deep .quill-editor .ql-toolbar button.ql-active {
+  box-shadow: 
+    inset 2px 2px 4px var(--shadow-light),
+    inset -2px -2px 4px var(--shadow-dark);
+}
+
+::ng-deep .quill-editor .ql-toolbar .ql-stroke {
+  stroke: var(--text-primary);
+}
+
+::ng-deep .quill-editor .ql-toolbar .ql-fill {
+  fill: var(--text-primary);
+}
+
+::ng-deep .quill-editor .ql-container {
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--input-bg);
+  border: none !important;
+  border-radius: 0 0 8px 8px;
+  color: var(--text-primary);
+  min-height: 120px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+::ng-deep .quill-editor .ql-editor {
+  padding: 16px;
+  min-height: 120px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+::ng-deep .quill-editor .ql-editor.ql-blank::before {
+  color: var(--text-secondary);
+  font-style: normal;
+  font-size: 14px;
+}
+
+::ng-deep .quill-editor .ql-editor p {
+  margin-bottom: 12px;
+}
+
+::ng-deep .quill-editor .ql-editor h1,
+::ng-deep .quill-editor .ql-editor h2,
+::ng-deep .quill-editor .ql-editor h3 {
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+::ng-deep .quill-editor .ql-editor img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Contador de caracteres - MESMO PADRÃO DO INPUT-DYNAMIC */
+.character-counter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 0 20px;
+}
+
+.character-count {
+  font-weight: 500;
+}
+
+.character-limit {
+  color: var(--text-muted);
+}
+
+.character-limit.exceeded {
+  color: var(--error-color);
+}
+
+.limit-exceeded {
+  color: var(--error-color);
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* Mensagem de erro - MESMO PADRÃO EXATO DO INPUT-DYNAMIC */
+.error-message {
+  color: var(--error-color) !important;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 8px;
+  margin-left: 20px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.error-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive - MESMO PADRÃO DO INPUT-DYNAMIC */
 @media (max-width: 768px) {
   .input-group {
-    padding: 6px 6px 6px 6px;
+    padding: 6px;
   }
 
   .input-group label {
     left: 50px;
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .input-icon {
     left: 18px;
-    top: 18px;
+    width: 18px;
+    height: 18px;
   }
 
-  .quill-wrapper {
+  .input-group .quill-wrapper {
     margin-left: 32px;
     margin-top: 12px;
   }
 
-  .quill-editor {
-    ::ng-deep .ql-toolbar {
-      padding: 8px 6px;
-    }
+  .character-counter {
+    padding: 0 18px;
+    font-size: 11px;
+  }
 
-    ::ng-deep .ql-toolbar .ql-formats {
-      margin-right: 12px;
-    }
+  ::ng-deep .quill-editor .ql-toolbar {
+    padding: 8px 6px;
+  }
 
-    ::ng-deep .ql-toolbar button {
-      width: 28px;
-      height: 28px;
-    }
+  ::ng-deep .quill-editor .ql-toolbar .ql-formats {
+    margin-right: 12px;
+  }
 
-    ::ng-deep .ql-editor {
-      padding: 12px;
-      min-height: 100px;
-    }
+  ::ng-deep .quill-editor .ql-toolbar button {
+    width: 28px;
+    height: 28px;
+  }
+
+  ::ng-deep .quill-editor .ql-editor {
+    padding: 12px;
+    min-height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-group {
+    padding: 6px;
+  }
+
+  .input-group label {
+    left: 45px;
+    font-size: 14px;
+  }
+
+  .input-icon {
+    left: 15px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .input-group .quill-wrapper {
+    margin-left: 30px;
+    margin-top: 10px;
+  }
+
+  .character-counter {
+    padding: 0 15px;
+    font-size: 10px;
+  }
+
+  ::ng-deep .quill-editor .ql-toolbar {
+    padding: 6px 4px;
+  }
+
+  ::ng-deep .quill-editor .ql-toolbar button {
+    width: 26px;
+    height: 26px;
+  }
+
+  ::ng-deep .quill-editor .ql-editor {
+    padding: 10px;
+    min-height: 80px;
   }
 }

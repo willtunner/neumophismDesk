@@ -190,15 +190,12 @@ richTextConfigs = {
     label: 'Basic Description',
     required: true,
     placeholder: 'Write a basic description here...',
-    minLength: 10,
+    minLength: 20,
     maxLength: 500,
-    toolbar: 'basic',
-    theme: 'snow',
-    height: 200,
     minHeight: '200px',
     customErrorMessages: {
       required: 'Description is required',
-      minlength: 'Description must be at least 10 characters',
+      minlength: 'Description must be at least 20 characters',
       maxlength: 'Description cannot exceed 500 characters'
     }
   } as RichTextConfig,
@@ -241,7 +238,7 @@ richTextConfigs = {
       bioTextarea: ['', this.validatorsService.getDefaultValidators(InputType.TEXTAREA, this.inputConfigs.bioTextarea)],
       
       // NOVOS: Rich Text Editors
-      basicEditor: ['', Validators.required],
+      basicEditor: [''],
       advancedEditor: ['']
     });
   
