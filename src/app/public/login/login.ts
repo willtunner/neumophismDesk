@@ -20,11 +20,12 @@ import { InputValidatorsService } from '../../services/input-validators';
 })
 export class Login {
   form: FormGroup;
-  showPassword = false;
+  showPassword: boolean = false;
   loading = false;
   showSuccess = false;
   emailError = '';
   passwordError = '';
+  
 
   // Configurações para os inputs dinâmicos
   inputConfigs = {
@@ -82,17 +83,17 @@ export class Login {
     return this.form.get(controlName) as FormControl;
   }
 
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
   togglePassword() {
     this.showPassword = !this.showPassword;
-    
-    // Atualiza dinamicamente o tipo do input password
-    if (this.inputConfigs.password) {
-      this.inputConfigs.password = {
-        ...this.inputConfigs.password,
-        type: this.showPassword ? InputType.TEXT : InputType.TEXT,
-        customIcon: this.showPassword ? this.getEyeClosedIcon() : this.getEyeOpenIcon()
-      };
-    }
+    this.inputConfigs.password = {
+      ...this.inputConfigs.password,
+      type: this.showPassword ? InputType.TEXT : InputType.CPF, // muda o ícone apenas
+      customIcon: this.showPassword ? this.getEyeClosedIcon() : this.getEyeOpenIcon()
+    };
   }
 
   private getEyeOpenIcon(): string {

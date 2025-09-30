@@ -604,3 +604,37 @@
   color: var(--text-muted);
   transform: translateY(0);
 }
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 35%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.password-toggle svg {
+  width: 22px;
+  height: 22px;
+  transition: opacity 0.3s;
+}
+
+.password-toggle .eye-closed {
+  opacity: 0;
+  position: absolute;
+}
+
+.password-toggle.show-password .eye-open {
+  opacity: 0;
+}
+
+.password-toggle.show-password .eye-closed {
+  opacity: 1;
+}

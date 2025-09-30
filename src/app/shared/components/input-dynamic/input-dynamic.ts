@@ -16,6 +16,7 @@ import { InputValidatorsService } from '../../../services/input-validators';
 export class InputDynamicComponent implements OnInit {
   @Input() config!: InputConfig;
   @Input() control!: FormControl;
+  @Input() isPasswordVisible: boolean = false;
   @Output() valueChange = new EventEmitter<any>();
 
   inputType: string = 'text';
@@ -90,7 +91,20 @@ export class InputDynamicComponent implements OnInit {
     this.setupValueChanges();
   }
 
+  ngOnChanges(): void {
+    // Atualiza tipo do input dinamicamente ao clicar no olho
+    if (this.config.formControlName === 'password') {
+      this.inputType = this.isPasswordVisible ? 'text' : 'password';
+    }
+  }
+  
+
   private setupInputType(): void {
+    if (this.config.formControlName === 'password') {
+      this.inputType = this.isPasswordVisible ? 'text' : 'password';
+      return;
+    }
+  
     switch (this.config.type) {
       case InputType.EMAIL:
         this.inputType = 'email';
