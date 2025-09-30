@@ -37,31 +37,6 @@ export class RichTextDynamicComponent implements OnInit, AfterViewInit, OnDestro
     </svg>
   `;
 
-  // Formats válidos do Quill
-  private readonly validFormats = [
-    'background',
-    'bold',
-    'color',
-    'font',
-    'code',
-    'italic',
-    'link',
-    'size',
-    'strike',
-    'script',
-    'underline',
-    'blockquote',
-    'header',
-    'indent',
-    'list',
-    'align',
-    'direction',
-    'code-block',
-    'formula',
-    'image',
-    'video'
-  ];
-
   constructor(
     private sanitizer: DomSanitizer,
     private elementRef: ElementRef
@@ -71,6 +46,8 @@ export class RichTextDynamicComponent implements OnInit, AfterViewInit, OnDestro
     this.setupValidators();
     this.setupValueChanges();
     this.updateIcon();
+    // Inicializa o contador com o valor atual do control
+    this.updateCharCount();
   }
 
   ngAfterViewInit(): void {
@@ -99,40 +76,62 @@ export class RichTextDynamicComponent implements OnInit, AfterViewInit, OnDestro
       // Configuração da toolbar
       const toolbarOptions = this.getToolbarOptions();
   
-      // Configuração do Quill SEM a propriedade formats
+      // Configuração do Quill
       this.quill = new Quill(editorElement, {
         theme: this.config.theme || 'snow',
         modules: {
           toolbar: toolbarOptions
         },
-        // REMOVER completamente a propriedade formats
         placeholder: this.config.placeholder || 'Digite seu texto...'
       });
-  
-      // Resto do código permanece igual...
+
+      // Definir altura se fornecida
+      if (this.config.height) {
+        editorElement.style.height = `${this.config.height}px`;
+      }
+
+      // Sincronizar com o FormControl - valor inicial
+      if (this.control.value) {
+        this.quill.root.innerHTML = this.control.value;
+      }
+      
+      // Atualizar contador com valor inicial
+      this.updateCharCount();
+
+      // CORREÇÃO PRINCIPAL: Conectar eventos do Quill
+      this.quill.on('text-change', () => {
+        const content = this.quill.root.innerHTML;
+        
+        // Atualizar o FormControl
+        this.control.setValue(content);
+        
+        // Atualizar contador de caracteres
+        this.updateCharCount();
+        
+        // Emitir mudança
+        this.valueChange.emit(content);
+        
+        // Atualizar mensagens de erro
+        this.updateErrorMessage();
+        
+        // Forçar validação
+        this.control.updateValueAndValidity();
+      });
+
+      // Ouvir foco/blur
+      this.quill.on('selection-change', (range) => {
+        if (range) {
+          this.onFocus();
+        } else {
+          this.onBlur();
+        }
+      });
+
+      console.log('Quill editor initialized successfully');
+
     } catch (error) {
       console.error('Error initializing Quill editor:', error);
     }
-  }
-
-  private getValidFormats(): string[] {
-    // Se formats customizados foram fornecidos, filtra apenas os válidos
-    if (this.config.formats && Array.isArray(this.config.formats)) {
-      return this.config.formats.filter(format => 
-        this.validFormats.includes(format)
-      );
-    }
-
-    // Formats padrão válidos
-    return [
-      'bold', 'italic', 'underline', 'strike',
-      'blockquote', 'code-block',
-      'header', 'list',
-      'script', 'indent', 'direction',
-      'link', 'image', 'video',
-      'color', 'background',
-      'font', 'size', 'align'
-    ].filter(format => this.validFormats.includes(format));
   }
 
   private getToolbarOptions(): any {
@@ -241,15 +240,18 @@ export class RichTextDynamicComponent implements OnInit, AfterViewInit, OnDestro
 
   private updateCharCount(): void {
     if (this.control.value) {
-      this.charCount = this.stripHtml(this.control.value).length;
+      const text = this.stripHtml(this.control.value);
+      this.charCount = text.length;
     } else {
       this.charCount = 0;
     }
+    console.log('Char count updated:', this.charCount); // Para debug
   }
 
   private setupValueChanges(): void {
     this.control.valueChanges.subscribe(value => {
       this.valueChange.emit(value);
+      this.updateCharCount(); // Atualizar contador também nas mudanças do control
       this.updateErrorMessage();
     });
 
@@ -259,7 +261,7 @@ export class RichTextDynamicComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private updateErrorMessage(): void {
-    if (this.control.invalid && this.control.touched) {
+    if (this.control.invalid && (this.control.touched || this.control.dirty)) {
       const errors = this.control.errors;
       if (errors) {
         const firstErrorKey = Object.keys(errors)[0];
@@ -281,9 +283,9 @@ export class RichTextDynamicComponent implements OnInit, AfterViewInit, OnDestro
       case 'required':
         return 'Este campo é obrigatório';
       case 'minlength':
-        return `Mínimo de ${errorValue.requiredLength} caracteres necessários`;
+        return `Mínimo de ${errorValue.requiredLength} caracteres necessários (atual: ${errorValue.actualLength})`;
       case 'maxlength':
-        return `Máximo de ${errorValue.requiredLength} caracteres permitidos`;
+        return `Máximo de ${errorValue.requiredLength} caracteres permitidos (atual: ${errorValue.actualLength})`;
       default:
         return 'Campo inválido';
     }
@@ -308,6 +310,6 @@ export class RichTextDynamicComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   get isInvalid(): boolean {
-    return this.control.invalid && this.control.touched;
+    return this.control.invalid && (this.control.touched || this.control.dirty);
   }
 }
