@@ -7,5 +7,7 @@ export enum InputType {
     CPF = 'CPF',
     TEXT = 'TEXT',
     NUMBER = 'NUMBER',
-    TEXTAREA = 'TEXTAREA'
+    TEXTAREA = 'TEXTAREA',
+    AGE = 'AGE',
+    PASSWORD = 'PASSWORD'
   }

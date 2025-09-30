@@ -12,7 +12,6 @@ import { CheckboxDynamic } from '../../shared/components/checkbox-dynamic/checkb
 import { CheckboxConfig } from '../../interfaces/checkbox-config.interface';
 import { CheckboxLayout, CheckboxSelection } from '../../enuns/checkbox-types.enum';
 
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -21,7 +20,6 @@ import { CheckboxLayout, CheckboxSelection } from '../../enuns/checkbox-types.en
   styleUrls: ['./home.css']
 })
 export class Home {
-
 
   checkboxConfig: CheckboxConfig = {
     formControlName: 'checkboxSelection',
@@ -34,8 +32,6 @@ export class Home {
       { value: 'notifications', label: 'Enable notifications' }
     ]
   };
-
-
 
   // Formulário reativo para os inputs dinâmicos
   dynamicForm: FormGroup;
@@ -58,7 +54,7 @@ export class Home {
     publicProfile: false
   };
 
-  // Configurações para os inputs dinâmicos - ATUALIZADO
+  // Configurações para os inputs dinâmicos - ATUALIZADO com novos campos
   inputConfigs = {
     // Para a seção "Dynamic Inputs"
     dynamicFullName: {
@@ -111,7 +107,7 @@ export class Home {
       }
     } as InputConfig,
 
-    // NOVOS: Para a seção "Text Inputs" (substituindo os inputs originais)
+    // Para a seção "Text Inputs" (substituindo os inputs originais)
     originalFullName: {
       type: InputType.USER,
       formControlName: 'originalFullName',
@@ -135,6 +131,45 @@ export class Home {
         required: 'Email address is required',
         pattern: 'Please enter a valid email address'
       }
+    } as InputConfig,
+
+    // NOVOS: Para substituir os inputs originais de Number & Select
+    ageInput: {
+      type: InputType.NUMBER,
+      formControlName: 'ageInput',
+      label: 'Age',
+      required: false,
+      min: 0,
+      max: 120,
+      placeholder: 'Enter your age',
+      customErrorMessages: {
+        min: 'Age cannot be negative',
+        max: 'Age cannot be more than 120'
+      }
+    } as InputConfig,
+    countrySelect: {
+      type: InputType.TEXT, // Usando TEXT para select por enquanto
+      formControlName: 'countrySelect',
+      label: 'Country',
+      required: false,
+      placeholder: 'Select your country',
+      customIcon: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9v-9m0-9v9"/>
+        </svg>
+      `
+    } as InputConfig,
+    bioTextarea: {
+      type: InputType.TEXTAREA,
+      formControlName: 'bioTextarea',
+      label: 'Bio',
+      required: false,
+      rows: 4,
+      maxLength: 500,
+      placeholder: 'Tell us about yourself',
+      customErrorMessages: {
+        maxlength: 'Bio cannot exceed 500 characters'
+      }
     } as InputConfig
   };
 
@@ -151,11 +186,46 @@ export class Home {
       dynamicAge: [null, this.validatorsService.getDefaultValidators(InputType.NUMBER, this.inputConfigs.dynamicAge)],
       dynamicBio: ['', this.validatorsService.getDefaultValidators(InputType.TEXTAREA, this.inputConfigs.dynamicBio)],
       originalFullName: ['', this.validatorsService.getDefaultValidators(InputType.USER, this.inputConfigs.originalFullName)],
-      originalEmail: ['', this.validatorsService.getDefaultValidators(InputType.EMAIL, this.inputConfigs.originalEmail)]
+      originalEmail: ['', this.validatorsService.getDefaultValidators(InputType.EMAIL, this.inputConfigs.originalEmail)],
+      ageInput: [null, this.validatorsService.getDefaultValidators(InputType.NUMBER, this.inputConfigs.ageInput)],
+      countrySelect: ['', this.validatorsService.getDefaultValidators(InputType.TEXT, this.inputConfigs.countrySelect)],
+      bioTextarea: ['', this.validatorsService.getDefaultValidators(InputType.TEXTAREA, this.inputConfigs.bioTextarea)]
     });
   
     // Sincroniza o tema dark mode
     this.formData.darkMode = this.themeService.isDarkTheme();
+
+    // Sincroniza os valores do formulário reativo com o template-driven
+    this.setupFormSync();
+  }
+
+  // Método para sincronizar os formulários
+  private setupFormSync(): void {
+    // Sincroniza age
+    this.dynamicForm.get('ageInput')?.valueChanges.subscribe(value => {
+      this.formData.age = value;
+    });
+
+    // Sincroniza country
+    this.dynamicForm.get('countrySelect')?.valueChanges.subscribe(value => {
+      this.formData.country = value;
+    });
+
+    // Sincroniza bio
+    this.dynamicForm.get('bioTextarea')?.valueChanges.subscribe(value => {
+      this.formData.bio = value;
+    });
+
+    // Sincroniza valores iniciais
+    if (this.formData.age) {
+      this.dynamicForm.get('ageInput')?.setValue(this.formData.age);
+    }
+    if (this.formData.country) {
+      this.dynamicForm.get('countrySelect')?.setValue(this.formData.country);
+    }
+    if (this.formData.bio) {
+      this.dynamicForm.get('bioTextarea')?.setValue(this.formData.bio);
+    }
   }
 
   // Método auxiliar para obter o FormControl

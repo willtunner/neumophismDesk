@@ -41,8 +41,8 @@
       <span *ngIf="config.required !== false" class="required-asterisk">*</span>
     </label>
 
-    <!-- Ícone (sempre aparece) -->
-    <div class="input-icon" [innerHTML]="getIconSvg()"></div>
+    <!-- Ícone (aparece apenas se showImage for true) -->
+    <div *ngIf="showImage" class="input-icon" [innerHTML]="safeIconSvg"></div>
   </div>
 
   <!-- Mensagem de erro -->

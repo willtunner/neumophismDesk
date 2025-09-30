@@ -23,25 +23,29 @@
       <!-- Input Dinâmico - Nome -->
       <app-input-dynamic 
         [config]="inputConfigs.dynamicFullName"
-        [control]="getControl('dynamicFullName')">
+        [control]="getControl('dynamicFullName')"
+        [showImage]="true">
       </app-input-dynamic>
 
       <!-- Input Dinâmico - Email -->
       <app-input-dynamic 
         [config]="inputConfigs.dynamicEmail"
-        [control]="getControl('dynamicEmail')">
+        [control]="getControl('dynamicEmail')"
+        [showImage]="true">
       </app-input-dynamic>
 
       <!-- Input Dinâmico - Idade -->
       <app-input-dynamic 
         [config]="inputConfigs.dynamicAge"
-        [control]="getControl('dynamicAge')">
+        [control]="getControl('dynamicAge')"
+        [showImage]="true">
       </app-input-dynamic>
 
       <!-- Input Dinâmico - Bio -->
       <app-input-dynamic 
         [config]="inputConfigs.dynamicBio"
-        [control]="getControl('dynamicBio')">
+        [control]="getControl('dynamicBio')"
+        [showImage]="true">
       </app-input-dynamic>
 
       <button class="neu-button primary" (click)="submitDynamicForm()">
@@ -61,13 +65,15 @@
       <!-- Input Dinâmico - Full Name -->
       <app-input-dynamic 
         [config]="inputConfigs.originalFullName"
-        [control]="getControl('originalFullName')">
+        [control]="getControl('originalFullName')"
+        [showImage]="true">
       </app-input-dynamic>
 
       <!-- Input Dinâmico - Email -->
       <app-input-dynamic 
         [config]="inputConfigs.originalEmail"
-        [control]="getControl('originalEmail')">
+        [control]="getControl('originalEmail')"
+        [showImage]="true">
       </app-input-dynamic>
 
       <button class="neu-button primary" (click)="submitOriginalForm()">
@@ -84,81 +90,51 @@
     <div class="component-section neu-container">
       <h2>Number & Select</h2>
       
-      <div class="form-group">
-        <div class="input-group">
-          <input type="number" id="age" placeholder=" " [(ngModel)]="formData.age" min="0" max="120">
-          <label for="age">Age</label>
-          <div class="input-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-        </div>
-      </div>
+      <!-- Substituindo o input original por input-dynamic -->
+      <app-input-dynamic 
+        [config]="inputConfigs.ageInput"
+        [control]="getControl('ageInput')"
+        [showImage]="true">
+      </app-input-dynamic>
 
-      <div class="form-group">
-        <div class="input-group">
-          <select id="country" [(ngModel)]="formData.country">
-            <option value="">Select Country</option>
-            <option value="us">United States</option>
-            <option value="br">Brazil</option>
-            <option value="ca">Canada</option>
-            <option value="uk">United Kingdom</option>
-          </select>
-          <label for="country">Country</label>
-          <div class="input-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9v-9m0-9v9"/>
-            </svg>
-          </div>
-        </div>
-      </div>
+      <!-- Substituindo o select original por input-dynamic -->
+      <app-input-dynamic 
+        [config]="inputConfigs.countrySelect"
+        [control]="getControl('countrySelect')"
+        [showImage]="true">
+      </app-input-dynamic>
     </div>
 
     <!-- SEÇÃO ORIGINAL: Textarea (mantida) -->
     <div class="component-section neu-container">
       <h2>Textarea</h2>
       
-      <div class="form-group">
-        <div class="input-group textarea-group">
-          <textarea id="bio" placeholder=" " rows="4" [(ngModel)]="formData.bio"></textarea>
-          <label for="bio">Bio</label>
-          <div class="input-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14,2 14,8 20,8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10,9 9,9 8,9"/>
-            </svg>
-          </div>
-        </div>
-      </div>
+      <!-- Substituindo o textarea original por input-dynamic -->
+      <app-input-dynamic 
+        [config]="inputConfigs.bioTextarea"
+        [control]="getControl('bioTextarea')"
+        [showImage]="true">
+      </app-input-dynamic>
     </div>
 
-    <!-- Resto das seções mantidas intactas... -->
     <!-- Checkboxes, Radio Buttons, Buttons, Slider, Toggle Switch -->
     <div class="component-section neu-container">
-  <h2>Checkboxes</h2>
+      <h2>Checkboxes</h2>
 
-  <app-checkbox-dynamic
-    [config]="checkboxConfig"
-    [control]="getControl('checkboxSelection')">
-  </app-checkbox-dynamic>
+      <app-checkbox-dynamic
+        [config]="checkboxConfig"
+        [control]="getControl('checkboxSelection')">
+      </app-checkbox-dynamic>
 
-  <button class="neu-button primary" (click)="submitCheckboxForm()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-      <polyline points="17 21 17 13 7 13 7 21"/>
-      <polyline points="7 3 7 8 15 8"/>
-    </svg>
-    Save Checkbox Form
-  </button>
-</div>
-
+      <button class="neu-button primary" (click)="submitCheckboxForm()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Save Checkbox Form
+      </button>
+    </div>
 
     <div class="component-section neu-container">
       <h2>Radio Buttons</h2>

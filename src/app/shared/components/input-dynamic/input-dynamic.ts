@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormControl, Validators, AbstractControl } from '@
 import { InputConfig } from '../../../interfaces/input-config.interface';
 import { InputType } from '../../../enuns/input-types.enum';
 import { InputValidatorsService } from '../../../services/input-validators';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-input-dynamic',
@@ -17,13 +18,15 @@ export class InputDynamicComponent implements OnInit {
   @Input() config!: InputConfig;
   @Input() control!: FormControl;
   @Input() isPasswordVisible: boolean = false;
+  @Input() showImage: boolean = true; // Nova propriedade para controlar exibição do ícone
   @Output() valueChange = new EventEmitter<any>();
 
   inputType: string = 'text';
   errorMessage: string = '';
   isFocused: boolean = false;
+  safeIconSvg: SafeHtml = '';
 
-  // Ícones SVG para cada tipo - CORRIGIDO com TEXTAREA
+  // Ícones SVG para cada tipo
   private readonly icons: { [key in InputType]: string } = {
     [InputType.USER]: `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -47,6 +50,14 @@ export class InputDynamicComponent implements OnInit {
       </svg>
     `,
     [InputType.NUMBER]: `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    `,
+    [InputType.AGE]: `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
         <circle cx="9" cy="7" r="4"/>
@@ -80,15 +91,22 @@ export class InputDynamicComponent implements OnInit {
         <line x1="16" y1="17" x2="8" y2="17"/>
         <polyline points="10,9 9,9 8,9"/>
       </svg>
+    `,
+    [InputType.PASSWORD]: `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
     `
   };
 
-  constructor(private validatorsService: InputValidatorsService) {}
+  constructor(private validatorsService: InputValidatorsService, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.setupInputType();
     this.setupValidators();
     this.setupValueChanges();
+    this.updateIcon();
   }
 
   ngOnChanges(): void {
@@ -96,20 +114,26 @@ export class InputDynamicComponent implements OnInit {
     if (this.config.formControlName === 'password') {
       this.inputType = this.isPasswordVisible ? 'text' : 'password';
     }
+    this.updateIcon();
   }
-  
+
+  private updateIcon(): void {
+    const iconSvg = this.getIconSvg();
+    this.safeIconSvg = this.sanitizer.bypassSecurityTrustHtml(iconSvg);
+  }
 
   private setupInputType(): void {
     if (this.config.formControlName === 'password') {
       this.inputType = this.isPasswordVisible ? 'text' : 'password';
       return;
     }
-  
+
     switch (this.config.type) {
       case InputType.EMAIL:
         this.inputType = 'email';
         break;
       case InputType.NUMBER:
+      case InputType.AGE:
         this.inputType = 'number';
         break;
       case InputType.TEXTAREA:
@@ -125,7 +149,7 @@ export class InputDynamicComponent implements OnInit {
       console.warn('FormControl não fornecido para o input dinâmico');
       return;
     }
-  
+
     // Usa o serviço para obter as validações padrão
     const defaultValidators = this.validatorsService.getDefaultValidators(this.config.type, this.config);
     const customValidators = this.config.validators || [];
@@ -181,13 +205,16 @@ export class InputDynamicComponent implements OnInit {
       return this.getMaterialIcon(this.config.iconName);
     }
     
-    // Retorna ícone padrão baseado no tipo - CORRIGIDO
+    // Para campos de password, usa o ícone específico
+    if (this.config.formControlName === 'password') {
+      return this.icons[InputType.PASSWORD];
+    }
+    
+    // Retorna ícone padrão baseado no tipo
     return this.icons[this.config.type] || this.icons[InputType.TEXT];
   }
 
   private getMaterialIcon(iconName: string): string {
-    // Aqui você pode mapear nomes de ícones do Material para SVGs
-    // Por enquanto, retornamos um ícone genérico
     return `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="10"/>

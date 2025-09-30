@@ -1,108 +1,118 @@
 /* input-dynamic.component.css */
 .form-group {
-    margin-bottom: 25px;
-    position: relative;
-  }
-  
-  .input-group {
-    position: relative;
-    background: var(--input-bg);
-    border-radius: 15px;
-    box-shadow: 
-      inset 8px 8px 16px var(--shadow-light),
-      inset -8px -8px 16px var(--shadow-dark);
-    transition: all 0.3s ease;
-  }
-  
-  .input-group:focus-within,
-  .input-group.focused {
-    box-shadow: 
-      inset 4px 4px 8px var(--shadow-light),
-      inset -4px -4px 8px var(--shadow-dark);
-  }
-  
-  .input-group.error {
-    box-shadow: 
-      inset 8px 8px 16px rgba(255, 59, 92, 0.2),
-      inset -8px -8px 16px var(--shadow-dark),
-      0 0 0 2px var(--error-color) !important;
-  }
-  
-  .neu-input,
-  .neu-textarea {
-    width: 100%;
-    background: transparent;
-    border: none;
-    padding: 20px 24px;
-    padding-left: 55px;
-    color: var(--text-primary);
-    font-size: 16px;
-    font-weight: 500;
-    outline: none;
-    transition: all 0.3s ease;
-    font-family: inherit;
-    border-radius: 15px;
-    resize: vertical;
-  }
-  
-  .neu-textarea {
-    min-height: 120px;
-  }
-  
-  .neu-input::placeholder,
-  .neu-textarea::placeholder {
-    color: transparent;
-  }
-  
-  .input-group label {
-    position: absolute;
-    left: 55px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-secondary);
-    font-size: 16px;
-    font-weight: 400;
-    pointer-events: none;
-    transition: all 0.3s ease;
-  }
-  
-  .input-group.has-value label,
-  .input-group.focused label {
-    top: 8px;
-    font-size: 12px;
-    color: var(--text-muted);
-    transform: translateY(0);
-  }
-  
-  .required-asterisk {
-    color: var(--error-color);
-  }
-  
-  .input-icon {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    color: var(--text-secondary);
-    transition: all 0.3s ease;
-  }
+  margin-bottom: 25px;
+  position: relative;
+}
 
-  /* === Ajuste visual para TEXTAREA com ícone === */
+.input-group {
+  position: relative;
+  background: var(--input-bg);
+  border-radius: 15px;
+  box-shadow: 
+    inset 8px 8px 16px var(--shadow-light),
+    inset -8px -8px 16px var(--shadow-dark);
+  transition: all 0.3s ease;
+}
+
+.input-group:focus-within,
+.input-group.focused {
+  box-shadow: 
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+}
+
+.input-group.error {
+  box-shadow: 
+    inset 8px 8px 16px rgba(255, 59, 92, 0.2),
+    inset -8px -8px 16px var(--shadow-dark),
+    0 0 0 2px var(--error-color) !important;
+}
+
+/* Ajuste de padding quando não há ícone */
+.input-group:not(:has(.input-icon)) .neu-input,
+.input-group:not(:has(.input-icon)) .neu-textarea {
+  padding-left: 24px;
+}
+
+.input-group:not(:has(.input-icon)) label {
+  left: 24px;
+}
+
+.neu-input,
+.neu-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 20px 24px;
+  padding-left: 55px;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  border-radius: 15px;
+  resize: vertical;
+}
+
+.neu-textarea {
+  min-height: 120px;
+}
+
+.neu-input::placeholder,
+.neu-textarea::placeholder {
+  color: transparent;
+}
+
+.input-group label {
+  position: absolute;
+  left: 55px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 400;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.input-group.has-value label,
+.input-group.focused label {
+  top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  transform: translateY(0);
+}
+
+.required-asterisk {
+  color: var(--error-color);
+}
+
+.input-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+/* === Ajuste visual para TEXTAREA com ícone === */
 .input-group.textarea-group .neu-textarea {
-  padding-top: 35px;    /* espaço para label + ícone */
-  padding-left: 55px;   /* mantém alinhamento do ícone */
+  padding-top: 35px;
+  padding-left: 55px;
   resize: vertical;
 }
 
 .input-group.textarea-group .input-icon {
-  top: 25px;            /* posição do ícone no textarea */
+  top: 25px;
   transform: none;
 }
 
 .input-group.textarea-group label {
-  top: 22px;            /* label começa alinhada ao ícone */
+  top: 22px;
 }
 
 .input-group.textarea-group.has-value label,
@@ -112,71 +122,87 @@
   color: var(--text-muted);
 }
 
-  
-  .input-icon svg {
-    width: 100%;
-    height: 100%;
+.input-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.input-group:focus-within .input-icon,
+.input-group.focused .input-icon {
+  color: var(--text-muted);
+}
+
+.error-message {
+  color: var(--error-color) !important;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 8px;
+  margin-left: 20px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.error-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .neu-input,
+  .neu-textarea {
+    padding: 18px 20px;
+    padding-left: 50px;
+    font-size: 15px;
   }
   
-  .input-group:focus-within .input-icon,
-  .input-group.focused .input-icon {
-    color: var(--text-muted);
+  .input-group:not(:has(.input-icon)) .neu-input,
+  .input-group:not(:has(.input-icon)) .neu-textarea {
+    padding-left: 20px;
   }
   
-  .error-message {
-    color: var(--error-color) !important;
-    font-size: 12px;
-    font-weight: 500;
-    margin-top: 8px;
-    margin-left: 20px;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
+  .input-group label {
+    left: 50px;
+    font-size: 15px;
   }
   
-  
-  .error-message.show {
-    opacity: 1;
-    transform: translateY(0);
+  .input-group:not(:has(.input-icon)) label {
+    left: 20px;
   }
   
-  /* Responsive */
-  @media (max-width: 768px) {
-    .neu-input,
-    .neu-textarea {
-      padding: 18px 20px;
-      padding-left: 50px;
-      font-size: 15px;
-    }
-    
-    .input-group label {
-      left: 50px;
-      font-size: 15px;
-    }
-    
-    .input-icon {
-      left: 18px;
-      width: 18px;
-      height: 18px;
-    }
+  .input-icon {
+    left: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .neu-input,
+  .neu-textarea {
+    padding: 16px 18px;
+    padding-left: 45px;
+    font-size: 14px;
   }
   
-  @media (max-width: 480px) {
-    .neu-input,
-    .neu-textarea {
-      padding: 16px 18px;
-      padding-left: 45px;
-      font-size: 14px;
-    }
-    
-    .input-group label {
-      left: 45px;
-      font-size: 14px;
-    }
-    
-    .input-icon {
-      left: 15px;
-      width: 16px;
-      height: 16px;
-    }
+  .input-group:not(:has(.input-icon)) .neu-input,
+  .input-group:not(:has(.input-icon)) .neu-textarea {
+    padding-left: 18px;
   }
+  
+  .input-group label {
+    left: 45px;
+    font-size: 14px;
+  }
+  
+  .input-group:not(:has(.input-icon)) label {
+    left: 18px;
+  }
+  
+  .input-icon {
+    left: 15px;
+    width: 16px;
+    height: 16px;
+  }
+}
