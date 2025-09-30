@@ -1,14 +1,24 @@
+// interfaces/rich-text-config.interface.ts
 export interface RichTextConfig {
-  formControlName: string;
-  label: string;
+  type: 'rich-text';
+  placeholder: string;
   required?: boolean;
-  placeholder?: string;
+  disabled?: boolean;
+  minHeight?: string;
+  maxHeight?: string;
+  
+  // Propriedades adicionais que você estava usando
+  formControlName?: string;
+  label?: string;
   minLength?: number;
   maxLength?: number;
-  customErrorMessages?: { [key: string]: string };
-  toolbar?: 'full' | 'basic' | 'minimal' | any[];
+  toolbar?: 'basic' | 'full';
   theme?: 'snow' | 'bubble';
   height?: number;
-  // Remover formats ou usar apenas os válidos
-  formats?: string[]; // Opcional - se usar, apenas formats válidos
+  customErrorMessages?: {
+    required?: string;
+    minlength?: string;
+    maxlength?: string;
+    pattern?: string;
+  };
 }

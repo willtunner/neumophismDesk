@@ -67,7 +67,7 @@
 /* Container do Quill */
 .quill-wrapper {
   margin-left: 35px; /* Espaço para o ícone */
-  margin-top: 15px; /* Espaço para o label */
+  margin-top: 30px; /* Espaço para o label */
 }
 
 /* Estilos do Quill Editor */

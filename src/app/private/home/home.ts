@@ -183,9 +183,9 @@ export class Home {
   };
 
   // NOVO: Configurações para Rich Text Editors
-  // NOVO: Configurações para Rich Text Editors
 richTextConfigs = {
   basicEditor: {
+    type: 'rich-text',
     formControlName: 'basicEditor',
     label: 'Basic Description',
     required: true,
@@ -195,14 +195,15 @@ richTextConfigs = {
     toolbar: 'basic',
     theme: 'snow',
     height: 200,
+    minHeight: '200px',
     customErrorMessages: {
       required: 'Description is required',
       minlength: 'Description must be at least 10 characters',
       maxlength: 'Description cannot exceed 500 characters'
     }
-    // Remover a propriedade formats ou usar apenas válidos
   } as RichTextConfig,
   advancedEditor: {
+    type: 'rich-text',
     formControlName: 'advancedEditor',
     label: 'Advanced Content',
     required: false,
@@ -212,11 +213,11 @@ richTextConfigs = {
     toolbar: 'full',
     theme: 'snow',
     height: 300,
+    minHeight: '300px',
     customErrorMessages: {
       minlength: 'Content must be at least 20 characters',
       maxlength: 'Content cannot exceed 2000 characters'
     }
-    // Remover a propriedade formats ou usar apenas válidos
   } as RichTextConfig
 };
 
