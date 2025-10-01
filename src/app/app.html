@@ -1,9 +1,12 @@
 <!-- app.html -->
 <div class="app-container">
-  <app-header></app-header>
-  <app-global-menu></app-global-menu>
+  <!-- Mostra header e menu apenas se NÃO estiver na rota de login -->
+  @if (!isLoginRoute()) {
+    <app-header></app-header>
+    <app-global-menu></app-global-menu>
+  }
   
-  <div class="app-content">
+  <div class="app-content" [class.hidden-header]="isLoginRoute()">
     <router-outlet></router-outlet>
   </div>
 </div>

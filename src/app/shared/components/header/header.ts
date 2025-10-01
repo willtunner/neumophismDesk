@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GlobalMenuService } from '../../../services/global-menu';
 import { Subscription } from 'rxjs';
@@ -16,9 +15,8 @@ export class Header implements OnInit, OnDestroy {
   isMenuOpen = false;
 
   constructor(
-    private router: Router, 
     private globalMenuService: GlobalMenuService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Escuta as mudanças do menu
@@ -39,7 +37,4 @@ export class Header implements OnInit, OnDestroy {
     }
   }
 
-  logout() {
-    this.router.navigate(['/login']);
-  }
 }

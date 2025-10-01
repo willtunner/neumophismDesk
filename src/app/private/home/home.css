@@ -3,6 +3,7 @@
   background: var(--bg-primary);
   padding: 20px;
   transition: all 0.3s ease;
+  margin-top: 120px;
 }
 
 .components-grid {

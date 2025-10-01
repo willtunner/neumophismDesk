@@ -6,7 +6,6 @@
 
 /* Espaço para o header fixo */
 .app-content {
-  padding-top: 120px; /* Altura do header + margem */
   min-height: calc(100vh - 120px);
 }
 

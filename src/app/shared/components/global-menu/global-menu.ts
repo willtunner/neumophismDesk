@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { GlobalMenuService } from '../../../services/global-menu';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { ThemeService } from '../../../services/theme';
 
 @Component({
   selector: 'app-global-menu',
@@ -17,10 +18,12 @@ export class GlobalMenuComponent implements OnInit, OnDestroy {
   currentRoute: string = '';
   private menuSubscription!: Subscription;
   private routerSubscription!: Subscription;
+  darkMode: boolean = false;
 
   constructor(
     private router: Router, 
-    private globalMenuService: GlobalMenuService
+    private globalMenuService: GlobalMenuService,
+    private themeService: ThemeService,
   ) {}
 
   ngOnInit() {
@@ -81,5 +84,14 @@ export class GlobalMenuComponent implements OnInit, OnDestroy {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleTheme();
+    this.darkMode = this.themeService.isDarkTheme();
+  }
+
+  logout() {
+    this.router.navigate(['/login']);
   }
 }

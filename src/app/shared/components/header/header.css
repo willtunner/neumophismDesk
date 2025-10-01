@@ -7,14 +7,14 @@
   min-width: 1200px; /* Largura mínima */
   max-width: 90%; /* Largura máxima (90% da tela) */
   height: auto; /* Altura automática */
-  padding: 30px; /* Mantém o padding original */
+  padding: 15px 30px; /* REDUZIDO: 15px vertical, 30px horizontal */
   background: var(--bg-primary);
-  border-radius: 25px; /* Bordas arredondadas */
+  border-radius: 20px; /* REDUZIDO: Bordas ligeiramente menos arredondadas */
   z-index: 1000; /* Acima de tudo */
   box-shadow: 
-    20px 20px 60px var(--shadow-light),
-    -20px -20px 60px var(--shadow-dark); /* Sombra neumórfica original */
-  margin-bottom: 30px;
+    15px 15px 40px var(--shadow-light), /* REDUZIDO: Sombras mais suaves */
+    -15px -15px 40px var(--shadow-dark);
+  margin-bottom: 20px; /* REDUZIDO */
 }
 
 .header-content {
@@ -22,35 +22,42 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 15px; /* REDUZIDO */
+  min-height: 40px; /* ALTURA MÍNIMA REDUZIDA */
 }
 
 .header-content .header-text {
   flex: 1;
+  min-height: 40px; /* ALTURA MÍNIMA PARA ALINHAMENTO */
+  display: flex;
+  align-items: center;
 }
 
 .header-content .header-text h1 {
   color: var(--text-primary);
-  font-size: 2.5rem;
+  font-size: 2rem; /* REDUZIDO: De 2.5rem para 2rem */
   margin: 0;
+  line-height: 1.2; /* MELHOR CONTROLE DE ALTURA */
 }
 
 .header-content .header-text p {
   color: var(--text-secondary);
-  font-size: 1.1rem;
+  font-size: 1rem; /* REDUZIDO: De 1.1rem para 1rem */
   margin: 0;
 }
 
 .menu-btn {
   width: auto;
-  padding: 10px 20px;
+  padding: 8px 16px; /* REDUZIDO: De 10px 20px para 8px 16px */
   display: flex;
   align-items: center;
   gap: 6px;
   margin: 0;
   background: var(--bg-primary);
   color: var(--text-primary);
-  box-shadow: 8px 8px 16px var(--shadow-light), -8px -8px 16px var(--shadow-dark);
+  box-shadow: 6px 6px 12px var(--shadow-light), -6px -6px 12px var(--shadow-dark); /* REDUZIDO */
+  font-size: 14px; /* TEXTO MENOR */
+  min-height: 36px; /* ALTURA MÍNIMA CONSISTENTE */
 }
 
 .menu-btn svg {
@@ -60,14 +67,16 @@
 
 .logout-btn {
   width: auto;
-  padding: 10px 20px;
+  padding: 8px 16px; /* REDUZIDO: Mesmo padrão do menu-btn */
   display: flex;
   align-items: center;
   gap: 6px;
   margin: 0;
   background: var(--bg-primary);
   color: var(--text-primary);
-  box-shadow: 8px 8px 16px var(--shadow-light), -8px -8px 16px var(--shadow-dark);
+  box-shadow: 6px 6px 12px var(--shadow-light), -6px -6px 12px var(--shadow-dark); /* REDUZIDO */
+  font-size: 14px; /* TEXTO MENOR */
+  min-height: 36px; /* ALTURA MÍNIMA CONSISTENTE */
 }
 
 .logout-btn svg {
@@ -75,96 +84,150 @@
   height: 14px;
 }
 
-/* IMPORTANTE: Espaço para o header fixo */
+/* IMPORTANTE: Espaço para o header fixo - REDUZIDO */
 .body-with-fixed-header {
-  padding-top: 160px; /* Altura aproximada do header + margens */
+  padding-top: 100px; /* REDUZIDO SIGNIFICATIVAMENTE: De 160px para 100px */
 }
 
-/* Responsividade */
+/* ========== RESPONSIVIDADE ========== */
+
+/* Tablet: 768px - 1024px */
+@media (max-width: 1024px) {
+  .header-container {
+    min-width: 900px; /* REDUZIDO: Para tablets maiores */
+    max-width: 92%;
+    padding: 12px 25px; /* MAIS COMPACTO */
+  }
+  
+  .header-content .header-text h1 {
+    font-size: 1.8rem; /* TEXTO MENOR */
+  }
+}
+
+/* Tablet: 768px */
 @media (max-width: 768px) {
   .header-container {
     top: 15px;
-    padding: 25px 20px;
+    padding: 12px 20px; /* MAIS COMPACTO */
     min-width: 300px;
     max-width: 95%;
+    border-radius: 18px; /* BORDAS MAIS SUAVES */
   }
 
   .header-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 15px;
+    flex-direction: row; /* MANTÉM EM LINHA EM TABLET */
+    text-align: left;
+    gap: 12px;
+    min-height: 35px; /* MAIS BAIXO */
+  }
+
+  .header-content .header-text {
+    min-height: 35px;
   }
 
   .header-content .header-text h1 {
-    font-size: 2rem;
+    font-size: 1.6rem; /* MENOR AINDA */
   }
 
   .header-content .header-text p {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .menu-btn,
   .logout-btn {
-    width: 100%;
+    width: auto; /* MANTÉM LARGURA AUTOMÁTICA */
     justify-content: center;
-    padding: 10px 18px;
-  }
-
-  .menu-btn svg,
-  .logout-btn svg {
-    width: 12px;
-    height: 12px;
-  }
-
-  .body-with-fixed-header {
-    padding-top: 180px; /* Mais espaço em mobile devido ao layout em coluna */
-  }
-}
-
-@media (max-width: 480px) {
-  .header-container {
-    top: 10px;
-    padding: 20px 15px;
-    min-width: 280px;
-  }
-
-  .header-content .header-text h1 {
-    font-size: 1.7rem;
-  }
-
-  .menu-btn,
-  .logout-btn {
-    padding: 8px 16px;
-    font-size: 14px;
-  }
-
-  .menu-btn svg,
-  .logout-btn svg {
-    width: 12px;
-    height: 12px;
-  }
-
-  .body-with-fixed-header {
-    padding-top: 170px;
-  }
-}
-
-@media (max-width: 360px) {
-  .header-container {
-    min-width: 250px;
-  }
-
-  .header-content .header-text h1 {
-    font-size: 1.5rem;
-  }
-
-  .menu-btn,
-  .logout-btn {
-    padding: 8px 14px;
+    padding: 7px 14px; /* MAIS COMPACTO */
+    min-height: 32px;
     font-size: 13px;
   }
 
+  .menu-btn svg,
+  .logout-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+
   .body-with-fixed-header {
-    padding-top: 160px;
+    padding-top: 90px; /* MENOS ESPAÇO */
+  }
+}
+
+/* Mobile: 480px */
+@media (max-width: 480px) {
+  .header-container {
+    top: 10px;
+    padding: 10px 15px; /* MÁXIMA COMPACIDADE */
+    min-width: 280px;
+    border-radius: 16px;
+  }
+
+  .header-content {
+    gap: 10px;
+    min-height: 30px; /* MÍNIMO POSSÍVEL */
+  }
+
+  .header-content .header-text {
+    min-height: 30px;
+  }
+
+  .header-content .header-text h1 {
+    font-size: 1.4rem; /* COMPACTO */
+    line-height: 1.1;
+  }
+
+  .menu-btn,
+  .logout-btn {
+    padding: 6px 12px; /* MÁXIMA COMPACIDADE */
+    min-height: 30px;
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .menu-btn svg,
+  .logout-btn svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .body-with-fixed-header {
+    padding-top: 80px; /* MÍNIMO NECESSÁRIO */
+  }
+}
+
+/* Mobile Pequeno: 360px */
+@media (max-width: 360px) {
+  .header-container {
+    min-width: 250px;
+    padding: 8px 12px; /* ULTRA COMPACTO */
+  }
+
+  .header-content .header-text h1 {
+    font-size: 1.3rem; /* MÍNIMO LEGÍVEL */
+  }
+
+  .menu-btn,
+  .logout-btn {
+    padding: 5px 10px; /* ULTRA COMPACTO */
+    min-height: 28px;
+    font-size: 11px;
+  }
+
+  .menu-btn svg,
+  .logout-btn svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .body-with-fixed-header {
+    padding-top: 70px; /* ABSOLUTO MÍNIMO */
+  }
+}
+
+/* Para telas muito grandes (opcional) */
+@media (min-width: 1600px) {
+  .header-container {
+    min-width: 1400px; /* LARGURA MÁXIMA EM TELAS GRANDES */
+    max-width: 80%; /* MAIS LARGURA DISPONÍVEL */
   }
 }
