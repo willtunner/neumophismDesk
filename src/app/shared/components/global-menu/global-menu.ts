@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { GlobalMenuService } from '../../../services/global-menu';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-global-menu',
@@ -13,7 +14,9 @@ import { Subscription } from 'rxjs';
 })
 export class GlobalMenuComponent implements OnInit, OnDestroy {
   isMenuOpen = false;
+  currentRoute: string = '';
   private menuSubscription!: Subscription;
+  private routerSubscription!: Subscription;
 
   constructor(
     private router: Router, 
@@ -21,11 +24,24 @@ export class GlobalMenuComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // Escuta as mudanças do estado do menu
     this.menuSubscription = this.globalMenuService.isMenuOpen$.subscribe(
       isOpen => {
         this.isMenuOpen = isOpen;
       }
     );
+
+    // Escuta as mudanças de rota
+    this.routerSubscription = this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe((event: any) => {
+        this.currentRoute = event.urlAfterRedirects || event.url;
+      });
+
+    // Define a rota inicial
+    this.currentRoute = this.router.url;
   }
 
   toggleMenu() {
@@ -41,10 +57,14 @@ export class GlobalMenuComponent implements OnInit, OnDestroy {
     this.closeMenu();
   }
 
-  // CORREÇÃO FINAL - Método mais type-safe
+  // Verifica se a rota está ativa
+  isActive(route: string): boolean {
+    return this.currentRoute === `/${route}` || 
+           this.currentRoute.startsWith(`/${route}/`);
+  }
+
   @HostListener('document:keydown', ['$event'])
   handleKeyDown(event: Event) {
-    // Verifica se é um KeyboardEvent e se a tecla é Escape
     if (event instanceof KeyboardEvent && event.key === 'Escape' && this.isMenuOpen) {
       this.closeMenu();
     }
@@ -57,6 +77,9 @@ export class GlobalMenuComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.menuSubscription) {
       this.menuSubscription.unsubscribe();
+    }
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
     }
   }
 }
