@@ -175,6 +175,7 @@
   min-height: 120px;
   line-height: 1.5;
   color: var(--text-primary);
+  max-width: 690px;
 }
 
 ::ng-deep .quill-editor .ql-editor.ql-blank::before {

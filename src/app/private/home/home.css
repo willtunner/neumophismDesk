@@ -51,25 +51,12 @@
 
 .components-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 30px;
   margin-bottom: 30px;
-}
-
-.component-section {
-  padding: 30px;
-  background: var(--bg-primary);
-  border-radius: 25px;
-  box-shadow:
-    20px 20px 60px var(--shadow-light),
-    -20px -20px 60px var(--shadow-dark);
-}
-
-.component-section h2 {
-  color: var(--text-primary);
-  font-size: 1.5rem;
-  margin-bottom: 25px;
-  font-weight: 600;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Form Groups */
@@ -220,7 +207,6 @@
   transition: all 0.3s ease;
 }
 
-/* CORREÇÃO PRINCIPAL - Seletor CSS funcionando */
 .checkbox-label input[type="checkbox"]:checked+.neu-checkbox {
   box-shadow:
     inset 2px 2px 5px var(--shadow-light),
@@ -491,6 +477,9 @@
   box-shadow:
     20px 20px 60px var(--shadow-light),
     -20px -20px 60px var(--shadow-dark);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .data-preview h2 {
@@ -551,14 +540,66 @@
   }
 }
 
-/* Restante do CSS responsivo permanece igual... */
-@media (max-width: 1200px) {
-  .components-grid {
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 25px;
-  }
+/* Estilos adicionais para o componente dinâmico */
+.preview-section {
+  margin-bottom: 20px;
 }
 
+.preview-section h3 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.preview-section pre {
+  background: var(--input-bg);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  color: var(--text-primary);
+  font-size: 13px;
+  overflow-x: auto;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Garantir que os inputs dinâmicos tenham o mesmo estilo */
+app-input-dynamic {
+  display: block;
+  width: 100%;
+}
+
+/* Estilos para o preview do rich text */
+.rich-text-preview {
+  background: var(--input-bg);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.rich-text-preview .preview-content h4 {
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.rich-text-preview .preview-content div {
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.rich-text-preview .preview-content:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
   .home-container {
     padding: 15px;
@@ -587,15 +628,7 @@
     grid-template-columns: 1fr;
     gap: 20px;
     margin-bottom: 20px;
-  }
-
-  .component-section {
-    padding: 25px 20px;
-
-    h2 {
-      font-size: 1.3rem;
-      margin-bottom: 20px;
-    }
+    max-width: 100%;
   }
 
   .input-group input,
@@ -661,6 +694,21 @@
     width: 100%;
     justify-content: center;
   }
+
+  .preview-section h3 {
+    font-size: 0.9rem;
+  }
+
+  .preview-section pre {
+    padding: 12px;
+    font-size: 12px;
+    max-height: 150px;
+  }
+
+  .rich-text-preview {
+    padding: 15px;
+    max-height: 250px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -673,15 +721,6 @@
 
     .header-content h1 {
       font-size: 1.7rem;
-    }
-  }
-
-  .component-section {
-    padding: 20px 15px;
-    border-radius: 20px;
-
-    h2 {
-      font-size: 1.2rem;
     }
   }
 
@@ -743,15 +782,16 @@
       border-radius: 12px;
     }
   }
+
+  .rich-text-preview {
+    padding: 12px;
+    max-height: 200px;
+  }
 }
 
 @media (max-width: 360px) {
   .components-grid {
     gap: 15px;
-  }
-
-  .component-section {
-    padding: 18px 12px;
   }
 
   .home-header .header-content h1 {
@@ -767,93 +807,5 @@
 
   .input-group label {
     left: 42px;
-  }
-}
-
-
-/* Estilos adicionais para o componente dinâmico */
-.preview-section {
-  margin-bottom: 20px;
-}
-
-.preview-section h3 {
-  color: var(--text-primary);
-  font-size: 1rem;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-.preview-section pre {
-  background: var(--input-bg);
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow:
-    inset 4px 4px 8px var(--shadow-light),
-    inset -4px -4px 8px var(--shadow-dark);
-  color: var(--text-primary);
-  font-size: 13px;
-  overflow-x: auto;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-/* Garantir que os inputs dinâmicos tenham o mesmo estilo */
-app-input-dynamic {
-  display: block;
-  width: 100%;
-}
-
-/* Responsividade para a nova seção */
-@media (max-width: 768px) {
-  .preview-section h3 {
-    font-size: 0.9rem;
-  }
-  
-  .preview-section pre {
-    padding: 12px;
-    font-size: 12px;
-    max-height: 150px;
-  }
-}
-
-
-/* Estilos para o preview do rich text */
-.rich-text-preview {
-  background: var(--input-bg);
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 10px;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.rich-text-preview .preview-content h4 {
-  color: var(--text-primary);
-  margin-bottom: 10px;
-  font-size: 14px;
-}
-
-.rich-text-preview .preview-content div {
-  color: var(--text-primary);
-  line-height: 1.5;
-  margin-bottom: 15px;
-}
-
-.rich-text-preview .preview-content:last-child {
-  margin-bottom: 0;
-}
-
-/* Ajustes responsivos para rich text */
-@media (max-width: 768px) {
-  .rich-text-preview {
-    padding: 15px;
-    max-height: 250px;
-  }
-}
-
-@media (max-width: 480px) {
-  .rich-text-preview {
-    padding: 12px;
-    max-height: 200px;
   }
 }
