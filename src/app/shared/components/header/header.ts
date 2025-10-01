@@ -12,7 +12,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./header.css']
 })
 export class Header implements OnInit, OnDestroy {
-  @Output() logout = new EventEmitter<void>();
   private menuSubscription!: Subscription;
   isMenuOpen = false;
 
@@ -38,5 +37,9 @@ export class Header implements OnInit, OnDestroy {
     if (this.menuSubscription) {
       this.menuSubscription.unsubscribe();
     }
+  }
+
+  logout() {
+    this.router.navigate(['/login']);
   }
 }

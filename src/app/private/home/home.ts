@@ -26,9 +26,7 @@ import { GlobalMenuService } from '../../services/global-menu';
     ReactiveFormsModule, 
     InputDynamicComponent, 
     CheckboxDynamic,
-    RichTextDynamicComponent,
-    Header,
-    GlobalMenuComponent
+    RichTextDynamicComponent
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
@@ -400,9 +398,7 @@ richTextConfigs = {
     }
   }
 
-  logout() {
-    this.router.navigate(['/login']);
-  }
+  
 
   submitCheckboxForm() {
     console.log('Selected options:', this.dynamicForm.value.checkboxSelection);
