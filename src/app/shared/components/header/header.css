@@ -1,8 +1,20 @@
 .header-container {
+  position: fixed; /* Fica fixo no topo */
+  top: 20px; /* Margem do topo */
+  left: 50%; /* Centraliza horizontalmente */
+  transform: translateX(-50%); /* Ajuste para centralizar perfeitamente */
+  width: auto; /* Largura automática baseada no conteúdo */
+  min-width: 1200px; /* Largura mínima */
+  max-width: 90%; /* Largura máxima (90% da tela) */
+  height: auto; /* Altura automática */
+  padding: 30px; /* Mantém o padding original */
+  background: var(--bg-primary);
+  border-radius: 25px; /* Bordas arredondadas */
+  z-index: 1000; /* Acima de tudo */
+  box-shadow: 
+    20px 20px 60px var(--shadow-light),
+    -20px -20px 60px var(--shadow-dark); /* Sombra neumórfica original */
   margin-bottom: 30px;
-  padding: 30px;
-  position: relative;
-  z-index: 10;
 }
 
 .header-content {
@@ -63,11 +75,18 @@
   height: 14px;
 }
 
+/* IMPORTANTE: Espaço para o header fixo */
+.body-with-fixed-header {
+  padding-top: 160px; /* Altura aproximada do header + margens */
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .header-container {
+    top: 15px;
     padding: 25px 20px;
-    margin-bottom: 20px;
+    min-width: 300px;
+    max-width: 95%;
   }
 
   .header-content {
@@ -96,11 +115,17 @@
     width: 12px;
     height: 12px;
   }
+
+  .body-with-fixed-header {
+    padding-top: 180px; /* Mais espaço em mobile devido ao layout em coluna */
+  }
 }
 
 @media (max-width: 480px) {
   .header-container {
+    top: 10px;
     padding: 20px 15px;
+    min-width: 280px;
   }
 
   .header-content .header-text h1 {
@@ -118,9 +143,17 @@
     width: 12px;
     height: 12px;
   }
+
+  .body-with-fixed-header {
+    padding-top: 170px;
+  }
 }
 
 @media (max-width: 360px) {
+  .header-container {
+    min-width: 250px;
+  }
+
   .header-content .header-text h1 {
     font-size: 1.5rem;
   }
@@ -129,5 +162,9 @@
   .logout-btn {
     padding: 8px 14px;
     font-size: 13px;
+  }
+
+  .body-with-fixed-header {
+    padding-top: 160px;
   }
 }
