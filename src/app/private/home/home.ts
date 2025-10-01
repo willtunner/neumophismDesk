@@ -13,6 +13,9 @@ import { CheckboxConfig } from '../../interfaces/checkbox-config.interface';
 import { CheckboxLayout, CheckboxSelection } from '../../enuns/checkbox-types.enum';
 import { RichTextDynamicComponent } from '../../shared/components/rich-text-dynamic/rich-text-dynamic';
 import { RichTextConfig } from '../../interfaces/rich-text-config.interface';
+import { Header } from '../../shared/components/header/header';
+import { GlobalMenuComponent } from '../../shared/components/global-menu/global-menu';
+import { GlobalMenuService } from '../../services/global-menu';
 
 @Component({
   selector: 'app-home',
@@ -23,12 +26,16 @@ import { RichTextConfig } from '../../interfaces/rich-text-config.interface';
     ReactiveFormsModule, 
     InputDynamicComponent, 
     CheckboxDynamic,
-    RichTextDynamicComponent
+    RichTextDynamicComponent,
+    Header,
+    GlobalMenuComponent
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class Home {
+
+  isMenuOpen = false;
 
   checkboxConfig: CheckboxConfig = {
     formControlName: 'checkboxSelection',
@@ -222,7 +229,7 @@ richTextConfigs = {
     private router: Router, 
     private themeService: ThemeService,
     private fb: FormBuilder,
-    private validatorsService: InputValidatorsService
+    private validatorsService: InputValidatorsService,
   ) {
     // Inicializa o formulário reativo com TODOS os controles
     this.dynamicForm = this.fb.group({
@@ -405,4 +412,6 @@ richTextConfigs = {
     this.themeService.toggleTheme();
     this.formData.darkMode = this.themeService.isDarkTheme();
   }
+
+ 
 }

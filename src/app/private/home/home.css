@@ -5,50 +5,6 @@
   transition: all 0.3s ease;
 }
 
-.home-header {
-  margin-bottom: 30px;
-  padding: 30px;
-}
-
-.home-header .header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.home-header .header-content h1 {
-  color: var(--text-primary);
-  font-size: 2.5rem;
-  margin: 0;
-}
-
-.home-header .header-content p {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  margin: 0;
-}
-
-.logout-btn {
-  width: auto;
-  padding: 12px 24px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  box-shadow:
-    8px 8px 16px var(--shadow-light),
-    -8px -8px 16px var(--shadow-dark);
-}
-
-.logout-btn svg {
-  width: 18px;
-  height: 18px;
-}
-
 .components-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -57,6 +13,7 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  transition: margin-left 0.3s ease;
 }
 
 /* Form Groups */
@@ -605,25 +562,6 @@ app-input-dynamic {
     padding: 15px;
   }
 
-  .home-header {
-    padding: 25px 20px;
-    margin-bottom: 20px;
-
-    .header-content {
-      flex-direction: column;
-      text-align: center;
-      gap: 15px;
-
-      h1 {
-        font-size: 2rem;
-      }
-
-      p {
-        font-size: 1rem;
-      }
-    }
-  }
-
   .components-grid {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -690,11 +628,6 @@ app-input-dynamic {
     }
   }
 
-  .logout-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
   .preview-section h3 {
     font-size: 0.9rem;
   }
@@ -716,12 +649,8 @@ app-input-dynamic {
     padding: 10px;
   }
 
-  .home-header {
-    padding: 20px 15px;
-
-    .header-content h1 {
-      font-size: 1.7rem;
-    }
+  .components-grid {
+    gap: 15px;
   }
 
   .input-group {
@@ -792,10 +721,6 @@ app-input-dynamic {
 @media (max-width: 360px) {
   .components-grid {
     gap: 15px;
-  }
-
-  .home-header .header-content h1 {
-    font-size: 1.5rem;
   }
 
   .input-group input,

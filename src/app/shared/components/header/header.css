@@ -1,0 +1,133 @@
+.header-container {
+  margin-bottom: 30px;
+  padding: 30px;
+  position: relative;
+  z-index: 10;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header-content .header-text {
+  flex: 1;
+}
+
+.header-content .header-text h1 {
+  color: var(--text-primary);
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.header-content .header-text p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.menu-btn {
+  width: auto;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: 8px 8px 16px var(--shadow-light), -8px -8px 16px var(--shadow-dark);
+}
+
+.menu-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.logout-btn {
+  width: auto;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: 8px 8px 16px var(--shadow-light), -8px -8px 16px var(--shadow-dark);
+}
+
+.logout-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 25px 20px;
+    margin-bottom: 20px;
+  }
+
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .header-content .header-text h1 {
+    font-size: 2rem;
+  }
+
+  .header-content .header-text p {
+    font-size: 1rem;
+  }
+
+  .menu-btn,
+  .logout-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 18px;
+  }
+
+  .menu-btn svg,
+  .logout-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    padding: 20px 15px;
+  }
+
+  .header-content .header-text h1 {
+    font-size: 1.7rem;
+  }
+
+  .menu-btn,
+  .logout-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .menu-btn svg,
+  .logout-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .header-content .header-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .menu-btn,
+  .logout-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
