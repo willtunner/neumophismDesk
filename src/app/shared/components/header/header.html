@@ -8,8 +8,44 @@
       </svg>
       Menu
     </button>
+    
     <div class="header-text">
-      <h1>Neumorphism Will</h1>
+      <h1>{{ currentRouteTitle }}</h1>
+    </div>
+
+    <div class="header-actions">
+      <!-- Seletor de Idioma -->
+      <div class="language-selector neu-input">
+        <select class="language-select" [(ngModel)]="selectedLanguage" (change)="onLanguageChange()">
+          <option *ngFor="let lang of languages" [value]="lang.code">
+            {{ lang.name }}
+          </option>
+        </select>
+        <div class="selected-flag">
+          <img [src]="getSelectedFlag()" [alt]="selectedLanguage" class="flag-icon">
+        </div>
+      </div>
+
+      <!-- Ícone de Mensagens -->
+      <div class="icon-wrapper neu-button" (click)="openMessages()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <div class="notification-badge" *ngIf="unreadMessages > 0">
+          {{ unreadMessages > 99 ? '99+' : unreadMessages }}
+        </div>
+      </div>
+
+      <!-- Ícone de Notificações -->
+      <div class="icon-wrapper neu-button" (click)="openNotifications()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <div class="notification-badge" *ngIf="unreadNotifications > 0">
+          {{ unreadNotifications > 99 ? '99+' : unreadNotifications }}
+        </div>
+      </div>
     </div>
   </div>
 </div>

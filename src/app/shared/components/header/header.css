@@ -1,20 +1,21 @@
+/* header.component.css - Refatorado com Novas Funcionalidades */
+
 .header-container {
-  position: fixed; /* Fica fixo no topo */
-  top: 20px; /* Margem do topo */
-  left: 50%; /* Centraliza horizontalmente */
-  transform: translateX(-50%); /* Ajuste para centralizar perfeitamente */
-  width: 100%; /* Ocupa 100% da largura disponível */
-  max-width: 1200px; /* MESMA LARGURA MÁXIMA DO GRID */
-  height: auto; /* Altura automática */
-  padding: 15px 30px; /* REDUZIDO: 15px vertical, 30px horizontal */
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  padding: 15px 30px;
   background: var(--bg-primary);
-  border-radius: 20px; /* REDUZIDO: Bordas ligeiramente menos arredondadas */
-  z-index: 1000; /* Acima de tudo */
+  border-radius: 20px;
+  z-index: 1000;
   box-shadow: 
-    15px 15px 40px var(--shadow-light), /* REDUZIDO: Sombras mais suaves */
+    15px 15px 40px var(--shadow-light),
     -15px -15px 40px var(--shadow-dark);
-  margin-bottom: 20px; /* REDUZIDO */
-  /* Adiciona o mesmo padding lateral do grid */
+  margin-bottom: 20px;
   box-sizing: border-box;
 }
 
@@ -23,47 +24,166 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 15px; /* REDUZIDO */
-  min-height: 40px; /* ALTURA MÍNIMA REDUZIDA */
-  width: 100%; /* Garante que ocupe toda a largura disponível */
+  gap: 15px;
+  min-height: 40px;
+  width: 100%;
 }
 
 .header-content .header-text {
   flex: 1;
-  min-height: 40px; /* ALTURA MÍNIMA PARA ALINHAMENTO */
+  min-height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center; /* Centraliza o texto */
+  justify-content: center;
   text-align: center;
 }
 
 .header-content .header-text h1 {
   color: var(--text-primary);
-  font-size: 2rem; /* REDUZIDO: De 2.5rem para 2rem */
+  font-size: 2rem;
   margin: 0;
-  line-height: 1.2; /* MELHOR CONTROLE DE ALTURA */
-  width: 100%; /* Garante que ocupe o espaço disponível */
+  line-height: 1.2;
+  width: 100%;
+  text-transform: capitalize;
 }
 
-.header-content .header-text p {
-  color: var(--text-secondary);
-  font-size: 1rem; /* REDUZIDO: De 1.1rem para 1rem */
-  margin: 0;
+/* Container das ações (idioma, mensagens, notificações) */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
+/* Seletor de Idioma */
+.language-selector {
+  position: relative;
+  background: var(--input-bg);
+  border-radius: 12px;
+  box-shadow: 
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  transition: all 0.3s ease;
+  min-width: 60px;
+  height: 40px;
+}
+
+.language-selector:focus-within {
+  box-shadow: 
+    inset 2px 2px 4px var(--shadow-light),
+    inset -2px -2px 4px var(--shadow-dark);
+}
+
+.language-select {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  padding: 0 40px 0 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.language-select option {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 8px;
+}
+
+.selected-flag {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.flag-icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Wrapper para ícones com badge */
+.icon-wrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: 6px 6px 12px var(--shadow-light), -6px -6px 12px var(--shadow-dark);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.icon-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 8px 8px 16px var(--shadow-light), -8px -8px 16px var(--shadow-dark);
+}
+
+.icon-wrapper:active {
+  transform: translateY(0);
+  box-shadow: 
+    inset 3px 3px 6px var(--shadow-light),
+    inset -3px -3px 6px var(--shadow-dark);
+}
+
+.icon-wrapper svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Badge de notificação */
+.notification-badge {
+  position: absolute;
+  top: 0px;
+  right: 2px;
+  background: var(--error-color);
+  color: white;
+  border-radius: 10px;
+  min-width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--bg-primary);
+}
+
+/* Botões existentes */
 .menu-btn {
   width: auto;
-  padding: 8px 16px; /* REDUZIDO: De 10px 20px para 8px 16px */
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   gap: 6px;
   margin: 0;
   background: var(--bg-primary);
   color: var(--text-primary);
-  box-shadow: 6px 6px 12px var(--shadow-light), -6px -6px 12px var(--shadow-dark); /* REDUZIDO */
-  font-size: 14px; /* TEXTO MENOR */
-  min-height: 36px; /* ALTURA MÍNIMA CONSISTENTE */
-  flex-shrink: 0; /* Impede que o botão encolha */
+  box-shadow: 6px 6px 12px var(--shadow-light), -6px -6px 12px var(--shadow-dark);
+  font-size: 14px;
+  min-height: 36px;
+  flex-shrink: 0;
 }
 
 .menu-btn svg {
@@ -71,29 +191,9 @@
   height: 14px;
 }
 
-.logout-btn {
-  width: auto;
-  padding: 8px 16px; /* REDUZIDO: Mesmo padrão do menu-btn */
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  box-shadow: 6px 6px 12px var(--shadow-light), -6px -6px 12px var(--shadow-dark); /* REDUZIDO */
-  font-size: 14px; /* TEXTO MENOR */
-  min-height: 36px; /* ALTURA MÍNIMA CONSISTENTE */
-  flex-shrink: 0; /* Impede que o botão encolha */
-}
-
-.logout-btn svg {
-  width: 14px;
-  height: 14px;
-}
-
-/* IMPORTANTE: Espaço para o header fixo - REDUZIDO */
+/* IMPORTANTE: Espaço para o header fixo */
 .body-with-fixed-header {
-  padding-top: 100px; /* REDUZIDO SIGNIFICATIVAMENTE: De 160px para 100px */
+  padding-top: 100px;
 }
 
 /* ========== RESPONSIVIDADE ========== */
@@ -101,12 +201,31 @@
 /* Tablet: 768px - 1024px */
 @media (max-width: 1024px) {
   .header-container {
-    max-width: 800px; /* MESMA LARGURA DO GRID EM TABLET */
-    padding: 12px 25px; /* MAIS COMPACTO */
+    max-width: 800px;
+    padding: 12px 25px;
   }
   
   .header-content .header-text h1 {
-    font-size: 1.8rem; /* TEXTO MENOR */
+    font-size: 1.8rem;
+  }
+  
+  .header-actions {
+    gap: 10px;
+  }
+  
+  .language-selector {
+    min-width: 55px;
+    height: 36px;
+  }
+  
+  .icon-wrapper {
+    width: 50px;
+    height: 40px;
+  }
+  
+  .icon-wrapper svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -114,52 +233,81 @@
 @media (max-width: 768px) {
   .header-container {
     top: 15px;
-    max-width: 100%; /* OCUPA LARGURA TOTAL EM TABLET */
-    padding: 12px 20px; /* MAIS COMPACTO */
-    border-radius: 18px; /* BORDAS MAIS SUAVES */
-    /* Adiciona o mesmo padding lateral do grid em mobile */
-    margin: 0 15px; /* Mesma margem do grid */
-    width: calc(100% - 30px); /* Compensa as margens */
+    max-width: 100%;
+    padding: 12px 20px;
+    border-radius: 18px;
+    margin: 0 15px;
+    width: calc(100% - 30px);
   }
 
   .header-content {
-    flex-direction: row; /* MANTÉM EM LINHA EM TABLET */
+    flex-direction: row;
     text-align: left;
     gap: 12px;
-    min-height: 35px; /* MAIS BAIXO */
+    min-height: 35px;
   }
 
   .header-content .header-text {
     min-height: 35px;
-    justify-content: flex-start; /* Alinha à esquerda em tablet */
+    justify-content: flex-start;
   }
 
   .header-content .header-text h1 {
-    font-size: 1.6rem; /* MENOR AINDA */
-    text-align: left; /* Alinha à esquerda */
+    font-size: 1.6rem;
+    text-align: left;
   }
 
-  .header-content .header-text p {
-    font-size: 0.9rem;
+  .header-actions {
+    gap: 8px;
+  }
+  
+  .language-selector {
+    min-width: 50px;
+    height: 32px;
+  }
+  
+  .language-select {
+    font-size: 12px;
+    padding: 0 35px 0 10px;
+  }
+  
+  .selected-flag {
+    width: 20px;
+    height: 20px;
+    right: 6px;
+  }
+  
+  .icon-wrapper {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .icon-wrapper svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .notification-badge {
+    min-width: 16px;
+    height: 16px;
+    font-size: 9px;
+    top: -5px;
+    right: -5px;
   }
 
-  .menu-btn,
-  .logout-btn {
-    width: auto; /* MANTÉM LARGURA AUTOMÁTICA */
-    justify-content: center;
-    padding: 7px 14px; /* MAIS COMPACTO */
+  .menu-btn {
+    padding: 7px 14px;
     min-height: 32px;
     font-size: 13px;
   }
 
-  .menu-btn svg,
-  .logout-btn svg {
+  .menu-btn svg {
     width: 12px;
     height: 12px;
   }
 
   .body-with-fixed-header {
-    padding-top: 90px; /* MENOS ESPAÇO */
+    padding-top: 90px;
   }
 }
 
@@ -167,114 +315,143 @@
 @media (max-width: 480px) {
   .header-container {
     top: 10px;
-    max-width: 100%; /* OCUPA LARGURA TOTAL EM MOBILE */
+    max-width: 100%;
     padding: 10px 15px;
     border-radius: 16px;
-    /* Adiciona o mesmo padding lateral do grid em mobile pequeno */
     margin: 0 0; 
-    width: calc(100% - 40px); /* Compensa as margens */
+    width: calc(100% - 40px);
   }
 
   .header-content {
     gap: 10px;
-    min-height: 30px; /* MÍNIMO POSSÍVEL */
+    min-height: 30px;
   }
 
   .header-content .header-text {
     min-height: 30px;
-    justify-content: flex-start; /* Alinha à esquerda em mobile */
+    justify-content: flex-start;
   }
 
   .header-content .header-text h1 {
-    font-size: 1.4rem; /* COMPACTO */
+    font-size: 1.4rem;
     line-height: 1.1;
-    text-align: left; /* Alinha à esquerda */
+    text-align: left;
   }
 
-  .menu-btn,
-  .logout-btn {
-    padding: 6px 12px; /* MÁXIMA COMPACIDADE */
+  .header-actions {
+    gap: 6px;
+  }
+  
+  .language-selector {
+    min-width: 45px;
+    height: 30px;
+  }
+  
+  .language-select {
+    font-size: 11px;
+    padding: 0 32px 0 8px;
+  }
+  
+  .selected-flag {
+    width: 18px;
+    height: 18px;
+    right: 5px;
+  }
+  
+  .icon-wrapper {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .icon-wrapper svg {
+    width: 15px;
+    height: 15px;
+  }
+  
+  .notification-badge {
+    min-width: 14px;
+    height: 14px;
+    font-size: 8px;
+    top: -4px;
+    right: -4px;
+  }
+
+  .menu-btn {
+    padding: 6px 12px;
     min-height: 30px;
     font-size: 12px;
     gap: 4px;
   }
 
-  .menu-btn svg,
-  .logout-btn svg {
+  .menu-btn svg {
     width: 11px;
     height: 11px;
   }
 
   .body-with-fixed-header {
-    padding-top: 80px; /* MÍNIMO NECESSÁRIO */
+    padding-top: 80px;
   }
 }
 
 /* Mobile Pequeno: 360px */
 @media (max-width: 360px) {
   .header-container {
-    max-width: 100%; /* OCUPA LARGURA TOTAL EM MOBILE PEQUENO */
-    padding: 8px 12px; /* ULTRA COMPACTO */
-    /* Adiciona o mesmo padding lateral do grid em mobile muito pequeno */
-    margin: 0 8px; /* Mesma margem do grid */
-    width: calc(100% - 25px); /* Compensa as margens */
+    max-width: 100%;
+    padding: 8px 12px;
+    margin: 0 8px;
+    width: calc(100% - 25px);
   }
 
   .header-content .header-text h1 {
-    font-size: 1.3rem; /* MÍNIMO LEGÍVEL */
+    font-size: 1.3rem;
   }
 
-  .menu-btn,
-  .logout-btn {
-    padding: 5px 10px; /* ULTRA COMPACTO */
+  .header-actions {
+    gap: 4px;
+  }
+  
+  .language-selector {
+    min-width: 40px;
+    height: 28px;
+  }
+  
+  .language-select {
+    font-size: 10px;
+    padding: 0 28px 0 6px;
+  }
+  
+  .selected-flag {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .icon-wrapper {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .icon-wrapper svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .menu-btn {
+    padding: 5px 10px;
     min-height: 28px;
     font-size: 11px;
   }
 
-  .menu-btn svg,
-  .logout-btn svg {
+  .menu-btn svg {
     width: 10px;
     height: 10px;
   }
 
   .body-with-fixed-header {
-    padding-top: 70px; /* ABSOLUTO MÍNIMO */
+    padding-top: 70px;
   }
 }
 
-/* Para telas muito grandes (opcional) */
-@media (min-width: 1600px) {
-  .header-container {
-    max-width: 1200px; /* LARGURA MÁXIMA EM TELAS GRANDES (igual ao grid se ajustar) */
-  }
-}
-
-/* Garantir que o header tenha o mesmo comportamento do grid */
-@media (max-width: 1200px) {
-  .header-container {
-    /* max-width: calc(100% - 40px);  */
-    /* margin: 0 20px; */
-    width: 100%;
-  }
-}
-
-@media (max-width: 1200px) {
-  .header-container {
-    width: calc(100% - 90px) !important;
-    max-width: none;
-    /* Mantém left: 50% e transform: translateX(-50%) para centralizar */
-  }
-}
-
-@media (max-width: 1200px) {
-  .header-container {
-    width: calc(100% - 50px) !important;
-    max-width: none;
-    /* Mantém left: 50% e transform: translateX(-50%) para centralizar */
-  }
-}
-
-/* Mobile: 650px - Apenas ícones */
+/* Mobile: 550px - Apenas ícones */
 @media (max-width: 550px) {
   .header-container {
     width: calc(100% - 40px) !important;
@@ -288,34 +465,26 @@
     gap: 8px;
   }
 
-  /* Esconde o texto "Menu" e mostra apenas o ícone */
   .menu-btn {
     order: 1;
-    width: 40px !important; /* Largura fixa para ícone */
+    width: 40px !important;
     height: 40px;
     padding: 0 !important;
     justify-content: center;
     min-height: 40px;
+    font-size: 0;
   }
 
-  /* Esconde o texto "Menu" */
-  .menu-btn {
-    font-size: 0; /* Esconde o texto */
-  }
-
-  /* Mostra apenas o SVG do ícone */
   .menu-btn svg {
     width: 20px;
     height: 20px;
     margin: 0;
   }
 
-  /* Remove o gap entre ícone e texto (que está escondido) */
   .menu-btn {
     gap: 0;
   }
 
-  /* Header text ajustado */
   .header-text {
     order: 2;
     flex: 1;
@@ -330,25 +499,9 @@
     text-align: center;
   }
 
-  /* Se tiver botão de logout, também ajusta para apenas ícone */
-  .logout-btn {
+  .header-actions {
     order: 3;
-    width: 40px !important;
-    height: 40px;
-    padding: 0 !important;
-    justify-content: center;
-    font-size: 0;
-    min-height: 40px;
-  }
-
-  .logout-btn svg {
-    width: 18px;
-    height: 18px;
-    margin: 0;
-  }
-
-  .logout-btn {
-    gap: 0;
+    gap: 6px;
   }
 
   .body-with-fixed-header {
@@ -363,8 +516,7 @@
     padding: 8px 12px;
   }
 
-  .menu-btn,
-  .logout-btn {
+  .menu-btn {
     width: 36px !important;
     height: 36px;
     min-height: 36px;
@@ -375,12 +527,11 @@
     height: 18px;
   }
 
-  .logout-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
   .header-content .header-text h1 {
     font-size: 1.2rem;
+  }
+  
+  .header-actions {
+    gap: 4px;
   }
 }
