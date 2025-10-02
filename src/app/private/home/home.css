@@ -1,4 +1,12 @@
-.home-container {
+/* home.component.css - Refatorado e Otimizado */
+
+/* 
+ * NOTA: A maioria das classes (neu-container, neu-button, button-group, etc.)
+ * foram movidas para o CSS global. Este arquivo contém apenas estilos
+ * específicos do componente home que não são reutilizáveis.
+ */
+
+ .home-container {
   min-height: 100vh;
   background: var(--bg-primary);
   padding: 20px;
@@ -6,7 +14,7 @@
   margin-top: 120px;
 }
 
-/* GRID RESPONSIVO MELHORADO */
+/* GRID RESPONSIVO MELHORADO - Específico do Home */
 .components-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -18,6 +26,7 @@
   transition: all 0.3s ease;
 }
 
+/* Ajustes específicos do Home para mobile */
 /* Tablet: 768px - 1024px - 1 coluna */
 @media (max-width: 1024px) {
   .components-grid {
@@ -45,17 +54,6 @@
     margin-top: 100px;
     padding: 12px;
   }
-  
-  /* Ajustes específicos para cards em mobile */
-  .neu-container {
-    padding: 20px 15px;
-    border-radius: 18px;
-  }
-  
-  .neu-container h2 {
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-  }
 }
 
 /* Mobile Small: até 480px - 1 coluna ultra compacta */
@@ -67,37 +65,6 @@
   .home-container {
     margin-top: 90px;
     padding: 10px 8px;
-  }
-  
-  .neu-container {
-    padding: 18px 12px;
-    border-radius: 16px;
-  }
-  
-  .neu-container h2 {
-    font-size: 1.2rem;
-    margin-bottom: 18px;
-  }
-  
-  /* Ajustes para elementos dentro dos cards em mobile pequeno */
-  .button-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .button-group.small {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
-  .neu-button {
-    padding: 12px 16px;
-    font-size: 14px;
-  }
-  
-  .neu-button.small {
-    padding: 8px 12px;
-    font-size: 12px;
   }
 }
 
@@ -111,190 +78,17 @@
     margin-top: 80px;
     padding: 8px 6px;
   }
-  
-  .neu-container {
-    padding: 15px 10px;
-    border-radius: 14px;
-  }
-  
-  .neu-container h2 {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-  }
-  
-  .neu-button {
-    padding: 10px 14px;
-    font-size: 13px;
-  }
-  
-  .neu-button.small {
-    padding: 6px 10px;
-    font-size: 11px;
-  }
 }
 
-/* ========== RESTANTE DO SEU CSS (mantido igual) ========== */
+/* ========== ESTILOS ESPECÍFICOS DO HOME COMPONENT ========== */
 
-/* Form Groups */
-.form-group {
-  margin-bottom: 25px;
-}
-
-.input-group {
-  position: relative;
-  background: var(--input-bg);
-  border-radius: 15px;
-  box-shadow:
-    inset 8px 8px 16px var(--shadow-light),
-    inset -8px -8px 16px var(--shadow-dark);
-  transition: all 0.3s ease;
-}
-
-.input-group:focus-within {
-  box-shadow:
-    inset 4px 4px 8px var(--shadow-light),
-    inset -4px -4px 8px var(--shadow-dark);
-}
-
-.input-group input,
-.input-group select,
-.input-group textarea {
-  width: 100%;
-  background: transparent;
-  border: none;
-  padding: 20px 24px;
-  padding-left: 55px;
-  color: var(--text-primary);
-  font-size: 16px;
-  font-weight: 500;
-  outline: none;
-  transition: all 0.3s ease;
-  font-family: inherit;
-}
-
-.input-group input::placeholder,
-.input-group select::placeholder,
-.input-group textarea::placeholder {
-  color: transparent;
-}
-
-.input-group label {
-  position: absolute;
-  left: 55px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-secondary);
-  font-size: 16px;
-  font-weight: 400;
-  pointer-events: none;
-  transition: all 0.3s ease;
-}
-
-.input-group input:focus+label,
-.input-group input:not(:placeholder-shown)+label,
-.input-group select:focus+label,
-.input-group select:valid+label,
-.input-group textarea:focus+label,
-.input-group textarea:not(:placeholder-shown)+label {
-  top: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
-  transform: translateY(0);
-}
-
-.input-icon {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  color: var(--text-secondary);
-  transition: all 0.3s ease;
-}
-
-.input-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.input-group:focus-within .input-icon {
-  color: var(--text-muted);
-}
-
-/* Checkbox Groups */
-.checkbox-group,
-.radio-group,
-.toggle-group {
+/* Estilos específicos para elementos únicos do home */
+.radio-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  cursor: pointer;
-  user-select: none;
-  color: var(--text-primary);
-  font-weight: 500;
-  position: relative;
-  padding: 8px 12px;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.checkbox-label:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.checkbox-label input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.neu-checkbox {
-  width: 22px;
-  height: 22px;
-  background: var(--bg-primary);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow:
-    3px 3px 8px var(--shadow-light),
-    -3px -3px 8px var(--shadow-dark);
-  transition: all 0.3s ease;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.neu-checkbox svg {
-  width: 14px;
-  height: 14px;
-  color: var(--accent-color);
-  opacity: 0;
-  transform: scale(0);
-  transition: all 0.3s ease;
-}
-
-.checkbox-label input[type="checkbox"]:checked+.neu-checkbox {
-  box-shadow:
-    inset 2px 2px 5px var(--shadow-light),
-    inset -2px -2px 5px var(--shadow-dark);
-}
-
-.checkbox-label input[type="checkbox"]:checked+.neu-checkbox svg {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Radio Buttons */
 .radio-label {
   display: flex;
   align-items: center;
@@ -348,12 +142,12 @@
   transition: all 0.3s ease;
 }
 
-.radio-label input[type="radio"]:checked+.neu-radio .radio-dot {
+.radio-label input[type="radio"]:checked + .neu-radio .radio-dot {
   opacity: 1;
   transform: scale(1);
 }
 
-/* Toggle Switches */
+/* Toggle Switches - Estilos específicos */
 .toggle-label {
   display: flex;
   justify-content: space-between;
@@ -408,91 +202,7 @@
   transition: all 0.3s ease;
 }
 
-/* Button Groups */
-.button-group {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.button-group.small .neu-button {
-  padding: 10px 20px;
-  font-size: 14px;
-}
-
-.neu-button {
-  background: var(--bg-primary);
-  border: none;
-  border-radius: 15px;
-  padding: 15px 25px;
-  color: var(--text-primary);
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow:
-    8px 8px 16px var(--shadow-light),
-    -8px -8px 16px var(--shadow-dark);
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: auto;
-  margin: 0;
-}
-
-.neu-button.primary {
-  background: #3d4468;
-  color: white;
-}
-
-.neu-button.secondary {
-  background: #6c7293;
-  color: white;
-}
-
-.neu-button.danger {
-  background: var(--error-color);
-  color: white;
-}
-
-.neu-button.small {
-  padding: 10px 20px;
-  font-size: 14px;
-}
-
-.neu-button:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    12px 12px 24px var(--shadow-light),
-    -12px -12px 24px var(--shadow-dark);
-}
-
-.neu-button:active {
-  transform: translateY(0);
-  box-shadow:
-    inset 4px 4px 8px var(--shadow-light),
-    inset -4px -4px 8px var(--shadow-dark);
-}
-
-.neu-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.neu-button:disabled:hover {
-  box-shadow:
-    8px 8px 16px var(--shadow-light),
-    -8px -8px 16px var(--shadow-dark);
-}
-
-.neu-button svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* Slider */
+/* Slider - Estilos específicos */
 .slider-group {
   margin-bottom: 25px;
 }
@@ -545,109 +255,7 @@
   z-index: 2;
 }
 
-/* Data Preview */
-.data-preview {
-  padding: 30px;
-  background: var(--bg-primary);
-  border-radius: 25px;
-  box-shadow:
-    20px 20px 60px var(--shadow-light),
-    -20px -20px 60px var(--shadow-dark);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.data-preview h2 {
-  color: var(--text-primary);
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-.data-preview pre {
-  background: var(--input-bg);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow:
-    inset 4px 4px 8px var(--shadow-light),
-    inset -4px -4px 8px var(--shadow-dark);
-  color: var(--text-primary);
-  font-size: 14px;
-  overflow-x: auto;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-/* Loading State */
-.btn-loader {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.neu-spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--shadow-light);
-  border-top: 2px solid var(--text-muted);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.neu-button.loading .btn-text {
-  opacity: 0;
-}
-
-.neu-button.loading .btn-loader {
-  opacity: 1;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Estilos adicionais para o componente dinâmico */
-.preview-section {
-  margin-bottom: 20px;
-}
-
-.preview-section h3 {
-  color: var(--text-primary);
-  font-size: 1rem;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-.preview-section pre {
-  background: var(--input-bg);
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow:
-    inset 4px 4px 8px var(--shadow-light),
-    inset -4px -4px 8px var(--shadow-dark);
-  color: var(--text-primary);
-  font-size: 13px;
-  overflow-x: auto;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-/* Garantir que os inputs dinâmicos tenham o mesmo estilo */
-app-input-dynamic {
-  display: block;
-  width: 100%;
-}
-
-/* Estilos para o preview do rich text */
+/* Estilos para elementos de preview específicos do home */
 .rich-text-preview {
   background: var(--input-bg);
   padding: 20px;
@@ -672,4 +280,147 @@ app-input-dynamic {
 
 .rich-text-preview .preview-content:last-child {
   margin-bottom: 0;
+}
+
+/* Garantir que os componentes dinâmicos tenham o estilo correto */
+app-input-dynamic {
+  display: block;
+  width: 100%;
+}
+
+app-rich-text-dynamic {
+  display: block;
+  width: 100%;
+}
+
+app-checkbox-dynamic {
+  display: block;
+  width: 100%;
+}
+
+/* Animações específicas do home (se necessário) */
+@keyframes homeGentlePulse {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+.home-pulse {
+  animation: homeGentlePulse 2s ease-in-out infinite;
+}
+
+/* Estados de loading específicos do home */
+.home-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Estilos para grupos de formulário específicos do home */
+.home-form-section {
+  border-left: 3px solid var(--accent-color);
+  padding-left: 15px;
+  margin-bottom: 25px;
+}
+
+/* Utilitários específicos do home */
+.home-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--text-muted),
+    transparent
+  );
+  margin: 25px 0;
+  border: none;
+}
+
+/* Ajustes de espaçamento específicos para o layout do home */
+.home-section + .home-section {
+  margin-top: 40px;
+}
+
+/* Responsividade adicional específica do home */
+@media (max-width: 480px) {
+  .home-container {
+    margin-top: 90px;
+  }
+  
+  /* Ajustes específicos para elementos do home em mobile */
+  .radio-group {
+    gap: 6px;
+  }
+  
+  .radio-label {
+    padding: 6px 10px;
+  }
+  
+  .toggle-label {
+    padding: 6px 10px;
+  }
+  
+  .slider-group {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .home-container {
+    margin-top: 80px;
+  }
+  
+  /* Ajustes extras para mobile muito pequeno */
+  .neu-slider {
+    padding: 8px 15px;
+  }
+  
+  .slider {
+    width: calc(100% - 30px);
+    left: 15px;
+  }
+}
+
+/* Estados de interação específicos do home */
+.home-interactive-element {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home-interactive-element:hover {
+  transform: translateY(-2px);
+}
+
+.home-interactive-element:active {
+  transform: translateY(0);
+}
+
+/* Estilos para mensagens de status específicas do home */
+.home-status-message {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin: 10px 0;
+  font-weight: 500;
+  text-align: center;
+}
+
+.home-status-success {
+  background: rgba(0, 200, 150, 0.1);
+  color: var(--accent-color);
+  border: 1px solid rgba(0, 200, 150, 0.2);
+}
+
+.home-status-error {
+  background: rgba(255, 59, 92, 0.1);
+  color: var(--error-color);
+  border: 1px solid rgba(255, 59, 92, 0.2);
+}
+
+.home-status-info {
+  background: rgba(109, 93, 255, 0.1);
+  color: #6d5dff;
+  border: 1px solid rgba(109, 93, 255, 0.2);
 }
