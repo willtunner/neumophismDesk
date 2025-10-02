@@ -3,9 +3,8 @@
   top: 20px; /* Margem do topo */
   left: 50%; /* Centraliza horizontalmente */
   transform: translateX(-50%); /* Ajuste para centralizar perfeitamente */
-  width: auto; /* Largura automática baseada no conteúdo */
-  min-width: 1200px; /* Largura mínima */
-  max-width: 90%; /* Largura máxima (90% da tela) */
+  width: 100%; /* Ocupa 100% da largura disponível */
+  max-width: 1200px; /* MESMA LARGURA MÁXIMA DO GRID */
   height: auto; /* Altura automática */
   padding: 15px 30px; /* REDUZIDO: 15px vertical, 30px horizontal */
   background: var(--bg-primary);
@@ -15,6 +14,8 @@
     15px 15px 40px var(--shadow-light), /* REDUZIDO: Sombras mais suaves */
     -15px -15px 40px var(--shadow-dark);
   margin-bottom: 20px; /* REDUZIDO */
+  /* Adiciona o mesmo padding lateral do grid */
+  box-sizing: border-box;
 }
 
 .header-content {
@@ -24,6 +25,7 @@
   flex-wrap: wrap;
   gap: 15px; /* REDUZIDO */
   min-height: 40px; /* ALTURA MÍNIMA REDUZIDA */
+  width: 100%; /* Garante que ocupe toda a largura disponível */
 }
 
 .header-content .header-text {
@@ -31,6 +33,8 @@
   min-height: 40px; /* ALTURA MÍNIMA PARA ALINHAMENTO */
   display: flex;
   align-items: center;
+  justify-content: center; /* Centraliza o texto */
+  text-align: center;
 }
 
 .header-content .header-text h1 {
@@ -38,6 +42,7 @@
   font-size: 2rem; /* REDUZIDO: De 2.5rem para 2rem */
   margin: 0;
   line-height: 1.2; /* MELHOR CONTROLE DE ALTURA */
+  width: 100%; /* Garante que ocupe o espaço disponível */
 }
 
 .header-content .header-text p {
@@ -58,6 +63,7 @@
   box-shadow: 6px 6px 12px var(--shadow-light), -6px -6px 12px var(--shadow-dark); /* REDUZIDO */
   font-size: 14px; /* TEXTO MENOR */
   min-height: 36px; /* ALTURA MÍNIMA CONSISTENTE */
+  flex-shrink: 0; /* Impede que o botão encolha */
 }
 
 .menu-btn svg {
@@ -77,6 +83,7 @@
   box-shadow: 6px 6px 12px var(--shadow-light), -6px -6px 12px var(--shadow-dark); /* REDUZIDO */
   font-size: 14px; /* TEXTO MENOR */
   min-height: 36px; /* ALTURA MÍNIMA CONSISTENTE */
+  flex-shrink: 0; /* Impede que o botão encolha */
 }
 
 .logout-btn svg {
@@ -94,8 +101,7 @@
 /* Tablet: 768px - 1024px */
 @media (max-width: 1024px) {
   .header-container {
-    min-width: 900px; /* REDUZIDO: Para tablets maiores */
-    max-width: 92%;
+    max-width: 800px; /* MESMA LARGURA DO GRID EM TABLET */
     padding: 12px 25px; /* MAIS COMPACTO */
   }
   
@@ -108,10 +114,12 @@
 @media (max-width: 768px) {
   .header-container {
     top: 15px;
+    max-width: 100%; /* OCUPA LARGURA TOTAL EM TABLET */
     padding: 12px 20px; /* MAIS COMPACTO */
-    min-width: 300px;
-    max-width: 95%;
     border-radius: 18px; /* BORDAS MAIS SUAVES */
+    /* Adiciona o mesmo padding lateral do grid em mobile */
+    margin: 0 15px; /* Mesma margem do grid */
+    width: calc(100% - 30px); /* Compensa as margens */
   }
 
   .header-content {
@@ -123,10 +131,12 @@
 
   .header-content .header-text {
     min-height: 35px;
+    justify-content: flex-start; /* Alinha à esquerda em tablet */
   }
 
   .header-content .header-text h1 {
     font-size: 1.6rem; /* MENOR AINDA */
+    text-align: left; /* Alinha à esquerda */
   }
 
   .header-content .header-text p {
@@ -157,9 +167,12 @@
 @media (max-width: 480px) {
   .header-container {
     top: 10px;
-    padding: 10px 15px; /* MÁXIMA COMPACIDADE */
-    min-width: 280px;
+    max-width: 100%; /* OCUPA LARGURA TOTAL EM MOBILE */
+    padding: 10px 15px;
     border-radius: 16px;
+    /* Adiciona o mesmo padding lateral do grid em mobile pequeno */
+    margin: 0 0; 
+    width: calc(100% - 40px); /* Compensa as margens */
   }
 
   .header-content {
@@ -169,11 +182,13 @@
 
   .header-content .header-text {
     min-height: 30px;
+    justify-content: flex-start; /* Alinha à esquerda em mobile */
   }
 
   .header-content .header-text h1 {
     font-size: 1.4rem; /* COMPACTO */
     line-height: 1.1;
+    text-align: left; /* Alinha à esquerda */
   }
 
   .menu-btn,
@@ -198,8 +213,11 @@
 /* Mobile Pequeno: 360px */
 @media (max-width: 360px) {
   .header-container {
-    min-width: 250px;
+    max-width: 100%; /* OCUPA LARGURA TOTAL EM MOBILE PEQUENO */
     padding: 8px 12px; /* ULTRA COMPACTO */
+    /* Adiciona o mesmo padding lateral do grid em mobile muito pequeno */
+    margin: 0 8px; /* Mesma margem do grid */
+    width: calc(100% - 25px); /* Compensa as margens */
   }
 
   .header-content .header-text h1 {
@@ -227,7 +245,142 @@
 /* Para telas muito grandes (opcional) */
 @media (min-width: 1600px) {
   .header-container {
-    min-width: 1400px; /* LARGURA MÁXIMA EM TELAS GRANDES */
-    max-width: 80%; /* MAIS LARGURA DISPONÍVEL */
+    max-width: 1200px; /* LARGURA MÁXIMA EM TELAS GRANDES (igual ao grid se ajustar) */
+  }
+}
+
+/* Garantir que o header tenha o mesmo comportamento do grid */
+@media (max-width: 1200px) {
+  .header-container {
+    /* max-width: calc(100% - 40px);  */
+    /* margin: 0 20px; */
+    width: 100%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .header-container {
+    width: calc(100% - 90px) !important;
+    max-width: none;
+    /* Mantém left: 50% e transform: translateX(-50%) para centralizar */
+  }
+}
+
+@media (max-width: 1200px) {
+  .header-container {
+    width: calc(100% - 50px) !important;
+    max-width: none;
+    /* Mantém left: 50% e transform: translateX(-50%) para centralizar */
+  }
+}
+
+/* Mobile: 650px - Apenas ícones */
+@media (max-width: 550px) {
+  .header-container {
+    width: calc(100% - 40px) !important;
+    padding: 10px 15px;
+  }
+
+  .header-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Esconde o texto "Menu" e mostra apenas o ícone */
+  .menu-btn {
+    order: 1;
+    width: 40px !important; /* Largura fixa para ícone */
+    height: 40px;
+    padding: 0 !important;
+    justify-content: center;
+    min-height: 40px;
+  }
+
+  /* Esconde o texto "Menu" */
+  .menu-btn {
+    font-size: 0; /* Esconde o texto */
+  }
+
+  /* Mostra apenas o SVG do ícone */
+  .menu-btn svg {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+  }
+
+  /* Remove o gap entre ícone e texto (que está escondido) */
+  .menu-btn {
+    gap: 0;
+  }
+
+  /* Header text ajustado */
+  .header-text {
+    order: 2;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .header-content .header-text h1 {
+    font-size: 1.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+
+  /* Se tiver botão de logout, também ajusta para apenas ícone */
+  .logout-btn {
+    order: 3;
+    width: 40px !important;
+    height: 40px;
+    padding: 0 !important;
+    justify-content: center;
+    font-size: 0;
+    min-height: 40px;
+  }
+
+  .logout-btn svg {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+  }
+
+  .logout-btn {
+    gap: 0;
+  }
+
+  .body-with-fixed-header {
+    padding-top: 70px;
+  }
+}
+
+/* Mobile Pequeno: 480px - Ajustes finos */
+@media (max-width: 480px) {
+  .header-container {
+    width: calc(100% - 30px) !important;
+    padding: 8px 12px;
+  }
+
+  .menu-btn,
+  .logout-btn {
+    width: 36px !important;
+    height: 36px;
+    min-height: 36px;
+  }
+
+  .menu-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .logout-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .header-content .header-text h1 {
+    font-size: 1.2rem;
   }
 }
