@@ -108,7 +108,7 @@ export class Header implements OnInit, OnDestroy {
       message: 'Fatura referente ao mês de março foi paga e confirmada.', 
       time: '2h atrás',
       type: 'success',
-      read: true
+      read: false
     },
     { 
       id: 5, 
@@ -116,7 +116,7 @@ export class Header implements OnInit, OnDestroy {
       message: 'Carlos Santos foi adicionado ao projeto "Desenvolvimento Web".', 
       time: '3h atrás',
       type: 'info',
-      read: true
+      read: false
     },
     { 
       id: 6, 
@@ -124,7 +124,7 @@ export class Header implements OnInit, OnDestroy {
       message: 'Entrega da fase 2 do projeto em 3 dias. Verifique o progresso.', 
       time: 'Ontem',
       type: 'warning',
-      read: true
+      read: false
     },
     { 
       id: 7, 
@@ -132,7 +132,7 @@ export class Header implements OnInit, OnDestroy {
       message: 'Nova atualização de segurança foi aplicada no sistema principal.', 
       time: '2 dias atrás',
       type: 'info',
-      read: true
+      read: false
     }
   ];
 

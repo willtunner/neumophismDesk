@@ -608,7 +608,7 @@
 .dropdown-panel {
   position: fixed; /* Mudei de absolute para fixed */
   top: 75px; /* Ajuste para aparecer abaixo do header */
-  right: 25%; /* Centraliza horizontalmente */
+  right: 210px; /* Centraliza horizontalmente */
   transform: translateX(50%); /* Corrige o posicionamento central */
   width: 380px;
   max-height: 500px;
@@ -1215,7 +1215,7 @@
 @media (max-width: 480px) {
   .dropdown-panel {
     width: 300px;
-    right: -20px;
+    right: 145px;
   }
   
   .dropdown-header {
