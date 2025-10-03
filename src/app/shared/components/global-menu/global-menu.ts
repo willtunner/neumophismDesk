@@ -5,11 +5,12 @@ import { GlobalMenuService } from '../../../services/global-menu';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ThemeService } from '../../../services/theme';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-global-menu',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './global-menu.html',
   styleUrls: ['./global-menu.css']
 })

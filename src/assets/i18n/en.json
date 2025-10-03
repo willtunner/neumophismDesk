@@ -1,0 +1,44 @@
+{
+  "HEADER": {
+    "TITLE": "Helpdesk System",
+    "HOME": "Home",
+    "PROFILE": "Profile",
+    "SETTINGS": "Settings",
+    "DASHBOARD": "Dashboard",
+    "USERS": "Users",
+    "PRODUCTS": "Products",
+    "REPORTS": "Reports",
+    "HELP": "Help"
+  },
+  "MESSAGES": {
+    "TITLE": "Messages",
+    "EMPTY": "No messages",
+    "VIEW_ALL": "View all messages"
+  },
+  "NOTIFICATIONS": {
+    "TITLE": "Notifications",
+    "EMPTY": "No notifications",
+    "VIEW_ALL": "View all notifications"
+  },
+  "CHART": {
+    "TITLE": "Ticket Distribution by Station",
+    "SUBTITLE": "Click slices to view details",
+    "SOURCE": "Source: Internal system"
+  },
+  "COMMON": {
+    "LANGUAGE": "Language",
+    "PORTUGUESE": "Portuguese",
+    "SPANISH": "Spanish",
+    "ENGLISH": "English",
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "VIEW": "View",
+    "SEARCH": "Search",
+    "LOADING": "Loading...",
+    "HOME": "Home",
+    "CLOSE": "Close",
+    "LOGOUT": "Logout"
+  }
+}

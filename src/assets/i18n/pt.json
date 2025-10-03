@@ -1,0 +1,44 @@
+{
+  "HEADER": {
+    "TITLE": "Sistema de Helpdesk",
+    "HOME": "Início",
+    "PROFILE": "Perfil",
+    "SETTINGS": "Configurações",
+    "DASHBOARD": "Dashboard",
+    "USERS": "Usuários",
+    "PRODUCTS": "Produtos",
+    "REPORTS": "Relatórios",
+    "HELP": "Ajuda"
+  },
+  "MESSAGES": {
+    "TITLE": "Mensagens",
+    "EMPTY": "Nenhuma mensagem",
+    "VIEW_ALL": "Ver todas as mensagens"
+  },
+  "NOTIFICATIONS": {
+    "TITLE": "Notificações",
+    "EMPTY": "Nenhuma notificação",
+    "VIEW_ALL": "Ver todas as notificações"
+  },
+  "CHART": {
+    "TITLE": "Distribuição de Chamados por Posto",
+    "SUBTITLE": "Clique nas fatias para ver detalhes",
+    "SOURCE": "Fonte: Sistema interno"
+  },
+  "COMMON": {
+    "LANGUAGE": "Idioma",
+    "PORTUGUESE": "Português",
+    "SPANISH": "Español",
+    "ENGLISH": "English",
+    "SAVE": "Salvar",
+    "CANCEL": "Cancelar",
+    "DELETE": "Excluir",
+    "EDIT": "Editar",
+    "VIEW": "Visualizar",
+    "SEARCH": "Pesquisar",
+    "LOADING": "Carregando...",
+    "HOME": "Inicial",
+    "CLOSE": "Fechar",
+    "LOGOUT": "Sair"
+  }
+}

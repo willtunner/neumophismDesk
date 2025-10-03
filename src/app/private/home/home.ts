@@ -16,6 +16,7 @@ import { RichTextConfig } from '../../interfaces/rich-text-config.interface';
 import { StatusCards } from '../../shared/components/status-cards/status-cards';
 import { LineChart } from '../../shared/components/line-chart/line-chart';
 import { PieChart } from '../../shared/components/pie-chart/pie-chart';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,8 @@ import { PieChart } from '../../shared/components/pie-chart/pie-chart';
     RichTextDynamicComponent,
     StatusCards,
     LineChart,
-    PieChart
+    PieChart,
+    TranslateModule
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
@@ -231,6 +233,7 @@ richTextConfigs = {
     private themeService: ThemeService,
     private fb: FormBuilder,
     private validatorsService: InputValidatorsService,
+    private translate: TranslateService
   ) {
     // Inicializa o formulário reativo com TODOS os controles
     this.dynamicForm = this.fb.group({
@@ -306,6 +309,8 @@ richTextConfigs = {
     }
     return '<p>No rich text content yet.</p>';
   }
+
+  
 
   // NOVO: Submissão do formulário Rich Text
   submitRichTextForm() {

@@ -1,0 +1,44 @@
+{
+  "HEADER": {
+    "TITLE": "Sistema de Helpdesk",
+    "HOME": "Inicio",
+    "PROFILE": "Perfil",
+    "SETTINGS": "Configuraciones",
+    "DASHBOARD": "Dashboard",
+    "USERS": "Usuarios",
+    "PRODUCTS": "Productos",
+    "REPORTS": "Reportes",
+    "HELP": "Ayuda"
+  },
+  "MESSAGES": {
+    "TITLE": "Mensajes",
+    "EMPTY": "No hay mensajes",
+    "VIEW_ALL": "Ver todos los mensajes"
+  },
+  "NOTIFICATIONS": {
+    "TITLE": "Notificaciones",
+    "EMPTY": "No hay notificaciones",
+    "VIEW_ALL": "Ver todas las notificaciones"
+  },
+  "CHART": {
+    "TITLE": "Distribución de Tickets por Puesto",
+    "SUBTITLE": "Haga clic en las rebanadas para ver detalles",
+    "SOURCE": "Fuente: Sistema interno"
+  },
+  "COMMON": {
+    "LANGUAGE": "Idioma",
+    "PORTUGUESE": "Portugués",
+    "SPANISH": "Español",
+    "ENGLISH": "Inglés",
+    "SAVE": "Guardar",
+    "CANCEL": "Cancelar",
+    "DELETE": "Eliminar",
+    "EDIT": "Editar",
+    "VIEW": "Ver",
+    "SEARCH": "Buscar",
+    "LOADING": "Cargando...",
+    "HOME": "Inicio",
+    "CLOSE": "Cerrar",
+    "LOGOUT": "Cerrar sesión"
+  }
+}

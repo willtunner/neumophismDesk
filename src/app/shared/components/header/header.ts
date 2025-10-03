@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { GlobalMenuService } from '../../../services/global-menu';
 import { Subscription, filter } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 interface Language {
   code: string;
@@ -31,7 +32,7 @@ interface Notification {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
@@ -138,7 +139,8 @@ export class Header implements OnInit, OnDestroy {
 
   constructor(
     private globalMenuService: GlobalMenuService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -251,8 +253,13 @@ export class Header implements OnInit, OnDestroy {
     return selectedLang ? selectedLang.flag : this.languages[0].flag;
   }
 
-  onLanguageChange() {
-    console.log('Idioma alterado para:', this.selectedLanguage);
+  changeLanguage(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    if (target && target.value) {
+      const lang = target.value;
+      this.translate.use(lang);
+      console.log('Idioma alterado para:', lang);
+    }
   }
 
   toggleGlobalMenu() {
