@@ -1,0 +1,21 @@
+<div class="cards-container">
+    <div class="neu-card" *ngFor="let card of cards">
+      
+      <!-- Container principal com efeito de baixo relevo -->
+      <div class="card-content-wrapper">
+        
+        <!-- Linha superior: SVG + Número -->
+        <div class="card-top-row">
+          <div class="card-icon" [style.background]="card.color">
+            <span class="material-icons icon-tilt">{{ card.icon }}</span>
+          </div>
+          <span class="card-count">{{ card.count }}</span>
+        </div>
+  
+        <!-- Texto abaixo, centralizado e próximo aos elementos acima -->
+        <div class="card-title">{{ card.title }}</div>
+        
+      </div>
+      
+    </div>
+  </div>

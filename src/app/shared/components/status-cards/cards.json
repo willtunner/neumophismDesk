@@ -1,0 +1,18 @@
+[
+    {
+      "imageUrl": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%23a2b1ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/></svg>",
+      "title": "Projetos Arquitetônicos",
+      "description": "Modelos de projetos modernos e adaptáveis com foco em iluminação e ventilação natural."
+    },
+    {
+      "imageUrl": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%23ffa94d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 20l9-5-9-5-9 5 9 5z'/><path d='M12 12V4l9 5-9 5-9-5 9-5z'/></svg>",
+      "title": "Modelos 3D",
+      "description": "Visualizações realistas para apresentação de projetos a clientes e investidores."
+    },
+    {
+      "imageUrl": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%23ff6b6b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/><polyline points='7 10 12 15 17 10'/><line x1='12' y1='15' x2='12' y2='3'/></svg>",
+      "title": "Upload e Armazenamento",
+      "description": "Gerencie seus arquivos de forma prática e segura, com integração total ao Supabase."
+    }
+  ]
+  

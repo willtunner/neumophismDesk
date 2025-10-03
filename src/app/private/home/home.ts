@@ -16,6 +16,7 @@ import { RichTextConfig } from '../../interfaces/rich-text-config.interface';
 import { Header } from '../../shared/components/header/header';
 import { GlobalMenuComponent } from '../../shared/components/global-menu/global-menu';
 import { GlobalMenuService } from '../../services/global-menu';
+import { StatusCards } from '../../shared/components/status-cards/status-cards';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ import { GlobalMenuService } from '../../services/global-menu';
     ReactiveFormsModule, 
     InputDynamicComponent, 
     CheckboxDynamic,
-    RichTextDynamicComponent
+    RichTextDynamicComponent,
+    StatusCards
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
