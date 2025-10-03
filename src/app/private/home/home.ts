@@ -13,10 +13,8 @@ import { CheckboxConfig } from '../../interfaces/checkbox-config.interface';
 import { CheckboxLayout, CheckboxSelection } from '../../enuns/checkbox-types.enum';
 import { RichTextDynamicComponent } from '../../shared/components/rich-text-dynamic/rich-text-dynamic';
 import { RichTextConfig } from '../../interfaces/rich-text-config.interface';
-import { Header } from '../../shared/components/header/header';
-import { GlobalMenuComponent } from '../../shared/components/global-menu/global-menu';
-import { GlobalMenuService } from '../../services/global-menu';
 import { StatusCards } from '../../shared/components/status-cards/status-cards';
+import { LineChart } from '../line-chart/line-chart';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +26,8 @@ import { StatusCards } from '../../shared/components/status-cards/status-cards';
     InputDynamicComponent, 
     CheckboxDynamic,
     RichTextDynamicComponent,
-    StatusCards
+    StatusCards,
+    LineChart
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
