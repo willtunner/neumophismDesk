@@ -69,7 +69,7 @@
 <div class="rich-text-dynamic-container" [class.error]="isInvalid">
   
   <div class="input-group" [class.focused]="focused" [class.has-value]="hasValue">
-    <label [class.focused]="focused || !empty">{{ config?.placeholder }}</label>
+    <label [class.focused]="focused || !empty">{{ config.placeholder }}</label>
 
     <div class="input-icon">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" *ngIf="showImage">
@@ -83,8 +83,6 @@
 
     <!-- Wrapper principal COM CONTROLE DE LARGURA -->
     <div class="quill-wrapper" [style.max-width]="'100%'">
-      
-
       <!-- Editor -->
       <div *ngIf="!isViewMode" class="editor-container">
         <quill-editor
@@ -92,7 +90,7 @@
           [ngModel]="value"
           (ngModelChange)="onContentChange($event)"
           [modules]="quillModules"
-          [placeholder]="config?.placeholder!"
+          [placeholder]="config.placeholder"
           [styles]="editorStyles"
           [readOnly]="disabled"
           (onFocus)="onFocus()"

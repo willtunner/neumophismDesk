@@ -47,7 +47,7 @@
     grid-template-columns: 1fr;
     gap: 20px;
     margin-bottom: 20px;
-    max-width: 100%;
+    max-width: 380px;
   }
   
   .home-container {
