@@ -39,6 +39,7 @@ interface Notification {
 export class Header implements OnInit, OnDestroy {
   private menuSubscription!: Subscription;
   private routerSubscription!: Subscription;
+  private translateSubscription!: Subscription;
   
   isMenuOpen = false;
   currentRouteTitle = 'Home';
@@ -150,12 +151,19 @@ export class Header implements OnInit, OnDestroy {
       }
     );
 
+    // Escuta mudanças de rota
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.updateRouteTitle();
       });
 
+    // Escuta mudanças de idioma
+    this.translateSubscription = this.translate.onLangChange.subscribe(() => {
+      this.updateRouteTitle();
+    });
+
+    // Atualiza o título inicial
     this.updateRouteTitle();
   }
 
@@ -227,18 +235,29 @@ export class Header implements OnInit, OnDestroy {
     const url = this.router.url;
     const routeName = url.split('/')[1] || 'home';
     
-    const routeTitles: { [key: string]: string } = {
-      'home': 'Home',
-      'profile': 'Perfil',
-      'settings': 'Configurações',
-      'dashboard': 'Dashboard',
-      'users': 'Usuários',
-      'products': 'Produtos',
-      'reports': 'Relatórios',
-      'help': 'Ajuda'
+    // Mapeia os nomes das rotas para as chaves de tradução
+    const routeTranslationKeys: { [key: string]: string } = {
+      'home': 'HEADER.HOME',
+      'profile': 'HEADER.PROFILE',
+      'settings': 'HEADER.SETTINGS',
+      'dashboard': 'HEADER.DASHBOARD',
+      'users': 'HEADER.USERS',
+      'products': 'HEADER.PRODUCTS',
+      'reports': 'HEADER.REPORTS',
+      'help': 'HEADER.HELP'
     };
 
-    this.currentRouteTitle = routeTitles[routeName] || this.formatRouteName(routeName);
+    const translationKey = routeTranslationKeys[routeName];
+    
+    if (translationKey) {
+      // Usa a tradução se a chave existir
+      this.translate.get(translationKey).subscribe((translatedTitle: string) => {
+        this.currentRouteTitle = translatedTitle;
+      });
+    } else {
+      // Fallback para formatação do nome da rota
+      this.currentRouteTitle = this.formatRouteName(routeName);
+    }
   }
 
   formatRouteName(routeName: string): string {
@@ -257,8 +276,12 @@ export class Header implements OnInit, OnDestroy {
     const target = event.target as HTMLSelectElement;
     if (target && target.value) {
       const lang = target.value;
+      this.selectedLanguage = lang;
       this.translate.use(lang);
       console.log('Idioma alterado para:', lang);
+      
+      // Atualiza o título da rota quando o idioma muda
+      this.updateRouteTitle();
     }
   }
 
@@ -272,6 +295,9 @@ export class Header implements OnInit, OnDestroy {
     }
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
+    }
+    if (this.translateSubscription) {
+      this.translateSubscription.unsubscribe();
     }
   }
 }
