@@ -14,7 +14,8 @@ import { CheckboxLayout, CheckboxSelection } from '../../enuns/checkbox-types.en
 import { RichTextDynamicComponent } from '../../shared/components/rich-text-dynamic/rich-text-dynamic';
 import { RichTextConfig } from '../../interfaces/rich-text-config.interface';
 import { StatusCards } from '../../shared/components/status-cards/status-cards';
-import { LineChart } from '../line-chart/line-chart';
+import { LineChart } from '../../shared/components/line-chart/line-chart';
+import { PieChart } from '../../shared/components/pie-chart/pie-chart';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,8 @@ import { LineChart } from '../line-chart/line-chart';
     CheckboxDynamic,
     RichTextDynamicComponent,
     StatusCards,
-    LineChart
+    LineChart,
+    PieChart
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
