@@ -82,6 +82,37 @@
 }
 
 /* === Ajuste visual para RICH TEXT com ícone === */
+/* Container do editor */
+.editor-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Garantir que todos os elementos filhos respeitem o container */
+::ng-deep .quill-editor .ql-container .ql-editor * {
+  max-width: 100% !important;
+}
+
+/* Prevenir scroll horizontal */
+::ng-deep .quill-editor .ql-container {
+  resize: none !important;
+}
+
+/* Estilo específico para parágrafos longos */
+::ng-deep .quill-editor .ql-editor p {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  margin-bottom: 12px;
+}
+
+/* Para listas */
+::ng-deep .quill-editor .ql-editor ul,
+::ng-deep .quill-editor .ql-editor ol {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
 .input-group .quill-wrapper {
   margin-left: 35px;
   margin-top: 15px;

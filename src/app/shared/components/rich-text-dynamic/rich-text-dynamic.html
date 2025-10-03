@@ -81,12 +81,12 @@
       </svg>
     </div>
 
-    <!-- Wrapper principal -->
-    <div class="quill-wrapper">
+    <!-- Wrapper principal COM CONTROLE DE LARGURA -->
+    <div class="quill-wrapper" [style.max-width]="'100%'">
       
 
       <!-- Editor -->
-      <div *ngIf="!isViewMode">
+      <div *ngIf="!isViewMode" class="editor-container">
         <quill-editor
           class="quill-editor"
           [ngModel]="value"
