@@ -349,6 +349,7 @@ body {
   .page-container {
     margin-top: 110px;
     padding: 15px;
+    min-width: 330px;
   }
 }
 
@@ -386,7 +387,6 @@ body {
   .page-container {
     margin-top: 90px;
     padding: 10px 8px;
-    min-width: 330px;
   }
   
   .neu-container {
@@ -429,6 +429,7 @@ body {
   .page-container {
     margin-top: 80px;
     padding: 8px 6px;
+    min-width: 330px;
   }
   
   .neu-container {

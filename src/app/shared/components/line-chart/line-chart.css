@@ -84,7 +84,154 @@
   fill: var(--text-primary) !important;
 }
 
-/* ========== RESPONSIVIDADE MELHORADA ========== */
+/* ========== ESTILOS DA TABELA DE DADOS ========== */
+.neu-table-container {
+  margin-top: 30px;
+  padding: 25px;
+  background: var(--bg-primary);
+  border-radius: 20px;
+  box-shadow: 
+    15px 15px 40px var(--shadow-light),
+    -15px -15px 40px var(--shadow-dark);
+  overflow-x: auto;
+  transition: all 0.3s ease;
+}
+
+.table-title {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.neu-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 15px;
+  overflow: hidden;
+  background: var(--bg-primary);
+  box-shadow:
+    inset 5px 5px 10px var(--shadow-light),
+    inset -5px -5px 10px var(--shadow-dark);
+  min-width: 600px;
+}
+
+.neu-data-table th {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 12px;
+  padding: 15px 12px;
+  text-align: center;
+  border-bottom: 2px solid var(--shadow-light);
+  position: relative;
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.neu-data-table th.month-header {
+  background: linear-gradient(145deg, var(--bg-primary), var(--shadow-dark));
+}
+
+.neu-data-table th.series-header {
+  background: linear-gradient(145deg, var(--shadow-light), var(--bg-primary));
+}
+
+.neu-data-table td {
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--shadow-light);
+  transition: all 0.2s ease;
+}
+
+.neu-data-table tr.data-row:hover td {
+  background: var(--shadow-light);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+.neu-data-table .month-cell {
+  font-weight: 600;
+  background: var(--bg-primary);
+  box-shadow: 2px 0 4px var(--shadow-light);
+}
+
+.neu-data-table .data-cell {
+  background: var(--bg-primary);
+}
+
+.neu-data-table .total-row {
+  background: linear-gradient(145deg, var(--shadow-light), var(--bg-primary));
+}
+
+.neu-data-table .total-label {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.neu-data-table .total-cell {
+  font-weight: 700;
+  font-size: 13px;
+  background: transparent;
+}
+
+/* ========== BOTÕES ========== */
+.chart-header {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.neu-button {
+  background: var(--bg-primary);
+  border: none;
+  border-radius: 20px;
+  box-shadow:
+    8px 8px 16px var(--shadow-light),
+    -8px -8px 16px var(--shadow-dark);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.neu-button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    6px 6px 12px var(--shadow-light),
+    -6px -6px 12px var(--shadow-dark);
+}
+
+.neu-button:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+}
+
+/* Garantir que a legenda fique alinhada */
+:host ::ng-deep .highcharts-legend {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-top: 10px !important;
+  padding-bottom: 5px !important;
+}
+
+:host ::ng-deep .highcharts-legend-item text {
+  fill: var(--text-primary) !important;
+  font-size: 12px !important;
+}
+
+/* ========== RESPONSIVIDADE ========== */
 
 /* Tablet: 768px - 1024px */
 @media (max-width: 1024px) {
@@ -93,8 +240,13 @@
   }
   
   .chart-wrapper {
-    height: 400px; /* Mantém altura boa para tablet */
+    height: 400px;
     padding: 18px;
+  }
+
+  .neu-table-container {
+    padding: 20px;
+    margin-top: 25px;
   }
 }
 
@@ -106,14 +258,41 @@
   }
   
   .chart-wrapper {
-    height: 450px; /* Aumenta altura para mobile */
+    height: 450px;
     padding: 15px;
     border-radius: 15px;
   }
 
-  /* Melhorias para mobile */
-  :host ::ng-deep .highcharts-container {
-    height: 100% !important;
+  .chart-header {
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .neu-button {
+    min-width: 120px;
+    padding: 8px 20px;
+    font-size: 13px;
+  }
+
+  .neu-table-container {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 15px;
+  }
+
+  .table-title {
+    font-size: 14px;
+  }
+
+  .neu-data-table {
+    min-width: 500px;
+    font-size: 11px;
+  }
+
+  .neu-data-table th,
+  .neu-data-table td {
+    padding: 10px 8px;
   }
 
   :host ::ng-deep .highcharts-legend {
@@ -135,12 +314,32 @@
   }
   
   .chart-wrapper {
-    height: 500px; /* Altura ainda maior para mobile pequeno */
+    height: 500px;
     padding: 12px;
     border-radius: 12px;
   }
 
-  /* Layout mais espaçado para mobile */
+  .neu-table-container {
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 12px;
+  }
+
+  .table-title {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  .neu-data-table {
+    min-width: 450px;
+    font-size: 10px;
+  }
+
+  .neu-data-table th,
+  .neu-data-table td {
+    padding: 8px 6px;
+  }
+
   :host ::ng-deep .highcharts-legend {
     max-height: 120px !important;
     overflow-y: auto !important;
@@ -160,12 +359,20 @@
   }
   
   .chart-wrapper {
-    height: 520px; /* Máxima altura para mobile muito pequeno */
+    height: 520px;
     padding: 10px;
     border-radius: 10px;
   }
 
-  /* Ajustes finais para mobile muito pequeno */
+  .neu-table-container {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .neu-data-table {
+    min-width: 400px;
+  }
+
   :host ::ng-deep .highcharts-legend {
     max-height: 100px !important;
   }
@@ -175,57 +382,3 @@
     text-align: center !important;
   }
 }
-
-.chart-header {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-
-/* Botão no estilo neumorphism */
-.neu-button {
-  background: var(--bg-primary);
-  border: none;
-  border-radius: 20px;
-  box-shadow:
-    8px 8px 16px var(--shadow-light),
-    -8px -8px 16px var(--shadow-dark);
-  color: var(--text-primary);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 10px 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.neu-button:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    6px 6px 12px var(--shadow-light),
-    -6px -6px 12px var(--shadow-dark);
-}
-
-.neu-button:active {
-  transform: translateY(1px);
-  box-shadow:
-    inset 4px 4px 8px var(--shadow-light),
-    inset -4px -4px 8px var(--shadow-dark);
-}
-
-/* Garantir que a legenda fique alinhada e não sobre o eixo X */
-:host ::ng-deep .highcharts-legend {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  flex-wrap: wrap !important;
-  gap: 10px !important;
-  margin-top: 10px !important;
-  padding-bottom: 5px !important;
-}
-
-/* Ajusta o texto da legenda */
-:host ::ng-deep .highcharts-legend-item text {
-  fill: var(--text-primary) !important;
-  font-size: 12px !important;
-}
-

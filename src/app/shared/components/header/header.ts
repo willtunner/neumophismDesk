@@ -94,7 +94,7 @@ export class Header implements OnInit, OnDestroy {
       message: 'Parabéns! Seu projeto "Sistema de Gestão" foi aprovado pela comissão.', 
       time: '15m atrás',
       type: 'success',
-      read: false
+      read: true
     },
     { 
       id: 3, 
@@ -110,7 +110,7 @@ export class Header implements OnInit, OnDestroy {
       message: 'Fatura referente ao mês de março foi paga e confirmada.', 
       time: '2h atrás',
       type: 'success',
-      read: false
+      read: true
     },
     { 
       id: 5, 
@@ -171,17 +171,9 @@ export class Header implements OnInit, OnDestroy {
     if (type === 'messages') {
       this.showMessages = !this.showMessages;
       this.showNotifications = false;
-      // Marcar mensagens como lidas quando abrir o dropdown
-      if (this.showMessages) {
-        this.markAllMessagesAsRead();
-      }
     } else {
       this.showNotifications = !this.showNotifications;
       this.showMessages = false;
-      // Marcar notificações como lidas quando abrir o dropdown
-      if (this.showNotifications) {
-        this.markAllNotificationsAsRead();
-      }
     }
   }
 
