@@ -1,299 +1,199 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as Highcharts from 'highcharts';
+import { TranslateModule, TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chart',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, TranslateModule],
   templateUrl: './line-chart.html',
   styleUrl: './line-chart.css'
 })
-export class LineChart implements AfterViewInit {
+export class LineChart implements AfterViewInit, OnDestroy {
   @ViewChild('chartContainer', { static: false }) chartContainer!: ElementRef;
-  private chart: Highcharts.Chart | undefined;
+  private chart?: Highcharts.Chart;
+  private langChangeSub?: Subscription;
+  private translateGetSub?: Subscription;
+  showAll = true;
+
+  constructor(private translate: TranslateService) {}
 
   ngAfterViewInit() {
-    this.initChart();
+    // Inicializa com traduções atuais
+    this.loadTranslationsAndInitChart();
+
+    // Atualiza quando o idioma muda
+    this.langChangeSub = this.translate.onLangChange.subscribe(() => {
+      this.loadTranslationsAndInitChart(true); // updateOnly = true
+    });
+
     window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   ngOnDestroy() {
-    if (this.chart) {
-      this.chart.destroy();
-    }
+    this.langChangeSub?.unsubscribe();
+    this.translateGetSub?.unsubscribe();
+    if (this.chart) this.chart.destroy();
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
 
   private handleResize() {
-    if (this.chart) {
-      setTimeout(() => {
-        this.chart?.reflow();
-      }, 100);
-    }
+    if (this.chart) setTimeout(() => this.chart?.reflow(), 100);
   }
 
-  private initChart() {
-    this.chart = Highcharts.chart(this.chartContainer.nativeElement, {
+  /** Gera cores aleatórias em hex */
+  private generateRandomColors(count: number): string[] {
+    return Array.from({ length: count }, () =>
+      `#${Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0')}`
+    );
+  }
+
+  /** Gera dados entre 2 e 40 */
+  private generateRandomMonthlyData(): number[] {
+    return Array.from({ length: 12 }, () => Math.floor(2 + Math.random() * 38));
+  }
+
+  /** Carrega traduções e inicializa/atualiza gráfico */
+  private loadTranslationsAndInitChart(updateOnly = false) {
+    // Se já houver uma inscrição anterior, cancela para evitar memory leak
+    this.translateGetSub?.unsubscribe();
+
+    this.translateGetSub = this.translate
+      .get([
+        'CHART.TITLE_LINE_CHART',
+        'CHART.SUBTITLE_LINE_CHART',
+        'CHART.Y_AXIS_LINE_CHART',
+        // fallback keys
+        'CHART.TITLE',
+        'CHART.SUBTITLE',
+        'CHART.Y_AXIS'
+      ])
+      .subscribe((trans) => {
+        const title = trans['CHART.TITLE_LINE_CHART'] || trans['CHART.TITLE'] || 'Chamados por mês';
+        const subtitle = trans['CHART.SUBTITLE_LINE_CHART'] || trans['CHART.SUBTITLE'] || 'Evolução mensal de chamados';
+        const yAxisLabel = trans['CHART.Y_AXIS_LINE_CHART'] || trans['CHART.Y_AXIS'] || 'Quantidade de chamados';
+
+        const colors = this.generateRandomColors(5);
+
+        if (updateOnly && this.chart) {
+          // Atualiza títulos e cores dinamicamente
+          this.chart.update(
+            {
+              title: { text: title },
+              subtitle: { text: subtitle },
+              yAxis: { title: { text: yAxisLabel } },
+              colors: colors
+            } as any,
+            true,
+            true
+          );
+        } else {
+          // Cria o gráfico pela primeira vez
+          this.initChart(title, subtitle, yAxisLabel, colors);
+        }
+      });
+  }
+
+  /** Inicializa o gráfico (com 'type' definido em cada série para satisfazer o TS) */
+  private initChart(titleText: string, subtitleText: string, yAxisLabel: string, colors: string[]) {
+    const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+    const options: Highcharts.Options = {
       chart: {
         type: 'line',
         backgroundColor: 'transparent',
-        style: {
-          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-        },
-        reflow: true,
-        spacing: [30, 20, 30, 20] // [top, right, bottom, left] - mais espaçamento
+        style: { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' },
+        spacing: [30, 20, 30, 20]
       },
 
       title: {
-        text: 'U.S Solar Employment Growth',
-        align: 'center', // Centralizado para mobile
-        style: {
-          color: 'var(--text-primary)',
-          fontWeight: '600',
-          fontSize: '18px'
-        },
+        text: titleText,
+        align: 'center',
+        style: { color: 'var(--text-primary)', fontWeight: '600', fontSize: '18px' },
         margin: 20
       },
 
       subtitle: {
-        text: 'By Job Category. Source: IREC.',
-        align: 'center', // Centralizado para mobile
-        style: {
-          color: 'var(--text-secondary)',
-          fontSize: '14px'
-        }
+        text: subtitleText,
+        align: 'center',
+        style: { color: 'var(--text-secondary)', fontSize: '14px' }
       },
 
       yAxis: {
-        title: {
-          text: 'Employees',
-          style: {
-            color: 'var(--text-primary)',
-            fontSize: '12px'
-          }
-        },
+        title: { text: yAxisLabel, style: { color: 'var(--text-primary)', fontSize: '12px' } },
+        min: 0,
         gridLineColor: 'var(--shadow-light)',
         gridLineDashStyle: 'Dash',
-        labels: {
-          style: {
-            color: 'var(--text-primary)',
-            fontSize: '11px'
-          }
-        }
+        labels: { style: { color: 'var(--text-primary)', fontSize: '11px' } }
       },
 
       xAxis: {
-        accessibility: {
-          rangeDescription: 'Range: 2010 to 2022'
-        },
-        labels: {
-          style: {
-            color: 'var(--text-primary)',
-            fontSize: '11px'
-          }
-        }
+        categories: months,
+        labels: { style: { color: 'var(--text-primary)', fontSize: '11px' } }
       },
 
+      // legend: {
+      //   layout: 'vertical',
+      //   align: 'right',
+      //   verticalAlign: 'middle',
+      //   itemStyle: { color: 'var(--text-primary)', fontSize: '12px' },
+      //   itemHoverStyle: { color: 'var(--accent-color)' }
+      // },
+
       legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle',
+        layout: 'horizontal',         // muda de vertical para horizontal
+        align: 'center',              // centraliza horizontalmente
+        verticalAlign: 'bottom',      // posiciona embaixo do gráfico
+        itemDistance: 15,
+        symbolHeight: 10,
+        symbolWidth: 10,
+        symbolRadius: 5,
         itemStyle: {
           color: 'var(--text-primary)',
-          fontSize: '12px'
+          fontSize: '12px',
+          fontWeight: '500'
         },
-        itemHoverStyle: {
-          color: 'var(--accent-color)'
-        },
-        itemMarginTop: 5,
-        itemMarginBottom: 5
+        itemHoverStyle: { color: 'var(--accent-color)' },
+        y: 15, // espaço extra para não colar nos meses
       },
+      
 
       plotOptions: {
         series: {
-          label: {
-            connectorAllowed: false
-          },
-          pointStart: 2010,
-          marker: {
-            enabled: true,
-            radius: 3, // Menor para mobile
-            symbol: 'circle'
-          }
+          label: { connectorAllowed: false },
+          marker: { enabled: true, radius: 3, symbol: 'circle' }
         },
-        line: {
-          lineWidth: 2 // Linha mais fina para mobile
-        }
+        line: { lineWidth: 2 }
       },
 
-      colors: [
-        '#667eea', '#ffa726', '#66bb6a', '#42a5f5', '#ff6b6b'
-      ],
+      colors: colors,
 
-      series: [{
-        name: 'Installation',
-        data: [
-          43934, 48656, 65165, 81827, 112143, 142383,
-          171533, 165174, 155157, 161454, 154610, 168960, 171558
-        ]
-      }, {
-        name: 'Manufacturing',
-        data: [
-          24916, 37941, 29742, 29851, 32490, 30282,
-          38121, 36885, 33726, 34243, 31050, 33099, 33473
-        ]
-      }, {
-        name: 'Sales',
-        data: [
-          11744, 30000, 16005, 19771, 20185, 24377,
-          32147, 30912, 29243, 29213, 25663, 28978, 30618
-        ]
-      }, {
-        name: 'Operations',
-        data: [
-          null, null, null, null, null, null, null,
-          null, 11164, 11218, 10077, 12530, 16585
-        ]
-      }, {
-        name: 'Other',
-        data: [
-          21908, 5548, 8105, 11248, 8989, 11816, 18274,
-          17300, 13053, 11906, 10073, 11471, 11648
-        ]
-      }],
+      // Aqui está a correção importante: cada série recebe `type: 'line'`
+      series: [
+        { type: 'line', name: 'Dantop', data: this.generateRandomMonthlyData() },
+        { type: 'line', name: 'Posto Km 23', data: this.generateRandomMonthlyData() },
+        { type: 'line', name: 'Sarutaia', data: this.generateRandomMonthlyData() },
+        { type: 'line', name: 'Posto Ipiranga', data: this.generateRandomMonthlyData() },
+        { type: 'line', name: 'Posto Space', data: this.generateRandomMonthlyData() }
+      ] as Highcharts.SeriesOptionsType[],
 
-      responsive: {
-        rules: [{
-          condition: {
-            maxWidth: 768
-          },
-          chartOptions: {
-            chart: {
-              spacing: [25, 15, 25, 15]
-            },
-            title: {
-              align: 'center',
-              style: {
-                fontSize: '16px'
-              },
-              margin: 15
-            },
-            subtitle: {
-              align: 'center',
-              style: {
-                fontSize: '12px'
-              }
-            },
-            legend: {
-              layout: 'horizontal',
-              align: 'center',
-              verticalAlign: 'bottom',
-              itemStyle: {
-                fontSize: '11px'
-              },
-              padding: 10,
-              margin: 10
-            },
-            plotOptions: {
-              series: {
-                marker: {
-                  radius: 2
-                }
-              },
-              line: {
-                lineWidth: 2
-              }
-            }
-          }
-        }, {
-          condition: {
-            maxWidth: 480
-          },
-          chartOptions: {
-            chart: {
-              spacing: [20, 10, 20, 10],
-              height: 450
-            },
-            title: {
-              style: {
-                fontSize: '15px'
-              },
-              margin: 10
-            },
-            legend: {
-              itemStyle: {
-                fontSize: '10px'
-              },
-              padding: 8,
-              margin: 8,
-              maxHeight: 100
-            },
-            yAxis: {
-              title: {
-                style: {
-                  fontSize: '11px'
-                }
-              },
-              labels: {
-                style: {
-                  fontSize: '10px'
-                }
-              }
-            },
-            xAxis: {
-              labels: {
-                style: {
-                  fontSize: '10px'
-                }
-              }
-            }
-          }
-        }, {
-          condition: {
-            maxWidth: 360
-          },
-          chartOptions: {
-            chart: {
-              spacing: [15, 8, 15, 8],
-              height: 480
-            },
-            title: {
-              style: {
-                fontSize: '14px'
-              },
-              margin: 8
-            },
-            subtitle: {
-              style: {
-                fontSize: '11px'
-              }
-            },
-            legend: {
-              itemStyle: {
-                fontSize: '9px'
-              },
-              padding: 5,
-              margin: 5,
-              maxHeight: 80
-            },
-            series: [{
-              name: 'Install'
-            }, {
-              name: 'Manufact'
-            }, {
-              name: 'Sales'
-            }, {
-              name: 'Operations'
-            }, {
-              name: 'Other'
-            }]
-          }
-        }]
-      },
+      credits: { enabled: false }
+    };
 
-      credits: {
-        enabled: false
-      }
-    } as any);
+    // Construir o chart
+    this.chart = Highcharts.chart(this.chartContainer.nativeElement, options as any);
+  }
+
+  toggleAllSeries() {
+    if (!this.chart) return;
+    this.showAll = !this.showAll;
+
+    this.chart.series.forEach((s) => {
+      s.setVisible(this.showAll, false);
+    });
+
+    this.chart.redraw();
   }
 }

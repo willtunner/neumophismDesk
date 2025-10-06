@@ -23,7 +23,10 @@
   "CHART": {
     "TITLE": "Distribuição de Chamados por Posto",
     "SUBTITLE": "Clique nas fatias para ver detalhes",
-    "SOURCE": "Fonte: Sistema interno"
+    "SOURCE": "Fonte: Sistema interno",
+    "TITLE_LINE_CHART": "Chamados por mês",
+    "SUBTITLE_LINE_CHART": "Exibe a quantidade média de chamados abertos por mês.",
+    "Y_AXIS_LINE_CHART": "Quantidade de chamados"
   },
   "COMMON": {
     "LANGUAGE": "Idioma",

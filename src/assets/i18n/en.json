@@ -23,7 +23,10 @@
   "CHART": {
     "TITLE": "Ticket Distribution by Station",
     "SUBTITLE": "Click slices to view details",
-    "SOURCE": "Source: Internal system"
+    "SOURCE": "Source: Internal system",
+    "TITLE_LINE_CHART": "Tickets per Month",
+    "SUBTITLE_LINE_CHART": "Displays the average number of tickets opened per month.",
+    "Y_AXIS_LINE_CHART": "Number of Tickets"
   },
   "COMMON": {
     "LANGUAGE": "Language",

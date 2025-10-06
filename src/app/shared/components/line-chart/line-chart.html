@@ -1,4 +1,10 @@
 <div class="neu-chart-container">
+  <div class="chart-header">
+    <button class="neu-button" (click)="toggleAllSeries()">
+      {{ showAll ? 'Limpar todos' : 'Exibir todos' }}
+    </button>
+  </div>
+
   <div class="chart-wrapper">
     <div #chartContainer class="chart" id="chart-container"></div>
   </div>

@@ -386,6 +386,7 @@ body {
   .page-container {
     margin-top: 90px;
     padding: 10px 8px;
+    min-width: 330px;
   }
   
   .neu-container {

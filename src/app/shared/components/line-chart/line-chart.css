@@ -175,3 +175,57 @@
     text-align: center !important;
   }
 }
+
+.chart-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+/* Botão no estilo neumorphism */
+.neu-button {
+  background: var(--bg-primary);
+  border: none;
+  border-radius: 20px;
+  box-shadow:
+    8px 8px 16px var(--shadow-light),
+    -8px -8px 16px var(--shadow-dark);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.neu-button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    6px 6px 12px var(--shadow-light),
+    -6px -6px 12px var(--shadow-dark);
+}
+
+.neu-button:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+}
+
+/* Garantir que a legenda fique alinhada e não sobre o eixo X */
+:host ::ng-deep .highcharts-legend {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-top: 10px !important;
+  padding-bottom: 5px !important;
+}
+
+/* Ajusta o texto da legenda */
+:host ::ng-deep .highcharts-legend-item text {
+  fill: var(--text-primary) !important;
+  font-size: 12px !important;
+}
+

@@ -1,0 +1,314 @@
+.neu-chart-container {
+  background: var(--bg-primary);
+  border-radius: 25px;
+  padding: 30px;
+  box-shadow: 
+    20px 20px 60px var(--shadow-light),
+    -20px -20px 60px var(--shadow-dark);
+  position: relative;
+  transition: all 0.3s ease;
+  color: var(--text-primary);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+}
+
+.neu-chart-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    25px 25px 70px var(--shadow-light),
+    -25px -25px 70px var(--shadow-dark);
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  border-radius: 20px;
+  background: var(--bg-primary);
+  box-shadow:
+    inset 8px 8px 16px var(--shadow-light),
+    inset -8px -8px 16px var(--shadow-dark);
+  padding: 20px;
+}
+
+.chart {
+  width: 100%;
+  height: 100%;
+}
+
+/* ========== ESTILIZAÇÃO PERSONALIZADA PARA HIGHCHARTS ========== */
+
+/* Fundo transparente */
+:host ::ng-deep .highcharts-background {
+  fill: transparent !important;
+}
+
+/* Títulos - cores dinâmicas para tema light/dark */
+:host ::ng-deep .highcharts-title {
+  fill: var(--text-primary) !important;
+  font-weight: 600 !important;
+  font-size: 18px !important;
+}
+
+:host ::ng-deep .highcharts-subtitle {
+  fill: var(--text-secondary) !important;
+}
+
+/* Eixos - cores dinâmicas */
+:host ::ng-deep .highcharts-axis-title {
+  fill: var(--text-primary) !important;
+}
+
+:host ::ng-deep .highcharts-axis-labels text {
+  fill: var(--text-primary) !important;
+}
+
+/* Labels de dados */
+:host ::ng-deep .highcharts-data-label text {
+  fill: var(--text-primary) !important;
+  font-weight: 500 !important;
+}
+
+/* Legenda */
+:host ::ng-deep .highcharts-legend-item text {
+  fill: var(--text-primary) !important;
+}
+
+:host ::ng-deep .highcharts-legend-item:hover text {
+  fill: var(--accent-color) !important;
+}
+
+/* Tooltip com neumorphism */
+:host ::ng-deep .highcharts-tooltip {
+  background: var(--bg-primary) !important;
+  border: none !important;
+  border-radius: 15px !important;
+  box-shadow: 
+    8px 8px 16px var(--shadow-light),
+    -8px -8px 16px var(--shadow-dark) !important;
+  color: var(--text-primary) !important;
+}
+
+:host ::ng-deep .highcharts-tooltip text {
+  fill: var(--text-primary) !important;
+}
+
+/* Grid lines */
+:host ::ng-deep .highcharts-grid-line {
+  stroke: var(--shadow-light) !important;
+  stroke-width: 1px !important;
+}
+
+/* ========== BREADCRUMBS - SEM BORDA ========== */
+
+:host ::ng-deep .highcharts-breadcrumbs-group {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Botões dos breadcrumbs SEM BORDA */
+:host ::ng-deep .highcharts-breadcrumbs-button {
+  fill: var(--bg-primary) !important;
+  stroke: none !important; /* REMOVIDA A BORDA */
+  stroke-width: 0 !important; /* REMOVIDA A ESPESSURA DA BORDA */
+  rx: 8px !important;
+  ry: 8px !important;
+  filter: drop-shadow(3px 3px 6px var(--shadow-light)) 
+          drop-shadow(-3px -3px 6px var(--shadow-dark)) !important;
+}
+
+:host ::ng-deep .highcharts-breadcrumbs-button text {
+  fill: var(--text-primary) !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+}
+
+:host ::ng-deep .highcharts-breadcrumbs-button:hover {
+  fill: var(--accent-color) !important;
+  stroke: none !important; /* SEM BORDA NO HOVER TAMBÉM */
+  filter: drop-shadow(4px 4px 8px var(--shadow-light)) 
+          drop-shadow(-4px -4px 8px var(--shadow-dark)) !important;
+}
+
+:host ::ng-deep .highcharts-breadcrumbs-button:hover text {
+  fill: white !important;
+}
+
+/* Separador dos breadcrumbs */
+:host ::ng-deep .highcharts-breadcrumbs-separator {
+  fill: var(--text-muted) !important;
+}
+
+/* ========== CORES DINÂMICAS PARA BARRAS ========== */
+
+/* Aplica o tema às barras do gráfico */
+:host ::ng-deep .highcharts-point {
+  transition: all 0.3s ease !important;
+}
+
+:host ::ng-deep .highcharts-point:hover {
+  opacity: 0.8 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ========== RESPONSIVIDADE OTIMIZADA ========== */
+
+/* Tablet: 768px - 1024px */
+@media (max-width: 1024px) {
+  .neu-chart-container {
+    padding: 25px;
+  }
+  
+  .chart-wrapper {
+    height: 450px;
+    padding: 18px;
+  }
+
+  :host ::ng-deep .highcharts-title {
+    font-size: 16px !important;
+  }
+
+  :host ::ng-deep .highcharts-breadcrumbs-button text {
+    font-size: 11px !important;
+  }
+}
+
+/* Mobile Large: 480px - 768px */
+@media (max-width: 768px) {
+  .neu-chart-container {
+    padding: 20px 15px;
+    border-radius: 18px;
+  }
+  
+  .chart-wrapper {
+    height: 500px;
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  :host ::ng-deep .highcharts-title {
+    font-size: 15px !important;
+  }
+
+  :host ::ng-deep .highcharts-subtitle {
+    font-size: 12px !important;
+  }
+
+  :host ::ng-deep .highcharts-data-label text {
+    font-size: 10px !important;
+  }
+
+  :host ::ng-deep .highcharts-breadcrumbs-button text {
+    font-size: 10px !important;
+  }
+
+  /* Ajuste dos breadcrumbs para mobile */
+  :host ::ng-deep .highcharts-breadcrumbs-group {
+    transform: scale(0.9) !important;
+    transform-origin: left top !important;
+  }
+}
+
+/* Mobile Small: até 480px */
+@media (max-width: 480px) {
+  .neu-chart-container {
+    padding: 18px 12px;
+    border-radius: 16px;
+  }
+  
+  .chart-wrapper {
+    height: 550px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  :host ::ng-deep .highcharts-title {
+    font-size: 14px !important;
+  }
+
+  :host ::ng-deep .highcharts-subtitle {
+    font-size: 11px !important;
+  }
+
+  :host ::ng-deep .highcharts-axis-labels text {
+    font-size: 9px !important;
+  }
+
+  :host ::ng-deep .highcharts-breadcrumbs-button text {
+    font-size: 9px !important;
+  }
+
+  /* Breadcrumbs ainda menores em mobile pequeno */
+  :host ::ng-deep .highcharts-breadcrumbs-group {
+    transform: scale(0.8) !important;
+  }
+}
+
+/* Mobile Extra Small: até 360px */
+@media (max-width: 360px) {
+  .neu-chart-container {
+    padding: 15px 10px;
+    border-radius: 14px;
+  }
+  
+  .chart-wrapper {
+    height: 580px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  :host ::ng-deep .highcharts-title {
+    font-size: 13px !important;
+  }
+
+  :host ::ng-deep .highcharts-subtitle {
+    font-size: 10px !important;
+  }
+
+  :host ::ng-deep .highcharts-breadcrumbs-button text {
+    font-size: 8px !important;
+  }
+
+  /* Breadcrumbs mínimos em mobile extra pequeno */
+  :host ::ng-deep .highcharts-breadcrumbs-group {
+    transform: scale(0.75) !important;
+  }
+}
+
+/* ========== MELHORIAS ESPECÍFICAS PARA TEMAS ========== */
+
+/* Garantir contraste no tema light */
+[data-theme="light"] {
+  :host ::ng-deep .highcharts-axis-labels text {
+    fill: #3d4468 !important;
+  }
+  
+  :host ::ng-deep .highcharts-data-label text {
+    fill: #3d4468 !important;
+  }
+}
+
+/* Garantir contraste no tema dark */
+[data-theme="dark"] {
+  :host ::ng-deep .highcharts-axis-labels text {
+    fill: #e4e6f0 !important;
+  }
+  
+  :host ::ng-deep .highcharts-data-label text {
+    fill: #e4e6f0 !important;
+  }
+}
+
+/* ========== ANIMAÇÕES SUAVES ========== */
+
+:host ::ng-deep .highcharts-series-group,
+:host ::ng-deep .highcharts-point {
+  transition: all 0.3s ease !important;
+}
+
+/* Efeito de hover suave nas barras */
+:host ::ng-deep .highcharts-point:hover {
+  filter: brightness(1.1) !important;
+  transform: translateY(-2px) !important;
+}

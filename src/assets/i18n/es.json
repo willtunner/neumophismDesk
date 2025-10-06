@@ -23,7 +23,10 @@
   "CHART": {
     "TITLE": "Distribución de Tickets por Puesto",
     "SUBTITLE": "Haga clic en las rebanadas para ver detalles",
-    "SOURCE": "Fuente: Sistema interno"
+    "SOURCE": "Fuente: Sistema interno",
+    "TITLE_LINE_CHART": "Llamadas por mes",
+    "SUBTITLE_LINE_CHART": "Muestra la cantidad promedio de llamadas abiertas por mes.",
+    "Y_AXIS_LINE_CHART": "Cantidad de llamadas"
   },
   "COMMON": {
     "LANGUAGE": "Idioma",

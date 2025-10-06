@@ -17,6 +17,7 @@ import { StatusCards } from '../../shared/components/status-cards/status-cards';
 import { LineChart } from '../../shared/components/line-chart/line-chart';
 import { PieChart } from '../../shared/components/pie-chart/pie-chart';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { BarChartDrilldown } from '../../shared/components/bar-chart-drilldown/bar-chart-drilldown';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +32,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     StatusCards,
     LineChart,
     PieChart,
-    TranslateModule
+    TranslateModule,
+    BarChartDrilldown
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
