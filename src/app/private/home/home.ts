@@ -8,10 +8,8 @@ import { InputDynamicComponent } from '../../shared/components/input-dynamic/inp
 import { InputType } from '../../enuns/input-types.enum';
 import { InputConfig } from '../../interfaces/input-config.interface';
 import { InputValidatorsService } from '../../services/input-validators';
-import { CheckboxDynamic } from '../../shared/components/checkbox-dynamic/checkbox-dynamic';
 import { CheckboxConfig } from '../../interfaces/checkbox-config.interface';
 import { CheckboxLayout, CheckboxSelection } from '../../enuns/checkbox-types.enum';
-import { RichTextDynamicComponent } from '../../shared/components/rich-text-dynamic/rich-text-dynamic';
 import { RichTextConfig } from '../../interfaces/rich-text-config.interface';
 import { StatusCards } from '../../shared/components/status-cards/status-cards';
 import { LineChart } from '../../shared/components/line-chart/line-chart';
@@ -27,8 +25,6 @@ import { BarChartDrilldown } from '../../shared/components/bar-chart-drilldown/b
     FormsModule, 
     ReactiveFormsModule, 
     InputDynamicComponent, 
-    CheckboxDynamic,
-    RichTextDynamicComponent,
     StatusCards,
     LineChart,
     PieChart,
