@@ -1,0 +1,201 @@
+<!-- chat.component.html -->
+<div class="chat-container" [class.client-view]="isClientView()">
+
+    <!-- Visão do Operador -->
+    @if (!isClientView()) {
+    <div class="operator-view">
+      
+      <!-- Header -->
+      <div class="chat-header neu-container">
+        <div class="header-content">
+          <h1>File de Espira - Atendimentos</h1>
+          <div class="header-stats">
+            <div class="stat-item">
+              <span class="stat-label">Na Fila:</span>
+              <span class="stat-value">{{ waitingClients() }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Operadores Livres:</span>
+              <span class="stat-value">{{ availableOperators() }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="chat-layout">
+        <!-- Painel de Operadores -->
+        <div class="operators-panel neu-container">
+          <div class="panel-header">
+            <h2>Operadores do Chat</h2>
+          </div>
+          
+          <div class="operators-list">
+            @for (operator of operators(); track operator.id) {
+            <div 
+              class="operator-item neu-button" 
+              [class]="getOperatorStatusClass(operator)"
+              (dblclick)="onOperatorDblClick(operator)"
+            >
+              <div class="operator-info">
+                <div class="operator-name">{{ operator.name }}</div>
+                <div class="operator-sector">{{ operator.sector }}</div>
+              </div>
+              <div class="operator-status">
+                <div class="status-indicator" [class]="operator.status"></div>
+                <span class="session-count">{{ operator.currentChats }}/{{ operator.maxChats }}</span>
+              </div>
+            </div>
+            }
+          </div>
+  
+          <div class="panel-actions">
+            <button class="neu-button primary full-width" (click)="masterAll()">
+              Mestrar Todos
+            </button>
+            <button class="neu-button secondary full-width" (click)="switchToClientView()">
+              Visão do Cliente
+            </button>
+          </div>
+        </div>
+  
+        <!-- Área de Chat -->
+        <div class="chat-area neu-container">
+          @if (activeChat()) {
+          <div class="chat-session">
+            <div class="session-header">
+              <div class="session-info">
+                <h3>Chat com {{ activeChat()!.clientId }}</h3>
+                <span class="session-time">
+                  {{ getSessionDuration(activeChat()!) }}
+                </span>
+              </div>
+              <button 
+                class="neu-button small danger" 
+                (click)="endChat(activeChat()!.id)"
+              >
+                Finalizar
+              </button>
+            </div>
+  
+            <div class="messages-container neu-inset">
+              @for (message of activeChat()!.messages; track message.id) {
+              <div class="message" [class]="message.type">
+                <div class="message-content">
+                  <div class="message-text">{{ message.message }}</div>
+                  <div class="message-time">
+                    {{ message.timestamp | date:'HH:mm' }}
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+  
+            <div class="message-input">
+              <input 
+                type="text" 
+                class="neu-input" 
+                placeholder="Digite sua mensagem..."
+                [value]="newMessage()"
+                (input)="newMessage.set($any($event.target).value)"
+                (keyup.enter)="sendOperatorMessage()"
+              >
+              <button 
+                class="neu-button primary" 
+                (click)="sendOperatorMessage()"
+                [disabled]="!newMessage().trim()"
+              >
+                Enviar
+              </button>
+            </div>
+          </div>
+          } @else {
+          <div class="no-chat-selected">
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+              <h3>Selecione um operador para iniciar o chat</h3>
+              <p>Dê duplo clique em um operador disponível para atender um cliente</p>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+  
+    <!-- Visão do Cliente -->
+    @if (isClientView()) {
+    <div class="client-view">
+      <div class="client-header neu-container">
+        <div class="header-content">
+          <h1>Suporte ao Cliente</h1>
+          <button class="neu-button secondary" (click)="switchToOperatorView()">
+            Visão do Operador
+          </button>
+        </div>
+      </div>
+  
+      <div class="client-chat-area neu-container">
+        @if (currentClientId()) {
+          @let clientSession = getClientSession(currentClientId());
+          @if (clientSession) {
+          <div class="chat-session">
+            <div class="session-header">
+              <div class="session-info">
+                <h3>Chat com {{ getOperatorName(clientSession.operatorId) }}</h3>
+                <span class="session-status" [class]="clientSession.status">
+                  {{ getSessionStatusText(clientSession.status) }}
+                </span>
+              </div>
+            </div>
+  
+            <div class="messages-container neu-inset">
+              @for (message of clientSession.messages; track message.id) {
+              <div class="message" [class]="message.type">
+                <div class="message-content">
+                  <div class="message-text">{{ message.message }}</div>
+                  <div class="message-time">
+                    {{ message.timestamp | date:'HH:mm' }}
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+  
+            @if (clientSession.status === 'active') {
+            <div class="message-input">
+              <input 
+                type="text" 
+                class="neu-input" 
+                placeholder="Digite sua mensagem..."
+                [value]="newMessage()"
+                (input)="newMessage.set($any($event.target).value)"
+                (keyup.enter)="sendClientMessage()"
+              >
+              <button 
+                class="neu-button primary" 
+                (click)="sendClientMessage()"
+                [disabled]="!newMessage().trim()"
+              >
+                Enviar
+              </button>
+            </div>
+            }
+          </div>
+          }
+        } @else {
+        <div class="join-queue-section">
+          <div class="welcome-message">
+            <h2>Bem-vindo ao Suporte</h2>
+            <p>Clique no botão abaixo para entrar na fila de atendimento</p>
+            <button class="neu-button primary large" (click)="joinQueue()">
+              Entrar na Fila
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
