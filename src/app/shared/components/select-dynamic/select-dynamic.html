@@ -1,9 +1,7 @@
-<!-- select-dynamic.component.html -->
 <div class="form-group" [class.error]="isInvalid">
     <div 
       class="select-group"
       [class.focused]="isFocused" 
-      [class.has-value]="hasValue"
       [class.open]="isOpen"
       (blur)="onBlur()">
   
@@ -22,7 +20,7 @@
         <div *ngIf="showImage" class="select-icon" [innerHTML]="safeIconSvg"></div>
       </div>
   
-      <!-- Label -->
+      <!-- Label SEMPRE NO TOPO - removida a classe has-value -->
       <label [for]="config.formControlName">
         {{ config.label }}
         <span *ngIf="config.required !== false" class="required-asterisk">*</span>

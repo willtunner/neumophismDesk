@@ -601,4 +601,30 @@
   margin-top: 15px;
 }
 
-/* Resto do seu CSS existente... */
+/* Asterisco vermelho no rich text */
+.rich-text-dynamic-container .input-group label .required-asterisk {
+  color: var(--error-color);
+  margin-left: 2px;
+}
+
+/* Garantir que o label do rich text tenha o mesmo estilo */
+.rich-text-dynamic-container .input-group label {
+  position: absolute;
+  left: 55px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 400;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.rich-text-dynamic-container .input-group.has-value label,
+.rich-text-dynamic-container .input-group.focused label {
+  top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  transform: translateY(0);
+}

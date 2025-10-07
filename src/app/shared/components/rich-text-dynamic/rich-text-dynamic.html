@@ -69,7 +69,11 @@
 <div class="rich-text-dynamic-container" [class.error]="isInvalid">
   
   <div class="input-group" [class.focused]="focused" [class.has-value]="hasValue">
-    <label [class.focused]="focused || !empty">{{ config.placeholder }}</label>
+    <!-- Label com asterisco vermelho quando required -->
+    <label [class.focused]="focused || !empty">
+      {{ config.placeholder }}
+      <span *ngIf="config.required !== false" class="required-asterisk">*</span>
+    </label>
 
     <div class="input-icon">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" *ngIf="showImage">
@@ -81,7 +85,7 @@
       </svg>
     </div>
 
-    <!-- Wrapper principal COM CONTROLE DE LARGURA -->
+    <!-- Wrapper principal -->
     <div class="quill-wrapper" [style.max-width]="'100%'">
       <!-- Editor -->
       <div *ngIf="!isViewMode" class="editor-container">
