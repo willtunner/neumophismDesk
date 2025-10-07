@@ -169,7 +169,7 @@
   border: 2px solid var(--bg-primary);
 }
 
-/* Botões existentes */
+/* Botão do Menu - VERSÃO DESKTOP */
 .menu-btn {
   width: auto;
   padding: clamp(6px, 0.8vw, 8px) clamp(12px, 1.5vw, 16px);
@@ -183,11 +183,17 @@
   font-size: clamp(12px, 1.2vw, 14px);
   min-height: clamp(30px, 3vw, 36px);
   flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
 .menu-btn svg {
   width: clamp(11px, 1.2vw, 14px);
   height: clamp(11px, 1.2vw, 14px);
+  flex-shrink: 0;
+}
+
+.menu-btn .menu-text {
+  transition: opacity 0.3s ease, width 0.3s ease;
 }
 
 /* IMPORTANTE: Espaço para o header fixo */
@@ -517,27 +523,73 @@
 
 /* ========== RESPONSIVIDADE AVANÇADA ========== */
 
-/* Para telas muito pequenas (menos de 400px) */
-@media (max-width: 400px) {
-  .header-container {
-    width: 95%;
+/* Para telas médias (tablets) - texto do menu começa a diminuir */
+@media (max-width: 768px) {
+  .menu-btn {
+    padding: clamp(6px, 0.8vw, 8px) clamp(8px, 1vw, 10px);
+    font-size: clamp(11px, 1vw, 12px);
+    gap: clamp(3px, 0.4vw, 4px);
   }
   
+  .menu-btn .menu-text {
+    font-size: 0.9em;
+  }
+}
+
+/* Para telas pequenas (mobile) - texto do menu desaparece */
+@media (max-width: 480px) {
   .menu-btn {
-    width: 35px !important;
-    height: 35px;
+    width: 40px !important;
+    height: 40px;
     padding: 0 !important;
-    font-size: 0;
     justify-content: center;
+    border-radius: 12px;
+  }
+  
+  .menu-btn .menu-text {
+    display: none; /* Texto desaparece completamente */
   }
   
   .menu-btn svg {
     width: 18px;
     height: 18px;
+    margin: 0;
+  }
+  
+  /* Ajuste adicional para header em mobile */
+  .header-container {
+    width: 95%;
+    padding: 10px 15px;
   }
   
   .header-content .header-text h1 {
     font-size: 1.2rem;
+  }
+  
+  .header-actions {
+    gap: 4px;
+  }
+}
+
+/* Para telas muito pequenas (menos de 360px) */
+@media (max-width: 360px) {
+  .menu-btn {
+    width: 36px !important;
+    height: 36px;
+  }
+  
+  .menu-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .header-container {
+    width: 98%;
+    padding: 8px 12px;
+  }
+  
+  .header-content .header-text h1 {
+    font-size: 1.1rem;
   }
 }
 
@@ -555,5 +607,15 @@
   .dropdown-panel {
     top: 60px;
     max-height: 60vh;
+  }
+  
+  /* Em landscape, manter o texto do menu visível se houver espaço */
+  .menu-btn .menu-text {
+    display: inline;
+    font-size: 11px;
+  }
+  
+  .menu-btn {
+    padding: 4px 8px;
   }
 }
