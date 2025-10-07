@@ -1,0 +1,214 @@
+.call-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .call-container h2 {
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  /* Linhas do formulário */
+  .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+    align-items: flex-start;
+  }
+  
+  /* Grupos combinados (select/input + botão) */
+  .form-group-combined {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .form-group-full {
+    flex: 1;
+    width: 100%;
+  }
+  
+  /* Containers para select/input com botão */
+  .select-with-button,
+  .input-with-button {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .select-with-button app-select-dynamic,
+  .input-with-button app-input-dynamic {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  /* Ações do formulário */
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--shadow-light);
+  }
+  
+  .submit-btn {
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .submit-btn svg {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+  }
+  
+  /* Ajustes para os componentes dentro dos containers combinados */
+  ::ng-deep .select-with-button .form-group,
+  ::ng-deep .input-with-button .form-group {
+    margin-bottom: 0;
+  }
+  
+  ::ng-deep .select-with-button .select-group,
+  ::ng-deep .input-with-button .input-group {
+    margin-bottom: 0;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 1024px) {
+    .form-row {
+      gap: 15px;
+    }
+    
+    .select-with-button,
+    .input-with-button {
+      gap: 8px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .call-container {
+      padding: 20px;
+    }
+    
+    .call-container h2 {
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .form-group-combined {
+      width: 100%;
+    }
+    
+    .select-with-button,
+    .input-with-button {
+      gap: 10px;
+    }
+    
+    .form-actions {
+      justify-content: center;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .call-container {
+      padding: 15px;
+    }
+    
+    .call-container h2 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+    
+    .form-row {
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .select-with-button,
+    .input-with-button {
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .select-with-button app-button-icon,
+    .input-with-button app-button-icon {
+      align-self: flex-end;
+    }
+    
+    .submit-btn {
+      padding: 12px 20px;
+      font-size: 14px;
+    }
+  }
+  
+  /* Estados de foco e hover */
+  ::ng-deep .select-with-button .select-group:focus-within,
+  ::ng-deep .input-with-button .input-group:focus-within {
+    z-index: 1;
+  }
+  
+  /* Ajuste para garantir que os asteriscos dos required apareçam */
+  ::ng-deep .required-asterisk {
+    color: var(--error-color);
+    margin-left: 2px;
+  }
+  
+  /* Preview de dados */
+  .data-preview {
+    margin-top: 30px;
+    padding: 20px;
+    background: var(--input-bg);
+    border-radius: 15px;
+    box-shadow:
+      inset 4px 4px 8px var(--shadow-light),
+      inset -4px -4px 8px var(--shadow-dark);
+  }
+  
+  .data-preview h3 {
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+  }
+  
+  .data-preview pre {
+    color: var(--text-primary);
+    font-size: 12px;
+    white-space: pre-wrap;
+    margin-bottom: 10px;
+  }
+
+  /* Estilo para campos com erro */
+::ng-deep .form-group.error .input-group,
+::ng-deep .form-group.error .select-group,
+::ng-deep .rich-text-dynamic-container.error .input-group {
+  box-shadow: 
+    inset 8px 8px 16px rgba(255, 59, 92, 0.2),
+    inset -8px -8px 16px var(--shadow-dark),
+    0 0 0 2px var(--error-color) !important;
+}
+
+/* Mensagens de erro visíveis */
+::ng-deep .error-message.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Destaque para campos obrigatórios com erro */
+::ng-deep .required-asterisk {
+  color: var(--error-color);
+}

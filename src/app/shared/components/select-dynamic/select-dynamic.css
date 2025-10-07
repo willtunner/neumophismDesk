@@ -1,0 +1,289 @@
+/* select-dynamic.component.css */
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+  }
+  
+  .select-group {
+    position: relative;
+    background: var(--input-bg);
+    border-radius: 15px;
+    box-shadow: 
+      inset 8px 8px 16px var(--shadow-light),
+      inset -8px -8px 16px var(--shadow-dark);
+    transition: all 0.3s ease;
+  }
+  
+  .select-group:focus-within,
+  .select-group.focused {
+    box-shadow: 
+      inset 4px 4px 8px var(--shadow-light),
+      inset -4px -4px 8px var(--shadow-dark);
+  }
+  
+  .select-group.open {
+    box-shadow: 
+      inset 4px 4px 8px var(--shadow-light),
+      inset -4px -4px 8px var(--shadow-dark);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  .select-group.error {
+    box-shadow: 
+      inset 8px 8px 16px rgba(255, 59, 92, 0.2),
+      inset -8px -8px 16px var(--shadow-dark),
+      0 0 0 2px var(--error-color) !important;
+  }
+  
+  .select-trigger {
+    position: relative;
+    padding: 20px 24px;
+    padding-left: 55px;
+    padding-right: 55px;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    border-radius: 15px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .select-value {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .select-value.placeholder {
+    color: var(--text-secondary);
+  }
+  
+  .select-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+  }
+  
+  .select-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .select-group:focus-within .select-icon,
+  .select-group.focused .select-icon {
+    color: var(--text-muted);
+  }
+  
+  /* Seta do dropdown */
+  .select-trigger::after {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.3s ease;
+    color: var(--text-secondary);
+  }
+  
+  .select-group.open .select-trigger::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+  
+  .select-group label {
+    position: absolute;
+    left: 55px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 400;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  
+  .select-group.has-value label,
+  .select-group.focused label,
+  .select-group.open label {
+    top: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    transform: translateY(0);
+  }
+  
+  .required-asterisk {
+    color: var(--error-color);
+  }
+  
+  /* Dropdown */
+  .select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--input-bg);
+    border-radius: 0 0 15px 15px;
+    box-shadow: 
+      0 10px 30px var(--shadow-light),
+      0 -2px 0 var(--shadow-light);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .dropdown-content {
+    padding: 8px 0;
+  }
+  
+  .select-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+  }
+  
+  .select-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .select-option.selected {
+    background: rgba(0, 200, 150, 0.1);
+    color: var(--accent-color);
+  }
+  
+  .select-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .option-checkbox {
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .neu-checkbox-small {
+    width: 16px;
+    height: 16px;
+    background: var(--bg-primary);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      inset 2px 2px 4px var(--shadow-light),
+      inset -2px -2px 4px var(--shadow-dark);
+    transition: all 0.2s ease;
+  }
+  
+  .neu-checkbox-small.checked {
+    box-shadow:
+      inset 1px 1px 2px var(--shadow-light),
+      inset -1px -1px 2px var(--shadow-dark);
+    background: var(--accent-color);
+  }
+  
+  .neu-checkbox-small svg {
+    width: 10px;
+    height: 10px;
+    color: white;
+  }
+  
+  .option-label {
+    flex: 1;
+    font-size: 14px;
+  }
+  
+  .no-options {
+    padding: 12px 24px;
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+  }
+  
+  .error-message {
+    color: var(--error-color) !important;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 8px;
+    margin-left: 20px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+  }
+  
+  .error-message.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .select-trigger {
+      padding: 18px 20px;
+      padding-left: 50px;
+      padding-right: 50px;
+      font-size: 15px;
+      min-height: 56px;
+    }
+    
+    .select-group label {
+      left: 50px;
+      font-size: 15px;
+    }
+    
+    .select-icon {
+      left: 18px;
+      width: 18px;
+      height: 18px;
+    }
+    
+    .select-trigger::after {
+      right: 18px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .select-trigger {
+      padding: 16px 18px;
+      padding-left: 45px;
+      padding-right: 45px;
+      font-size: 14px;
+      min-height: 52px;
+    }
+    
+    .select-group label {
+      left: 45px;
+      font-size: 14px;
+    }
+    
+    .select-icon {
+      left: 15px;
+      width: 16px;
+      height: 16px;
+    }
+    
+    .select-trigger::after {
+      right: 15px;
+    }
+    
+    .select-option {
+      padding: 10px 18px;
+    }
+  }

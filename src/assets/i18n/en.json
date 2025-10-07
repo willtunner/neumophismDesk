@@ -9,12 +9,26 @@
     "PRODUCTS": "Products",
     "REPORTS": "Reports",
     "HELP": "Help",
-    "CHAT":"Chat"
+    "CHAT": "Chat",
+    "CLIENTS": "Clients",
+    "COMPANIES": "Companies",
+    "CALENDAR": "Calendar",
+    "TUTORIALS": "Tutorials",
+    "CALL": "Tickets"
   },
   "MESSAGES": {
     "TITLE": "Messages",
     "EMPTY": "No messages",
     "VIEW_ALL": "View all messages"
+  },
+  "VALIDATOR-ERROR-MESSAGES": {
+    "REQUIRED": "This field is required",
+    "EMAIL": "Please enter a valid email",
+    "MINLENGTH": "Value is too short, minimum of {{requiredLength}} characters",
+    "MAXLENGTH": "Value is too long, maximum of {{requiredLength}} characters",
+    "PATTERN": "Value does not match the expected format",
+    "MIN": "Value must be at least {{min}}",
+    "MAX": "Value must be at most {{max}}"
   },
   "NOTIFICATIONS": {
     "TITLE": "Notifications",
@@ -22,12 +36,12 @@
     "VIEW_ALL": "View all notifications"
   },
   "CHART": {
-    "TITLE": "Ticket Distribution by Station",
-    "SUBTITLE": "Click slices to view details",
+    "TITLE": "Ticket Distribution by Position",
+    "SUBTITLE": "Click on slices to view details",
     "SOURCE": "Source: Internal system",
-    "TITLE_LINE_CHART": "Tickets per Month",
-    "SUBTITLE_LINE_CHART": "Displays the average number of tickets opened per month.",
-    "Y_AXIS_LINE_CHART": "Number of Tickets"
+    "TITLE_LINE_CHART": "Tickets by Month",
+    "SUBTITLE_LINE_CHART": "Shows the average number of tickets opened per month.",
+    "Y_AXIS_LINE_CHART": "Number of tickets"
   },
   "COMMON": {
     "LANGUAGE": "Language",
@@ -44,5 +58,15 @@
     "HOME": "Home",
     "CLOSE": "Close",
     "LOGOUT": "Logout"
+  },
+  "CALENDAR": {
+    "NEW_EVENT": "New event",
+    "UPDATE_EVENT": "Edit event",
+    "CALENDAR_TITLE": "Event title",
+    "DESCRIPTION": "Event description",
+    "SCHEDULE_EVENTS": "Scheduled Events",
+    "EVENTS": "event(s)",
+    "DOUBLE_CLICK_INSTRUCTION": "Double click on any day to add an event",
+    "NO_EVENTS": "No scheduled events"
   }
 }

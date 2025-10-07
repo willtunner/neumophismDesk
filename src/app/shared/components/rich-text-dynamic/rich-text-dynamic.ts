@@ -64,7 +64,8 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
 
   ngDoCheck(): void {
     if (this.control) {
-      const newErrorState = this.control.invalid && this.touched;
+      // MUDANÇA: Agora verifica touched OU dirty
+      const newErrorState = this.control.invalid && (this.touched || this.control.dirty);
       if (newErrorState !== this.errorState) {
         this.errorState = newErrorState;
         this.updateErrorMessage();
@@ -80,21 +81,16 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
   // FUNÇÃO PARA LIMPAR CONTEÚDO
   clearContent(): void {
     if (this.control) {
-      // Limpa o valor do control do componente pai
       this.control.setValue('');
       this.control.markAsTouched();
       this.control.updateValueAndValidity();
 
-      // Atualiza o valor interno do editor
       this.internalValue = '';
       this.value = '';
       this.updateCharacterCount();
 
-      // Notifica o ControlValueAccessor
       this.onChange('');
       this.onTouched();
-
-      // Força a atualização da view
       this.markAsTouched();
     }
   }
@@ -124,19 +120,18 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
         this.internalValue = value || '';
         this.value = this.internalValue;
         this.updateCharacterCount();
+        this.updateErrorMessage(); // MUDANÇA: Atualiza mensagem ao mudar valor
       }
     });
 
     this.control.statusChanges.subscribe(() => {
-      if (this.control.touched && !this.touched) {
-        this.touched = true;
-        this.updateErrorMessage();
-      }
+      this.updateErrorMessage(); // MUDANÇA: Sempre atualiza ao mudar status
     });
   }
 
   private updateErrorMessage(): void {
-    if (this.control?.invalid && this.touched) {
+    // MUDANÇA: Agora verifica touched OU dirty
+    if (this.control?.invalid && (this.touched || this.control.dirty)) {
       const errors = this.control.errors;
       if (errors) {
         this.errorMessage = getErrorMessage(errors, this.config, this.limit, this.characterCount);
@@ -155,11 +150,22 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
     this.control?.setValue(this.internalValue);
     this.control?.updateValueAndValidity();
 
+    // MUDANÇA: Marca como dirty para mostrar erros imediatamente
+    if (!this.control?.dirty) {
+      this.control?.markAsDirty();
+    }
+    
     this.updateErrorMessage();
   }
 
-  onFocus(): void { this.focused = true; }
-  onBlur(): void { this.focused = false; this.markAsTouched(); }
+  onFocus(): void { 
+    this.focused = true; 
+  }
+
+  onBlur(): void { 
+    this.focused = false; 
+    this.markAsTouched();
+  }
 
   markAsTouched(): void {
     if (!this.touched) {
@@ -169,6 +175,13 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
       this.control?.updateValueAndValidity();
       this.updateErrorMessage();
     }
+  }
+
+  // NOVO MÉTODO: Forçar validação externamente
+  validate(): void {
+    this.markAsTouched();
+    this.control?.updateValueAndValidity();
+    this.updateErrorMessage();
   }
 
   private updateCharacterCount(): void {
@@ -196,7 +209,10 @@ export class RichTextDynamicComponent implements ControlValueAccessor, OnInit, D
   }
   get hasValue(): boolean { return !this.empty; }
   get disabled(): boolean { return this.config?.disabled || false; }
-  get isInvalid(): boolean { return this.control?.invalid && this.touched || false; }
+  // MUDANÇA: Agora verifica touched OU dirty
+  get isInvalid(): boolean { 
+    return this.control?.invalid && (this.touched || this.control.dirty) || false; 
+  }
   get showCount(): boolean { return this.count || this.limit > 0; }
   get showLimit(): boolean { return this.limit > 0; }
   get isLimitExceeded(): boolean { return this.limit > 0 && this.characterCount > this.limit; }

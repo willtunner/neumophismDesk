@@ -43,8 +43,8 @@
     <!-- Lista de Eventos -->
     <div class="events-section neu-container">
         <div class="section-header">
-            <h2>Eventos Agendados</h2>
-            <span class="events-count">{{ events().length }} evento(s)</span>
+            <h2>{{ 'CALENDAR.SCHEDULE_EVENTS' | translate }}</h2>
+            <span class="events-count">{{ events().length }} {{ 'CALENDAR.EVENTS' | translate }}</span>
         </div>
 
         <div class="events-list">
@@ -91,8 +91,8 @@
                         <line x1="13" y1="11" x2="7" y2="11" />
                         <line x1="13" y1="14" x2="7" y2="14" />
                     </svg>
-                    <p>Nenhum evento agendado</p>
-                    <small>Dê dois cliques em qualquer dia para adicionar um evento</small>
+                    <p> {{ 'CALENDAR.NO_EVENTS' | translate }} </p>
+                    <small> {{ 'CALENDAR.DOUBLE_CLICK_INSTRUCTION' | translate }} </small>
                 </div>
             </div>
         </div>

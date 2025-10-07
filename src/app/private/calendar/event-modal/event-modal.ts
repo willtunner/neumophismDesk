@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { InputConfig } from '../../../interfaces/input-config.interface';
 import { InputType } from '../../../enuns/input-types.enum';
 import { InputDynamicComponent } from '../../../shared/components/input-dynamic/input-dynamic';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 export interface CalendarEvent {
   id: string;
@@ -30,7 +31,8 @@ export interface EventModalData {
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
-    InputDynamicComponent
+    InputDynamicComponent,
+    TranslateModule
   ],
   templateUrl: './event-modal.html',
   styleUrls: ['./event-modal.css']
@@ -38,57 +40,83 @@ export interface EventModalData {
 export class EventModalComponent implements OnInit {
   eventForm!: FormGroup;
   private fb = inject(FormBuilder);
-
-  // Configurações para os inputs dinâmicos
-  titleInputConfig: InputConfig = {
-    type: InputType.TEXT,
-    formControlName: 'title',
-    label: 'Título do Evento',
-    required: true,
-    minLength: 2,
-    maxLength: 100,
-    placeholder: 'Digite o título do evento',
-    customErrorMessages: {
-      required: 'O título do evento é obrigatório',
-      minlength: 'O título deve ter pelo menos 2 caracteres',
-      maxlength: 'O título não pode ter mais de 100 caracteres'
-    },
-    customIcon:`
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6z" />
-        <polyline points="12,2 12,6 16,6" />
-        <line x1="13" y1="11" x2="7" y2="11" />
-        <line x1="13" y1="14" x2="7" y2="14" />
-      </svg>
-    `
-  };
-
-  descriptionInputConfig: InputConfig = {
-    type: InputType.TEXTAREA,
-    formControlName: 'description',
-    label: 'Descrição',
-    required: true,
-    rows: 4,
-    maxLength: 500,
-    placeholder: 'Digite a descrição do evento (opcional)',
-    customErrorMessages: {
-      required: 'Please enter your full name',
-      maxlength: 'A descrição não pode ter mais de 500 caracteres'
-    },
-    customIcon: `
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M17 12a2 2 0 0 1-2 2H5l-3 3V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />
-      </svg>
-    `
-  };
+  titleInputConfig!: InputConfig;
+  descriptionInputConfig!: InputConfig;
 
   constructor(
     public dialogRef: MatDialogRef<EventModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: EventModalData
+    @Inject(MAT_DIALOG_DATA) public data: EventModalData,
+    private translate: TranslateService
   ) { }
+  
+
+  
 
   ngOnInit(): void {
     this.initializeForm();
+    this.initializeInputConfigs();
+
+    this.translate.onLangChange.subscribe(() => {
+      this.updateTranslations();
+    });
+  }
+
+  private initializeInputConfigs(): void {
+    this.titleInputConfig = {
+      type: InputType.TEXT,
+      formControlName: 'title',
+      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      required: true,
+      minLength: 2,
+      maxLength: 100,
+      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      customErrorMessages: {
+        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH'),
+        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH'),
+      },
+      customIcon: `
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6z" />
+          <polyline points="12,2 12,6 16,6" />
+          <line x1="13" y1="11" x2="7" y2="11" />
+          <line x1="13" y1="14" x2="7" y2="14" />
+        </svg>
+      `
+    };
+
+    this.descriptionInputConfig = {
+      type: InputType.TEXTAREA,
+      formControlName: 'description',
+      label: this.translate.instant('CALENDAR.DESCRIPTION'),
+      required: true,
+      rows: 4,
+      maxLength: 500,
+      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_DESCRIPTION'),
+      customErrorMessages: {
+        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+      },
+      customIcon: `
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M17 12a2 2 0 0 1-2 2H5l-3 3V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />
+        </svg>
+      `
+    };
+  }
+
+  private updateTranslations(): void {
+    this.titleInputConfig.customErrorMessages = {
+      required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+      minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
+      maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+    };
+  
+    this.descriptionInputConfig.customErrorMessages = {
+      required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+      maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 500 }),
+    };
   }
 
   private initializeForm(): void {

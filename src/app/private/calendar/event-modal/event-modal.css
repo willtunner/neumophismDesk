@@ -8,18 +8,38 @@
 
 .modal-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
+  position: relative;
   padding: 25px 30px 20px;
   border-bottom: 1px solid var(--border-color);
-  
+  gap: 50px;
+
+  .neu-emboss {
+    text-align: center;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 30px;
+    padding: 8px 20px;
+    box-shadow:
+      inset 3px 3px 6px var(--shadow-light),
+      inset -3px -3px 6px var(--shadow-dark);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 200px;
+  }
+
   h3 {
     margin: 0;
     font-size: 1.3rem;
     font-weight: 600;
     color: var(--text-primary);
   }
-  
+
   .close {
     width: 40px;
     height: 40px;
@@ -30,17 +50,18 @@
     background: var(--bg-primary);
     border: none;
     cursor: pointer;
-    box-shadow: 
+    box-shadow:
       4px 4px 8px var(--shadow-light),
       -4px -4px 8px var(--shadow-dark);
     transition: all 0.3s ease;
     position: relative;
-    
+
     /* Garantir que o SVG seja visível */
     svg {
       width: 18px;
       height: 18px;
-      stroke: var(--text-primary); /* Usar stroke em vez de color */
+      stroke: var(--text-primary);
+      /* Usar stroke em vez de color */
       stroke-width: 1.5;
       fill: none;
       display: block;
@@ -49,22 +70,22 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
-    
+
     &:hover {
-      box-shadow: 
+      box-shadow:
         inset 2px 2px 4px var(--shadow-light),
         inset -2px -2px 4px var(--shadow-dark);
-      
+
       /* Mudar a cor do ícone no hover para melhor contraste */
       svg {
         stroke: var(--accent-color);
       }
     }
-    
+
     /* Forçar a visibilidade do ícone */
     &:focus {
       outline: none;
-      
+
       svg {
         stroke: var(--accent-color);
       }
@@ -78,11 +99,12 @@
 
 .form-group {
   margin-bottom: 25px;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
 }
+
 
 .modal-actions {
   display: flex;
@@ -90,7 +112,7 @@
   justify-content: flex-end;
   padding: 20px 30px;
   border-top: 1px solid var(--border-color);
-  
+
   .neu-button {
     padding: 12px 24px;
     border: none;
@@ -101,48 +123,48 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    
+
     &.secondary {
       background: var(--bg-primary);
       color: var(--text-primary);
-      box-shadow: 
+      box-shadow:
         4px 4px 8px var(--shadow-light),
         -4px -4px 8px var(--shadow-dark);
-      
+
       &:hover:not(:disabled) {
-        box-shadow: 
+        box-shadow:
           inset 2px 2px 4px var(--shadow-light),
           inset -2px -2px 4px var(--shadow-dark);
       }
     }
-    
+
     &.primary {
       background: linear-gradient(145deg, var(--accent-color), #00a884);
       color: white;
-      box-shadow: 
+      box-shadow:
         4px 4px 8px rgba(0, 150, 136, 0.3),
         -4px -4px 8px rgba(0, 200, 180, 0.3);
-      
+
       &:hover:not(:disabled) {
-        box-shadow: 
+        box-shadow:
           inset 2px 2px 4px rgba(0, 120, 108, 0.4),
           inset -2px -2px 4px rgba(0, 180, 164, 0.4);
       }
-      
+
       &:disabled {
         opacity: 0.6;
         cursor: not-allowed;
       }
     }
-    
+
     .btn-loader {
       display: none;
     }
-    
+
     &.loading .btn-text {
       display: none;
     }
-    
+
     &.loading .btn-loader {
       display: block;
     }
@@ -159,8 +181,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive */
@@ -168,23 +195,23 @@
   .neu-modal-content {
     max-width: 100%;
   }
-  
+
   .modal-header {
     padding: 20px 25px 15px;
-    
+
     h3 {
       font-size: 1.2rem;
     }
   }
-  
+
   .modal-body {
     padding: 25px;
   }
-  
+
   .modal-actions {
     padding: 15px 25px;
     flex-direction: column-reverse;
-    
+
     .neu-button {
       width: 100%;
       justify-content: center;
@@ -196,7 +223,7 @@
   .modal-header {
     padding: 15px 20px 12px;
   }
-  
+
   .modal-body {
     padding: 20px;
   }

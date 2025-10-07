@@ -9,12 +9,26 @@
     "PRODUCTS": "Productos",
     "REPORTS": "Reportes",
     "HELP": "Ayuda",
-    "CHAT":"Chat"
+    "CHAT": "Chat",
+    "CLIENTS": "Clientes",
+    "COMPANIES": "Empresas",
+    "CALENDAR": "Calendario",
+    "TUTORIALS": "Tutoriales",
+    "CALL": "Llamados"
   },
   "MESSAGES": {
     "TITLE": "Mensajes",
     "EMPTY": "No hay mensajes",
     "VIEW_ALL": "Ver todos los mensajes"
+  },
+  "VALIDATOR-ERROR-MESSAGES": {
+    "REQUIRED": "Este campo es obligatorio",
+    "EMAIL": "Por favor, ingrese un email válido",
+    "MINLENGTH": "El valor es muy corto, mínimo de {{requiredLength}} caracteres",
+    "MAXLENGTH": "El valor es muy largo, máximo de {{requiredLength}} caracteres",
+    "PATTERN": "El valor no coincide con el formato esperado",
+    "MIN": "El valor debe ser como mínimo {{min}}",
+    "MAX": "El valor debe ser como máximo {{max}}"
   },
   "NOTIFICATIONS": {
     "TITLE": "Notificaciones",
@@ -22,12 +36,12 @@
     "VIEW_ALL": "Ver todas las notificaciones"
   },
   "CHART": {
-    "TITLE": "Distribución de Tickets por Puesto",
-    "SUBTITLE": "Haga clic en las rebanadas para ver detalles",
+    "TITLE": "Distribución de Llamados por Puesto",
+    "SUBTITLE": "Haga clic en las porciones para ver detalles",
     "SOURCE": "Fuente: Sistema interno",
-    "TITLE_LINE_CHART": "Llamadas por mes",
-    "SUBTITLE_LINE_CHART": "Muestra la cantidad promedio de llamadas abiertas por mes.",
-    "Y_AXIS_LINE_CHART": "Cantidad de llamadas"
+    "TITLE_LINE_CHART": "Llamados por mes",
+    "SUBTITLE_LINE_CHART": "Muestra la cantidad promedio de llamados abiertos por mes.",
+    "Y_AXIS_LINE_CHART": "Cantidad de llamados"
   },
   "COMMON": {
     "LANGUAGE": "Idioma",
@@ -38,11 +52,21 @@
     "CANCEL": "Cancelar",
     "DELETE": "Eliminar",
     "EDIT": "Editar",
-    "VIEW": "Ver",
+    "VIEW": "Visualizar",
     "SEARCH": "Buscar",
     "LOADING": "Cargando...",
     "HOME": "Inicio",
     "CLOSE": "Cerrar",
-    "LOGOUT": "Cerrar sesión"
+    "LOGOUT": "Salir"
+  },
+  "CALENDAR": {
+    "NEW_EVENT": "Nuevo evento",
+    "UPDATE_EVENT": "Editar evento",
+    "CALENDAR_TITLE": "Título del evento",
+    "DESCRIPTION": "Descripción del evento",
+    "SCHEDULE_EVENTS": "Eventos Programados",
+    "EVENTS": "evento(s)",
+    "DOUBLE_CLICK_INSTRUCTION": "Haga doble clic en cualquier día para agregar un evento",
+    "NO_EVENTS": "No hay eventos programados"
   }
 }

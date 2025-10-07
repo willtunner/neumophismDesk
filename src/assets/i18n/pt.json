@@ -58,5 +58,15 @@
     "HOME": "Inicial",
     "CLOSE": "Fechar",
     "LOGOUT": "Sair"
+  },
+  "CALENDAR": {
+    "NEW_EVENT":"Novo evento",
+    "UPDATE_EVENT": "Editar evento",
+    "CALENDAR_TITLE": "Titulo do evento",
+    "DESCRIPTION": "Descrição do evento.",
+    "SCHEDULE_EVENTS": "Eventos Agendados",
+    "EVENTS": "evento(s)",
+    "DOUBLE_CLICK_INSTRUCTION": "Dê dois cliques em qualquer dia para adicionar um evento",
+    "NO_EVENTS": "Nenhum evento agendado"
   }
 }

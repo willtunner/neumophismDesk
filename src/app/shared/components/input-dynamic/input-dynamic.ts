@@ -172,7 +172,8 @@ export class InputDynamicComponent implements OnInit {
   }
 
   private updateErrorMessage(): void {
-    if (this.control.invalid && this.control.touched) {
+    // MUDANÇA: Agora verifica touched OU dirty
+    if (this.control.invalid && (this.control.touched || this.control.dirty)) {
       const errors = this.control.errors;
       if (errors) {
         const firstErrorKey = Object.keys(errors)[0];
@@ -229,8 +230,14 @@ export class InputDynamicComponent implements OnInit {
 
   onBlur(): void {
     this.isFocused = false;
-    this.control.markAsTouched();
-    this.updateErrorMessage();
+    this.markAsTouched();
+  }
+
+  markAsTouched(): void {
+    if (!this.control.touched) {
+      this.control.markAsTouched();
+      this.updateErrorMessage();
+    }
   }
 
   get isTextarea(): boolean {
@@ -242,6 +249,6 @@ export class InputDynamicComponent implements OnInit {
   }
 
   get isInvalid(): boolean {
-    return this.control.invalid && this.control.touched;
+    return this.control.invalid && (this.control.touched || this.control.dirty);
   }
 }

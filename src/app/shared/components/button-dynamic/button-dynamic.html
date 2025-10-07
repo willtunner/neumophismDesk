@@ -1,0 +1,11 @@
+<button
+      type="button"
+      class="neu-button-icon"
+      [class.small]="small"
+      [class.primary]="primary"
+      [class.aligned]="aligned"
+      [disabled]="disabled"
+      (click)="onClick.emit($event)"
+      [attr.aria-label]="ariaLabel">
+      <div class="button-icon" [innerHTML]="safeIconSvg"></div>
+    </button>

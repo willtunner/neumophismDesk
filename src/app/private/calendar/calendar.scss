@@ -344,7 +344,9 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   }
 }
 
-
+.section-header {
+  margin-bottom: 20px;
+}
 
 .event-description {
   color: var(--text-secondary);
@@ -478,7 +480,7 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   .event-content-wrapper {
     padding: 16px;
     gap: 16px;
-    flex-direction: column;
+    flex-direction: row;
     align-items: stretch;
   }
   
@@ -498,7 +500,7 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   }
   
   .event-header {
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
     
     .event-actions {
