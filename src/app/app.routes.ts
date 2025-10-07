@@ -6,9 +6,9 @@ import { ChatComponent } from './private/chat/chat';
 import { Call } from './private/call/call';
 import { Companies } from './private/companies/companies';
 import { Clients } from './private/clients/clients';
-import { Calendar } from './private/calendar/calendar';
 import { Tutorials } from './private/tutorials/tutorials';
 import { Notes } from './private/notes/notes';
+import { Calendar } from './private/calendar/calendar';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

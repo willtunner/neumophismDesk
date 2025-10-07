@@ -2,13 +2,15 @@
 .login-container {
   width: 100%;
   max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .login-card {
   background: var(--bg-primary);
   border-radius: 30px;
   padding: 50px 40px;
-  box-shadow: 
+  box-shadow:
     20px 20px 60px var(--shadow-light),
     -20px -20px 60px var(--shadow-dark);
   position: relative;
@@ -33,14 +35,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 
+  box-shadow:
     8px 8px 20px var(--shadow-light),
     -8px -8px 20px var(--shadow-dark);
   transition: all 0.3s ease;
 }
 
 .neu-icon:hover {
-  box-shadow: 
+  box-shadow:
     4px 4px 10px var(--shadow-light),
     -4px -4px 10px var(--shadow-dark),
     inset 4px 4px 10px var(--shadow-light),
@@ -84,14 +86,14 @@
   position: relative;
   background: var(--input-bg);
   border-radius: 15px;
-  box-shadow: 
+  box-shadow:
     inset 8px 8px 16px var(--shadow-light),
     inset -8px -8px 16px var(--shadow-dark);
   transition: all 0.3s ease;
 }
 
 .input-group:focus-within {
-  box-shadow: 
+  box-shadow:
     inset 4px 4px 8px var(--shadow-light),
     inset -4px -4px 8px var(--shadow-dark);
 }
@@ -127,8 +129,8 @@
   transition: all 0.3s ease;
 }
 
-.input-group input:focus + label,
-.input-group input:not(:placeholder-shown) + label {
+.input-group input:focus+label,
+.input-group input:not(:placeholder-shown)+label {
   top: 8px;
   font-size: 12px;
   color: var(--text-muted);
@@ -175,7 +177,7 @@
   align-items: center;
   justify-content: center;
   color: var(--text-secondary);
-  box-shadow: 
+  box-shadow:
     4px 4px 10px var(--shadow-light),
     -4px -4px 10px var(--shadow-dark);
   transition: all 0.3s ease;
@@ -187,7 +189,7 @@
 }
 
 .password-toggle:active {
-  box-shadow: 
+  box-shadow:
     inset 2px 2px 5px var(--shadow-light),
     inset -2px -2px 5px var(--shadow-dark);
 }
@@ -248,7 +250,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 
+  box-shadow:
     3px 3px 8px var(--shadow-light),
     -3px -3px 8px var(--shadow-dark);
   transition: all 0.3s ease;
@@ -256,8 +258,8 @@
   overflow: hidden;
 }
 
-.remember-wrapper input[type="checkbox"]:checked + .checkbox-label .neu-checkbox {
-  box-shadow: 
+.remember-wrapper input[type="checkbox"]:checked+.checkbox-label .neu-checkbox {
+  box-shadow:
     inset 2px 2px 5px var(--shadow-light),
     inset -2px -2px 5px var(--shadow-dark);
 }
@@ -271,7 +273,7 @@
   transition: all 0.3s ease;
 }
 
-.remember-wrapper input[type="checkbox"]:checked + .checkbox-label .neu-checkbox svg {
+.remember-wrapper input[type="checkbox"]:checked+.checkbox-label .neu-checkbox svg {
   opacity: 1;
   transform: scale(1);
 }
@@ -301,7 +303,7 @@
   cursor: pointer;
   position: relative;
   margin-bottom: 30px;
-  box-shadow: 
+  box-shadow:
     8px 8px 20px var(--shadow-light),
     -8px -8px 20px var(--shadow-dark);
   transition: all 0.3s ease;
@@ -321,7 +323,7 @@
 
 .login-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     12px 12px 30px var(--shadow-light),
     -12px -12px 30px var(--shadow-dark);
 }
@@ -332,7 +334,7 @@
 
 .login-btn:active {
   transform: translateY(0);
-  box-shadow: 
+  box-shadow:
     inset 4px 4px 10px var(--shadow-light),
     inset -4px -4px 10px var(--shadow-dark);
 }
@@ -362,8 +364,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .login-btn.loading .btn-text {
@@ -415,7 +422,7 @@
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
-  box-shadow: 
+  box-shadow:
     6px 6px 15px var(--shadow-light),
     -6px -6px 15px var(--shadow-dark);
   transition: all 0.3s ease;
@@ -423,14 +430,14 @@
 
 .social-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     8px 8px 20px var(--shadow-light),
     -8px -8px 20px var(--shadow-dark);
 }
 
 .social-btn:active {
   transform: translateY(0);
-  box-shadow: 
+  box-shadow:
     inset 3px 3px 8px var(--shadow-light),
     inset -3px -3px 8px var(--shadow-dark);
 }
@@ -479,7 +486,7 @@
 }
 
 .form-group.error .input-group {
-  box-shadow: 
+  box-shadow:
     inset 8px 8px 16px rgba(255, 59, 92, 0.2),
     inset -8px -8px 16px var(--shadow-dark),
     0 0 0 2px var(--error-color) !important;
@@ -523,45 +530,45 @@
   .login-container {
     padding: 16px;
   }
-  
+
   .login-card {
     padding: 35px 25px;
     border-radius: 20px;
   }
-  
+
   .login-header h2 {
     font-size: 1.75rem;
   }
-  
+
   .input-group input {
     padding: 18px 20px;
     padding-left: 50px;
     font-size: 15px;
   }
-  
+
   .input-group label {
     left: 50px;
     font-size: 15px;
   }
-  
+
   .input-icon {
     left: 18px;
     width: 18px;
     height: 18px;
   }
-  
+
   .form-options {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
   }
-  
+
   .password-toggle {
     width: 32px;
     height: 32px;
     right: 12px;
   }
-  
+
   .password-toggle svg {
     width: 16px;
     height: 16px;
@@ -597,8 +604,8 @@
   cursor: pointer;
 }
 
-.input-group select:focus + label,
-.input-group select:valid + label {
+.input-group select:focus+label,
+.input-group select:valid+label {
   top: 8px;
   font-size: 12px;
   color: var(--text-muted);

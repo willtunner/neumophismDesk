@@ -29,7 +29,6 @@
             </div>
 
             <!-- Dias do mês -->
-            <!-- Dias do mês -->
             <div class="days-grid-small">
                 <div *ngFor="let day of month.days" class="day-tiny" [class.other-month]="!day.isCurrentMonth"
                     [class.today]="day.isToday" [class.has-events]="day.hasEvents" (dblclick)="openEventModal(day.date)"
@@ -37,64 +36,6 @@
                     <span class="day-number-tiny">{{ day.number }}</span>
                     <div class="event-icon" *ngIf="day.hasEvents">🎉</div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para adicionar/editar evento -->
-    <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
-        <div class="modal neu-modal" (click)="$event.stopPropagation()">
-            <div class="modal-header">
-                <h3>
-                    {{ editingEventId ? 'Editar Evento' : 'Novo Evento' }} -
-                    {{ selectedDate | date:'dd/MM/yyyy' }}
-                </h3>
-                <button class="neu-button icon close" (click)="closeModal()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                    <input type="text" class="neu-input" [(ngModel)]="newEvent.title" placeholder=" " id="event-title">
-                    <label for="event-title">Título do Evento</label>
-                    <div class="input-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14,2 14,8 20,8" />
-                            <line x1="16" y1="13" x2="8" y2="13" />
-                            <line x1="16" y1="17" x2="8" y2="17" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                    <textarea class="neu-textarea" [(ngModel)]="newEvent.description" placeholder=" " rows="3"
-                        id="event-description"></textarea>
-                    <label for="event-description">Descrição</label>
-                    <div class="input-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-actions">
-                <button class="neu-button secondary" (click)="closeModal()">
-                    Cancelar
-                </button>
-                <button class="neu-button primary" (click)="saveEvent()" [disabled]="!newEvent.title?.trim()">
-                    <span class="btn-text">{{ editingEventId ? 'Atualizar' : 'Salvar' }}</span>
-                    <div class="btn-loader">
-                        <div class="neu-spinner"></div>
-                    </div>
-                </button>
             </div>
         </div>
     </div>
@@ -108,42 +49,47 @@
 
         <div class="events-list">
             <div *ngFor="let event of sortedEvents()" class="event-item">
-                <div class="event-date">
-                    <div class="event-day">{{ event.date | date:'dd' }}</div>
-                    <div class="event-month">{{ event.date | date:'MMM' }}</div>
-                </div>
+                <!-- Container principal com efeito de baixo relevo -->
+                <div class="event-content-wrapper">
 
-                <div class="event-content">
-                    <div class="event-header">
-                        <h4 class="event-title">{{ event.title }}</h4>
-                        <div class="event-actions">
-                            <button class="icon-button edit" (click)="editEvent(event)" title="Editar">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                </svg>
-                            </button>
-                            <button class="icon-button delete" (click)="deleteEvent(event.id)" title="Excluir">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="3 6 5 6 21 6" />
-                                    <path
-                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                </svg>
-                            </button>
-                        </div>
+                    <!-- Data com efeito de baixo relevo -->
+                    <div class="event-date-neu">
+                        <div class="event-day">{{ event.date | date:'dd' }}</div>
+                        <div class="event-month">{{ event.date | date:'MMM' }}</div>
                     </div>
-                    <p class="event-description" *ngIf="event.description">{{ event.description }}</p>
-                    <span class="event-time">{{ event.date | date:'HH:mm' }}</span>
+
+                    <div class="event-details">
+                        <div class="event-header">
+                            <h4 class="event-title">{{ event.title }}</h4>
+                            <div class="event-actions">
+                                <button class="icon-button edit" (click)="editEvent(event)" title="Editar">
+                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M9 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6" />
+                                        <path d="M16.5 2.5a2.121 2.121 0 0 1 3 3L10 13l-3 1 1-3 8.5-8.5z" />
+                                    </svg>
+                                </button>
+                                <button class="icon-button delete" (click)="deleteEvent(event.id)" title="Excluir">
+                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <polyline points="3 6 5 6 17 6" />
+                                        <path
+                                            d="M15 6v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="event-description" *ngIf="event.description">{{ event.description }}</p>
+                    </div>
                 </div>
             </div>
 
             <div *ngIf="events().length === 0" class="no-events">
                 <div class="empty-state">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14,2 14,8 20,8" />
-                        <line x1="16" y1="13" x2="8" y2="13" />
-                        <line x1="16" y1="17" x2="8" y2="17" />
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" width="48"
+                        height="48">
+                        <path d="M12 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6z" />
+                        <polyline points="12,2 12,6 16,6" />
+                        <line x1="13" y1="11" x2="7" y2="11" />
+                        <line x1="13" y1="14" x2="7" y2="14" />
                     </svg>
                     <p>Nenhum evento agendado</p>
                     <small>Dê dois cliques em qualquer dia para adicionar um evento</small>

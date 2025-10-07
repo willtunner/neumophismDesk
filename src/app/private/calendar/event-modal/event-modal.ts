@@ -1,0 +1,145 @@
+import { Component, Inject, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+
+// Importe seus componentes e interfaces
+import { InputConfig } from '../../../interfaces/input-config.interface';
+import { InputType } from '../../../enuns/input-types.enum';
+import { InputDynamicComponent } from '../../../shared/components/input-dynamic/input-dynamic';
+
+export interface CalendarEvent {
+  id: string;
+  date: Date;
+  title: string;
+  description: string;
+}
+
+export interface EventModalData {
+  date: Date;
+  event: CalendarEvent | null;
+  isEdit: boolean;
+}
+
+@Component({
+  selector: 'app-event-modal',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    InputDynamicComponent
+  ],
+  templateUrl: './event-modal.html',
+  styleUrls: ['./event-modal.css']
+})
+export class EventModalComponent implements OnInit {
+  eventForm!: FormGroup;
+  private fb = inject(FormBuilder);
+
+  // Configurações para os inputs dinâmicos
+  titleInputConfig: InputConfig = {
+    type: InputType.TEXT,
+    formControlName: 'title',
+    label: 'Título do Evento',
+    required: true,
+    minLength: 2,
+    maxLength: 100,
+    placeholder: 'Digite o título do evento',
+    customErrorMessages: {
+      required: 'O título do evento é obrigatório',
+      minlength: 'O título deve ter pelo menos 2 caracteres',
+      maxlength: 'O título não pode ter mais de 100 caracteres'
+    },
+    customIcon:`
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6z" />
+        <polyline points="12,2 12,6 16,6" />
+        <line x1="13" y1="11" x2="7" y2="11" />
+        <line x1="13" y1="14" x2="7" y2="14" />
+      </svg>
+    `
+  };
+
+  descriptionInputConfig: InputConfig = {
+    type: InputType.TEXTAREA,
+    formControlName: 'description',
+    label: 'Descrição',
+    required: true,
+    rows: 4,
+    maxLength: 500,
+    placeholder: 'Digite a descrição do evento (opcional)',
+    customErrorMessages: {
+      required: 'Please enter your full name',
+      maxlength: 'A descrição não pode ter mais de 500 caracteres'
+    },
+    customIcon: `
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M17 12a2 2 0 0 1-2 2H5l-3 3V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />
+      </svg>
+    `
+  };
+
+  constructor(
+    public dialogRef: MatDialogRef<EventModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: EventModalData
+  ) { }
+
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
+    this.eventForm = this.fb.group({
+      title: [
+        this.data.isEdit && this.data.event ? this.data.event.title : '',
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
+      ],
+      description: [
+        this.data.isEdit && this.data.event ? this.data.event.description : '',
+        [Validators.maxLength(500)]
+      ]
+    });
+  }
+
+  saveEvent(): void {
+    if (this.eventForm.invalid || !this.titleControl?.value?.trim()) {
+      // Marca todos os campos como touched para mostrar erros
+      this.markFormGroupTouched();
+      return;
+    }
+
+    const formValue = this.eventForm.value;
+
+    const event: CalendarEvent = {
+      id: this.data.isEdit && this.data.event ? this.data.event.id : this.generateId(),
+      date: this.data.date,
+      title: formValue.title.trim(),
+      description: formValue.description?.trim() || ''
+    };
+
+    this.dialogRef.close(event);
+  }
+
+  private markFormGroupTouched(): void {
+    Object.keys(this.eventForm.controls).forEach(key => {
+      const control = this.eventForm.get(key);
+      control?.markAsTouched();
+    });
+  }
+
+  private generateId(): string {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  }
+
+  // Getters para facilitar o acesso no template com type casting
+  get titleControl(): FormControl {
+    return this.eventForm.get('title') as FormControl;
+  }
+
+  get descriptionControl(): FormControl {
+    return this.eventForm.get('description') as FormControl;
+  }
+}

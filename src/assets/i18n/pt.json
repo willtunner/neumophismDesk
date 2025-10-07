@@ -9,12 +9,26 @@
     "PRODUCTS": "Produtos",
     "REPORTS": "Relatórios",
     "HELP": "Ajuda",
-    "CHAT":"Chat"
+    "CHAT":"Chat",
+    "CLIENTS": "Clientes",
+    "COMPANIES": "Empresas",
+    "CALENDAR": "Calendário",
+    "TUTORIALS": "Tutoriais",
+    "CALL": "Chamados"
   },
   "MESSAGES": {
     "TITLE": "Mensagens",
     "EMPTY": "Nenhuma mensagem",
     "VIEW_ALL": "Ver todas as mensagens"
+  },
+  "VALIDATOR-ERROR-MESSAGES": {
+    "REQUIRED": "Este campo é obrigatório",
+    "EMAIL": "Por favor, insira um e-mail válido",
+    "MINLENGTH": "O valor é muito curto, mínimo de {{requiredLength}} caracteres",
+    "MAXLENGTH": "O valor é muito longo, máximo de {{requiredLength}} caracteres",
+    "PATTERN": "O valor não corresponde ao formato esperado",
+    "MIN": "O valor deve ser no mínimo {{min}}",
+    "MAX": "O valor deve ser no máximo {{max}}"
   },
   "NOTIFICATIONS": {
     "TITLE": "Notificações",

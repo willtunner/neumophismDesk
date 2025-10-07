@@ -1,6 +1,8 @@
 import { Component, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { EventModalComponent } from './event-modal/event-modal';
 
 export interface CalendarEvent {
   id: string;
@@ -8,12 +10,15 @@ export interface CalendarEvent {
   title: string;
   description: string;
 }
+
 @Component({
   selector: 'app-calendar',
   imports: [CommonModule, FormsModule],
   templateUrl: './calendar.html',
   styleUrl: './calendar.scss'
 })
+
+
 export class Calendar {
   // Signals
   currentYear = signal(new Date().getFullYear());
@@ -39,13 +44,9 @@ export class Calendar {
     );
   });
 
-  // Modal state
-  showModal = false;
-  selectedDate: Date = new Date();
-  newEvent: Partial<CalendarEvent> = {};
-  editingEventId: string | null = null;
-
   weekDaysMini = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+
+  private dialog = inject(MatDialog);
 
   ngOnInit() {
     this.loadEventsFromStorage();
@@ -104,45 +105,53 @@ export class Calendar {
 
   // Métodos de eventos
   openEventModal(date: Date): void {
-    this.selectedDate = date;
-    this.newEvent = { date };
-    this.editingEventId = null;
-    this.showModal = true;
-  }
+    const dialogRef = this.dialog.open(EventModalComponent, {
+      width: '500px',
+      maxWidth: '90vw',
+      panelClass: 'neu-modal-container',
+      data: {
+        date: date,
+        event: null,
+        isEdit: false
+      }
+    });
 
-  closeModal(): void {
-    this.showModal = false;
-    this.newEvent = {};
-    this.editingEventId = null;
-  }
-
-  saveEvent(): void {
-    if (!this.newEvent.title?.trim()) return;
-
-    const event: CalendarEvent = {
-      id: this.editingEventId || this.generateId(),
-      date: this.selectedDate,
-      title: this.newEvent.title!,
-      description: this.newEvent.description || ''
-    };
-
-    if (this.editingEventId) {
-      this.events.update(events => 
-        events.map(e => e.id === this.editingEventId ? event : e)
-      );
-    } else {
-      this.events.update(events => [...events, event]);
-    }
-
-    this.saveEventsToStorage();
-    this.closeModal();
+    dialogRef.afterClosed().subscribe((result: CalendarEvent | null) => {
+      if (result) {
+        this.saveEvent(result);
+      }
+    });
   }
 
   editEvent(event: CalendarEvent): void {
-    this.selectedDate = event.date;
-    this.newEvent = { ...event };
-    this.editingEventId = event.id;
-    this.showModal = true;
+    const dialogRef = this.dialog.open(EventModalComponent, {
+      width: '500px',
+      maxWidth: '90vw',
+      panelClass: 'neu-modal-container',
+      data: {
+        date: event.date,
+        event: event,
+        isEdit: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: CalendarEvent | null) => {
+      if (result) {
+        this.updateEvent(result);
+      }
+    });
+  }
+
+  private saveEvent(event: CalendarEvent): void {
+    this.events.update(events => [...events, event]);
+    this.saveEventsToStorage();
+  }
+
+  private updateEvent(event: CalendarEvent): void {
+    this.events.update(events => 
+      events.map(e => e.id === event.id ? event : e)
+    );
+    this.saveEventsToStorage();
   }
 
   deleteEvent(eventId: string): void {

@@ -1,0 +1,42 @@
+<div class="neu-modal-content">
+    <div class="modal-header">
+        <h3>
+            {{ data.isEdit ? 'Editar Evento' : 'Novo Evento' }} -
+            {{ data.date | date:'dd/MM/yyyy' }}
+        </h3>
+        <button class="neu-button icon close" mat-dialog-close>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="4">
+                <line x1="15" y1="5" x2="5" y2="15"></line>
+                <line x1="5" y1="5" x2="15" y2="15"></line>
+            </svg>
+        </button>
+    </div>
+
+    <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" class="modal-body">
+        <!-- Título do Evento -->
+        <app-input-dynamic
+            [config]="titleInputConfig"
+            [control]="titleControl"
+            [showImage]="true">
+        </app-input-dynamic>
+
+        <!-- Descrição do Evento -->
+        <app-input-dynamic
+            [config]="descriptionInputConfig"
+            [control]="descriptionControl"
+            [showImage]="true">
+        </app-input-dynamic>
+
+        <div class="modal-actions">
+            <button type="button" class="neu-button secondary" mat-dialog-close>
+                Cancelar
+            </button>
+            <button type="submit" class="neu-button primary" [disabled]="!eventForm.valid || !titleControl?.value?.trim()">
+                <span class="btn-text">{{ data.isEdit ? 'Atualizar' : 'Salvar' }}</span>
+                <div class="btn-loader">
+                    <div class="neu-spinner"></div>
+                </div>
+            </button>
+        </div>
+    </form>
+</div>
