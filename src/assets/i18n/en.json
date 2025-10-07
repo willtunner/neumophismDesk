@@ -8,7 +8,8 @@
     "USERS": "Users",
     "PRODUCTS": "Products",
     "REPORTS": "Reports",
-    "HELP": "Help"
+    "HELP": "Help",
+    "CHAT":"Chat"
   },
   "MESSAGES": {
     "TITLE": "Messages",
