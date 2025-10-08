@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SelectDynamicComponent } from '../../shared/components/select-dynamic/select-dynamic';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,9 @@ import { InputConfig } from '../../interfaces/input-config.interface';
 import { InputType } from '../../enuns/input-types.enum';
 import { InputDynamicComponent } from '../../shared/components/input-dynamic/input-dynamic';
 import { RichTextDynamicComponent } from '../../shared/components/rich-text-dynamic/rich-text-dynamic';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { TagsNeuComponent } from '../../shared/components/tags-neu/tags-neu';
 
 @Component({
   selector: 'app-call',
@@ -18,13 +21,21 @@ import { RichTextDynamicComponent } from '../../shared/components/rich-text-dyna
     SelectDynamicComponent, 
     ButtonDynamic, 
     InputDynamicComponent,
-    RichTextDynamicComponent
+    RichTextDynamicComponent,
+    TranslateModule,
+    TagsNeuComponent
   ],
   templateUrl: './call.html',
   styleUrl: './call.css'
 })
-export class Call {
+export class Call implements OnInit, OnDestroy {
   callForm: FormGroup;
+  private langChangeSubscription!: Subscription;
+
+  // Configurações dos componentes
+  inputConfigs: any = {};
+  selectConfigs: any = {};
+  richTextConfig!: RichTextConfig;
 
   // Ícones SVG
   readonly addIcon = `
@@ -40,138 +51,10 @@ export class Call {
     </svg>
   `;
 
-  // Configurações dos componentes
-  inputConfigs = {
-    empresa: {
-      type: InputType.TEXT,
-      formControlName: 'empresa',
-      label: 'Empresa',
-      required: true,
-      placeholder: 'Selecione a empresa',
-      iconName: 'business',
-      customErrorMessages: {
-        required: 'Selecione uma empresa'
-      }
-    } as InputConfig,
-
-    cliente: {
-      type: InputType.TEXT,
-      formControlName: 'cliente',
-      label: 'Cliente',
-      required: true,
-      placeholder: 'Selecione o cliente',
-      iconName: 'person',
-      customErrorMessages: {
-        required: 'Selecione um cliente'
-      }
-    } as InputConfig,
-
-    conexao: {
-      type: InputType.TEXT,
-      formControlName: 'conexao',
-      label: 'Conexão',
-      required: false,
-      placeholder: 'Número da conexão',
-      iconName: 'link'
-    } as InputConfig,
-
-    titulo: {
-      type: InputType.TEXT,
-      formControlName: 'titulo',
-      label: 'Título',
-      required: true,
-      placeholder: 'Digite o título',
-      iconName: 'title',
-      minLength: 2,
-      maxLength: 100,
-      customErrorMessages: {
-        required: 'Digite um título para o chamado',
-        minlength: 'O título deve ter pelo menos 2 caracteres',
-        maxlength: 'O título deve ter no máximo 100 caracteres'
-      }
-    } as InputConfig,
-
-    descricao: {
-      type: InputType.TEXTAREA,
-      formControlName: 'descricao',
-      label: 'Descrição',
-      required: true,
-      placeholder: 'Digite a descrição',
-      rows: 4,
-      minLength: 10,
-      maxLength: 500,
-      iconName: 'description',
-      customErrorMessages: {
-        required: 'Digite uma descrição para o chamado',
-        minlength: 'A descrição deve ter pelo menos 10 caracteres',
-        maxlength: 'A descrição deve ter no máximo 500 caracteres'
-      }
-    } as InputConfig
-  };
-
-  selectConfigs = {
-    empresa: {
-      formControlName: 'empresa',
-      label: 'Empresa',
-      required: true,
-      placeholder: 'Selecione a empresa',
-      options: [
-        { value: 'empresa1', label: 'Empresa A' },
-        { value: 'empresa2', label: 'Empresa B' },
-        { value: 'empresa3', label: 'Empresa C' }
-      ],
-      iconName: 'business',
-      customErrorMessages: {
-        required: 'Selecione uma empresa'
-      }
-    } as SelectConfig,
-
-    cliente: {
-      formControlName: 'cliente',
-      label: 'Cliente',
-      required: true,
-      placeholder: 'Selecione o cliente',
-      options: [
-        { value: 'cliente1', label: 'Cliente X' },
-        { value: 'cliente2', label: 'Cliente Y' },
-        { value: 'cliente3', label: 'Cliente Z' }
-      ],
-      iconName: 'person',
-      customErrorMessages: {
-        required: 'Selecione um cliente'
-      }
-    } as SelectConfig,
-
-    conexao: {
-      formControlName: 'conexao',
-      label: 'Conexão',
-      required: false,
-      placeholder: 'Tipo de conexão',
-      options: [
-        { value: 'web', label: 'Web' },
-        { value: 'mobile', label: 'Mobile' },
-        { value: 'desktop', label: 'Desktop' }
-      ],
-      iconName: 'link'
-    } as SelectConfig
-  };
-
-  richTextConfig = {
-    formControlName: 'conteudo',
-    label: 'Conteúdo',
-    required: true,
-    placeholder: 'Digite o conteúdo detalhado...',
-    minLength: 20,
-    maxLength: 500,
-    minHeight: '200px',
-    customErrorMessages: {
-      required: 'Description is required',
-      minlength: 'Description must be at least 20 characters',
-      maxlength: 'Description cannot exceed 500 characters'
-    }
-  } as RichTextConfig;
-
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder, 
+    private translate: TranslateService
+  ) {
     this.callForm = this.fb.group({
       empresa: ['', Validators.required],
       cliente: ['', Validators.required],
@@ -182,7 +65,182 @@ export class Call {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Aguarda as traduções estarem prontas antes de inicializar as configurações
+    this.translate.get(['INPUTS-FIELS.COMPANY', 'INPUTS-FIELS.CLIENT']).subscribe(() => {
+      this.initializeConfigs();
+    });
+    
+    // Inscreve-se nas mudanças de idioma
+    this.langChangeSubscription = this.translate.onLangChange.subscribe(() => {
+      this.updateTranslations();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.langChangeSubscription) {
+      this.langChangeSubscription.unsubscribe();
+    }
+  }
+
+  private initializeConfigs(): void {
+    this.updateInputConfigs();
+    this.updateSelectConfigs();
+    this.updateRichTextConfig();
+  }
+
+  private updateInputConfigs(): void {
+    this.inputConfigs = {
+      empresa: {
+        type: InputType.TEXT,
+        formControlName: 'empresa',
+        label: this.getTranslation('INPUTS-FIELS.COMPANY'),
+        required: true,
+        placeholder: this.getTranslation('INPUTS-FIELS.SELECT_COMPANY'),
+        iconName: 'business',
+        customErrorMessages: {
+          required: this.getTranslation('VALIDATOR-ERROR-MESSAGES.REQUIRED')
+        }
+      } as InputConfig,
+
+      cliente: {
+        type: InputType.TEXT,
+        formControlName: 'cliente',
+        label: this.getTranslation('INPUTS-FIELS.CLIENT'),
+        required: true,
+        placeholder: this.getTranslation('INPUTS-FIELS.SELECT_CLIENT'),
+        iconName: 'person',
+        customErrorMessages: {
+          required: this.getTranslation('VALIDATOR-ERROR-MESSAGES.REQUIRED')
+        }
+      } as InputConfig,
+
+      conexao: {
+        type: InputType.TEXT,
+        formControlName: 'conexao',
+        label: this.getTranslation('INPUTS-FIELS.CONECTION'),
+        required: false,
+        placeholder: this.getTranslation('INPUTS-FIELS.NUMBER_CONECTION_PLACEHOLDER'),
+        iconName: 'link'
+      } as InputConfig,
+
+      titulo: {
+        type: InputType.TEXT,
+        formControlName: 'titulo',
+        label: this.getTranslation('INPUTS-FIELS.TITLE'),
+        required: true,
+        placeholder: this.getTranslation('INPUTS-FIELS.PLACEHOLDER_TITLE'),
+        iconName: 'title',
+        minLength: 2,
+        maxLength: 100,
+        customErrorMessages: {
+          required: this.getTranslation('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+          minlength: this.getTranslationWithParams('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
+          maxlength: this.getTranslationWithParams('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 })
+        }
+      } as InputConfig,
+
+      descricao: {
+        type: InputType.TEXTAREA,
+        formControlName: 'descricao',
+        label: this.getTranslation('INPUTS-FIELS.DESCRIPTION'),
+        required: true,
+        placeholder: this.getTranslation('INPUTS-FIELS.PLACEHOLDER_DESCRIPTION'),
+        rows: 4,
+        minLength: 10,
+        maxLength: 500,
+        iconName: 'description',
+        customErrorMessages: {
+          required: this.getTranslation('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+          minlength: this.getTranslationWithParams('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 10 }),
+          maxlength: this.getTranslationWithParams('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 500 })
+        }
+      } as InputConfig
+    };
+  }
+
+  private updateSelectConfigs(): void {
+    this.selectConfigs = {
+      empresa: {
+        formControlName: 'empresa',
+        label: this.getTranslation('INPUTS-FIELS.COMPANY'),
+        required: true,
+        placeholder: this.getTranslation('INPUTS-FIELS.SELECT_COMPANY'),
+        options: [
+          { value: 'empresa1', label: 'Empresa A' },
+          { value: 'empresa2', label: 'Empresa B' },
+          { value: 'empresa3', label: 'Empresa C' }
+        ],
+        iconName: 'business',
+        customErrorMessages: {
+          required: this.getTranslation('VALIDATOR-ERROR-MESSAGES.REQUIRED')
+        }
+      } as SelectConfig,
+
+      cliente: {
+        formControlName: 'cliente',
+        label: this.getTranslation('INPUTS-FIELS.CLIENT'),
+        required: true,
+        placeholder: this.getTranslation('INPUTS-FIELS.SELECT_CLIENT'),
+        options: [
+          { value: 'cliente1', label: 'Cliente X' },
+          { value: 'cliente2', label: 'Cliente Y' },
+          { value: 'cliente3', label: 'Cliente Z' }
+        ],
+        iconName: 'person',
+        customErrorMessages: {
+          required: this.getTranslation('VALIDATOR-ERROR-MESSAGES.REQUIRED')
+        }
+      } as SelectConfig,
+
+      conexao: {
+        formControlName: 'conexao',
+        label: this.getTranslation('INPUTS-FIELS.CONECTION'),
+        required: false,
+        placeholder: this.getTranslation('INPUTS-FIELS.NUMBER_CONECTION_PLACEHOLDER'),
+        options: [
+          { value: 'web', label: 'Web' },
+          { value: 'mobile', label: 'Mobile' },
+          { value: 'desktop', label: 'Desktop' }
+        ],
+        iconName: 'link'
+      } as SelectConfig
+    };
+  }
+
+  private updateRichTextConfig(): void {
+    this.richTextConfig = {
+      formControlName: 'conteudo',
+      label: this.getTranslation('INPUTS-FIELS.CONTENT'),
+      required: true,
+      placeholder: this.getTranslation('INPUTS-FIELS.PLACEHOLDER_CONTENT'),
+      minLength: 20,
+      maxLength: 5000,
+      minHeight: '200px',
+      customErrorMessages: {
+        required: this.getTranslation('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        minlength: this.getTranslationWithParams('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 20 }),
+        maxlength: this.getTranslationWithParams('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 5000 })
+      }
+    } as RichTextConfig;
+  }
+
+  private updateTranslations(): void {
+    // Recria completamente as configurações para garantir que todas as traduções sejam atualizadas
+    this.updateInputConfigs();
+    this.updateSelectConfigs();
+    this.updateRichTextConfig();
+  }
+
+  // Método auxiliar para obter traduções
+  private getTranslation(key: string): string {
+    return this.translate.instant(key);
+  }
+
+  // Método auxiliar para obter traduções com parâmetros
+  private getTranslationWithParams(key: string, params: any): string {
+    return this.translate.instant(key, params);
+  }
 
   // Getters para os controles
   get empresaControl(): FormControl {
@@ -226,7 +284,7 @@ export class Call {
     if (this.callForm.valid) {
       console.log('Formulário enviado:', this.callForm.value);
     } else {
-      this.markAllAsTouchedAndDirty(); // MUDANÇA: Novo método
+      this.markAllAsTouchedAndDirty();
     }
   }
 
@@ -235,22 +293,17 @@ export class Call {
       const control = this.callForm.get(key);
       if (control) {
         control.markAsTouched();
-        control.markAsDirty(); // MUDANÇA: Marca como dirty também
+        control.markAsDirty();
         control.updateValueAndValidity();
       }
     });
 
-    // MUDANÇA: Força a validação do rich text
     this.forceRichTextValidation();
   }
 
-  // NOVO MÉTODO: Forçar validação do rich text
   private forceRichTextValidation(): void {
-    // Se você tiver uma referência ao componente rich text, pode chamar validate()
-    // Ou força a atualização do controle
     this.conteudoControl.updateValueAndValidity();
     this.conteudoControl.markAsTouched();
     this.conteudoControl.markAsDirty();
   }
-
 }

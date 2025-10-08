@@ -29,7 +29,8 @@ import { BarChartDrilldown } from '../../shared/components/bar-chart-drilldown/b
     LineChart,
     PieChart,
     TranslateModule,
-    BarChartDrilldown
+    BarChartDrilldown,
+    
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']

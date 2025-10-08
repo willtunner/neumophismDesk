@@ -238,8 +238,14 @@
 }
 
 .error-message.show {
+    display: block;
     opacity: 1;
     transform: translateY(0);
+}
+
+.form-group.error .select-group {
+    border-color: var(--error-color);
+    box-shadow: 0 0 0 2px rgba(255, 59, 92, 0.2);
 }
 
 /* Responsive */

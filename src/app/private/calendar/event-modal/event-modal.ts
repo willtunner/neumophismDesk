@@ -72,8 +72,8 @@ export class EventModalComponent implements OnInit {
       placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH'),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH'),
+        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
       customIcon: `
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">

@@ -22,13 +22,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
     provideRouter(routes),
-    NoAnimationProvider, // Provider customizado
-    
+    NoAnimationProvider,
     {
       provide: LOCALE_ID,
       useValue: 'pt-BR'
     },
-    
     importProvidersFrom(
       TranslateModule.forRoot({
         defaultLanguage: 'pt',

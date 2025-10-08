@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, AbstractControl } from '@angular/forms';
 import { SelectConfig, SelectOption } from '../../../interfaces/select-config.interface';
@@ -11,10 +11,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   templateUrl: './select-dynamic.html',
   styleUrls: ['./select-dynamic.css']
 })
-export class SelectDynamicComponent implements OnInit {
+export class SelectDynamicComponent implements OnInit, OnChanges {
   @Input() config!: SelectConfig;
   @Input() set control(abstractControl: AbstractControl) {
     this._control = abstractControl as FormControl;
+    this.setupValueChanges();
   }
   get control(): FormControl {
     return this._control;
@@ -39,9 +40,17 @@ export class SelectDynamicComponent implements OnInit {
 
   ngOnInit(): void {
     this.addEmptyOptionIfRequired();
-    this.setupValueChanges();
     this.updateIcon();
     this.updateSelectedLabels();
+    this.updateErrorMessage(); // Adiciona chamada inicial
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Se o controle mudar, atualiza as mensagens de erro
+    if (changes['control'] && !changes['control'].firstChange) {
+      this.setupValueChanges();
+      this.updateErrorMessage();
+    }
   }
 
   private addEmptyOptionIfRequired(): void {
@@ -61,18 +70,23 @@ export class SelectDynamicComponent implements OnInit {
   }
 
   private setupValueChanges(): void {
-    this.control.valueChanges.subscribe(() => {
-      this.updateSelectedLabels();
-      this.updateErrorMessage();
-    });
+    if (this.control) {
+      this.control.valueChanges.subscribe(() => {
+        this.updateSelectedLabels();
+        this.updateErrorMessage();
+      });
 
-    this.control.statusChanges.subscribe(() => {
+      this.control.statusChanges.subscribe(() => {
+        this.updateErrorMessage();
+      });
+
+      // Atualiza mensagens de erro imediatamente
       this.updateErrorMessage();
-    });
+    }
   }
 
   private updateErrorMessage(): void {
-    if (this.control.invalid && (this.control.touched || this.control.dirty)) {
+    if (this.control && this.control.invalid && (this.control.touched || this.control.dirty)) {
       const errors = this.control.errors;
       if (errors) {
         const firstErrorKey = Object.keys(errors)[0];
@@ -80,7 +94,7 @@ export class SelectDynamicComponent implements OnInit {
         if (this.config.customErrorMessages && this.config.customErrorMessages[firstErrorKey]) {
           this.errorMessage = this.config.customErrorMessages[firstErrorKey];
         } else {
-          this.errorMessage = this.getDefaultErrorMessage(firstErrorKey);
+          this.errorMessage = this.getDefaultErrorMessage(firstErrorKey, errors[firstErrorKey]);
         }
       }
     } else {
@@ -88,9 +102,11 @@ export class SelectDynamicComponent implements OnInit {
     }
   }
 
-  private getDefaultErrorMessage(errorKey: string): string {
+  private getDefaultErrorMessage(errorKey: string, errorValue?: any): string {
     const errorMessages: { [key: string]: string } = {
       'required': `${this.config.label} é obrigatório`,
+      'minlength': `Mínimo de ${errorValue?.requiredLength} caracteres`,
+      'maxlength': `Máximo de ${errorValue?.requiredLength} caracteres`,
       'invalid': `${this.config.label} é inválido`
     };
 
@@ -124,6 +140,8 @@ export class SelectDynamicComponent implements OnInit {
   }
 
   private updateSelectedLabels(): void {
+    if (!this.control) return;
+    
     const value = this.control.value;
     
     if (this.config.multiple && Array.isArray(value) && value.length > 0) {
@@ -150,18 +168,21 @@ export class SelectDynamicComponent implements OnInit {
   }
 
   markAsTouched(): void {
-    if (!this.control.touched) {
+    if (this.control && !this.control.touched) {
       this.control.markAsTouched();
-      this.updateErrorMessage();
+      this.updateErrorMessage(); // Atualiza mensagens após marcar como touched
     }
   }
 
   toggleDropdown(): void {
     this.isOpen = !this.isOpen;
+    if (!this.isOpen) {
+      this.markAsTouched(); // Marca como touched quando fecha o dropdown
+    }
   }
 
   selectOption(option: SelectOption): void {
-    if (option.disabled) return;
+    if (option.disabled || !this.control) return;
 
     if (this.config.multiple) {
       const currentValue = this.control.value || [];
@@ -181,9 +202,13 @@ export class SelectDynamicComponent implements OnInit {
     
     // Marca como touched e atualiza mensagens
     this.markAsTouched();
+    this.control.markAsDirty(); // Marca como dirty também
+    this.updateErrorMessage();
   }
 
   isSelected(option: SelectOption): boolean {
+    if (!this.control) return false;
+    
     const value = this.control.value;
     
     if (this.config.multiple) {
@@ -194,6 +219,8 @@ export class SelectDynamicComponent implements OnInit {
   }
 
   get hasValue(): boolean {
+    if (!this.control) return false;
+    
     const value = this.control.value;
     
     if (this.config.multiple) {
@@ -204,7 +231,7 @@ export class SelectDynamicComponent implements OnInit {
   }
 
   get isInvalid(): boolean {
-    return this.control.invalid && (this.control.touched || this.control.dirty);
+    return this.control && this.control.invalid && (this.control.touched || this.control.dirty);
   }
 
   get displayValue(): string {

@@ -1,115 +1,90 @@
 <div class="page-container">
-    <div class="neu-container call-container">
-      <h2>Novo Chamado</h2>
-      
-      <form [formGroup]="callForm" (ngSubmit)="onSubmit()">
-        <!-- Primeira Linha: Empresa, Cliente, Conexão -->
-        <div class="form-row">
-          <!-- Empresa -->
-          <div class="form-group-combined">
-            <div class="select-with-button">
-              <app-select-dynamic
-                [config]="selectConfigs.empresa"
-                [control]="empresaControl"
-                [showImage]="true">
-              </app-select-dynamic>
-              <app-button-dynamic
-                [iconSvg]="addIcon"
-                [small]="true"
-                [ariaLabel]="'Adicionar nova empresa'"
-                (onClick)="onAddEmpresa()">
-              </app-button-dynamic>
-            </div>
-          </div>
-  
-          <!-- Cliente -->
-          <div class="form-group-combined">
-            <div class="select-with-button">
-              <app-select-dynamic
-                [config]="selectConfigs.cliente"
-                [control]="clienteControl"
-                [showImage]="true">
-              </app-select-dynamic>
-              <app-button-dynamic
-                [iconSvg]="addIcon"
-                [small]="true"
-                [ariaLabel]="'Adicionar novo cliente'"
-                (onClick)="onAddCliente()">
-              </app-button-dynamic>
-            </div>
-          </div>
-  
-          <!-- Conexão -->
-          <div class="form-group-combined">
-            <div class="input-with-button">
-              <app-input-dynamic
-                [config]="inputConfigs.conexao"
-                [control]="conexaoControl"
-                [showImage]="true">
-              </app-input-dynamic>
-              <app-button-dynamic
-                [iconSvg]="searchIcon"
-                [small]="true"
-                [primary]="true"
-                [ariaLabel]="'Buscar conexão'"
-                (onClick)="onSearchConexao()">
-              </app-button-dynamic>
-            </div>
+  <div class="neu-container call-container">
+    <h2>{{ 'CALL_PAGE.NEW_CALL' | translate }}</h2>
+
+    <form [formGroup]="callForm" (ngSubmit)="onSubmit()">
+      <!-- Primeira Linha: Empresa, Cliente, Conexão -->
+      <div class="form-row">
+        <!-- Empresa -->
+        <div class="form-group-combined">
+          <div class="select-with-button">
+            <app-select-dynamic [config]="selectConfigs.empresa" [control]="empresaControl" [showImage]="true">
+            </app-select-dynamic>
+            <app-button-dynamic [iconSvg]="addIcon" [small]="true"
+              [ariaLabel]="('INPUTS-FIELS.ADD_NEW_COMPANY' | translate)" (onClick)="onAddEmpresa()">
+            </app-button-dynamic>
           </div>
         </div>
-  
-        <!-- Segunda Linha: Título -->
-        <div class="form-row">
-          <div class="form-group-full">
-            <app-input-dynamic
-              [config]="inputConfigs.titulo"
-              [control]="tituloControl"
-              [showImage]="true">
+
+        <!-- Cliente -->
+        <div class="form-group-combined">
+          <div class="select-with-button">
+            <app-select-dynamic [config]="selectConfigs.cliente" [control]="clienteControl" [showImage]="true">
+            </app-select-dynamic>
+            <app-button-dynamic [iconSvg]="addIcon" [small]="true"
+              [ariaLabel]="('INPUTS-FIELS.ADD_NEW_CLIENT' | translate)" (onClick)="onAddCliente()">
+            </app-button-dynamic>
+          </div>
+        </div>
+
+        <!-- Conexão -->
+        <div class="form-group-combined">
+          <div class="input-with-button">
+            <app-input-dynamic [config]="inputConfigs.conexao" [control]="conexaoControl" [showImage]="true">
             </app-input-dynamic>
+            <app-button-dynamic [iconSvg]="searchIcon" [small]="true" [primary]="true"
+              [ariaLabel]="('INPUTS-FIELS.SEARCH_CONECTION' | translate)" (onClick)="onSearchConexao()">
+            </app-button-dynamic>
           </div>
         </div>
-  
-        <!-- Terceira Linha: Descrição -->
-        <div class="form-row">
-          <div class="form-group-full">
-            <app-input-dynamic
-              [config]="inputConfigs.descricao"
-              [control]="descricaoControl"
-              [showImage]="true">
-            </app-input-dynamic>
-          </div>
-        </div>
-  
-        <!-- Quarta Linha: Rich Text -->
-        <div class="form-row">
-          <div class="form-group-full">
-            <app-rich-text-dynamic
-              [config]="richTextConfig"
-              [control]="conteudoControl"
-              [showImage]="true">
-            </app-rich-text-dynamic>
-          </div>
-        </div>
-  
-        <!-- Botão de Submit -->
-        <div class="form-actions">
-          <button type="submit" class="neu-button primary submit-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-              <polyline points="17 21 17 13 7 13 7 21"/>
-              <polyline points="7 3 7 8 15 8"/>
-            </svg>
-            Salvar Chamado
-          </button>
-        </div>
-      </form>
-  
-      <!-- Debug Preview -->
-      <div class="data-preview" *ngIf="false"> <!-- Remova *ngIf="false" para ver o preview -->
-        <h3>Dados do Formulário:</h3>
-        <pre>{{ callForm.value | json }}</pre>
-        <pre>Válido: {{ callForm.valid }}</pre>
-        <pre>Touched: {{ callForm.touched }}</pre>
       </div>
+
+      <!-- Segunda Linha: Título -->
+      <div class="form-row">
+        <div class="form-group-full">
+          <app-input-dynamic [config]="inputConfigs.titulo" [control]="tituloControl" [showImage]="true">
+          </app-input-dynamic>
+        </div>
+      </div>
+
+      <!-- Terceira Linha: Descrição -->
+      <div class="form-row">
+        <div class="form-group-full">
+          <app-input-dynamic [config]="inputConfigs.descricao" [control]="descricaoControl" [showImage]="true">
+          </app-input-dynamic>
+        </div>
+      </div>
+
+      <!-- Quarta Linha: Rich Text -->
+      <div class="form-row">
+        <div class="form-group-full">
+          <app-rich-text-dynamic [config]="richTextConfig" [control]="conteudoControl" [showImage]="true">
+          </app-rich-text-dynamic>
+        </div>
+      </div>
+
+      <app-tags-neu></app-tags-neu>
+
+      <!-- Botão de Submit -->
+      <div class="form-actions">
+        <button type="submit" class="neu-button primary submit-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+            <polyline points="17 21 17 13 7 13 7 21" />
+            <polyline points="7 3 7 8 15 8" />
+          </svg>
+          {{ 'INPUTS-FIELS.SAVE_CALL' | translate }}
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Debug Preview -->
+    <div class="data-preview" *ngIf="false"> <!-- Remova *ngIf="false" para ver o preview -->
+      <h3>Dados do Formulário:</h3>
+      <pre>{{ callForm.value | json }}</pre>
+      <pre>Válido: {{ callForm.valid }}</pre>
+      <pre>Touched: {{ callForm.touched }}</pre>
     </div>
   </div>
+</div>
