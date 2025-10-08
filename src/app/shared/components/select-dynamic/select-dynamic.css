@@ -37,7 +37,7 @@
 
 .select-trigger {
     position: relative;
-    padding: 13px;
+    padding: 16px 20px;
     padding-left: 55px;
     padding-right: 55px;
     cursor: pointer;
@@ -49,6 +49,11 @@
     min-height: 24px;
     display: flex;
     align-items: center;
+    transition: all 0.3s ease;
+}
+
+.select-trigger:hover {
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .select-value {
@@ -56,8 +61,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-top: 8px;
-    /* Compensa o label no topo */
 }
 
 .select-value.placeholder {
@@ -67,13 +70,13 @@
 .select-icon {
     position: absolute;
     left: 20px;
-    top: 24px;
-    /* Ajustado para ficar alinhado com o label no topo */
+    top: 50%;
+    transform: translateY(-50%);
     width: 20px;
     height: 20px;
     color: var(--text-secondary);
     transition: all 0.3s ease;
-    z-index: 3;
+    z-index: 2;
 }
 
 .select-icon svg {
@@ -84,28 +87,6 @@
 .select-group:focus-within .select-icon,
 .select-group.focused .select-icon {
     color: var(--text-muted);
-}
-
-/* LABEL SEMPRE NO TOPO - APENAS PARA SELECT */
-.select-group label {
-    position: absolute;
-    left: 55px;
-    top: 10px;
-    /* Sempre no topo */
-    font-size: 12px;
-    /* Tamanho menor */
-    color: var(--text-muted);
-    pointer-events: none;
-    transition: color 0.3s ease;
-    background: var(--input-bg);
-    padding: 0 4px;
-    margin: 0;
-    z-index: 2;
-}
-
-.required-asterisk {
-    color: var(--error-color);
-    margin-left: 2px;
 }
 
 /* Seta do dropdown */
@@ -128,16 +109,6 @@
     transform: translateY(-50%) rotate(180deg);
 }
 
-/* Remove as animações de label já que sempre fica no topo */
-/* .select-group.has-value label,
-  .select-group.focused label,
-  .select-group.open label {
-    top: 8px;
-    font-size: 12px;
-    color: var(--text-muted);
-    transform: translateY(0);
-  } */
-
 /* Dropdown */
 .select-dropdown {
     position: absolute;
@@ -152,6 +123,8 @@
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: none;
 }
 
 .dropdown-content {
@@ -248,25 +221,36 @@
     box-shadow: 0 0 0 2px rgba(255, 59, 92, 0.2);
 }
 
+/* Scrollbar personalizado */
+.select-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.select-dropdown::-webkit-scrollbar-track {
+    background: var(--input-bg);
+    border-radius: 3px;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 3px;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #00b386;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .select-trigger {
-        padding: 18px 20px;
+        padding: 14px 18px;
         padding-left: 50px;
         padding-right: 50px;
-        padding-top: 26px;
         font-size: 15px;
-        min-height: 56px;
-    }
-
-    .select-group label {
-        left: 50px;
-        font-size: 11px;
     }
 
     .select-icon {
         left: 18px;
-        top: 22px;
         width: 18px;
         height: 18px;
     }
@@ -274,40 +258,24 @@
     .select-trigger::after {
         right: 18px;
     }
-
-    .select-value {
-        margin-top: 6px;
-    }
 }
 
 @media (max-width: 480px) {
     .select-trigger {
-        padding: 16px 18px;
+        padding: 12px 16px;
         padding-left: 45px;
         padding-right: 45px;
-        padding-top: 15px;
         font-size: 14px;
-        min-height: 52px;
-    }
-
-    .select-group label {
-        left: 45px;
-        font-size: 10px;
     }
 
     .select-icon {
-        left: 15px;
-        top: 20px;
+        left: 16px;
         width: 16px;
         height: 16px;
     }
 
     .select-trigger::after {
-        right: 15px;
-    }
-
-    .select-value {
-        margin-top: 4px;
+        right: 16px;
     }
 
     .select-option {

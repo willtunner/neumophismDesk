@@ -212,3 +212,90 @@
 ::ng-deep .required-asterisk {
   color: var(--error-color);
 }
+
+
+/* Estilos específicos para elementos únicos do home */
+.radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: clamp(6px, 0.8vw, 8px);
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.2vw, 15px);
+  cursor: pointer;
+  user-select: none;
+  color: var(--text-primary);
+  font-weight: 500;
+  position: relative;
+  padding: clamp(6px, 0.8vw, 8px) clamp(10px, 1.2vw, 12px);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.radio-label:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.radio-label input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.neu-radio {
+  width: clamp(20px, 2vw, 22px);
+  height: clamp(20px, 2vw, 22px);
+  background: var(--bg-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 3px 3px 6px var(--shadow-light),
+    inset -3px -3px 6px var(--shadow-dark);
+  transition: all 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.radio-dot {
+  width: clamp(8px, 1vw, 10px);
+  height: clamp(8px, 1vw, 10px);
+  background: var(--accent-color);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease;
+}
+
+.radio-label input[type="radio"]:checked+.neu-radio .radio-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.neu-tag-container {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  border-radius: 20px;
+  background: var(--bg-primary);
+  box-shadow: 15px 15px 30px var(--shadow-light), -15px -15px 30px var(--shadow-dark);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 25px;
+  display: flex;
+
+  &.error {
+    box-shadow:
+      15px 15px 30px var(--shadow-light),
+      -15px -15px 30px var(--shadow-dark),
+      0 0 0 2px var(--error-color);
+    animation: errorPulse 0.6s ease-in-out;
+  }
+}

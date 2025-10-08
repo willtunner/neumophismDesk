@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, HostListener, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, HostListener, Input, SimpleChanges, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, from, Observable, of, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -12,9 +12,11 @@ import { TagService } from '../../../services/tag.service';
   templateUrl: './tags-neu.html',
   styleUrls: ['./tags-neu.css']
 })
-export class TagsNeuComponent implements OnInit {
+export class TagsNeuComponent implements OnInit, AfterViewInit {
   @Input() tags: string[] | null = null;
   @Input() control!: FormControl<string[]>;
+  @ViewChild('tagInput') tagInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('suggestionsList') suggestionsList!: ElementRef<HTMLDivElement>;
   
   tagsSelecteds: { name: string; color: string; isHovered?: boolean }[] = [];
   suggestedTags$: Observable<string[]>;
@@ -22,6 +24,7 @@ export class TagsNeuComponent implements OnInit {
   successMessage: string | null = null;
   showNoTagMessage: boolean = false;
   showAllTags: boolean = false;
+  showSuggestions: boolean = false; // Nova propriedade para controlar a exibição
   @Output() tagsChanged = new EventEmitter<string[]>();
   
   // Input temporário para o campo de texto
@@ -29,7 +32,8 @@ export class TagsNeuComponent implements OnInit {
 
   constructor(
     private tagService: TagService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private elementRef: ElementRef
   ) {
     this.suggestedTags$ = this.suggestionsSubject.asObservable();
   }
@@ -47,13 +51,22 @@ export class TagsNeuComponent implements OnInit {
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((value) => {
-        if (!value) return of([]);
+        if (!value) {
+          this.showSuggestions = false;
+          return of([]);
+        }
+        
         if (this.showAllTags) {
+          this.showSuggestions = true;
           return from(this.tagService.getAllTags());
         }
+        
         if (value.length >= 3) {
+          this.showSuggestions = true;
           return this.searchTags(value);
         }
+        
+        this.showSuggestions = false;
         this.showNoTagMessage = false;
         return of([]);
       })
@@ -62,6 +75,35 @@ export class TagsNeuComponent implements OnInit {
       this.showNoTagMessage = tags.length === 0 && 
         (this.showAllTags || (this.inputControl.value?.length ?? 0) >= 3);
     });
+  }
+
+  ngAfterViewInit() {
+    // Adiciona o event listener para clique fora do componente
+    setTimeout(() => {
+      document.addEventListener('click', this.handleClickOutside.bind(this));
+    });
+  }
+
+  ngOnDestroy() {
+    // Remove o event listener quando o componente é destruído
+    document.removeEventListener('click', this.handleClickOutside.bind(this));
+  }
+
+  private handleClickOutside(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    const container = this.elementRef.nativeElement;
+    
+    // Verifica se o clique foi fora do componente
+    if (!container.contains(target)) {
+      this.hideSuggestions();
+    }
+  }
+
+  onInputFocus(): void {
+    // Mostra sugestões se já tiver texto digitado
+    if (this.inputControl.value && this.inputControl.value.length >= 3) {
+      this.showSuggestions = true;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -120,24 +162,13 @@ export class TagsNeuComponent implements OnInit {
   private toggleAllTags(): void {
     this.showAllTags = !this.showAllTags;
     if (this.showAllTags) {
+      this.showSuggestions = true;
       this.tagService.getAllTags().then((tags: any) => {
         this.suggestionsSubject.next(tags);
         this.showNoTagMessage = tags.length === 0;
       });
     } else {
-      this.inputControl.updateValueAndValidity({ emitEvent: true });
-    }
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    const tagContainer = document.querySelector('.neu-tag-container');
-    const suggestions = document.querySelector('.neu-suggestions');
-
-    if (this.showAllTags && tagContainer && suggestions && 
-        !tagContainer.contains(target) && !suggestions.contains(target)) {
-      this.showAllTags = false;
+      this.hideSuggestions();
       this.inputControl.updateValueAndValidity({ emitEvent: true });
     }
   }
@@ -161,6 +192,7 @@ export class TagsNeuComponent implements OnInit {
   }
 
   private hideSuggestions(): void {
+    this.showSuggestions = false;
     this.showAllTags = false;
     this.suggestionsSubject.next([]);
     this.showNoTagMessage = false;

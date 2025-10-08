@@ -41,7 +41,36 @@
     </div>
 
     
+    <!-- ... resto das seções permanecem iguais ... -->
+    <div class="component-section neu-container">
+      <h2>Radio Buttons</h2>
+      
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="gender" value="male" [(ngModel)]="formData.gender">
+          <div class="neu-radio">
+            <div class="radio-dot"></div>
+          </div>
+          <span>Male</span>
+        </label>
 
+        <label class="radio-label">
+          <input type="radio" name="gender" value="female" [(ngModel)]="formData.gender">
+          <div class="neu-radio">
+            <div class="radio-dot"></div>
+          </div>
+          <span>Female</span>
+        </label>
+
+        <label class="radio-label">
+          <input type="radio" name="gender" value="other" [(ngModel)]="formData.gender">
+          <div class="neu-radio">
+            <div class="radio-dot"></div>
+          </div>
+          <span>Other</span>
+        </label>
+      </div>
+    </div>
 
     <!-- Form Data Preview -->
     <!-- <div class="data-preview">

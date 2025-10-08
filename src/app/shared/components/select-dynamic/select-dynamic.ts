@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, HostListener, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, AbstractControl } from '@angular/forms';
 import { SelectConfig, SelectOption } from '../../../interfaces/select-config.interface';
@@ -11,7 +11,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   templateUrl: './select-dynamic.html',
   styleUrls: ['./select-dynamic.css']
 })
-export class SelectDynamicComponent implements OnInit, OnChanges {
+export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() config!: SelectConfig;
   @Input() set control(abstractControl: AbstractControl) {
     this._control = abstractControl as FormControl;
@@ -23,6 +23,8 @@ export class SelectDynamicComponent implements OnInit, OnChanges {
   private _control!: FormControl;
 
   @Input() showImage: boolean = true;
+
+  @ViewChild('selectGroup') selectGroup!: ElementRef;
 
   errorMessage: string = '';
   isFocused: boolean = false;
@@ -36,17 +38,41 @@ export class SelectDynamicComponent implements OnInit, OnChanges {
     </svg>
   `;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit(): void {
     this.addEmptyOptionIfRequired();
     this.updateIcon();
     this.updateSelectedLabels();
-    this.updateErrorMessage(); // Adiciona chamada inicial
+    this.updateErrorMessage();
+  }
+
+  ngAfterViewInit(): void {
+    // Adiciona o event listener para clique fora após a view ser inicializada
+    setTimeout(() => {
+      document.addEventListener('click', this.handleClickOutside.bind(this));
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Remove o event listener quando o componente é destruído
+    document.removeEventListener('click', this.handleClickOutside.bind(this));
+  }
+
+  private handleClickOutside(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    const container = this.elementRef.nativeElement;
+    
+    // Verifica se o clique foi fora do componente
+    if (!container.contains(target)) {
+      this.closeDropdown();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Se o controle mudar, atualiza as mensagens de erro
     if (changes['control'] && !changes['control'].firstChange) {
       this.setupValueChanges();
       this.updateErrorMessage();
@@ -54,7 +80,6 @@ export class SelectDynamicComponent implements OnInit, OnChanges {
   }
 
   private addEmptyOptionIfRequired(): void {
-    // Adiciona opção vazia se for required e não houver uma opção vazia
     if (this.config.required && this.config.options.length > 0) {
       const hasEmptyOption = this.config.options.some(option => 
         option.value === null || option.value === undefined || option.value === ''
@@ -80,7 +105,6 @@ export class SelectDynamicComponent implements OnInit, OnChanges {
         this.updateErrorMessage();
       });
 
-      // Atualiza mensagens de erro imediatamente
       this.updateErrorMessage();
     }
   }
@@ -163,6 +187,10 @@ export class SelectDynamicComponent implements OnInit, OnChanges {
 
   onBlur(): void {
     this.isFocused = false;
+    this.markAsTouched();
+  }
+
+  private closeDropdown(): void {
     this.isOpen = false;
     this.markAsTouched();
   }
@@ -170,18 +198,25 @@ export class SelectDynamicComponent implements OnInit, OnChanges {
   markAsTouched(): void {
     if (this.control && !this.control.touched) {
       this.control.markAsTouched();
-      this.updateErrorMessage(); // Atualiza mensagens após marcar como touched
+      this.updateErrorMessage();
     }
   }
 
-  toggleDropdown(): void {
+  toggleDropdown(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
     this.isOpen = !this.isOpen;
     if (!this.isOpen) {
-      this.markAsTouched(); // Marca como touched quando fecha o dropdown
+      this.markAsTouched();
     }
   }
 
-  selectOption(option: SelectOption): void {
+  selectOption(option: SelectOption, event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    
     if (option.disabled || !this.control) return;
 
     if (this.config.multiple) {
@@ -197,12 +232,11 @@ export class SelectDynamicComponent implements OnInit, OnChanges {
       this.control.setValue([...currentValue]);
     } else {
       this.control.setValue(option.value);
-      this.isOpen = false;
+      this.closeDropdown();
     }
     
-    // Marca como touched e atualiza mensagens
     this.markAsTouched();
-    this.control.markAsDirty(); // Marca como dirty também
+    this.control.markAsDirty();
     this.updateErrorMessage();
   }
 
