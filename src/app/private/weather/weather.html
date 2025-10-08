@@ -1,0 +1,25 @@
+<div class="weather-card neu-container">
+    <div class="weather-header">
+      <h3>Campinas</h3>
+  
+      <div class="temperature">
+        <span class="temp-value">
+          {{ weather?.temperature ? (weather.temperature | number:'1.0-0') : '--' }}°C
+        </span>
+        <div class="weather-icon">
+          {{ getWeatherIcon(weather?.code) }}
+        </div>
+      </div>
+  
+      <p class="today">Hoje</p>
+    </div>
+  
+    <div class="forecast">
+      <div *ngFor="let day of forecast.slice(1, 6)" class="day">
+        <span class="icon">{{ getWeatherIcon(day.code) }}</span>
+        <span class="temp">{{ day.max | number:'1.0-0' }}°</span>
+        <span class="date">{{ day.date | date:'EEE' }}</span>
+      </div>
+    </div>
+  </div>
+  

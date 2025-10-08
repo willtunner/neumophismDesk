@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EventModalComponent } from './event-modal/event-modal';
 import { TranslateModule } from '@ngx-translate/core';
+import { Weather } from '../weather/weather';
 
 export interface CalendarEvent {
   id: string;
@@ -14,7 +15,7 @@ export interface CalendarEvent {
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, FormsModule, TranslateModule ],
+  imports: [CommonModule, FormsModule, TranslateModule, Weather ],
   templateUrl: './calendar.html',
   styleUrl: './calendar.scss'
 })
