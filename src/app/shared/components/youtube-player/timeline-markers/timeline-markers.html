@@ -1,14 +1,29 @@
 <div class="timeline-container">
+    <div class="controls-row">
+      <button class="ctrl" (click)="onRewind10()" title="Voltar 10s">« 10s</button>
+      <button class="ctrl" (click)="onRewind()" title="Voltar {STEP}">‹ 5s</button>
+      <button class="ctrl play" (click)="onTogglePlayPause()" title="Play / Pause">
+        <span *ngIf="!isPlaying">▶</span>
+        <span *ngIf="isPlaying">⏸</span>
+      </button>
+      <button class="ctrl" (click)="onForward()" title="Avançar {STEP}">5s ›</button>
+      <button class="ctrl" (click)="onForward10()" title="Avançar 10s">10s »</button>
+    </div>
+  
     <div class="timeline-bar" (click)="onTimelineClick($event)">
-        <div *ngFor="let annotation of annotations" class="timeline-marker"
-            [style.left.%]="getMarkerPosition(annotation.timestamp)" [title]="getMarkerTooltip(annotation)"
-            (click)="onMarkerClick(annotation, $event)"></div>
-        <div class="timeline-progress" [style.width.%]="progressPercentage"></div>
-        <div class="timeline-current" [style.left.%]="progressPercentage" [title]="getCurrentTimeTooltip()"></div>
+      <div *ngFor="let annotation of annotations" class="timeline-marker"
+        [style.left.%]="getMarkerPosition(annotation.timestamp)"
+        [title]="getMarkerTooltip(annotation)"
+        (click)="onMarkerClick(annotation, $event)"></div>
+  
+      <div class="timeline-progress" [style.width.%]="progressPercentage"></div>
+      <div class="timeline-current" [style.left.%]="progressPercentage" [title]="getCurrentTimeTooltip()"></div>
     </div>
+  
     <div class="time-display">
-        <span>{{ formatTime(currentTime) }}</span>
-        <span class="time-separator">/</span>
-        <span>{{ formatTime(duration) }}</span>
+      <span>{{ formatTime(currentTime) }}</span>
+      <span class="time-separator">/</span>
+      <span>{{ formatTime(duration) }}</span>
     </div>
-</div>
+  </div>
+  

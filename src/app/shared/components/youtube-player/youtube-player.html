@@ -1,24 +1,29 @@
 <div class="video-container">
-      <div #youTubePlayer class="youtube-iframe"></div>
-      
-      <!-- Timeline com marcadores -->
-      <app-timeline-markers
-        [annotations]="annotations"
-        [currentTime]="currentTime"
-        [duration]="duration"
-        [isPlaying]="isPlaying"
-        (seekTo)="onSeekTo($event)"
-        (markerClick)="onMarkerClick($event)"
-      ></app-timeline-markers>
+  <div #youTubePlayer class="youtube-iframe"></div>
 
-      <div class="controls">
-        <button (click)="getCurrentTime()" class="btn btn-primary">
-          📍 Marcar Momento Atual ({{ formatTime(currentTime) }})
-        </button>
-        <div class="player-status">
-          <span class="status-indicator" [class.playing]="isPlaying" [class.paused]="!isPlaying">
-            {{ isPlaying ? '▶️ Reproduzindo' : '⏸️ Pausado' }}
-          </span>
-        </div>
-      </div>
+  <!-- Timeline com controles integrados -->
+  <app-timeline-markers
+    [annotations]="annotations"
+    [currentTime]="currentTime"
+    [duration]="duration"
+    [isPlaying]="isPlaying"
+    (seekTo)="seekTo($event)"
+    (markerClick)="seekTo($event.timestamp)"
+    (togglePlayPause)="togglePlayPause()"
+    (rewind10)="jumpBackward10()"
+    (rewind)="stepBackward()"
+    (forward)="stepForward()"
+    (forward10)="jumpForward10()"
+  ></app-timeline-markers>
+
+  <div class="controls">
+    <button (click)="getCurrentTime()" class="btn btn-primary">
+      📍 Marcar Momento Atual ({{ formatTime(currentTime) }})
+    </button>
+    <div class="player-status">
+      <span class="status-indicator" [class.playing]="isPlaying" [class.paused]="!isPlaying">
+        {{ isPlaying ? '▶️ Reproduzindo' : '⏸️ Pausado' }}
+      </span>
     </div>
+  </div>
+</div>
