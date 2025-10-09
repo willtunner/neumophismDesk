@@ -1,8 +1,21 @@
-    <div class="video-container">
-      <div #youTubePlayer></div>
+<div class="video-container">
+      <div #youTubePlayer class="youtube-iframe"></div>
+      
+      <!-- Timeline com marcadores -->
+      <app-timeline-markers
+        [annotations]="annotations"
+        [currentTime]="currentTime"
+        [duration]="duration"
+        (seekTo)="onSeekTo($event)"
+        (markerClick)="onMarkerClick($event)"
+      ></app-timeline-markers>
+
       <div class="controls">
         <button (click)="getCurrentTime()" class="btn btn-primary">
           Marcar Momento Atual ({{ currentTime | number:'1.0-0' }}s)
         </button>
+        <span class="time-display">
+          {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
+        </span>
       </div>
     </div>

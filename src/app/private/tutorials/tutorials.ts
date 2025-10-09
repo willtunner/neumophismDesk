@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-tutorials',
   imports: [    
-    YoutubePlayer,
+   YoutubePlayer,
     AnnotationForm,
     AnnotationList,
     CommonModule,

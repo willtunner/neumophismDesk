@@ -1,5 +1,5 @@
 <div class="container">
-      <h1>Anotações do YouTube</h1>
+      <h1>Anotações do YouTube com Marcadores</h1>
       
       <div class="url-input">
         <input 
@@ -16,6 +16,7 @@
       <div *ngIf="currentVideoId">
         <app-youtube-player 
           [videoId]="currentVideoId"
+          [annotations]="currentAnnotations"
           (timestampSelected)="onTimestampSelected($event)"
           #youtubePlayer
         ></app-youtube-player>
