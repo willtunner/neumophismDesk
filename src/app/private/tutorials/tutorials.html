@@ -1,37 +1,37 @@
 <div class="container">
-      <h1>Anotações do YouTube com Marcadores</h1>
-      
-      <div class="url-input">
-        <input 
-          [(ngModel)]="youtubeUrl" 
-          placeholder="Cole a URL do YouTube aqui..."
-          (keyup.enter)="loadVideo()"
-          class="url-field"
-        />
-        <button (click)="loadVideo()" class="btn btn-primary">
-          Carregar Vídeo
-        </button>
-      </div>
-
-      <div *ngIf="currentVideoId">
-        <app-youtube-player 
-          [videoId]="currentVideoId"
-          [annotations]="currentAnnotations"
-          (timestampSelected)="onTimestampSelected($event)"
-          #youtubePlayer
-        ></app-youtube-player>
-
-        <app-annotation-form
-          [timestamp]="selectedTimestamp"
-          [videoId]="currentVideoId"
-          (annotationSaved)="onAnnotationSaved($event)"
-          (formClosed)="onFormClosed()"
-        ></app-annotation-form>
-
-        <app-annotation-list
-          [annotations]="currentAnnotations"
-          (seekTo)="onSeekTo($event)"
-          (delete)="onDeleteAnnotation($event)"
-        ></app-annotation-list>
-      </div>
+    <h1>🎬 Anotador de Vídeos do YouTube</h1>
+    
+    <div class="url-input">
+      <input 
+        [(ngModel)]="youtubeUrl" 
+        placeholder="🔗 Cole a URL do YouTube aqui..."
+        (keyup.enter)="loadVideo()"
+        class="url-field"
+      />
+      <button (click)="loadVideo()" class="btn btn-primary">
+        📥 Carregar Vídeo
+      </button>
     </div>
+
+    <div *ngIf="currentVideoId" class="video-section">
+      <app-youtube-player 
+        [videoId]="currentVideoId"
+        [annotations]="currentAnnotations"
+        (timestampSelected)="onTimestampSelected($event)"
+        #youtubePlayer
+      ></app-youtube-player>
+
+      <app-annotation-form
+        [timestamp]="selectedTimestamp"
+        [videoId]="currentVideoId"
+        (annotationSaved)="onAnnotationSaved($event)"
+        (formClosed)="onFormClosed()"
+      ></app-annotation-form>
+
+      <app-annotation-list
+        [annotations]="currentAnnotations"
+        (seekTo)="onSeekTo($event)"
+        (delete)="onDeleteAnnotation($event)"
+      ></app-annotation-list>
+    </div>
+  </div>

@@ -1,19 +1,14 @@
- <div class="timeline-container" #timelineContainer>
-      <div class="timeline-bar" (click)="onTimelineClick($event)">
-        <div 
-          *ngFor="let annotation of annotations"
-          class="timeline-marker"
-          [style.left.%]="getMarkerPosition(annotation.timestamp)"
-          [title]="annotation.note"
-          (click)="onMarkerClick(annotation, $event)"
-        ></div>
-        <div 
-          class="timeline-progress" 
-          [style.width.%]="progressPercentage"
-        ></div>
-        <div 
-          class="timeline-current" 
-          [style.left.%]="progressPercentage"
-        ></div>
-      </div>
+<div class="timeline-container">
+    <div class="timeline-bar" (click)="onTimelineClick($event)">
+        <div *ngFor="let annotation of annotations" class="timeline-marker"
+            [style.left.%]="getMarkerPosition(annotation.timestamp)" [title]="getMarkerTooltip(annotation)"
+            (click)="onMarkerClick(annotation, $event)"></div>
+        <div class="timeline-progress" [style.width.%]="progressPercentage"></div>
+        <div class="timeline-current" [style.left.%]="progressPercentage" [title]="getCurrentTimeTooltip()"></div>
     </div>
+    <div class="time-display">
+        <span>{{ formatTime(currentTime) }}</span>
+        <span class="time-separator">/</span>
+        <span>{{ formatTime(duration) }}</span>
+    </div>
+</div>

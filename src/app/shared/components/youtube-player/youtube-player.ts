@@ -15,13 +15,21 @@ export class YoutubePlayer {
   @Output() timestampSelected = new EventEmitter<number>();
   @Input() videoId: string = '';
   @Input() annotations: Annotation[] = [];
-
+  
   private player: any;
   public currentTime: number = 0;
   public duration: number = 0;
+  public isPlaying: boolean = false;
+  private updateInterval: any;
 
   ngAfterViewInit() {
     this.loadYouTubeAPI();
+  }
+
+  ngOnDestroy() {
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
   }
 
   private loadYouTubeAPI() {
@@ -29,7 +37,7 @@ export class YoutubePlayer {
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       document.body.appendChild(tag);
-
+      
       (window as any).onYouTubeIframeAPIReady = () => {
         this.createPlayer();
       };
@@ -56,13 +64,13 @@ export class YoutubePlayer {
 
   private onPlayerReady(event: any) {
     this.duration = this.player.getDuration();
-
-    // Atualizar tempo atual a cada segundo
-    setInterval(() => {
+    
+    // Atualizar tempo atual frequentemente para smooth progress
+    this.updateInterval = setInterval(() => {
       if (this.player && this.player.getCurrentTime) {
         this.currentTime = this.player.getCurrentTime();
       }
-    }, 1000);
+    }, 100); // Atualiza a cada 100ms para ser mais suave
 
     // Atualizar duração se mudar (para vídeos ao vivo)
     setInterval(() => {
@@ -76,10 +84,27 @@ export class YoutubePlayer {
   }
 
   private onPlayerStateChange(event: any) {
+    switch (event.data) {
+      case (window as any).YT.PlayerState.PLAYING:
+        this.isPlaying = true;
+        break;
+      case (window as any).YT.PlayerState.PAUSED:
+        this.isPlaying = false;
+        break;
+      case (window as any).YT.PlayerState.ENDED:
+        this.isPlaying = false;
+        break;
+      case (window as any).YT.PlayerState.BUFFERING:
+        // Mantém o estado atual durante buffering
+        break;
+    }
+
     // Atualizar duração quando o vídeo começar
     if (event.data === (window as any).YT.PlayerState.PLAYING) {
       setTimeout(() => {
-        this.duration = this.player.getDuration();
+        if (this.player && this.player.getDuration) {
+          this.duration = this.player.getDuration();
+        }
       }, 1000);
     }
   }
@@ -88,12 +113,22 @@ export class YoutubePlayer {
     if (this.player) {
       const time = this.player.getCurrentTime();
       this.timestampSelected.emit(time);
+      
+      // Feedback visual
+      const btn = document.querySelector('.btn') as HTMLElement;
+      if (btn) {
+        btn.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          btn.style.transform = '';
+        }, 150);
+      }
     }
   }
 
   seekTo(timestamp: number) {
     if (this.player) {
       this.player.seekTo(timestamp, true);
+      this.currentTime = timestamp; // Atualiza imediatamente
     }
   }
 
@@ -106,10 +141,15 @@ export class YoutubePlayer {
   }
 
   formatTime(seconds: number): string {
-    if (!seconds || seconds === Infinity) return '0:00';
-
+    if (!seconds || seconds === Infinity || isNaN(seconds)) return '0:00';
+    
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  // Método para obter o estado atual do player
+  getPlayerState(): string {
+    return this.isPlaying ? 'playing' : 'paused';
   }
 }

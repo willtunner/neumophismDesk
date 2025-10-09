@@ -6,16 +6,19 @@
         [annotations]="annotations"
         [currentTime]="currentTime"
         [duration]="duration"
+        [isPlaying]="isPlaying"
         (seekTo)="onSeekTo($event)"
         (markerClick)="onMarkerClick($event)"
       ></app-timeline-markers>
 
       <div class="controls">
         <button (click)="getCurrentTime()" class="btn btn-primary">
-          Marcar Momento Atual ({{ currentTime | number:'1.0-0' }}s)
+          📍 Marcar Momento Atual ({{ formatTime(currentTime) }})
         </button>
-        <span class="time-display">
-          {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
-        </span>
+        <div class="player-status">
+          <span class="status-indicator" [class.playing]="isPlaying" [class.paused]="!isPlaying">
+            {{ isPlaying ? '▶️ Reproduzindo' : '⏸️ Pausado' }}
+          </span>
+        </div>
       </div>
     </div>
