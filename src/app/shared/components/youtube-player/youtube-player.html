@@ -1,0 +1,8 @@
+    <div class="video-container">
+      <div #youTubePlayer></div>
+      <div class="controls">
+        <button (click)="getCurrentTime()" class="btn btn-primary">
+          Marcar Momento Atual ({{ currentTime | number:'1.0-0' }}s)
+        </button>
+      </div>
+    </div>

@@ -1,0 +1,22 @@
+ <div class="annotation-form" *ngIf="showForm">
+      <h3>Adicionar Anotação</h3>
+      <div class="form-group">
+        <label>Momento: {{ timestamp | number:'1.0-0' }}s</label>
+      </div>
+      <div class="form-group">
+        <textarea 
+          [(ngModel)]="note" 
+          placeholder="Digite sua anotação..."
+          rows="4"
+          class="form-control"
+        ></textarea>
+      </div>
+      <div class="form-actions">
+        <button (click)="saveAnnotation()" class="btn btn-primary" [disabled]="!note.trim()">
+          Salvar
+        </button>
+        <button (click)="cancel()" class="btn btn-secondary">
+          Cancelar
+        </button>
+      </div>
+    </div>

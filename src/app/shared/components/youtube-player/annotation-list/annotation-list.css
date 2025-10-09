@@ -1,0 +1,53 @@
+ .annotation-list {
+      margin-top: 20px;
+    }
+    .annotation-item {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .annotation-item:hover {
+      border-color: #007bff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .annotation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .timestamp {
+      background: #007bff;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .annotation-note {
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .annotation-date {
+      font-size: 12px;
+      color: #666;
+    }
+    .empty-state {
+      text-align: center;
+      color: #666;
+      padding: 20px;
+    }

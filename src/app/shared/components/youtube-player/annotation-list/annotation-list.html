@@ -1,0 +1,21 @@
+ <div class="annotation-list">
+      <h3>Anotações ({{ annotations.length }})</h3>
+      <div *ngIf="annotations.length === 0" class="empty-state">
+        Nenhuma anotação criada ainda.
+      </div>
+      <div *ngFor="let annotation of annotations" 
+           class="annotation-item"
+           (click)="onAnnotationClick(annotation)">
+        <div class="annotation-header">
+          <span class="timestamp">{{ formatTime(annotation.timestamp) }}</span>
+          <button (click)="deleteAnnotation(annotation.id, $event)" 
+                  class="btn-delete">
+            ×
+          </button>
+        </div>
+        <div class="annotation-note">{{ annotation.note }}</div>
+        <div class="annotation-date">
+          {{ annotation.createdAt | date:'dd/MM/yyyy HH:mm' }}
+        </div>
+      </div>
+    </div>
