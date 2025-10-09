@@ -1,0 +1,63 @@
+.video-modal {
+    background: var(--bg-primary, #f0f0f0);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow:
+      10px 10px 20px rgba(0, 0, 0, 0.2),
+      -10px -10px 20px rgba(255, 255, 255, 0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .modal-title {
+    color: var(--text-primary, #333);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .video-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+      inset 2px 2px 5px rgba(0, 0, 0, 0.1),
+      inset -2px -2px 5px rgba(255, 255, 255, 0.3);
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .neu-button {
+    background: var(--bg-primary, #f0f0f0);
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    color: var(--text-primary, #333);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow:
+      4px 4px 8px rgba(0, 0, 0, 0.2),
+      -4px -4px 8px rgba(255, 255, 255, 0.3);
+    transition: all 0.2s ease;
+  }
+  
+  .neu-button:hover {
+    box-shadow:
+      2px 2px 5px rgba(0, 0, 0, 0.3),
+      -2px -2px 5px rgba(255, 255, 255, 0.4);
+  }
+  
+  .neu-button:active {
+    box-shadow:
+      inset 2px 2px 5px rgba(0, 0, 0, 0.2),
+      inset -2px -2px 5px rgba(255, 255, 255, 0.3);
+    transform: scale(0.98);
+  }
+  
+  .close-btn {
+    background: var(--bg-secondary, #e0e0e0);
+  }

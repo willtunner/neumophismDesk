@@ -189,8 +189,12 @@ export class BarChartDrilldown implements AfterViewInit, OnDestroy {
   };
 
   ngAfterViewInit() {
-    this.initChart();
-    window.addEventListener('resize', this.handleResize.bind(this));
+    if (this.chartContainer && this.chartContainer.nativeElement) {
+      this.initChart();
+      window.addEventListener('resize', this.handleResize.bind(this));
+    } else {
+      console.error('Chart container not found');
+    }
   }
 
   ngOnDestroy() {
@@ -201,14 +205,21 @@ export class BarChartDrilldown implements AfterViewInit, OnDestroy {
   }
 
   private handleResize() {
-    if (this.chart) {
+    if (this.chart && this.chartContainer && this.chartContainer.nativeElement) {
       setTimeout(() => {
         this.chart?.reflow();
       }, 100);
+    } else {
+      console.warn('Chart or container not available during resize');
     }
   }
 
   private initChart() {
+    if (!this.chartContainer || !this.chartContainer.nativeElement) {
+      console.error('Chart container is not available');
+      return;
+    }
+
     // Preparar dados principais para o gráfico - Nível 1
     const seriesData = Object.entries(this.mainData).map(([name, y]) => ({
       name,
@@ -342,7 +353,7 @@ export class BarChartDrilldown implements AfterViewInit, OnDestroy {
           textDecoration: 'none'
         },
         breadcrumbs: {
-          showFullPath: true, // Mostra o caminho completo
+          showFullPath: true,
           relativeTo: 'chart',
           position: {
             align: 'left',

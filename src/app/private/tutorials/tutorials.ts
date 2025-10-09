@@ -6,6 +6,7 @@ import { Annotation } from '../../models/annotation.model';
 import { AnnotationService } from '../../services/annotation';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VideoDropdownComponent } from '../../shared/components/video-dropdown/video-dropdown';
 
 @Component({
   selector: 'app-tutorials',
@@ -16,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     FormsModule, 
     ReactiveFormsModule, 
+    VideoDropdownComponent
   ],
   templateUrl: './tutorials.html',
   styleUrl: './tutorials.css'

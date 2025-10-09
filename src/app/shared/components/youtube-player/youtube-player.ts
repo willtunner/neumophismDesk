@@ -150,49 +150,66 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy {
     return this.isPlaying ? 'playing' : 'paused';
   }
 
-    // Alternar entre play e pause
-    togglePlayPause() {
-      if (!this.player) return;
-  
-      const YTState = (window as any).YT.PlayerState;
-  
-      const state = this.player.getPlayerState();
-  
-      if (state === YTState.PAUSED || state === YTState.ENDED) {
-        this.player.playVideo();
-        this.isPlaying = true;
-      } else if (state === YTState.PLAYING) {
-        this.player.pauseVideo();
-        this.isPlaying = false;
+  // Alternar entre play e pause
+  togglePlayPause() {
+    if (!this.player) return;
+
+    const YTState = (window as any).YT.PlayerState;
+
+    const state = this.player.getPlayerState();
+
+    if (state === YTState.PAUSED || state === YTState.ENDED) {
+      this.player.playVideo();
+      this.isPlaying = true;
+    } else if (state === YTState.PLAYING) {
+      this.player.pauseVideo();
+      this.isPlaying = false;
+    }
+  }
+
+  // Retroceder 10 segundos
+  jumpBackward10() {
+    if (!this.player) return;
+    const newTime = Math.max(this.player.getCurrentTime() - 10, 0);
+    this.seekTo(newTime);
+  }
+
+  // Retroceder um pequeno passo (2 segundos)
+  stepBackward() {
+    if (!this.player) return;
+    const newTime = Math.max(this.player.getCurrentTime() - 2, 0);
+    this.seekTo(newTime);
+  }
+
+  // Avançar um pequeno passo (2 segundos)
+  stepForward() {
+    if (!this.player) return;
+    const newTime = Math.min(this.player.getCurrentTime() + 2, this.duration);
+    this.seekTo(newTime);
+  }
+
+  // Avançar 10 segundos
+  jumpForward10() {
+    if (!this.player) return;
+    const newTime = Math.min(this.player.getCurrentTime() + 10, this.duration);
+    this.seekTo(newTime);
+  }
+
+  // Método para ajustar o tamanho do video-container
+  setSize(size: string) {
+    const videoContainer = document.querySelector('.video-container') as HTMLElement;
+    if (videoContainer) {
+      switch (size) {
+        case 'small':
+          videoContainer.style.width = '40%';
+          break;
+        case 'medium':
+          videoContainer.style.width = '70%';
+          break;
+        case 'large':
+          videoContainer.style.width = '100%';
+          break;
       }
     }
-  
-    // Retroceder 10 segundos
-    jumpBackward10() {
-      if (!this.player) return;
-      const newTime = Math.max(this.player.getCurrentTime() - 10, 0);
-      this.seekTo(newTime);
-    }
-  
-    // Retroceder um pequeno passo (2 segundos)
-    stepBackward() {
-      if (!this.player) return;
-      const newTime = Math.max(this.player.getCurrentTime() - 2, 0);
-      this.seekTo(newTime);
-    }
-  
-    // Avançar um pequeno passo (2 segundos)
-    stepForward() {
-      if (!this.player) return;
-      const newTime = Math.min(this.player.getCurrentTime() + 2, this.duration);
-      this.seekTo(newTime);
-    }
-  
-    // Avançar 10 segundos
-    jumpForward10() {
-      if (!this.player) return;
-      const newTime = Math.min(this.player.getCurrentTime() + 10, this.duration);
-      this.seekTo(newTime);
-    }
-  
+  }
 }
