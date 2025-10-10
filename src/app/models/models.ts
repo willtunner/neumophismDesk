@@ -118,7 +118,7 @@ export interface Company {
     url: string;
     title: string;
     created: Date;
-    imgProfile: string;
+    imgProfile?: string;
     nameProfile: string;
     sector: string;
   }

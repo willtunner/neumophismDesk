@@ -225,7 +225,8 @@ body {
 
 /* Grupos de formulário */
 .form-group {
-  margin-bottom: 25px;
+  /* ! removido espaçamento entre os inputs do form */
+  /* margin-bottom: 25px; */
 }
 
 /* Grupos de checkboxes, radios e toggles */

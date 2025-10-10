@@ -9,5 +9,6 @@ export enum InputType {
     NUMBER = 'NUMBER',
     TEXTAREA = 'TEXTAREA',
     AGE = 'AGE',
-    PASSWORD = 'PASSWORD'
+    PASSWORD = 'PASSWORD',
+    SELECT = 'SELECT'
   }

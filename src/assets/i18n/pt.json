@@ -1,6 +1,23 @@
 {
   "HEADER": {
     "TITLE": "Sistema de Helpdesk",
+    "HOME": "🏠 Início",
+    "PROFILE": "👤 Perfil",
+    "SETTINGS": "⚙️ Configurações",
+    "DASHBOARD": "Dashboard",
+    "USERS": "👥 Usuários",
+    "PRODUCTS": "Produtos",
+    "REPORTS": "📊 Relatórios",
+    "HELP": "❔ Ajuda",
+    "CHAT":"💬 Chat",
+    "CLIENTS": "💼 Clientes",
+    "COMPANIES": "🏙️ Empresas",
+    "CALENDAR": "📆 Calendário",
+    "TUTORIALS": "🎬 Tutoriais",
+    "CALL": "📞 Chamados"
+  },
+  "NAVIGATION_MENU": {
+    "TITLE": "Sistema de Helpdesk",
     "HOME": "Início",
     "PROFILE": "Perfil",
     "SETTINGS": "Configurações",

@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DatePipe } from '@angular/common';
+import { Component, computed, signal } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ShowVideo } from '../../../private/tutorials/show-video/show-video';
+import { DropdownService } from '../../../services/dropdown';
+import { AddVideoDialog } from './add-video-dialog/add-video-dialog';
 
 export interface Video {
   id: number;
@@ -27,14 +28,12 @@ export interface VideoCategory {
   providers: [DatePipe]
 })
 export class VideoDropdownComponent {
+  constructor(public dialog: MatDialog, private dropdownService: DropdownService) {}
 
-  constructor(public dialog: MatDialog) {}
-
-  @Input() videoCategories: VideoCategory[] = [];
-  
   openedDropdown: number | null = null;
+  hoveredCategory: number | null = null;
 
-  // Dados de exemplo baseados na sua imagem
+  /** Categorias padrão */
   defaultCategories: VideoCategory[] = [
     {
       id: 1,
@@ -64,7 +63,7 @@ export class VideoDropdownComponent {
         {
           id: 4,
           title: 'Emissão de NFe é fácil!',
-          youtubeUrl: 'https://www.youtube.com/watch?v=vvDslfWvg6M&pp=ugUHEgVwdC1CUg%3D%3D',
+          youtubeUrl: 'https://www.youtube.com/watch?v=vvDslfWvg6M',
           addedDate: new Date('2025-04-01'),
           sector: 'Tutorial'
         }
@@ -77,14 +76,14 @@ export class VideoDropdownComponent {
         {
           id: 5,
           title: 'Controle de entrada e saída',
-          youtubeUrl: 'https://www.youtube.com/watch?v=vvDslfWvg6M&pp=ugUHEgVwdC1CUg%3D%3D',
+          youtubeUrl: 'https://www.youtube.com/watch?v=vvDslfWvg6M',
           addedDate: new Date('2025-03-28'),
           sector: 'Operacional'
         },
         {
           id: 6,
           title: 'Inventário periódico',
-          youtubeUrl: 'https://www.youtube.com/watch?v=vvDslfWvg6M&pp=ugUHEgVwdC1CUg%3D%3D',
+          youtubeUrl: 'https://www.youtube.com/watch?v=vvDslfWvg6M',
           addedDate: new Date('2025-03-25'),
           sector: 'Contábil'
         }
@@ -92,42 +91,119 @@ export class VideoDropdownComponent {
     }
   ];
 
+  /** Computed para ler as categorias do signal */
+  videoCategories = computed(() => this.dropdownService.categories());
+
   ngOnInit() {
-    // Se não houver categorias fornecidas via input, usa as padrão
-    if (this.videoCategories.length === 0) {
-      this.videoCategories = this.defaultCategories;
-    }
+    this.dropdownService.initialize(this.defaultCategories);
   }
 
   toggleDropdown(categoryId: number): void {
-    if (this.openedDropdown === categoryId) {
-      this.openedDropdown = null;
-    } else {
-      this.openedDropdown = categoryId;
-    }
+    this.openedDropdown = this.openedDropdown === categoryId ? null : categoryId;
   }
 
   getYouTubeThumbnail(url: string): string {
-    // Extrai o ID do vídeo da URL do YouTube
-    const videoId = this.extractYouTubeId(url);
-    return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
-  }
-
-  private extractYouTubeId(url: string): string {
     const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
-    return match ? match[1] : 'default';
+    return match ? `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg` : '';
   }
 
   openVideoDialog(video: Video): void {
-    const dialogRef = this.dialog.open(ShowVideo, {
+    this.dialog.open(ShowVideo, {
       width: '80%',
       maxWidth: '800px',
-      data: { youtubeUrl: video.youtubeUrl, title: video.title }, // Passe os dados do vídeo
-      panelClass: 'neu-modal' // Classe personalizada para o estilo neumórfico
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('A modal foi fechada');
+      data: { youtubeUrl: video.youtubeUrl, title: video.title },
+      panelClass: 'neu-modal'
     });
   }
+
+  openAddVideoDialog(category?: VideoCategory) {
+    const dialogRef = this.dialog.open(AddVideoDialog, {
+      width: '800px',
+      data: category,
+      panelClass: 'neu-modal'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+  
+      const { id, categoryTitle, updatedVideos } = result;
+  
+      if (id) {
+        // ✅ Atualiza categoria existente
+        const updatedCategory: VideoCategory = {
+          id,
+          title: categoryTitle,
+          videos: updatedVideos
+        };
+        this.dropdownService.updateCategory(updatedCategory);
+      } else {
+        // ✅ Cria nova categoria
+        const newCategory: VideoCategory = {
+          id: Date.now(),
+          title: categoryTitle,
+          videos: updatedVideos
+        };
+        this.dropdownService.addCategory(newCategory);
+      }
+    });
+  }
+  
+
+  // Edita uma categoria abrindo a modal com valores preenchidos
+  editCategory(category: VideoCategory) {
+    const dialogRef = this.dialog.open(AddVideoDialog, {
+      width: '800px',
+      data: {
+        categoryTitle: category.title,
+        videos: [...category.videos] // cópia segura
+      },
+      panelClass: 'neu-modal'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const updatedCategory: VideoCategory = {
+          ...category,
+          title: result.categoryTitle,
+          videos: result.updatedVideos || category.videos
+        };
+  
+        this.dropdownService.updateCategory(updatedCategory);
+      }
+    });
+  }
+
+// Exclui uma categoria inteira
+deleteCategory(categoryId: number) {
+  this.dropdownService.removeCategory(categoryId);
+}
+
+// Edita um vídeo específico
+editVideo(category: VideoCategory, video: Video) {
+  const dialogRef = this.dialog.open(AddVideoDialog, {
+    width: '650px',
+    data: {
+      categoryTitle: category.title,
+      video
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      const updatedVideos = category.videos.map(v =>
+        v.id === video.id ? { ...v, ...result.video } : v
+      );
+      this.dropdownService.updateCategory({ ...category, videos: updatedVideos });
+    }
+  });
+}
+
+// Deleta um vídeo específico
+deleteVideo(categoryId: number, videoId: number) {
+  const category = this.dropdownService.categories().find(c => c.id === categoryId);
+  if (!category) return;
+  const updatedVideos = category.videos.filter(v => v.id !== videoId);
+  this.dropdownService.updateCategory({ ...category, videos: updatedVideos });
+}
+
 }

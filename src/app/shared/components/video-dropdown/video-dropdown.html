@@ -1,77 +1,69 @@
 <div class="dropdowns-container">
-    @for (category of videoCategories; track category.id; let i = $index) {
-      <div class="dropdown-item">
-        <div 
-          class="dropdown-header neu-container"
-          [class.active]="openedDropdown === category.id"
-          (click)="toggleDropdown(category.id)"
-        >
-          <div class="header-content">
-            <h3 class="category-title">{{ category.title }}</h3>
-            <div class="header-info">
-              <span class="video-count">{{ category.videos.length }} vídeos</span>
-              <div class="dropdown-icon">
-                <svg [class.rotated]="openedDropdown === category.id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </div>
+  <button class="neu-button primary mb-3" (click)="openAddVideoDialog()">➕ Cadastrar Novo Vídeo</button>
+
+  @for (category of videoCategories(); track category.id) {
+    <div class="dropdown-item" 
+         (mouseenter)="hoveredCategory = category.id" 
+         (mouseleave)="hoveredCategory = null">
+      
+      <div class="dropdown-header neu-container" [class.active]="openedDropdown === category.id" (click)="toggleDropdown(category.id)">
+        <div class="header-content">
+          <h3 class="category-title">{{ category.title }}</h3>
+
+          <div class="header-info">
+            <span class="video-count">{{ category.videos.length }} vídeos</span>
+            
+            <!-- Ícones aparecem ao passar mouse -->
+            <div class="category-actions" *ngIf="hoveredCategory === category.id">
+              <button class="icon-btn" (click)="editCategory(category); $event.stopPropagation()">
+                ✏️
+              </button>
+              <button class="icon-btn" (click)="deleteCategory(category.id); $event.stopPropagation()">
+                🗑️
+              </button>
+            </div>
+
+            <div class="dropdown-icon">
+              <svg [class.rotated]="openedDropdown === category.id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
             </div>
           </div>
         </div>
-  
-        <div 
-          class="dropdown-content"
-          [class.active]="openedDropdown === category.id"
-        >
-          <div class="videos-grid">
-            @for (video of category.videos; track video.id) {
-              <div class="video-card neu-container">
-                <div class="video-thumbnail">
-                  <img 
-                    [src]="getYouTubeThumbnail(video.youtubeUrl)" 
-                    [alt]="video.title"
-                    (click)="openVideoDialog(defaultCategories[0].videos[0])"
-                    class="thumbnail-image"
-                  >
-                  <div class="play-overlay">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
+      </div>
+
+      <div class="dropdown-content" [class.active]="openedDropdown === category.id">
+        <div class="videos-grid">
+          @for (video of category.videos; track video.id) {
+            <div class="video-card neu-container">
+              <div class="video-thumbnail">
+                <img [src]="getYouTubeThumbnail(video.youtubeUrl)" [alt]="video.title" (click)="openVideoDialog(video)" class="thumbnail-image">
+                <div class="play-overlay">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="video-info">
+                <h4 class="video-title">{{ video.title }}</h4>
+                <div class="video-meta">
+                  <div class="meta-item">
+                    <span>{{ video.addedDate | date:'dd/MM/yyyy' }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="sector-tag">{{ video.sector }}</span>
                   </div>
                 </div>
                 
-                <div class="video-info">
-                  <h4 class="video-title">{{ video.title }}</h4>
-                  <div class="video-meta">
-                    <div class="meta-item">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                      </svg>
-                      <span>{{ video.addedDate | date:'dd/MM/yyyy' }}</span>
-                    </div>
-                    <div class="meta-item">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                      </svg>
-                      <span class="sector-tag">{{ video.sector }}</span>
-                    </div>
-                  </div>
-                  
-                  <button class="neu-button small watch-btn" (click)="openVideoDialog(defaultCategories[0].videos[0])">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                    Assistir
-                  </button>
-                </div>
+                <button class="neu-button small watch-btn" (click)="openVideoDialog(video)">
+                  ▶️ Assistir
+                </button>
               </div>
-            }
-          </div>
+            </div>
+          }
         </div>
       </div>
-    }
-  </div>
+    </div>
+  }
+</div>

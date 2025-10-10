@@ -1,0 +1,32 @@
+<div class="neu-container p-4">
+  <h2>🆕 Cadastrar Novo Vídeo</h2>
+
+  <form [formGroup]="videoForm" class="form-container">
+
+    <app-input-dynamic 
+      [config]="inputConfigs['categoryTitle']" 
+      [control]="categoryTitleControl">
+    </app-input-dynamic>
+
+    <app-input-dynamic 
+      [config]="inputConfigs['videoTitle']" 
+      [control]="videoTitleControl">
+    </app-input-dynamic>
+
+    <app-input-dynamic 
+      [config]="inputConfigs['youtubeUrl']" 
+      [control]="youtubeUrlControl">
+    </app-input-dynamic>
+
+    <app-input-dynamic 
+      [config]="inputConfigs['sector']" 
+      [control]="sectorControl">
+    </app-input-dynamic>
+
+    <div class="button-row">
+      <button type="button" class="neu-button" (click)="cancel()">Cancelar</button>
+      <button type="button" class="neu-button primary" (click)="save()">Salvar</button>
+    </div>
+
+  </form>
+</div>

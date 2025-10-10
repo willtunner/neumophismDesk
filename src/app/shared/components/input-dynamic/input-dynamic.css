@@ -1,8 +1,10 @@
 /* input-dynamic.component.css */
-.form-group {
+
+/* ! Removido espaçamento entre inputs */
+/* .form-group {
   margin-bottom: 25px;
   position: relative;
-}
+} */
 
 .input-group {
   position: relative;

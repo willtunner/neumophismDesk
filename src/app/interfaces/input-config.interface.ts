@@ -30,4 +30,14 @@ export interface InputConfig {
   
   // Número específico
   step?: number;
+
+  // Select específico
+  options?: SelectOption[];
 }
+
+export interface SelectOption {
+  value: string | number;
+  label: string;
+}
+
+
