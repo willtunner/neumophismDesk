@@ -44,6 +44,8 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
   ) {}
 
   ngOnInit(): void {
+    if (!this.config) return;
+    
     this.addEmptyOptionIfRequired();
     this.updateIcon();
     this.updateSelectedLabels();
@@ -80,19 +82,23 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   private addEmptyOptionIfRequired(): void {
+    // Evita erro caso o Input ainda não tenha sido inicializado
+    if (!this.config || !this.config.options) return;
+  
     if (this.config.required && this.config.options.length > 0) {
-      const hasEmptyOption = this.config.options.some(option => 
+      const hasEmptyOption = this.config.options.some(option =>
         option.value === null || option.value === undefined || option.value === ''
       );
-      
+  
       if (!hasEmptyOption) {
         this.config.options = [
-          { value: '', label: `Selecione ${this.config.label.toLowerCase()}`, disabled: false },
+          { value: '', label: `Selecione ${this.config.label?.toLowerCase() || ''}`, disabled: false },
           ...this.config.options
         ];
       }
     }
   }
+  
 
   private setupValueChanges(): void {
     if (this.control) {
