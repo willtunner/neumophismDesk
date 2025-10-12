@@ -34,6 +34,7 @@ export class AddVideoDialog implements OnInit {
     private dialogRef: MatDialogRef<AddVideoDialog>,
     @Inject(MAT_DIALOG_DATA) public data: AddVideoDialogData
   ) {
+    console.log('Dados recebidos no diálogo:', data);
     this.isEditMode = data?.isEdit || false;
     this.videos = data?.videos || [];
 

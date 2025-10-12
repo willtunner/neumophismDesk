@@ -153,10 +153,7 @@ export class VideoDropdownComponent {
   editCategory(category: VideoCategory) {
     const dialogRef = this.dialog.open(AddVideoDialog, {
       width: '800px',
-      data: {
-        categoryTitle: category.title,
-        videos: [...category.videos] // cópia segura
-      },
+      data: category ,
       panelClass: 'neu-modal'
     });
   

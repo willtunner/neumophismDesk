@@ -13,7 +13,7 @@
   background: var(--bg-primary);
   border-radius: 25px;
   padding: 30px 20px;
-  box-shadow: 
+  box-shadow:
     20px 20px 60px var(--shadow-light),
     -20px -20px 60px var(--shadow-dark);
   position: relative;
@@ -50,21 +50,26 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Transição suave */
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Transição suave */
 }
 
 /* Efeito hover com a cor #f0e68c (amarelo claro) */
 .neu-card:hover .card-content-wrapper {
-  background: #f0e68c; /* Cor de fundo amarelo claro no hover */
+  background: #f0e68c;
+  /* Cor de fundo amarelo claro no hover */
   box-shadow:
-    inset 6px 6px 12px rgba(210, 200, 120, 0.6), /* Sombras mais suaves */
-    inset -6px -6px 12px rgba(255, 255, 220, 0.8); /* Highlight mais claro */
+    inset 6px 6px 12px rgba(210, 200, 120, 0.6),
+    /* Sombras mais suaves */
+    inset -6px -6px 12px rgba(255, 255, 220, 0.8);
+  /* Highlight mais claro */
 }
 
 /* Ajuste das cores do texto durante o hover para manter contraste */
 .neu-card:hover .card-content-wrapper .card-count,
 .neu-card:hover .card-content-wrapper .card-title {
-  color: #5a4d28; /* Cor escura para contraste com o amarelo */
+  color: #5a4d28;
+  /* Cor escura para contraste com o amarelo */
 }
 
 /* Efeito de esfumaçado/brilho interno */
@@ -76,36 +81,34 @@
   right: 0;
   bottom: 0;
   border-radius: 20px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 50%,
-    rgba(0, 0, 0, 0.02) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(0, 0, 0, 0.02) 100%);
   pointer-events: none;
-  transition: all 0.4s ease; /* Transição suave para o overlay */
+  transition: all 0.4s ease;
+  /* Transição suave para o overlay */
 }
 
 /* Remove o overlay durante o hover para a cor ficar mais vibrante */
 .neu-card:hover .card-content-wrapper::before {
   opacity: 0.3;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 240, 0.05) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 240, 0.05) 100%);
 }
 
 /* Linha superior com SVG e Número */
 .card-top-row {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 15px;
   margin-bottom: 0;
   position: relative;
   z-index: 1;
+  width: 160px;
 }
 
 .card-icon {
@@ -137,12 +140,16 @@
 
 /* Animação de inclinação principal */
 @keyframes gentleTilt {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: rotate(0deg);
   }
+
   25% {
     transform: rotate(-8deg);
   }
+
   75% {
     transform: rotate(8deg);
   }
@@ -183,7 +190,8 @@
 
 /* Ajuste específico para quando o card-content-wrapper tem hover */
 .neu-card:hover .card-content-wrapper .card-count {
-  color: #5a4d28; /* Cor escura para contraste com o amarelo */
+  color: #5a4d28;
+  /* Cor escura para contraste com o amarelo */
 }
 
 /* Título abaixo, quase colado aos elementos acima */
@@ -206,7 +214,8 @@
 
 /* Ajuste específico para quando o card-content-wrapper tem hover */
 .neu-card:hover .card-content-wrapper .card-title {
-  color: #5a4d28; /* Cor escura para contraste com o amarelo */
+  color: #5a4d28;
+  /* Cor escura para contraste com o amarelo */
   transform: translateY(-2px);
 }
 
@@ -227,19 +236,20 @@
   right: 0;
   bottom: 0;
   border-radius: 15px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    transparent 50%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      transparent 50%);
   opacity: 0;
   animation: iconGlow 2s ease-in-out infinite;
 }
 
 @keyframes iconGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0;
   }
+
   50% {
     opacity: 0.3;
   }
@@ -254,11 +264,11 @@
     gap: 25px;
     max-width: 800px;
   }
-  
+
   .neu-card {
     padding: 25px 15px;
   }
-  
+
   .card-content-wrapper {
     padding: 18px;
   }
@@ -272,30 +282,30 @@
     margin-bottom: 20px;
     max-width: 100%;
   }
-  
+
   .neu-card {
     padding: 20px 15px;
     border-radius: 18px;
   }
-  
+
   .card-content-wrapper {
     padding: 15px;
     border-radius: 18px;
   }
-  
+
   .card-icon {
     width: 50px;
     height: 50px;
   }
-  
+
   .material-icons {
     font-size: 28px;
   }
-  
+
   .card-count {
     font-size: 2.2rem;
   }
-  
+
   .card-title {
     font-size: 1rem;
   }
@@ -304,14 +314,18 @@
   .neu-card:hover .material-icons.icon-tilt {
     animation: gentleTilt 2.5s ease-in-out infinite;
   }
-  
+
   @keyframes gentleTilt {
-    0%, 100% {
+
+    0%,
+    100% {
       transform: rotate(0deg);
     }
+
     25% {
       transform: rotate(-6deg);
     }
+
     75% {
       transform: rotate(6deg);
     }
@@ -325,33 +339,34 @@
     gap: 15px;
     max-width: 400px;
   }
-  
+
   .neu-card {
     padding: 18px 12px;
     border-radius: 16px;
   }
-  
+
   .card-content-wrapper {
     padding: 15px 10px;
   }
-  
+
   .card-top-row {
     gap: 12px;
+    width: 140px;
   }
-  
+
   .card-icon {
     width: 45px;
     height: 45px;
   }
-  
+
   .material-icons {
     font-size: 24px;
   }
-  
+
   .card-count {
     font-size: 2rem;
   }
-  
+
   .card-title {
     font-size: 0.9rem;
   }
@@ -363,33 +378,33 @@
     gap: 12px;
     max-width: 320px;
   }
-  
+
   .neu-card {
     padding: 15px 10px;
     border-radius: 14px;
   }
-  
+
   .card-content-wrapper {
     padding: 12px 8px;
   }
-  
+
   .card-top-row {
     gap: 10px;
   }
-  
+
   .card-icon {
     width: 40px;
     height: 40px;
   }
-  
+
   .material-icons {
     font-size: 20px;
   }
-  
+
   .card-count {
     font-size: 1.8rem;
   }
-  
+
   .card-title {
     font-size: 0.85rem;
   }
@@ -397,6 +412,7 @@
 
 /* Acessibilidade - reduzir movimento se preferido */
 @media (prefers-reduced-motion: reduce) {
+
   .material-icons,
   .card-count,
   .card-title,
@@ -406,19 +422,19 @@
     transition: none;
     animation: none;
   }
-  
+
   .neu-card:hover .card-icon::before {
     animation: none;
     opacity: 0;
   }
-  
+
   .neu-card:hover .card-content-wrapper {
     background: var(--bg-primary);
     box-shadow:
       inset 8px 8px 16px var(--shadow-light),
       inset -8px -8px 16px var(--shadow-dark);
   }
-  
+
   .neu-card:hover .card-content-wrapper .card-count,
   .neu-card:hover .card-content-wrapper .card-title {
     color: var(--text-primary);

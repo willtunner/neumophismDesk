@@ -16,24 +16,31 @@ import 'highcharts/modules/accessibility';
 })
 export class PieChart implements AfterViewInit, OnDestroy {
   @ViewChild('chartContainer', { static: false }) chartContainer!: ElementRef;
-  private chart: Highcharts.Chart | undefined;
+  private chart?: Highcharts.Chart;
+  private resizeHandler = this.handleResize.bind(this);
 
   ngAfterViewInit() {
     this.initChart();
-    window.addEventListener('resize', this.handleResize.bind(this));
+    window.addEventListener('resize', this.resizeHandler);
   }
 
   ngOnDestroy() {
+    // ✅ Remove o mesmo listener
+    window.removeEventListener('resize', this.resizeHandler);
+
     if (this.chart) {
       this.chart.destroy();
+      this.chart = undefined;
     }
-    window.removeEventListener('resize', this.handleResize.bind(this));
   }
 
   private handleResize() {
-    if (this.chart) {
+    if (this.chart && this.chart.container) {
+      // ✅ Verifica se o container ainda existe antes de reflow
       setTimeout(() => {
-        this.chart?.reflow();
+        if (this.chart?.container?.children?.length) {
+          this.chart.reflow();
+        }
       }, 100);
     }
   }
