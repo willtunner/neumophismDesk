@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as Highcharts from 'highcharts';
 
@@ -17,6 +17,7 @@ import 'highcharts/modules/accessibility';
 export class BarChartDrilldown implements AfterViewInit, OnDestroy {
   @ViewChild('chartContainer', { static: false }) chartContainer!: ElementRef;
   private chart: Highcharts.Chart | undefined;
+  private resizeTimeout: any;
 
   // Dados principais - Nível 1: TAGS
   private mainData = {
@@ -189,28 +190,59 @@ export class BarChartDrilldown implements AfterViewInit, OnDestroy {
   };
 
   ngAfterViewInit() {
-    if (this.chartContainer && this.chartContainer.nativeElement) {
-      this.initChart();
-      window.addEventListener('resize', this.handleResize.bind(this));
-    } else {
-      console.error('Chart container not found');
-    }
+    this.initChart();
   }
 
   ngOnDestroy() {
-    if (this.chart) {
-      this.chart.destroy();
-    }
-    window.removeEventListener('resize', this.handleResize.bind(this));
+    this.cleanupChart();
+  }
+
+  @HostListener('window:resize')
+  onWindowResize() {
+    this.handleResize();
   }
 
   private handleResize() {
-    if (this.chart && this.chartContainer && this.chartContainer.nativeElement) {
-      setTimeout(() => {
-        this.chart?.reflow();
-      }, 100);
-    } else {
-      console.warn('Chart or container not available during resize');
+    // Clear existing timeout
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
+    // Set new timeout with debounce
+    this.resizeTimeout = setTimeout(() => {
+      this.safeReflow();
+    }, 250);
+  }
+
+  private safeReflow() {
+    try {
+      if (this.chart && this.chartContainer?.nativeElement) {
+        const container = this.chartContainer.nativeElement;
+        
+        // Verifica se o elemento ainda está no DOM e visível
+        if (document.body.contains(container) && container.offsetParent !== null) {
+          this.chart.reflow();
+        }
+      }
+    } catch (error) {
+      console.warn('Error during chart reflow:', error);
+    }
+  }
+
+  private cleanupChart() {
+    // Clear resize timeout
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
+    // Destroy chart safely
+    try {
+      if (this.chart) {
+        this.chart.destroy();
+        this.chart = undefined;
+      }
+    } catch (error) {
+      console.warn('Error during chart destruction:', error);
     }
   }
 
