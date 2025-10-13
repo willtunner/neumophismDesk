@@ -59,23 +59,23 @@ export class AddVideoDialog implements OnInit {
     });
   }
 
-  /** 🔹 Carrega dados da categoria recebida */
-  private loadData(data: DropDownVideos | null): void {
-    this.isEditMode = !!data;
-
-    // Se data for null, estamos criando uma nova categoria
-    if (!data) {
-      this.dropDownVideos = { id: Date.now().toString(), dropdownTitle: '', videos: [] };
-      // Mostra automaticamente os campos de novo vídeo para nova categoria
-      this.showNewVideo = true;
-    } else {
-      // Se data existe, estamos editando uma categoria existente
-      this.dropDownVideos = { ...data, videos: Array.isArray(data.videos) ? data.videos : [] };
-      this.dropDownForm.patchValue({ dropdownTitle: this.dropDownVideos.dropdownTitle });
-      // Não mostra automaticamente os campos de vídeo no modo edição
-      this.showNewVideo = false;
+    /** 🔹 Carrega dados da categoria recebida */
+    private loadData(data: DropDownVideos | null): void {
+      this.isEditMode = !!data;
+  
+      // Se data for null, estamos criando uma nova categoria
+      if (!data) {
+        this.dropDownVideos = { id: Date.now().toString(), dropdownTitle: '', videos: [] };
+        // Mostra automaticamente os campos de novo vídeo para nova categoria
+        this.showNewVideo = true;
+      } else {
+        // Se data existe, estamos editando uma categoria existente
+        this.dropDownVideos = { ...data, videos: Array.isArray(data.videos) ? data.videos : [] };
+        this.dropDownForm.patchValue({ dropdownTitle: this.dropDownVideos.dropdownTitle });
+        // Não mostra automaticamente os campos de vídeo no modo edição
+        this.showNewVideo = false;
+      }
     }
-  }
 
   /** 🔹 Configura inputs dinâmicos */
   private initConfigs(): void {
@@ -167,24 +167,41 @@ export class AddVideoDialog implements OnInit {
 
     const newVideo: Video = {
       id: this.selectedVideo?.id || Date.now().toString(),
-      ...this.videoForm.value,
-      created: this.selectedVideo?.created || new Date()
+      videoTitle: this.videoForm.value.videoTitle,
+      youtubeUrl: this.videoForm.value.youtubeUrl,
+      sector: this.videoForm.value.sector
     };
 
     if (this.selectedVideo) {
+      // Editar vídeo existente
       const index = this.dropDownVideos.videos.findIndex(v => v.id === this.selectedVideo!.id);
       this.dropDownVideos.videos[index] = newVideo;
     } else {
+      // Adicionar novo vídeo
       this.dropDownVideos.videos.push(newVideo);
     }
 
-    this.cancelVideoEdit();
+    // Limpar campos após salvar
+    this.clearVideoFields();
+    
+    // Desselecionar qualquer vídeo
+    this.selectedVideo = null;
+
+    // MANTER O FORMULÁRIO VISÍVEL para adicionar mais vídeos
+    // Não alteramos o showNewVideo - mantém como está (true)
+
+    console.log('Vídeo salvo. Lista atual:', this.dropDownVideos.videos);
   }
 
   /** 🔹 Excluir vídeo */
   deleteVideo(video: Video) {
-    this.dropDownVideos.videos = this.dropDownVideos.videos.filter(v => v.id !== video.id);
-    if (this.selectedVideo?.id === video.id) this.clearVideoForm();
+    if (confirm('Tem certeza que deseja excluir este vídeo?')) {
+      this.dropDownVideos.videos = this.dropDownVideos.videos.filter(v => v.id !== video.id);
+      if (this.selectedVideo?.id === video.id) {
+        this.clearVideoForm();
+        this.selectedVideo = null;
+      }
+    }
   }
 
   /** 🔹 Salvar categoria */
@@ -199,18 +216,33 @@ export class AddVideoDialog implements OnInit {
       return;
     }
 
-    this.dialogRef.close({
-      ...this.dropDownVideos,
-      dropdownTitle: this.dropdownTitleControl.value
-    });
+    const result = {
+      dropdownTitle: this.dropdownTitleControl.value,
+      videos: this.dropDownVideos.videos
+    };
+
+    console.log('Objeto completo a ser salvo:', JSON.stringify(result, null, 2));
+    
+    // this.dialogRef.close(result);
   }
 
   cancel() { this.dialogRef.close(null); }
 
   /** 🔹 Utils */
-  private clearVideoForm() { this.videoForm.reset(); }
+  private clearVideoForm() { 
+    this.videoForm.reset(); 
+    this.videoForm.markAsPristine();
+    this.videoForm.markAsUntouched();
+  }
+
+
   private markFormTouched(form: FormGroup) {
-    Object.values(form.controls).forEach(c => c.markAsTouched());
+    Object.values(form.controls).forEach(c => {
+      c.markAsTouched();
+      if (c instanceof FormGroup) {
+        this.markFormTouched(c);
+      }
+    });
   }
 
   /** 🔹 YouTube thumbnail helper */
@@ -241,6 +273,10 @@ export class AddVideoDialog implements OnInit {
   cancelVideoEdit() {
     this.selectedVideo = null;
     this.clearVideoFields();
-    this.showNewVideo = false;
+    // No modo nova categoria, mantém os campos de vídeo visíveis para adicionar mais
+    // No modo edição, esconde os campos de vídeo apenas se o usuário clicar em Cancelar
+    if (this.isEditMode) {
+      this.showNewVideo = false;
+    }
   }
 }

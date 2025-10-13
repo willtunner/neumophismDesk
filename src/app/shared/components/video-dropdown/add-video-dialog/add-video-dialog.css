@@ -364,3 +364,45 @@
     font-size: 0.7rem;
   }
 }
+
+/* Botão de excluir vídeo */
+.delete-btn {
+  background: #ff6b6b;
+  border: none;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: #ff5252;
+  transform: scale(1.05);
+}
+
+.delete-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: white;
+}
+
+.video-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  width: 100%;
+  background: var(--bg-primary);
+  box-shadow: 4px 4px 8px var(--shadow-light), -4px -4px 8px var(--shadow-dark);
+  position: relative;
+}

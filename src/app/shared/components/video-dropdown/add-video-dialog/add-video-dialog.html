@@ -19,7 +19,7 @@
       <app-input-dynamic [config]="inputConfigs['dropdownTitle']" [control]="dropdownTitleControl" [showImage]="true">
       </app-input-dynamic>
 
-      <!-- Form do Vídeo -->
+      <!-- Form do Vídeo - SEMPRE VISÍVEL NO MODO NOVA CATEGORIA -->
       @if (showNewVideo) {
       <div class="new-video neu-card">
         <h3>{{ selectedVideo ? '✏️ Editar Vídeo' : '🆕 Adicionar Vídeo' }}</h3>
@@ -32,7 +32,7 @@
           </app-select-dynamic>
           <div class="modal-actions">
             <button type="button" class="neu-button secondary" (click)="cancelVideoEdit()">
-              Cancelar
+              {{ isEditMode ? 'Cancelar' : 'Limpar Campos' }}
             </button>
             <button type="button" class="neu-button primary" (click)="saveVideo()">
               {{ selectedVideo ? 'Atualizar Video' : 'Inserir Video' }}
@@ -42,11 +42,10 @@
       </div>
       }
 
-      <!-- Lista de Vídeos (modo edição) -->
-      @if (isEditMode) {
+      <!-- Lista de Vídeos (sempre visível quando há vídeos) -->
+      @if (hasVideos) {
       <div class="video-section">
-        <h3>📹 Vídeos da Categoria</h3>
-        @if (hasVideos) {
+        <h3>📹 Vídeos da Categoria ({{ dropDownVideos.videos.length }})</h3>
         <div class="video-list">
           @for (video of dropDownVideos.videos; track video.id) {
           <div class="video-item neu-card" [class.selected]="selectedVideo?.id === video.id" (click)="selectVideo(video)">
@@ -56,22 +55,37 @@
               <h4 class="video-title">{{ video.videoTitle }}</h4>
               <p class="video-sector">{{ video.sector }}</p>
             </div>
+            <button class="delete-btn" (click)="deleteVideo(video); $event.stopPropagation()" 
+                    title="Excluir vídeo">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="15" y1="5" x2="5" y2="15"></line>
+                <line x1="5" y1="5" x2="15" y2="15"></line>
+              </svg>
+            </button>
           </div>
           }
         </div>
-        } @else {
-        <div class="no-videos neu-card">
-          <p>🎬 Ainda não há vídeos cadastrados!</p>
-        </div>
-        }
+      </div>
+      } @else if (isEditMode) {
+      <div class="no-videos neu-card">
+        <p>🎬 Ainda não há vídeos cadastrados!</p>
       </div>
       }
 
-      <!-- Botão para adicionar novo vídeo -->
+      <!-- Botão para adicionar novo vídeo (só aparece no modo edição quando não está mostrando o formulário) -->
       @if (isEditMode && !showNewVideo) {
       <div class="add-video-toggle">
         <button type="button" class="neu-button primary" (click)="addNewVideo()">
           ➕ Adicionar Novo Vídeo
+        </button>
+      </div>
+      }
+
+      <!-- Botão para adicionar mais vídeos (modo nova categoria quando já tem vídeos mas o formulário não está visível) -->
+      @if (!isEditMode && hasVideos && !showNewVideo) {
+      <div class="add-video-toggle">
+        <button type="button" class="neu-button primary" (click)="addNewVideo()">
+          ➕ Adicionar Mais Vídeos
         </button>
       </div>
       }
