@@ -31,7 +31,6 @@ export class VideoDropdownComponent {
           id: '1',
           videoTitle: 'O QUE É UMA NOTA FISCAL?',
           youtubeUrl: 'https://www.youtube.com/watch?v=sxeU_iPx3bM',
-          // created: new Date('2025-04-01'),
           sector: 'Fiscal'
         },
         {
@@ -131,27 +130,6 @@ export class VideoDropdownComponent {
     });
   }
 
-
-  // Edita uma categoria abrindo a modal com valores preenchidos
-  // editCategory(category: DropDownVideos) {
-  //   const dialogRef = this.dialog.open(AddVideoDialog, {
-  //     width: '800px',
-  //     data: category,
-  //     panelClass: 'neu-modal'
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       const updatedCategory: DropDownVideos = {
-  //         ...category,
-  //         dropdownTitle: result.categoryTitle,
-  //         videos: result.updatedVideos || category.videos
-  //       };
-
-  //       this.dropdownService.updateCategory(updatedCategory);
-  //     }
-  //   });
-  // }
 
   // Exclui uma categoria inteira
   deleteCategory(categoryId: string) {

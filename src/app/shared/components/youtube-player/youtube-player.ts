@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, Input, NgZone, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimelineMarkers } from './timeline-markers/timeline-markers';
 import { Annotation } from '../../../models/annotation.model';
@@ -10,9 +10,11 @@ import { Annotation } from '../../../models/annotation.model';
   templateUrl: './youtube-player.html',
   styleUrl: './youtube-player.css'
 })
-export class YoutubePlayer implements AfterViewInit, OnDestroy {
+export class YoutubePlayer implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('youTubePlayer') youTubePlayer!: ElementRef;
   @Output() timestampSelected = new EventEmitter<number>();
+  
+  // Inputs para receber dados externos
   @Input() videoId: string = '';
   @Input() annotations: Annotation[] = [];
 
@@ -21,11 +23,20 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy {
   public duration: number = 0;
   public isPlaying: boolean = false;
   private updateInterval: any;
+  private playerSize: string = 'large';
 
   constructor(private ngZone: NgZone) {}
 
+  ngOnInit() {
+    console.log('YoutubePlayer initialized with videoId:', this.videoId);
+  }
+
   ngAfterViewInit() {
-    this.loadYouTubeAPI();
+    if (this.videoId) {
+      this.loadYouTubeAPI();
+    } else {
+      console.warn('No videoId provided to YoutubePlayer');
+    }
   }
 
   ngOnDestroy() {
@@ -49,22 +60,31 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy {
   }
 
   private createPlayer() {
+    if (!this.videoId) {
+      console.error('No videoId available to create player');
+      return;
+    }
+
     this.player = new (window as any).YT.Player(this.youTubePlayer.nativeElement, {
       height: '400',
       width: '100%',
       videoId: this.videoId,
       playerVars: {
         playsinline: 1,
-        enablejsapi: 1
+        enablejsapi: 1,
+        modestbranding: 1,
+        rel: 0
       },
       events: {
         'onReady': this.onPlayerReady.bind(this),
-        'onStateChange': this.onPlayerStateChange.bind(this)
+        'onStateChange': this.onPlayerStateChange.bind(this),
+        'onError': this.onPlayerError.bind(this)
       }
     });
   }
 
   private onPlayerReady(event: any) {
+    console.log('YouTube player ready');
     this.duration = this.player.getDuration();
 
     // 🔥 Rodar o intervalo dentro do NgZone para o Angular detectar as mudanças
@@ -117,6 +137,10 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy {
     });
   }
 
+  private onPlayerError(event: any) {
+    console.error('YouTube player error:', event.data);
+  }
+
   seekTo(timestamp: number) {
     if (this.player) {
       this.player.seekTo(timestamp, true);
@@ -128,7 +152,9 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy {
     if (this.player) {
       const time = this.player.getCurrentTime();
       this.timestampSelected.emit(time);
+      return time;
     }
+    return 0;
   }
 
   onSeekTo(timestamp: number) {
@@ -197,19 +223,28 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy {
 
   // Método para ajustar o tamanho do video-container
   setSize(size: string) {
-    const videoContainer = document.querySelector('.video-container') as HTMLElement;
+    this.playerSize = size;
+    const videoContainer = this.youTubePlayer.nativeElement.closest('.video-container');
     if (videoContainer) {
       switch (size) {
         case 'small':
           videoContainer.style.width = '40%';
+          videoContainer.style.margin = '0 auto';
           break;
         case 'medium':
           videoContainer.style.width = '70%';
+          videoContainer.style.margin = '0 auto';
           break;
         case 'large':
           videoContainer.style.width = '100%';
+          videoContainer.style.margin = '0';
           break;
       }
     }
+  }
+
+  // Getter para o tamanho atual
+  getCurrentSize(): string {
+    return this.playerSize;
   }
 }

@@ -31,6 +31,7 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
   safeIconSvg: SafeHtml = '';
   isOpen: boolean = false;
   selectedLabels: string = '';
+  hasBeenTouched: boolean = false; // Nova propriedade para controlar touched
 
   private readonly defaultIcon = `
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -98,7 +99,6 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
       }
     }
   }
-  
 
   private setupValueChanges(): void {
     if (this.control) {
@@ -116,7 +116,7 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   private updateErrorMessage(): void {
-    if (this.control && this.control.invalid && (this.control.touched || this.control.dirty)) {
+    if (this.control && this.control.invalid && (this.hasBeenTouched || this.control.dirty)) {
       const errors = this.control.errors;
       if (errors) {
         const firstErrorKey = Object.keys(errors)[0];
@@ -193,16 +193,20 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
 
   onBlur(): void {
     this.isFocused = false;
-    this.markAsTouched();
+    // MUDANÇA: Não marca como touched automaticamente no blur
+    // Apenas atualiza a mensagem de erro se já foi tocado
+    this.updateErrorMessage();
   }
 
   private closeDropdown(): void {
     this.isOpen = false;
-    this.markAsTouched();
+    // MUDANÇA: Não marca como touched automaticamente ao fechar dropdown
+    this.updateErrorMessage();
   }
 
   markAsTouched(): void {
-    if (this.control && !this.control.touched) {
+    if (this.control && !this.hasBeenTouched) {
+      this.hasBeenTouched = true;
       this.control.markAsTouched();
       this.updateErrorMessage();
     }
@@ -214,7 +218,8 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
     }
     this.isOpen = !this.isOpen;
     if (!this.isOpen) {
-      this.markAsTouched();
+      // MUDANÇA: Não marca como touched automaticamente ao fechar dropdown
+      this.updateErrorMessage();
     }
   }
 
@@ -224,6 +229,10 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
     }
     
     if (option.disabled || !this.control) return;
+
+    // MUDANÇA: Marca como touched apenas quando uma opção é realmente selecionada
+    // E apenas se não for a opção vazia (placeholder)
+    const shouldMarkAsTouched = option.value !== '' && option.value !== null && option.value !== undefined;
 
     if (this.config.multiple) {
       const currentValue = this.control.value || [];
@@ -236,12 +245,17 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
       }
       
       this.control.setValue([...currentValue]);
+      if (shouldMarkAsTouched) {
+        this.markAsTouched();
+      }
     } else {
       this.control.setValue(option.value);
+      if (shouldMarkAsTouched) {
+        this.markAsTouched();
+      }
       this.closeDropdown();
     }
     
-    this.markAsTouched();
     this.control.markAsDirty();
     this.updateErrorMessage();
   }
@@ -271,7 +285,8 @@ export class SelectDynamicComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   get isInvalid(): boolean {
-    return this.control && this.control.invalid && (this.control.touched || this.control.dirty);
+    // MUDANÇA: Usa hasBeenTouched em vez de control.touched
+    return this.control && this.control.invalid && (this.hasBeenTouched || this.control.dirty);
   }
 
   get displayValue(): string {

@@ -1,4 +1,4 @@
-<div class="neu-modal-content">
+<div class="neu-modal-content neu-scrollbar">
   <!-- Cabeçalho -->
   <div class="modal-header">
     <div class="modal-title neu-emboss">
@@ -46,7 +46,7 @@
       @if (hasVideos) {
       <div class="video-section">
         <h3>📹 Vídeos da Categoria ({{ dropDownVideos.videos.length }})</h3>
-        <div class="video-list">
+        <div class="video-list neu-scrollbar-small">
           @for (video of dropDownVideos.videos; track video.id) {
           <div class="video-item neu-card" [class.selected]="selectedVideo?.id === video.id" (click)="selectVideo(video)">
             <img [src]="getYouTubeThumbnail(video.youtubeUrl)" [alt]="video.videoTitle" class="video-thumb"

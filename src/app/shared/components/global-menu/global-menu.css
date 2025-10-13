@@ -19,10 +19,10 @@
 }
 
 .global-menu-content {
-  padding: 0 20px;
+  /* padding: 0 20px; */
   display: flex;
   flex-direction: column;
-  height: 100%;
+  /* height: 100%; */
   background: transparent;
 }
 
@@ -143,11 +143,12 @@
 @media (max-width: 768px) {
   .global-menu {
     width: 250px;
-    padding: 15px 0;
+    /* padding: 15px 0; */
   }
 
   .global-menu-content {
-    padding: 0 15px;
+    /* padding: 0 15px; */
+    height: 100%;
   }
 
   .nav-btn {
