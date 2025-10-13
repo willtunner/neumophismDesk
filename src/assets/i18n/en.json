@@ -1,6 +1,23 @@
 {
   "HEADER": {
     "TITLE": "Helpdesk System",
+    "HOME": "🏠 Home",
+    "PROFILE": "👤 Profile",
+    "SETTINGS": "⚙️ Settings",
+    "DASHBOARD": "Dashboard",
+    "USERS": "👥 Users",
+    "PRODUCTS": "Products",
+    "REPORTS": "📊 Reports",
+    "HELP": "❔ Help",
+    "CHAT": "💬 Chat",
+    "CLIENTS": "💼 Clients",
+    "COMPANIES": "🏙️ Companies",
+    "CALENDAR": "📆 Calendar",
+    "TUTORIALS": "🎬 Tutorials",
+    "CALL": "📞 Calls"
+  },
+  "NAVIGATION_MENU": {
+    "TITLE": "Helpdesk System",
     "HOME": "Home",
     "PROFILE": "Profile",
     "SETTINGS": "Settings",
@@ -14,7 +31,7 @@
     "COMPANIES": "Companies",
     "CALENDAR": "Calendar",
     "TUTORIALS": "Tutorials",
-    "CALL": "Tickets"
+    "CALL": "Calls"
   },
   "MESSAGES": {
     "TITLE": "Messages",
@@ -36,12 +53,12 @@
     "VIEW_ALL": "View all notifications"
   },
   "CHART": {
-    "TITLE": "Ticket Distribution by Position",
+    "TITLE": "Call Distribution by Branch",
     "SUBTITLE": "Click on slices to see details",
     "SOURCE": "Source: Internal system",
-    "TITLE_LINE_CHART": "Tickets by Month",
-    "SUBTITLE_LINE_CHART": "Shows the average number of tickets opened per month.",
-    "Y_AXIS_LINE_CHART": "Number of tickets"
+    "TITLE_LINE_CHART": "Calls per month",
+    "SUBTITLE_LINE_CHART": "Shows the average number of open calls per month.",
+    "Y_AXIS_LINE_CHART": "Number of calls"
   },
   "COMMON": {
     "LANGUAGE": "Language",
@@ -71,7 +88,7 @@
   },
   "INPUTS-FIELS": {
     "TITLE": "Title",
-    "PLACEHOLDER_TITLE": "Enter the title",
+    "PLACEHOLDER_TITLE": "Enter title",
     "EMAIL": "Email",
     "PASSWORD": "Password",
     "CONFIRM_PASSWORD": "Confirm Password",
@@ -96,7 +113,7 @@
     "SELECT_PLACEHOLDER": "Select an option",
     "OBSERVATION": "Observation",
     "DESCRIPTION": "Description",
-    "PLACEHOLDER_DESCRIPTION": "Enter the description",
+    "PLACEHOLDER_DESCRIPTION": "Enter description",
     "CLIENT": "Client",
     "SELECT_CLIENT": "Select client",
     "ADD_NEW_CLIENT": "Add new client",
@@ -105,11 +122,11 @@
     "SEARCH_CONECTION": "Search connection",
     "CONTENT": "Content",
     "PLACEHOLDER_CONTENT": "Enter detailed content...",
-    "SAVE_CALL": "Save Ticket",
-    "UPDATE_CALL": "Update Ticket",
-    "DELETE_CALL": "Delete Ticket"
+    "SAVE_CALL": "Save Call",
+    "UPDATE_CALL": "Update Call",
+    "DELETE_CALL": "Delete Call"
   },
   "CALL_PAGE": {
-    "NEW_CALL": "New Ticket"
+    "NEW_CALL": "New Call"
   }
 }

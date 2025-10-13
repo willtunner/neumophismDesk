@@ -1,9 +1,26 @@
 {
   "HEADER": {
     "TITLE": "Sistema de Helpdesk",
+    "HOME": "🏠 Inicio",
+    "PROFILE": "👤 Perfil",
+    "SETTINGS": "⚙️ Configuración",
+    "DASHBOARD": "Dashboard",
+    "USERS": "👥 Usuarios",
+    "PRODUCTS": "Productos",
+    "REPORTS": "📊 Reportes",
+    "HELP": "❔ Ayuda",
+    "CHAT": "💬 Chat",
+    "CLIENTS": "💼 Clientes",
+    "COMPANIES": "🏙️ Empresas",
+    "CALENDAR": "📆 Calendario",
+    "TUTORIALS": "🎬 Tutoriales",
+    "CALL": "📞 Llamadas"
+  },
+  "NAVIGATION_MENU": {
+    "TITLE": "Sistema de Helpdesk",
     "HOME": "Inicio",
     "PROFILE": "Perfil",
-    "SETTINGS": "Configuraciones",
+    "SETTINGS": "Configuración",
     "DASHBOARD": "Dashboard",
     "USERS": "Usuarios",
     "PRODUCTS": "Productos",
@@ -14,7 +31,7 @@
     "COMPANIES": "Empresas",
     "CALENDAR": "Calendario",
     "TUTORIALS": "Tutoriales",
-    "CALL": "Llamados"
+    "CALL": "Llamadas"
   },
   "MESSAGES": {
     "TITLE": "Mensajes",
@@ -24,8 +41,8 @@
   "VALIDATOR-ERROR-MESSAGES": {
     "REQUIRED": "Este campo es obligatorio",
     "EMAIL": "Por favor, ingrese un email válido",
-    "MINLENGTH": "El valor es muy corto, mínimo de {{requiredLength}} caracteres",
-    "MAXLENGTH": "El valor es muy largo, máximo de {{requiredLength}} caracteres",
+    "MINLENGTH": "El valor es muy corto, mínimo {{requiredLength}} caracteres",
+    "MAXLENGTH": "El valor es muy largo, máximo {{requiredLength}} caracteres",
     "PATTERN": "El valor no coincide con el formato esperado",
     "MIN": "El valor debe ser como mínimo {{min}}",
     "MAX": "El valor debe ser como máximo {{max}}"
@@ -36,12 +53,12 @@
     "VIEW_ALL": "Ver todas las notificaciones"
   },
   "CHART": {
-    "TITLE": "Distribución de Llamados por Puesto",
-    "SUBTITLE": "Haga clic en las secciones para ver detalles",
+    "TITLE": "Distribución de Llamadas por Sucursal",
+    "SUBTITLE": "Haga clic en las porciones para ver detalles",
     "SOURCE": "Fuente: Sistema interno",
-    "TITLE_LINE_CHART": "Llamados por mes",
-    "SUBTITLE_LINE_CHART": "Muestra la cantidad promedio de llamados abiertos por mes.",
-    "Y_AXIS_LINE_CHART": "Cantidad de llamados"
+    "TITLE_LINE_CHART": "Llamadas por mes",
+    "SUBTITLE_LINE_CHART": "Muestra la cantidad promedio de llamadas abiertas por mes.",
+    "Y_AXIS_LINE_CHART": "Cantidad de llamadas"
   },
   "COMMON": {
     "LANGUAGE": "Idioma",
@@ -52,7 +69,7 @@
     "CANCEL": "Cancelar",
     "DELETE": "Eliminar",
     "EDIT": "Editar",
-    "VIEW": "Visualizar",
+    "VIEW": "Ver",
     "SEARCH": "Buscar",
     "LOADING": "Cargando...",
     "HOME": "Inicio",
@@ -72,7 +89,7 @@
   "INPUTS-FIELS": {
     "TITLE": "Título",
     "PLACEHOLDER_TITLE": "Ingrese el título",
-    "EMAIL": "Email",
+    "EMAIL": "Correo electrónico",
     "PASSWORD": "Contraseña",
     "CONFIRM_PASSWORD": "Confirmar Contraseña",
     "FIRST_NAME": "Nombre",
@@ -88,10 +105,10 @@
     "ADD_NEW_COMPANY": "Agregar nueva empresa",
     "POSITION": "Cargo",
     "DEPARTMENT": "Departamento",
-    "ROLE": "Función",
+    "ROLE": "Rol",
     "STATUS": "Estado",
-    "CREATED_AT": "Creado en",
-    "UPDATED_AT": "Actualizado en",
+    "CREATED_AT": "Creado el",
+    "UPDATED_AT": "Actualizado el",
     "SEARCH_PLACEHOLDER": "Escriba para buscar...",
     "SELECT_PLACEHOLDER": "Seleccione una opción",
     "OBSERVATION": "Observación",
@@ -105,11 +122,11 @@
     "SEARCH_CONECTION": "Buscar conexión",
     "CONTENT": "Contenido",
     "PLACEHOLDER_CONTENT": "Ingrese el contenido detallado...",
-    "SAVE_CALL": "Guardar Llamado",
-    "UPDATE_CALL": "Actualizar Llamado",
-    "DELETE_CALL": "Eliminar Llamado"
+    "SAVE_CALL": "Guardar Llamada",
+    "UPDATE_CALL": "Actualizar Llamada",
+    "DELETE_CALL": "Eliminar Llamada"
   },
   "CALL_PAGE": {
-    "NEW_CALL": "Nuevo Llamado"
+    "NEW_CALL": "Nueva Llamada"
   }
 }
