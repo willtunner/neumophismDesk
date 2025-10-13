@@ -62,11 +62,19 @@ export class AddVideoDialog implements OnInit {
   /** 🔹 Carrega dados da categoria recebida */
   private loadData(data: DropDownVideos | null): void {
     this.isEditMode = !!data;
-    this.dropDownVideos = data
-      ? { ...data, videos: Array.isArray(data.videos) ? data.videos : [] }
-      : { id: Date.now().toString(), dropdownTitle: '', videos: [] };
 
-    this.dropDownForm.patchValue({ dropdownTitle: this.dropDownVideos.dropdownTitle });
+    // Se data for null, estamos criando uma nova categoria
+    if (!data) {
+      this.dropDownVideos = { id: Date.now().toString(), dropdownTitle: '', videos: [] };
+      // Mostra automaticamente os campos de novo vídeo para nova categoria
+      this.showNewVideo = true;
+    } else {
+      // Se data existe, estamos editando uma categoria existente
+      this.dropDownVideos = { ...data, videos: Array.isArray(data.videos) ? data.videos : [] };
+      this.dropDownForm.patchValue({ dropdownTitle: this.dropDownVideos.dropdownTitle });
+      // Não mostra automaticamente os campos de vídeo no modo edição
+      this.showNewVideo = false;
+    }
   }
 
   /** 🔹 Configura inputs dinâmicos */
