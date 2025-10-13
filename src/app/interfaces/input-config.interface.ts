@@ -35,9 +35,18 @@ export interface InputConfig {
   options?: SelectOption[];
 }
 
+export interface SelectConfig extends InputConfig {
+  options: SelectOption[];
+  multiple?: boolean;
+  customIcon?: string;
+  iconName?: string;
+  emptyOptionLabel?: string;
+}
+
 export interface SelectOption {
   value: string | number;
   label: string;
+  disabled?: boolean;
 }
 
 

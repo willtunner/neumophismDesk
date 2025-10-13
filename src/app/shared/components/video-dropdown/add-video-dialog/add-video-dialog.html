@@ -1,32 +1,88 @@
-<div class="neu-container p-4">
-  <h2>🆕 Cadastrar Novo Vídeo</h2>
-
-  <form [formGroup]="videoForm" class="form-container">
-
-    <app-input-dynamic 
-      [config]="inputConfigs['categoryTitle']" 
-      [control]="categoryTitleControl">
-    </app-input-dynamic>
-
-    <app-input-dynamic 
-      [config]="inputConfigs['videoTitle']" 
-      [control]="videoTitleControl">
-    </app-input-dynamic>
-
-    <app-input-dynamic 
-      [config]="inputConfigs['youtubeUrl']" 
-      [control]="youtubeUrlControl">
-    </app-input-dynamic>
-
-    <app-input-dynamic 
-      [config]="inputConfigs['sector']" 
-      [control]="sectorControl">
-    </app-input-dynamic>
-
-    <div class="button-row">
-      <button type="button" class="neu-button" (click)="cancel()">Cancelar</button>
-      <button type="button" class="neu-button primary" (click)="save()">Salvar</button>
+<div class="neu-modal-content">
+  <!-- Cabeçalho -->
+  <div class="modal-header">
+    <div class="modal-title neu-emboss">
+      {{ isEditMode ? '✏️ Editar Categoria' : '🆕 Nova Categoria' }}
     </div>
+    <button class="neu-button icon close" (click)="cancel()">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="4">
+        <line x1="15" y1="5" x2="5" y2="15"></line>
+        <line x1="5" y1="5" x2="15" y2="15"></line>
+      </svg>
+    </button>
+  </div>
 
-  </form>
+  <!-- Corpo do formulário -->
+  <div class="modal-body">
+    <form [formGroup]="dropDownForm" class="form-container">
+      <!-- Título da Categoria -->
+      <app-input-dynamic [config]="inputConfigs['dropdownTitle']" [control]="dropdownTitleControl" [showImage]="true">
+      </app-input-dynamic>
+
+      <!-- Form do Vídeo -->
+      @if (showNewVideo) {
+      <div class="new-video neu-card">
+        <h3>{{ selectedVideo ? '✏️ Editar Vídeo' : '🆕 Adicionar Vídeo' }}</h3>
+        <form [formGroup]="videoForm" class="video-form">
+          <app-input-dynamic [config]="inputConfigs['videoTitle']" [control]="videoTitleControl" [showImage]="true">
+          </app-input-dynamic>
+          <app-input-dynamic [config]="inputConfigs['youtubeUrl']" [control]="youtubeUrlControl" [showImage]="true">
+          </app-input-dynamic>
+          <app-select-dynamic [config]="inputConfigs['sector']" [control]="sectorControl" [showImage]="true">
+          </app-select-dynamic>
+          <div class="modal-actions">
+            <button type="button" class="neu-button secondary" (click)="cancelVideoEdit()">
+              Cancelar
+            </button>
+            <button type="button" class="neu-button primary" (click)="saveVideo()">
+              {{ selectedVideo ? 'Atualizar Video' : 'Inserir Video' }}
+            </button>
+          </div>
+        </form>
+      </div>
+      }
+
+      <!-- Lista de Vídeos (modo edição) -->
+      @if (isEditMode) {
+      <div class="video-section">
+        <h3>📹 Vídeos da Categoria</h3>
+        @if (hasVideos) {
+        <div class="video-list">
+          @for (video of dropDownVideos.videos; track video.id) {
+          <div class="video-item neu-card" [class.selected]="selectedVideo?.id === video.id" (click)="selectVideo(video)">
+            <img [src]="getYouTubeThumbnail(video.youtubeUrl)" [alt]="video.videoTitle" class="video-thumb"
+              (error)="handleImageError($event)">
+            <div class="video-info">
+              <h4 class="video-title">{{ video.videoTitle }}</h4>
+              <p class="video-sector">{{ video.sector }}</p>
+            </div>
+          </div>
+          }
+        </div>
+        } @else {
+        <div class="no-videos neu-card">
+          <p>🎬 Ainda não há vídeos cadastrados!</p>
+        </div>
+        }
+      </div>
+      }
+
+      <!-- Botão para adicionar novo vídeo -->
+      @if (isEditMode && !showNewVideo) {
+      <div class="add-video-toggle">
+        <button type="button" class="neu-button primary" (click)="addNewVideo()">
+          ➕ Adicionar Novo Vídeo
+        </button>
+      </div>
+      }
+
+      <!-- Botões principais -->
+      <div class="modal-actions main-actions">
+        <button type="button" class="neu-button secondary" (click)="cancel()">Cancelar</button>
+        <button type="button" class="neu-button primary" (click)="save()">
+          {{ isEditMode ? 'Atualizar' : 'Salvar' }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

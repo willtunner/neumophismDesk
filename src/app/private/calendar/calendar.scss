@@ -37,6 +37,7 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   grid-template-columns: repeat(7, 1fr);
   gap: 3px;
   margin-bottom: 8px;
+  text-align: center;
 }
 
 .months-grid {

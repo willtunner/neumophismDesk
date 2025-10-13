@@ -109,17 +109,15 @@ export interface Company {
 
   export interface DropDownVideos {
     id?: string;
-    dropdownText: string;
+    dropdownTitle: string;
     videos: Video[];
   }
   
   export interface Video {
     id?: string;
-    url: string;
-    title: string;
-    created: Date;
-    imgProfile?: string;
-    nameProfile: string;
+    youtubeUrl: string;
+    videoTitle: string;
+    created?: Date;
     sector: string;
   }
 

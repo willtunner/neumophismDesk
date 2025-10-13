@@ -3,63 +3,78 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { InputDynamicComponent } from '../../input-dynamic/input-dynamic';
+import { SelectDynamicComponent } from '../../select-dynamic/select-dynamic';
 import { InputType } from '../../../../enuns/input-types.enum';
 import { InputConfig } from '../../../../interfaces/input-config.interface';
-import { Video,  } from '../../../../models/models';
-import { VideoCategory } from '../video-dropdown';
-
-export interface AddVideoDialogData {
-  category?: VideoCategory;
-  isEdit?: boolean;
-  videos?: Video[];
-}
+import { SelectConfig } from '../../../../interfaces/select-config.interface';
+import { DropDownVideos, Video } from '../../../../models/models';
 
 @Component({
   selector: 'app-add-video-dialog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputDynamicComponent],
+  imports: [CommonModule, ReactiveFormsModule, InputDynamicComponent, SelectDynamicComponent],
   templateUrl: './add-video-dialog.html',
   styleUrls: ['./add-video-dialog.css']
 })
 export class AddVideoDialog implements OnInit {
-  videoForm: FormGroup;
-  videos: Video[] = [];
-  showAddVideoFields = false;
-  isEditMode = false;
+  dropDownForm!: FormGroup;
+  videoForm!: FormGroup;
+  dropDownVideos!: DropDownVideos;
 
-  inputConfigs: Record<string, InputConfig> = {};
+  selectedVideo: Video | null = null;
+  isEditMode = false;
+  showNewVideo = false;
+
+  inputConfigs!: {
+    dropdownTitle: InputConfig;
+    videoTitle: InputConfig;
+    youtubeUrl: InputConfig;
+    sector: SelectConfig;
+  };
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddVideoDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: AddVideoDialogData
+    @Inject(MAT_DIALOG_DATA) public data: DropDownVideos | null
   ) {
-    console.log('Dados recebidos no diálogo:', data);
-    this.isEditMode = data?.isEdit || false;
-    this.videos = data?.videos || [];
-
-    this.videoForm = this.fb.group({
-      categoryTitle: [data?.category?.title || '', Validators.required],
-      videoTitle: [''],
-      youtubeUrl: ['', [Validators.required, this.youtubeUrlValidator]],
-      sector: ['', Validators.required]
-    });
-
-    this.initializeConfigs();
+    console.log('Dropdown Video', data);
   }
 
   ngOnInit() {
-    // Se for modo de criação, mostra os campos de vídeo automaticamente
-    if (!this.isEditMode) {
-      this.showAddVideoFields = true;
-    }
+    this.initForms();
+    this.initConfigs();
+    this.loadData(this.data);
   }
 
-  private initializeConfigs(): void {
+  /** 🔹 Inicializa formulários */
+  private initForms(): void {
+    this.dropDownForm = this.fb.group({
+      dropdownTitle: ['', Validators.required]
+    });
+
+    this.videoForm = this.fb.group({
+      videoTitle: ['', Validators.required],
+      youtubeUrl: ['', [Validators.required, this.youtubeUrlValidator]],
+      sector: ['', Validators.required]
+    });
+  }
+
+  /** 🔹 Carrega dados da categoria recebida */
+  private loadData(data: DropDownVideos | null): void {
+    this.isEditMode = !!data;
+    this.dropDownVideos = data
+      ? { ...data, videos: Array.isArray(data.videos) ? data.videos : [] }
+      : { id: Date.now().toString(), dropdownTitle: '', videos: [] };
+
+    this.dropDownForm.patchValue({ dropdownTitle: this.dropDownVideos.dropdownTitle });
+  }
+
+  /** 🔹 Configura inputs dinâmicos */
+  private initConfigs(): void {
     this.inputConfigs = {
-      categoryTitle: {
+      dropdownTitle: {
         type: InputType.TEXT,
-        formControlName: 'categoryTitle',
+        formControlName: 'dropdownTitle',
         label: '🎬 Título da Categoria',
         placeholder: 'Ex: Emissão de Notas Fiscais',
         required: true
@@ -79,7 +94,6 @@ export class AddVideoDialog implements OnInit {
         required: true
       },
       sector: {
-        type: InputType.SELECT,
         formControlName: 'sector',
         label: '🏢 Setor',
         placeholder: 'Selecione o setor',
@@ -92,126 +106,133 @@ export class AddVideoDialog implements OnInit {
           { value: 'RH', label: 'Recursos Humanos' },
           { value: 'TI', label: 'Tecnologia da Informação' },
           { value: 'Marketing', label: 'Marketing' },
-          { value: 'Jurídico', label: 'Jurídico' }
-        ]
+          { value: 'Jurídico', label: 'Jurídico' },
+          { value: 'Configuração', label: 'Configuração' },
+          { value: 'Tutorial', label: 'Tutorial' }
+        ],
+        customIcon: `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9v-9m0-9v9"/>
+          </svg>
+        `,
+        customErrorMessages: {
+          required: 'Please select a country'
+        }
       }
     };
   }
 
+  /** 🔹 Validador de URL do YouTube */
   private youtubeUrlValidator(control: FormControl) {
-    if (!control.value) {
-      return null;
+    if (!control.value) return null;
+    const pattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+    return pattern.test(control.value) ? null : { invalidYoutubeUrl: true };
+  }
+
+  /** 🔹 Getters */
+  get dropdownTitleControl() { return this.dropDownForm.get('dropdownTitle') as FormControl; }
+  get videoTitleControl() { return this.videoForm.get('videoTitle') as FormControl; }
+  get youtubeUrlControl() { return this.videoForm.get('youtubeUrl') as FormControl; }
+  get sectorControl() { return this.videoForm.get('sector') as FormControl; }
+  get hasVideos(): boolean { return this.dropDownVideos.videos.length > 0; }
+
+  /** 🔹 Selecionar vídeo da lista */
+  selectVideo(video: Video) {
+    this.selectedVideo = video;
+    this.videoForm.patchValue(video);
+    this.showNewVideo = true;
+  }
+
+  /** 🔹 Adicionar novo vídeo */
+  addNewVideo() {
+    this.selectedVideo = null;
+    this.clearVideoFields();
+    this.showNewVideo = true;
+  }
+
+  /** 🔹 Salvar vídeo (novo ou edição) */
+  saveVideo() {
+    if (this.videoForm.invalid) {
+      this.markFormTouched(this.videoForm);
+      return;
     }
-    
-    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
-    return youtubeRegex.test(control.value) ? null : { invalidYoutubeUrl: true };
-  }
 
-  get categoryTitleControl(): FormControl {
-    return this.videoForm.get('categoryTitle') as FormControl;
-  }
+    const newVideo: Video = {
+      id: this.selectedVideo?.id || Date.now().toString(),
+      ...this.videoForm.value,
+      created: this.selectedVideo?.created || new Date()
+    };
 
-  get videoTitleControl(): FormControl {
-    return this.videoForm.get('videoTitle') as FormControl;
-  }
-
-  get youtubeUrlControl(): FormControl {
-    return this.videoForm.get('youtubeUrl') as FormControl;
-  }
-
-  get sectorControl(): FormControl {
-    return this.videoForm.get('sector') as FormControl;
-  }
-
-  /** Alterna modo de adicionar vídeo */
-  toggleAddVideo() {
-    this.showAddVideoFields = !this.showAddVideoFields;
-    if (!this.showAddVideoFields) {
-      this.cancelAddVideo();
+    if (this.selectedVideo) {
+      const index = this.dropDownVideos.videos.findIndex(v => v.id === this.selectedVideo!.id);
+      this.dropDownVideos.videos[index] = newVideo;
+    } else {
+      this.dropDownVideos.videos.push(newVideo);
     }
+
+    this.cancelVideoEdit();
   }
 
-  deleteVideo(index: number) {
-    this.videos.splice(index, 1);
+  /** 🔹 Excluir vídeo */
+  deleteVideo(video: Video) {
+    this.dropDownVideos.videos = this.dropDownVideos.videos.filter(v => v.id !== video.id);
+    if (this.selectedVideo?.id === video.id) this.clearVideoForm();
   }
 
-  cancelAddVideo() {
-    this.videoForm.patchValue({
-      videoTitle: '',
-      youtubeUrl: '',
-      sector: ''
+  /** 🔹 Salvar categoria */
+  save() {
+    if (this.dropDownForm.invalid) {
+      this.markFormTouched(this.dropDownForm);
+      return;
+    }
+
+    if (!this.isEditMode && this.dropDownVideos.videos.length === 0) {
+      alert('Adicione pelo menos um vídeo antes de salvar.');
+      return;
+    }
+
+    this.dialogRef.close({
+      ...this.dropDownVideos,
+      dropdownTitle: this.dropdownTitleControl.value
     });
+  }
+
+  cancel() { this.dialogRef.close(null); }
+
+  /** 🔹 Utils */
+  private clearVideoForm() { this.videoForm.reset(); }
+  private markFormTouched(form: FormGroup) {
+    Object.values(form.controls).forEach(c => c.markAsTouched());
+  }
+
+  /** 🔹 YouTube thumbnail helper */
+  getYouTubeThumbnail(url: string): string {
+    const id = this.extractYouTubeId(url);
+    return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+  }
+
+  private extractYouTubeId(url: string): string {
+    const match = url.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&?\/]+)/);
+    return match ? match[1] : 'default';
+  }
+
+  handleImageError(event: Event) {
+    (event.target as HTMLImageElement).src =
+      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA4MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iNjAiIHJ4PSI4IiBmaWxsPSIjRUVFRUVFIi8+PHBhdGggZD0iTTQwIDMwQzQzLjMxMzcgMzAgNDYgMjcuMzEzNyA0NiAyNEM0NiAyMC42ODYzIDQzLjMxMzcgMTggNDAgMThDMzYuNjg2MyAxOCAzNCAyMC42ODYzIDM0IDI0QzM0IDI3LjMxMzcgMzYuNjg2MyAzMCA0MCAzMFoiIGZpbGw9IiM5OTk5OTkiLz48cGF0aCBkPSJNNDggNDJIMzJDMTYgNDIgMTYgNDIgMTYgNDJWMThDMTYgMTYgMTggMTYgMTggMTZINjJDNjIgMTYgNjQgMTYgNjQgMThWNDJDNjQgNDIgNjQgNDIgNjQgNDJDNjQgNDIgNDggNDIgNDggNDJaIiBmaWxsPSIjOTk5OTk5Ii8+PC9zdmc+';
+  }
+
+  /** Limpar campos de vídeo */
+  private clearVideoFields() {
+    this.videoForm.patchValue({ videoTitle: '', youtubeUrl: '', sector: '' });
     this.videoTitleControl.markAsPristine();
     this.youtubeUrlControl.markAsPristine();
     this.sectorControl.markAsPristine();
   }
 
-  saveNewVideo() {
-    if (this.videoTitleControl.invalid || this.youtubeUrlControl.invalid || this.sectorControl.invalid) {
-      this.markVideoFieldsAsTouched();
-      return;
-    }
-
-    const { videoTitle, youtubeUrl, sector } = this.videoForm.value;
-    
-    const newVideo: Video = {
-      id: Date.now().toString(),
-      title: videoTitle,
-      url: youtubeUrl,
-      sector,
-      created: new Date(),
-      nameProfile: 'Usuário'
-    };
-
-    this.videos.push(newVideo);
-    this.cancelAddVideo();
-    
-    // Se for modo criação, mantém os campos abertos para adicionar mais vídeos
-    if (this.isEditMode) {
-      this.showAddVideoFields = false;
-    }
-  }
-
-  private markVideoFieldsAsTouched() {
-    this.videoTitleControl.markAsTouched();
-    this.youtubeUrlControl.markAsTouched();
-    this.sectorControl.markAsTouched();
-  }
-
-  save() {
-    if (this.categoryTitleControl.invalid) {
-      this.categoryTitleControl.markAsTouched();
-      return;
-    }
-
-    const result = {
-      categoryTitle: this.categoryTitleControl.value,
-      videos: [...this.videos],
-      isEdit: this.isEditMode
-    };
-
-    this.dialogRef.close(result);
-  }
-
-  cancel() {
-    this.dialogRef.close(null);
-  }
-
-  getYouTubeThumbnail(url: string): string {
-    const videoId = this.extractYouTubeId(url);
-    return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
-  }
-
-  private extractYouTubeId(url: string): string {
-    const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
-    return match ? match[1] : 'default';
-  }
-
-  get hasVideos(): boolean {
-    return this.videos.length > 0;
-  }
-
-  get canAddVideo(): boolean {
-    return this.videoTitleControl.valid && this.youtubeUrlControl.valid && this.sectorControl.valid;
+  /** Cancelar edição de vídeo (apenas limpa e oculta os campos se estivermos em edição) */
+  cancelVideoEdit() {
+    this.selectedVideo = null;
+    this.clearVideoFields();
+    this.showNewVideo = false;
   }
 }
