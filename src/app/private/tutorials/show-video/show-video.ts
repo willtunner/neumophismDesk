@@ -57,7 +57,7 @@ export class ShowVideo {
       videoId: videoId,
       timestamp: data.timestamp,
       note: data.note,
-      createdAt: new Date()
+      created: new Date()
     };
 
     // Atualiza o signal com a nova anotação

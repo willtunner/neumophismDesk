@@ -13,7 +13,8 @@ export interface Company {
     connectionServ: string;
     email: string;
     versionServ: string | null;
-    clients: User[];
+    clientsId: string[];
+    clients?: User[];
     helpDeskCompanyId?: string;
   }
 
@@ -23,18 +24,18 @@ export interface Company {
      created: Date;
      updated: Date;
      companyId: string;
-     company: Company | null;
+     company?: Company;
      clientId: string;
-     client: User | null;
+     client?: User;
      title: string;
      description: string;
      resolution: string;
      tags: string[];
      connection: string;
      closed: boolean;
-     finalized: Date;
+     finalizedDate: Date;
      operatorId: string;
-     operator: User | null;
+     operator?: User;
      helpDeskCompanyId?: string;
   }
 
@@ -52,8 +53,10 @@ export interface Company {
     zipcode: number;
     phone: number;
     email: string;
-    companies: Company[];
-    employees: User[];
+    companiesId: string[];
+    companies?: Company[];
+    employeesId: string[];
+    employees?: User[];
     roles: string[];
     password?: string;
     active: boolean;
@@ -79,14 +82,34 @@ export interface Company {
     company?: Company | null;
   }
 
+  export interface Client {
+    id: string;
+    deleted: boolean;
+    created: Date;
+    updated: Date | null;
+    username: string;
+    name: string;
+    phone: string;
+    email: string;
+    password: string;
+    isLoggedIn: boolean;
+    imageUrl: string;
+    roles: string[];
+    connection: string | null;
+    companyId: string;
+    company?: Company;
+  }
+
 
   export interface ChatRoom {
     id: string;
     close: boolean;
     created: Date;
     updated?: Date | null;
-    operator: User;
-    client: User;
+    operator?: User;
+    operatorId: string;
+    client?: User;
+    clientId: string;
     mensages: Message[],
     unreadCount?: number;
     occurrence: string;
@@ -99,15 +122,13 @@ export interface Company {
   }
 
   export interface Message {
-    sender: string;        
+    senderId: string;        
     content: string;       
-    timestamp: Date;       
-    imageUrl: string;
-    uploadImg?: string;    
+    timestamp: Date;      
     isRead?: boolean;  
   }
 
-  export interface DropDownVideos {
+  export interface Tutorial {
     id?: string;
     dropdownTitle: string;
     videos: Video[];

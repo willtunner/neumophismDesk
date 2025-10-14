@@ -1,11 +1,11 @@
 import { Injectable, signal } from '@angular/core';
-import { DropDownVideos, Video } from '../models/models';
+import { Tutorial, Video } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DropdownService {
-  private categoriesSignal = signal<DropDownVideos[]>([]);
+  private categoriesSignal = signal<Tutorial[]>([]);
 
   /** Retorna o signal das categorias (reativo) */
   get categories() {
@@ -13,14 +13,14 @@ export class DropdownService {
   }
 
   /** Inicializa com as categorias padrão */
-  initialize(defaultCategories: DropDownVideos[]) {
+  initialize(defaultCategories: Tutorial[]) {
     if (this.categoriesSignal().length === 0) {
       this.categoriesSignal.set(defaultCategories);
     }
   }
 
   /** Adiciona uma nova categoria com vídeos */
-  addCategory(newCategory: DropDownVideos) {
+  addCategory(newCategory: Tutorial) {
     const updated = [...this.categoriesSignal(), newCategory];
     this.categoriesSignal.set(updated);
   }
@@ -40,7 +40,7 @@ export class DropdownService {
       this.categoriesSignal.set(updated);
     } else {
       // cria nova categoria com o vídeo
-      const newCategory: DropDownVideos = {
+      const newCategory: Tutorial = {
         id: Date.now().toString(),
         dropdownTitle: categoryTitle,
         videos: [newVideo]
@@ -50,7 +50,7 @@ export class DropdownService {
   }
 
   /** Atualiza uma categoria existente */
-  updateCategory(updatedCategory: DropDownVideos) {
+  updateCategory(updatedCategory: Tutorial) {
     const updated = this.categoriesSignal().map(cat =>
       cat.id === updatedCategory.id ? updatedCategory : cat
     );

@@ -7,7 +7,7 @@ import { SelectDynamicComponent } from '../../select-dynamic/select-dynamic';
 import { InputType } from '../../../../enuns/input-types.enum';
 import { InputConfig } from '../../../../interfaces/input-config.interface';
 import { SelectConfig } from '../../../../interfaces/select-config.interface';
-import { DropDownVideos, Video } from '../../../../models/models';
+import { Tutorial, Video } from '../../../../models/models';
 
 @Component({
   selector: 'app-add-video-dialog',
@@ -19,7 +19,7 @@ import { DropDownVideos, Video } from '../../../../models/models';
 export class AddVideoDialog implements OnInit {
   dropDownForm!: FormGroup;
   videoForm!: FormGroup;
-  dropDownVideos!: DropDownVideos;
+  dropDownVideos!: Tutorial;
 
   selectedVideo: Video | null = null;
   isEditMode = false;
@@ -35,7 +35,7 @@ export class AddVideoDialog implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddVideoDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DropDownVideos | null
+    @Inject(MAT_DIALOG_DATA) public data: Tutorial | null
   ) {
     console.log('Dropdown Video', data);
   }
@@ -60,7 +60,7 @@ export class AddVideoDialog implements OnInit {
   }
 
     /** 🔹 Carrega dados da categoria recebida */
-    private loadData(data: DropDownVideos | null): void {
+    private loadData(data: Tutorial | null): void {
       this.isEditMode = !!data;
   
       // Se data for null, estamos criando uma nova categoria

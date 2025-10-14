@@ -4,7 +4,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ShowVideo } from '../../../private/tutorials/show-video/show-video';
 import { DropdownService } from '../../../services/dropdown';
 import { AddVideoDialog } from './add-video-dialog/add-video-dialog';
-import { DropDownVideos, Video } from '../../../models/models';
+import { Tutorial, Video } from '../../../models/models';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class VideoDropdownComponent {
   hoveredCategory: string | null = null;
 
   /** Categorias padrão */
-  defaultCategories: DropDownVideos[] = [
+  defaultCategories: Tutorial[] = [
     {
       id: '1',
       dropdownTitle: 'Emissão de notas',
@@ -98,7 +98,7 @@ export class VideoDropdownComponent {
     });
   }
 
-  openAddVideoDialog(category?: DropDownVideos) {
+  openAddVideoDialog(category?: Tutorial) {
     const dialogRef = this.dialog.open(AddVideoDialog, {
       width: '800px',
       data: category,
@@ -112,7 +112,7 @@ export class VideoDropdownComponent {
 
       if (id) {
         // ✅ Atualiza categoria existente
-        const updatedCategory: DropDownVideos = {
+        const updatedCategory: Tutorial = {
           id,
           dropdownTitle: categoryTitle,
           videos: updatedVideos
@@ -120,7 +120,7 @@ export class VideoDropdownComponent {
         this.dropdownService.updateCategory(updatedCategory);
       } else {
         // ✅ Cria nova categoria
-        const newCategory: DropDownVideos = {
+        const newCategory: Tutorial = {
           id: '',
           dropdownTitle: categoryTitle,
           videos: updatedVideos
@@ -137,7 +137,7 @@ export class VideoDropdownComponent {
   }
 
   // Edita um vídeo específico
-  editVideo(category: DropDownVideos, video: Video) {
+  editVideo(category: Tutorial, video: Video) {
     const dialogRef = this.dialog.open(AddVideoDialog, {
       width: '650px',
       data: {

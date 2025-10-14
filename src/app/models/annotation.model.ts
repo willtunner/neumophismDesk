@@ -4,5 +4,5 @@ export interface Annotation {
   videoId: string;
   timestamp: number; // segundos
   note: string;
-  createdAt: Date;
+  created: Date;
 }

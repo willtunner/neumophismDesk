@@ -11,11 +11,11 @@ export class AnnotationService {
   private annotationsSubject = new BehaviorSubject<Annotation[]>([]);
   public annotations$ = this.annotationsSubject.asObservable();
 
-  addAnnotation(annotation: Omit<Annotation, 'id' | 'createdAt'>): void {
+  addAnnotation(annotation: Omit<Annotation, 'id' | 'created'>): void {
     const newAnnotation: Annotation = {
       ...annotation,
       id: this.generateId(),
-      createdAt: new Date()
+      created: new Date()
     };
     
     this.annotations.push(newAnnotation);
