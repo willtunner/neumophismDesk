@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { YoutubePlayer } from '../../../shared/components/youtube-player/youtube-player';
 import { AnnotationForm } from '../../../shared/components/youtube-player/annotation-form/annotation-form';
 import { AnnotationList } from '../../../shared/components/youtube-player/annotation-list/annotation-list';
-import { Annotation } from '../../../models/annotation.model';
+import { MovieAnnotation } from '../../../models/models';
 
 @Component({
   selector: 'app-show-video',
@@ -22,7 +22,7 @@ export class ShowVideo {
   @ViewChild('youtubePlayer') youtubePlayer!: YoutubePlayer;
   
   // Signal para armazenar todas as anotações
-  private allAnnotations = signal<Annotation[]>(this.loadAnnotationsFromStorage());
+  private allAnnotations = signal<MovieAnnotation[]>(this.loadAnnotationsFromStorage());
   
   // Signal para o timestamp selecionado
   selectedTimestamp = signal<number>(0);
@@ -52,12 +52,13 @@ export class ShowVideo {
   // Quando uma anotação é salva
   onAnnotationSaved(data: { timestamp: number; note: string }): void {
     const videoId = this.extractVideoId(this.data.youtubeUrl);
-    const newAnnotation: Annotation = {
+    const newAnnotation: MovieAnnotation = {
       id: this.generateId(),
       videoId: videoId,
       timestamp: data.timestamp,
       note: data.note,
-      created: new Date()
+      created: new Date(),
+      userId: 'adasdas'
     };
 
     // Atualiza o signal com a nova anotação
@@ -100,7 +101,7 @@ export class ShowVideo {
   }
 
   // Carrega anotações do localStorage
-  private loadAnnotationsFromStorage(): Annotation[] {
+  private loadAnnotationsFromStorage(): MovieAnnotation[] {
     try {
       const stored = localStorage.getItem('youtube-annotations');
       if (stored) {

@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimelineMarkers } from './timeline-markers/timeline-markers';
-import { Annotation } from '../../../models/annotation.model';
+import { MovieAnnotation } from '../../../models/models';
 
 @Component({
   selector: 'app-youtube-player',
@@ -16,7 +16,7 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy, OnInit {
   
   // Inputs para receber dados externos
   @Input() videoId: string = '';
-  @Input() annotations: Annotation[] = [];
+  @Input() annotations: MovieAnnotation[] = [];
 
   private player: any;
   public currentTime: number = 0;
@@ -161,7 +161,7 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy, OnInit {
     this.seekTo(timestamp);
   }
 
-  onMarkerClick(annotation: Annotation) {
+  onMarkerClick(annotation: MovieAnnotation) {
     this.seekTo(annotation.timestamp);
   }
 

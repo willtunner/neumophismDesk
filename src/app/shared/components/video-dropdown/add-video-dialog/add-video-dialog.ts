@@ -65,7 +65,7 @@ export class AddVideoDialog implements OnInit {
   
       // Se data for null, estamos criando uma nova categoria
       if (!data) {
-        this.dropDownVideos = { id: Date.now().toString(), dropdownTitle: '', videos: [] };
+        this.dropDownVideos = { id: Date.now().toString(), dropdownTitle: '', videos: [], helpDeskCompanyId: '' };
         // Mostra automaticamente os campos de novo vídeo para nova categoria
         this.showNewVideo = true;
       } else {

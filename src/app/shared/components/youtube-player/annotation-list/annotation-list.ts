@@ -1,7 +1,7 @@
 // components/annotation-list/annotation-list.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Annotation } from '../../../../models/annotation.model';
+import { MovieAnnotation } from '../../../../models/models';
 
 @Component({
   selector: 'app-annotation-list',
@@ -10,11 +10,11 @@ import { Annotation } from '../../../../models/annotation.model';
   styleUrl: './annotation-list.css'
 })
 export class AnnotationList {
-@Input() annotations: Annotation[] = [];
+  @Input() annotations: MovieAnnotation[] = [];
   @Output() seekTo = new EventEmitter<number>();
   @Output() delete = new EventEmitter<string>();
 
-  onAnnotationClick(annotation: Annotation) {
+  onAnnotationClick(annotation: MovieAnnotation) {
     this.seekTo.emit(annotation.timestamp);
   }
 

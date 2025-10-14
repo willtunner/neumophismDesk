@@ -1,3 +1,5 @@
+import { NotificationType } from "../enuns/notification-icon-types.enum";
+
 export interface Company {
     id: string;
     name: string;
@@ -113,6 +115,7 @@ export interface Company {
     mensages: Message[],
     unreadCount?: number;
     occurrence: string;
+    helpDeskCompanyId: string;
   }
 
   export interface userChatLogged {
@@ -132,6 +135,7 @@ export interface Company {
     id?: string;
     dropdownTitle: string;
     videos: Video[];
+    helpDeskCompanyId: string;
   }
   
   export interface Video {
@@ -140,6 +144,15 @@ export interface Company {
     videoTitle: string;
     created?: Date;
     sector: string;
+  }
+
+  export interface MovieAnnotation {
+    id: string;
+    videoId: string;
+    timestamp: number; // segundos
+    note: string;
+    created: Date;
+    userId: string;
   }
 
   export interface VersionSistem {
@@ -183,4 +196,27 @@ export interface Company {
     y: number;
     color?: string;
   }
+
+  export interface Document {
+    id: string;
+    title: string;
+    content: string;
+    created: Date;
+    updated?: Date;
+    helpDeskCompanyId: string;
+    userId?: string;
+  }
+
+  export interface Notifications {
+    id: string;
+    title: string;
+    content: string;
+    created: Date;
+    iconType: NotificationType;
+    isRead?: boolean;
+    isMessageNotification?: boolean; 
+    userId?: string;
+  }
+
+
 

@@ -26,6 +26,7 @@ export class VideoDropdownComponent {
     {
       id: '1',
       dropdownTitle: 'Emissão de notas',
+      helpDeskCompanyId: '123123',
       videos: [
         {
           id: '1',
@@ -56,6 +57,7 @@ export class VideoDropdownComponent {
     {
       id: '2',
       dropdownTitle: 'Gestão de Estoque',
+      helpDeskCompanyId: '123123',
       videos: [
         {
           id: '1',
@@ -115,7 +117,8 @@ export class VideoDropdownComponent {
         const updatedCategory: Tutorial = {
           id,
           dropdownTitle: categoryTitle,
-          videos: updatedVideos
+          videos: updatedVideos,
+          helpDeskCompanyId: '123123',
         };
         this.dropdownService.updateCategory(updatedCategory);
       } else {
@@ -123,7 +126,8 @@ export class VideoDropdownComponent {
         const newCategory: Tutorial = {
           id: '',
           dropdownTitle: categoryTitle,
-          videos: updatedVideos
+          videos: updatedVideos,
+          helpDeskCompanyId: '123123',
         };
         this.dropdownService.addCategory(newCategory);
       }

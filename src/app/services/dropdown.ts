@@ -43,7 +43,8 @@ export class DropdownService {
       const newCategory: Tutorial = {
         id: Date.now().toString(),
         dropdownTitle: categoryTitle,
-        videos: [newVideo]
+        videos: [newVideo],
+        helpDeskCompanyId: '123123'
       };
       this.addCategory(newCategory);
     }

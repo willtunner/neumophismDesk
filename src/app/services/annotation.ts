@@ -1,18 +1,18 @@
 // services/annotation.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Annotation } from '../models/annotation.model';
+import { MovieAnnotation } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnnotationService {
-  private annotations: Annotation[] = [];
-  private annotationsSubject = new BehaviorSubject<Annotation[]>([]);
+  private annotations: MovieAnnotation[] = [];
+  private annotationsSubject = new BehaviorSubject<MovieAnnotation[]>([]);
   public annotations$ = this.annotationsSubject.asObservable();
 
-  addAnnotation(annotation: Omit<Annotation, 'id' | 'created'>): void {
-    const newAnnotation: Annotation = {
+  addAnnotation(annotation: Omit<MovieAnnotation, 'id' | 'created'>): void {
+    const newAnnotation: MovieAnnotation = {
       ...annotation,
       id: this.generateId(),
       created: new Date()
@@ -22,7 +22,7 @@ export class AnnotationService {
     this.annotationsSubject.next([...this.annotations]);
   }
 
-  getAnnotationsByVideo(videoId: string): Annotation[] {
+  getAnnotationsByVideo(videoId: string): MovieAnnotation[] {
     return this.annotations.filter(ann => ann.videoId === videoId);
   }
 

@@ -2,11 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { YoutubePlayer } from '../../shared/components/youtube-player/youtube-player';
 import { AnnotationForm } from '../../shared/components/youtube-player/annotation-form/annotation-form';
 import { AnnotationList } from '../../shared/components/youtube-player/annotation-list/annotation-list';
-import { Annotation } from '../../models/annotation.model';
 import { AnnotationService } from '../../services/annotation';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VideoDropdownComponent } from '../../shared/components/video-dropdown/video-dropdown';
+import { MovieAnnotation } from '../../models/models';
 
 @Component({
   selector: 'app-tutorials',
@@ -28,7 +28,7 @@ export class Tutorials {
   youtubeUrl: string = '';
   currentVideoId: string = '';
   selectedTimestamp: number = 0;
-  currentAnnotations: Annotation[] = [];
+  currentAnnotations: MovieAnnotation[] = [];
 
   constructor(private annotationService: AnnotationService) {
     this.annotationService.annotations$.subscribe(annotations => {
@@ -56,7 +56,8 @@ export class Tutorials {
     this.annotationService.addAnnotation({
       videoId: this.currentVideoId,
       timestamp: data.timestamp,
-      note: data.note
+      note: data.note,
+      userId: '123'
     });
     this.selectedTimestamp = 0;
   }

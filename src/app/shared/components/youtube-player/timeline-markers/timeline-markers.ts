@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Annotation } from '../../../../models/annotation.model';
+import { MovieAnnotation } from '../../../../models/models';
 
 @Component({
   selector: 'app-timeline-markers',
@@ -10,13 +10,13 @@ import { Annotation } from '../../../../models/annotation.model';
   styleUrls: ['./timeline-markers.css']
 })
 export class TimelineMarkers implements OnChanges {
-  @Input() annotations: Annotation[] = [];
+  @Input() annotations: MovieAnnotation[] = [];
   @Input() currentTime: number = 0;
   @Input() duration: number = 0;
   @Input() isPlaying: boolean = false;
 
   @Output() seekTo = new EventEmitter<number>();
-  @Output() markerClick = new EventEmitter<Annotation>();
+  @Output() markerClick = new EventEmitter<MovieAnnotation>();
 
   // novos eventos para controle
   @Output() togglePlayPause = new EventEmitter<void>();
@@ -49,7 +49,7 @@ export class TimelineMarkers implements OnChanges {
     return 0;
   }
 
-  getMarkerTooltip(annotation: Annotation): string {
+  getMarkerTooltip(annotation: MovieAnnotation): string {
     return `${this.formatTime(annotation.timestamp)} - ${annotation.note ?? ''}`;
   }
 
@@ -66,7 +66,7 @@ export class TimelineMarkers implements OnChanges {
     this.seekTo.emit(seekTime);
   }
 
-  onMarkerClick(annotation: Annotation, event: Event) {
+  onMarkerClick(annotation: MovieAnnotation, event: Event) {
     event.stopPropagation();
     this.markerClick.emit(annotation);
   }
