@@ -1,11 +1,29 @@
-<div class="video-modal">
+<div class="video-modal neu-scrollbar">
   <h2 class="modal-title">{{ data.title }}</h2>
   
   <div class="video-container">
     <app-youtube-player 
       [videoId]="extractVideoId(data.youtubeUrl)"
-      [annotations]="[]">
+      [annotations]="currentAnnotations()"
+      (timestampSelected)="onTimestampSelected($event)"
+      #youtubePlayer>
     </app-youtube-player>
+  </div>
+
+  <!-- Seção de Anotações -->
+  <div class="annotations-section">
+    <app-annotation-form 
+      [timestamp]="selectedTimestamp()" 
+      [videoId]="extractVideoId(data.youtubeUrl)"
+      (annotationSaved)="onAnnotationSaved($event)" 
+      (formClosed)="onFormClosed()">
+    </app-annotation-form>
+
+    <app-annotation-list 
+      [annotations]="currentAnnotations()" 
+      (seekTo)="onSeekTo($event)"
+      (delete)="onDeleteAnnotation($event)">
+    </app-annotation-list>
   </div>
   
   <div class="modal-actions">

@@ -38,6 +38,7 @@ export class Tutorials {
 
   loadVideo() {
     const videoId = this.extractVideoId(this.youtubeUrl);
+    console.log('videoId', videoId);
     if (videoId) {
       this.currentVideoId = videoId;
       this.selectedTimestamp = 0;
