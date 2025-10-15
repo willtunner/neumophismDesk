@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { 
+  Firestore, 
   doc, 
   getDoc, 
   setDoc, 
   collection, 
+  query, 
+  where, 
   getDocs 
-} from 'firebase/firestore';
+} from '@angular/fire/firestore';
 import { Call } from '../models/models';
-import { FirebaseService } from './firebase';
 
 const DOCUMENT_PATH = 'tags/tagDocument';
 
@@ -15,6 +17,7 @@ const DOCUMENT_PATH = 'tags/tagDocument';
   providedIn: 'root',
 })
 export class TagService {
+  private firestore = inject(Firestore);
   
   // Cache em memória para melhor performance
   private allCalls: Call[] = [];
@@ -22,8 +25,6 @@ export class TagService {
   private allTagsCache: string[] = [];
   private tagsCacheLoaded = false;
 
-  constructor(private firebaseService: FirebaseService) {}
-  
   /**
    * Busca tags que começam com o termo especificado
    */
@@ -47,13 +48,7 @@ export class TagService {
     }
 
     try {
-      // Verifica se o Firebase está inicializado
-      if (!this.firebaseService.isInitialized()) {
-        console.error('Firebase não está inicializado');
-        return [];
-      }
-
-      const docRef = doc(this.firebaseService.db, DOCUMENT_PATH);
+      const docRef = doc(this.firestore, DOCUMENT_PATH);
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) {
@@ -95,12 +90,6 @@ export class TagService {
    */
   async addTagToFirestore(tag: string): Promise<boolean> {
     try {
-      // Verifica se o Firebase está inicializado
-      if (!this.firebaseService.isInitialized()) {
-        console.error('Firebase não está inicializado');
-        return false;
-      }
-
       const upperTag = tag.toUpperCase();
       const currentTags = await this.getAllTags();
       
@@ -109,7 +98,7 @@ export class TagService {
       }
 
       const updatedTags = [...currentTags, upperTag];
-      const docRef = doc(this.firebaseService.db, DOCUMENT_PATH);
+      const docRef = doc(this.firestore, DOCUMENT_PATH);
       
       await setDoc(docRef, { tagsArray: updatedTags }, { merge: true });
       
@@ -179,13 +168,7 @@ export class TagService {
     if (this.callsLoaded) return;
 
     try {
-      // Verifica se o Firebase está inicializado
-      if (!this.firebaseService.isInitialized()) {
-        console.error('Firebase não está inicializado');
-        return;
-      }
-
-      const callsRef = collection(this.firebaseService.db, 'calls');
+      const callsRef = collection(this.firestore, 'calls');
       const querySnapshot = await getDocs(callsRef);
 
       this.allCalls = [];
@@ -268,12 +251,6 @@ export class TagService {
    */
   async removeTag(tag: string): Promise<boolean> {
     try {
-      // Verifica se o Firebase está inicializado
-      if (!this.firebaseService.isInitialized()) {
-        console.error('Firebase não está inicializado');
-        return false;
-      }
-
       const upperTag = tag.toUpperCase();
       const currentTags = await this.getAllTags();
       
@@ -282,7 +259,7 @@ export class TagService {
       }
 
       const updatedTags = currentTags.filter(t => t !== upperTag);
-      const docRef = doc(this.firebaseService.db, DOCUMENT_PATH);
+      const docRef = doc(this.firestore, DOCUMENT_PATH);
       
       await setDoc(docRef, { tagsArray: updatedTags }, { merge: true });
       
@@ -293,45 +270,6 @@ export class TagService {
     } catch (error) {
       console.error('Erro ao remover tag:', error);
       return false;
-    }
-  }
-
-  /**
-   * Atualiza as tags de um chamado específico
-   */
-  async updateCallTags(callId: string, newTags: string[]): Promise<boolean> {
-    try {
-      // Verifica se o Firebase está inicializado
-      if (!this.firebaseService.isInitialized()) {
-        console.error('Firebase não está inicializado');
-        return false;
-      }
-
-      const callRef = doc(this.firebaseService.db, 'calls', callId);
-      const upperTags = newTags.map(tag => tag.toUpperCase());
-      
-      await setDoc(callRef, { tags: upperTags }, { merge: true });
-      
-      // Limpa o cache para forçar recarregamento
-      this.clearCache();
-      
-      return true;
-    } catch (error) {
-      console.error('Erro ao atualizar tags do chamado:', error);
-      return false;
-    }
-  }
-
-  /**
-   * Obtém tags populares (mais usadas)
-   */
-  async getPopularTags(limit: number = 10): Promise<string[]> {
-    try {
-      const statistics = await this.getTagStatistics();
-      return statistics.slice(0, limit).map(stat => stat.tag);
-    } catch (error) {
-      console.error('Erro ao obter tags populares:', error);
-      return [];
     }
   }
 }
