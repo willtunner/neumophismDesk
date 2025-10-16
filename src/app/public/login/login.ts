@@ -7,6 +7,7 @@ import { InputType } from '../../enuns/input-types.enum';
 import { InputConfig } from '../../interfaces/input-config.interface';
 import { InputValidatorsService } from '../../services/input-validators';
 import { AuthService } from '../../services/auth.service'; // 👈 Importa o AuthService
+import { ThemeService } from '../../services/theme';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ export class Login {
   showSuccess = false;
   emailError = '';
   passwordError = '';
+  darkMode: boolean = false;
 
   inputConfigs = {
     email: {
@@ -57,7 +59,8 @@ export class Login {
     private fb: FormBuilder,
     private router: Router,
     private validatorsService: InputValidatorsService,
-    private authService: AuthService // 👈 Injetamos o AuthService
+    private authService: AuthService, // 👈 Injetamos o AuthService
+    private themeService: ThemeService,
   ) {
     const emailValidators = this.validatorsService.getDefaultValidators(InputType.EMAIL, {
       required: true,
@@ -156,14 +159,22 @@ export class Login {
   }
 
   recover() {
+    //forgot-password
     console.log('Recover password for:', this.form.value.email);
+    this.router.navigate(['/forgot-password']);
   }
 
   signup() {
-    console.log('Navigate to signup');
+    //signup
+    this.router.navigate(['/signup']);
   }
 
   socialLogin(provider: string) {
     console.log(`Social login with: ${provider}`);
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleTheme();
+    this.darkMode = this.themeService.isDarkTheme();
   }
 }

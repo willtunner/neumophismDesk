@@ -10,6 +10,8 @@ import { Tutorials } from './private/tutorials/tutorials';
 import { Notes } from './private/notes/notes';
 import { Calendar } from './private/calendar/calendar';
 import { authGuard } from './guards/auth.guard';
+import { SignupComponent } from './public/signup/signup';
+import { ForgotPasswordComponent } from './public/forgot-password/forgot-password';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,5 +25,7 @@ export const routes: Routes = [
   { path: 'calendar', component: Calendar, canActivate: [authGuard] },
   { path: 'tutorials', component: Tutorials, canActivate: [authGuard]},
   { path: 'notes', component: Notes , canActivate: [authGuard]},
+  { path: 'signup', component: SignupComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: '**', redirectTo: '/login' }
 ];

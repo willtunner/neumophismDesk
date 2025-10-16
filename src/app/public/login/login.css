@@ -645,3 +645,33 @@
 .password-toggle.show-password .eye-closed {
   opacity: 1;
 }
+
+.neu-toggle-switch {
+  width: 44px;
+  height: 22px;
+  background: var(--bg-primary);
+  border-radius: 11px;
+  box-shadow:
+    inset 3px 3px 6px var(--shadow-light),
+    inset -3px -3px 6px var(--shadow-dark);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.neu-toggle-switch.active {
+  background: var(--accent-color);
+}
+
+.neu-toggle-switch.active .toggle-slider {
+  transform: translateX(22px);
+}
+
+.toggle-label:hover .neu-toggle-switch:not(.active) {
+  box-shadow:
+    inset 2px 2px 4px var(--shadow-light),
+    inset -2px -2px 4px var(--shadow-dark);
+}

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SelectDynamicComponent } from '../../shared/components/select-dynamic/select-dynamic';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,8 @@ import { RichTextDynamicComponent } from '../../shared/components/rich-text-dyna
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { TagsNeuComponent } from '../../shared/components/tags-neu/tags-neu';
+import { CompanyService } from '../../services/company';
+import { Company } from '../../models/models';
 
 @Component({
   selector: 'app-call',
@@ -31,11 +33,15 @@ import { TagsNeuComponent } from '../../shared/components/tags-neu/tags-neu';
 export class Call implements OnInit, OnDestroy {
   callForm: FormGroup;
   private langChangeSubscription!: Subscription;
+  companies: Company[] = [];
 
-  // Configurações dos componentes
+  //? Configurações dos componentes
   inputConfigs: any = {};
   selectConfigs: any = {};
   richTextConfig!: RichTextConfig;
+
+  //? Serviços
+  private companyService = inject(CompanyService);
 
   // Ícones SVG
   readonly addIcon = `
@@ -65,7 +71,7 @@ export class Call implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     // Aguarda as traduções estarem prontas antes de inicializar as configurações
     this.translate.get(['INPUTS-FIELS.COMPANY', 'INPUTS-FIELS.CLIENT']).subscribe(() => {
       this.initializeConfigs();
@@ -75,6 +81,9 @@ export class Call implements OnInit, OnDestroy {
     this.langChangeSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateTranslations();
     });
+
+    this.companies = await this.companyService.loadAllCompanies(false);
+    console.log('Empresas', this.companies);
   }
 
   ngOnDestroy(): void {

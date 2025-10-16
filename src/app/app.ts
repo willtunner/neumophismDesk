@@ -44,6 +44,10 @@ export class App implements OnInit, OnDestroy {
     // Verifica se está na rota de login (pode ajustar conforme suas rotas)
     const isLogin = currentUrl.includes('/login') || 
                     currentUrl === '/login' || 
+                    currentUrl.includes('/signup') || 
+                    currentUrl === '/signup' ||
+                    currentUrl.includes('/forgot-password') || 
+                    currentUrl === '/forgot-password' ||
                     currentUrl.includes('/auth');
     
     this.isLoginRoute.set(isLogin);

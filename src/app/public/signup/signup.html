@@ -1,1 +1,260 @@
-<p>signup works!</p>
+<div class="signup-container">
+    <div class="signup-content neu-container">
+      <!-- Header -->
+      <div class="signup-header">
+        <div class="logo-section">
+          <div class="logo neu-emboss">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <h1 class="neu-emboss">Cadastro HelpDesk</h1>
+          </div>
+        </div>
+        <p class="subtitle">Crie sua conta de empresa de suporte</p>
+      </div>
+  
+      <!-- Form -->
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+        
+        <!-- Informações da Empresa -->
+        <div class="form-section">
+          <h3 class="section-title neu-emboss">Informações da Empresa</h3>
+          
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label class="form-label">Nome da Empresa *</label>
+              <input 
+                type="text" 
+                formControlName="name"
+                class="neu-input"
+                placeholder="Digite o nome da sua empresa"
+                [class.error]="formControls['name'].touched && formControls['name'].invalid">
+              <div class="error-message" *ngIf="formControls['name'].touched && formControls['name'].invalid">
+                <span *ngIf="formControls['name'].errors?.['required']">Nome é obrigatório</span>
+                <span *ngIf="formControls['name'].errors?.['minlength']">Mínimo 3 caracteres</span>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">CNPJ *</label>
+              <input 
+                type="text" 
+                formControlName="cnpj"
+                class="neu-input"
+                placeholder="00.000.000/0000-00"
+                maxlength="14"
+                (input)="formControls['cnpj']"
+                [class.error]="formControls['cnpj'].touched && formControls['cnpj'].invalid">
+              <div class="error-message" *ngIf="formControls['cnpj'].touched && formControls['cnpj'].invalid">
+                <span *ngIf="formControls['cnpj'].errors?.['required']">CNPJ é obrigatório</span>
+                <span *ngIf="formControls['cnpj'].errors?.['pattern']">CNPJ deve ter 14 dígitos</span>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label class="form-label">E-mail *</label>
+              <input 
+                type="email" 
+                formControlName="email"
+                class="neu-input"
+                placeholder="empresa@exemplo.com"
+                [class.error]="formControls['email'].touched && formControls['email'].invalid">
+              <div class="error-message" *ngIf="formControls['email'].touched && formControls['email'].invalid">
+                <span *ngIf="formControls['email'].errors?.['required']">E-mail é obrigatório</span>
+                <span *ngIf="formControls['email'].errors?.['email']">E-mail inválido</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Localização -->
+        <div class="form-section">
+          <h3 class="section-title neu-emboss">Localização</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">CEP *</label>
+              <input 
+                type="text" 
+                formControlName="cep"
+                class="neu-input"
+                placeholder="00000-000"
+                maxlength="8"
+                (input)="formControls['cep']"
+                (blur)="searchCep()"
+                [class.error]="formControls['cep'].touched && formControls['cep'].invalid">
+              <div class="error-message" *ngIf="formControls['cep'].touched && formControls['cep'].invalid">
+                <span *ngIf="formControls['cep'].errors?.['required']">CEP é obrigatório</span>
+                <span *ngIf="formControls['cep'].errors?.['pattern']">CEP deve ter 8 dígitos</span>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label class="form-label">Endereço *</label>
+              <input 
+                type="text" 
+                formControlName="address"
+                class="neu-input"
+                placeholder="Rua, Avenida, etc."
+                [class.error]="formControls['address'].touched && formControls['address'].invalid">
+              <div class="error-message" *ngIf="formControls['address'].touched && formControls['address'].invalid">
+                Endereço é obrigatório
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Bairro *</label>
+              <input 
+                type="text" 
+                formControlName="neighborhood"
+                class="neu-input"
+                placeholder="Bairro"
+                [class.error]="formControls['neighborhood'].touched && formControls['neighborhood'].invalid">
+              <div class="error-message" *ngIf="formControls['neighborhood'].touched && formControls['neighborhood'].invalid">
+                Bairro é obrigatório
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label class="form-label">Cidade *</label>
+              <input 
+                type="text" 
+                formControlName="city"
+                class="neu-input"
+                placeholder="Cidade"
+                [class.error]="formControls['city'].touched && formControls['city'].invalid">
+              <div class="error-message" *ngIf="formControls['city'].touched && formControls['city'].invalid">
+                Cidade é obrigatório
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Estado *</label>
+              <select 
+                formControlName="state"
+                class="neu-input"
+                [class.error]="formControls['state'].touched && formControls['state'].invalid">
+                <option value="">Selecione</option>
+                <option *ngFor="let estado of estados" [value]="estado">{{estado}}</option>
+              </select>
+              <div class="error-message" *ngIf="formControls['state'].touched && formControls['state'].invalid">
+                Estado é obrigatório
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label class="form-label">Telefone *</label>
+              <input 
+                type="text" 
+                formControlName="phone"
+                class="neu-input"
+                placeholder="(00) 00000-0000"
+                (input)="formControls['phone']"
+                [class.error]="formControls['phone'].touched && formControls['phone'].invalid">
+              <div class="error-message" *ngIf="formControls['phone'].touched && formControls['phone'].invalid">
+                <span *ngIf="formControls['phone'].errors?.['required']">Telefone é obrigatório</span>
+                <span *ngIf="formControls['phone'].errors?.['pattern']">Telefone inválido</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Segurança -->
+        <div class="form-section">
+          <h3 class="section-title neu-emboss">Segurança</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Senha *</label>
+              <div class="password-input-container">
+                <input 
+                  [type]="showPassword ? 'text' : 'password'"
+                  formControlName="password"
+                  class="neu-input"
+                  placeholder="Mínimo 6 caracteres"
+                  [class.error]="formControls['password'].touched && formControls['password'].invalid">
+                <button 
+                  type="button" 
+                  class="password-toggle neu-button"
+                  (click)="togglePasswordVisibility()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path *ngIf="!showPassword" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle *ngIf="!showPassword" cx="12" cy="12" r="3"/>
+                    <path *ngIf="showPassword" d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/>
+                    <line *ngIf="showPassword" x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="error-message" *ngIf="formControls['password'].touched && formControls['password'].invalid">
+                <span *ngIf="formControls['password'].errors?.['required']">Senha é obrigatória</span>
+                <span *ngIf="formControls['password'].errors?.['minlength']">Mínimo 6 caracteres</span>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label class="form-label">Confirmar Senha *</label>
+              <input 
+                type="password" 
+                formControlName="confirmPassword"
+                class="neu-input"
+                placeholder="Confirme sua senha"
+                [class.error]="formControls['confirmPassword'].touched && formControls['confirmPassword'].invalid">
+              <div class="error-message" *ngIf="formControls['confirmPassword'].touched && formControls['confirmPassword'].invalid">
+                <span *ngIf="formControls['confirmPassword'].errors?.['required']">Confirmação é obrigatória</span>
+                <span *ngIf="formControls['confirmPassword'].errors?.['passwordMismatch']">Senhas não conferem</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Termos -->
+        <div class="form-section">
+          <div class="terms-container">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                formControlName="acceptTerms"
+                class="neu-checkbox">
+              <span class="checkmark"></span>
+              Concordo com os <a href="#" class="terms-link">Termos de Uso</a> e <a href="#" class="terms-link">Política de Privacidade</a> *
+            </label>
+            <div class="error-message" *ngIf="formControls['acceptTerms'].touched && formControls['acceptTerms'].invalid">
+              Você deve aceitar os termos
+            </div>
+          </div>
+        </div>
+  
+        <!-- Actions -->
+        <div class="form-actions">
+          <button 
+            type="button" 
+            class="neu-button secondary"
+            routerLink="/login">
+            Voltar
+          </button>
+          <button 
+            type="submit" 
+            class="neu-button primary"
+            [disabled]="isLoading || !signupForm.valid">
+            <span class="btn-text">Criar Conta</span>
+            <div class="btn-loader" *ngIf="isLoading">
+              <div class="neu-spinner"></div>
+            </div>
+          </button>
+        </div>
+  
+        <!-- Data de Criação (apenas visual) -->
+        <div class="creation-info neu-card">
+          <p><strong>Data de Criação:</strong> {{ getCurrentDate() | dateFormat }}</p>
+        </div>
+      </form>
+    </div>
+  </div>

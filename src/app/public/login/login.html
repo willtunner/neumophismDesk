@@ -86,6 +86,10 @@
       <p>Don't have an account? <a href="#" (click)="signup(); $event.preventDefault()">Sign up</a></p>
     </div>
 
+    <div class="neu-toggle-switch" [class.active]="darkMode" (click)="toggleDarkMode()">
+      <div class="toggle-slider"></div>
+    </div>
+
     <div class="success-message" [class.show]="showSuccess">
       <div class="success-icon neu-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">

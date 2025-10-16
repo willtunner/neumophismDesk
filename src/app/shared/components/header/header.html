@@ -1,13 +1,13 @@
 <div class="header-container neu-container">
   <div class="header-content">
-<button class="neu-button menu-btn" (click)="toggleGlobalMenu()">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <line x1="3" y1="12" x2="21" y2="12"></line>
-    <line x1="3" y1="6" x2="21" y2="6"></line>
-    <line x1="3" y1="18" x2="21" y2="18"></line>
-  </svg>
-  <span class="menu-text">Menu</span>
-</button>
+    <button class="neu-button menu-btn" (click)="toggleGlobalMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+      <span class="menu-text">Menu</span>
+    </button>
 
     <div class="header-text">
       <h1>{{ currentRouteTitle }}</h1>
@@ -47,17 +47,18 @@
 
           <div class="dropdown-content">
             <div class="dropdown-list">
+              <!-- No dropdown de Mensagens -->
               @for (message of messages; track message.id) {
-              <div class="dropdown-item" [class.unread]="!message.read">
+              <div class="dropdown-item" [class.unread]="true">
                 <div class="item-avatar">
-                  <div class="avatar-placeholder">{{ message.sender.charAt(0) }}</div>
+                  <div class="avatar-placeholder">M</div>
                 </div>
                 <div class="item-content">
                   <div class="item-header">
-                    <strong class="item-sender">{{ message.sender }}</strong>
-                    <span class="item-time">{{ message.time }}</span>
+                    <strong class="item-sender">{{ message.title }}</strong>
+                    <span class="item-time">{{ formatTime(message.created) }}</span>
                   </div>
-                  <p class="item-preview">{{ message.preview }}</p>
+                  <p class="item-preview">{{ message.content }}</p>
                 </div>
               </div>
               }
@@ -104,10 +105,11 @@
 
           <div class="dropdown-content">
             <div class="dropdown-list">
+              <!-- No dropdown de Notificações -->
               @for (notification of notifications; track notification.id) {
-              <div class="dropdown-item" [class.unread]="!notification.read">
+              <div class="dropdown-item" [class.unread]="!notification.isRead">
                 <div class="item-icon">
-                  <div class="icon-circle" [class]="getNotificationType(notification.type)">
+                  <div class="icon-circle" [class]="getNotificationType(notification.iconType)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                       <polyline points="22 4 12 14.01 9 11.01" />
@@ -117,9 +119,9 @@
                 <div class="item-content">
                   <div class="item-header">
                     <strong class="item-title">{{ notification.title }}</strong>
-                    <span class="item-time">{{ notification.time }}</span>
+                    <span class="item-time">{{ formatTime(notification.created) }}</span>
                   </div>
-                  <p class="item-message">{{ notification.message }}</p>
+                  <p class="item-message">{{ notification.content }}</p>
                 </div>
               </div>
               }

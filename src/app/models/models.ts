@@ -42,7 +42,7 @@ export interface Company {
   }
 
   export interface HelpDeskCompany {
-    id: string;
+    id?: string;
     name: string;
     keywords: string[]; // Lista de palavras-chave para busca, salvar o nome da empresa em palavra-chave em minusculo
     created: Date; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
@@ -55,9 +55,9 @@ export interface Company {
     zipcode: number;
     phone: number;
     email: string;
-    companiesId: string[];
+    companiesId?: string[];
     companies?: Company[];
-    employeesId: string[];
+    employeesId?: string[];
     employees?: User[];
     roles: string[];
     password?: string;
