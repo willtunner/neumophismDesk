@@ -15,8 +15,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./input-dynamic.css']
 })
 export class InputDynamicComponent implements OnInit {
-  @Input() config!: InputConfig;
-  @Input() control!: FormControl;
+  @Input() config: InputConfig = {} as InputConfig;
+  @Input() control: FormControl = new FormControl();
   @Input() isPasswordVisible: boolean = false;
   @Input() showImage: boolean = true; // Nova propriedade para controlar exibição do ícone
   @Output() valueChange = new EventEmitter<any>();
@@ -116,6 +116,8 @@ export class InputDynamicComponent implements OnInit {
   }
 
   ngOnChanges(): void {
+    if (!this.config) return;
+
     // Atualiza tipo do input dinamicamente ao clicar no olho
     if (this.config.formControlName === 'password') {
       this.inputType = this.isPasswordVisible ? 'text' : 'password';

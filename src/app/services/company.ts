@@ -14,7 +14,7 @@ import {
   documentId
 } from '@angular/fire/firestore';
 import { SessionService } from './session.service';
-import { Company, User } from '../models/models';
+import { Company } from '../models/models';
 
 const PATH_COMPANIES = 'companies';
 

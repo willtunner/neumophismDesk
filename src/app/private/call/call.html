@@ -2,13 +2,13 @@
   <div class="neu-container call-container">
     <h2>{{ 'CALL_PAGE.NEW_CALL' | translate }}</h2>
 
-    <form [formGroup]="callForm" (ngSubmit)="onSubmit()">
+    <form *ngIf="isConfigsReady" [formGroup]="callForm" (ngSubmit)="onSubmit()">
       <!-- Primeira Linha: Empresa, Cliente, Conexão -->
       <div class="form-row">
         <!-- Empresa -->
         <div class="form-group-combined">
           <div class="select-with-button">
-            <app-select-dynamic [config]="selectConfigs.empresa" [control]="empresaControl" [showImage]="true">
+            <app-select-dynamic [config]="selectConfigs.empresa" [control]="empresaControl" [showImage]="false">
             </app-select-dynamic>
             <app-button-dynamic [iconSvg]="addIcon" [small]="true"
               [ariaLabel]="('INPUTS-FIELS.ADD_NEW_COMPANY' | translate)" (onClick)="onAddEmpresa()">
@@ -19,8 +19,9 @@
         <!-- Cliente -->
         <div class="form-group-combined">
           <div class="select-with-button">
-            <app-select-dynamic [config]="selectConfigs.cliente" [control]="clienteControl" [showImage]="true">
+            <app-select-dynamic [config]="selectConfigs.cliente" [control]="clienteControl" [showImage]="false">
             </app-select-dynamic>
+
             <app-button-dynamic [iconSvg]="addIcon" [small]="true"
               [ariaLabel]="('INPUTS-FIELS.ADD_NEW_CLIENT' | translate)" (onClick)="onAddCliente()">
             </app-button-dynamic>

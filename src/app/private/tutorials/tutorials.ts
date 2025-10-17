@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { YoutubePlayer } from '../../shared/components/youtube-player/youtube-player';
+import { YoutubePlayerComponent } from '../../shared/components/youtube-player/youtube-player';
 import { AnnotationForm } from '../../shared/components/youtube-player/annotation-form/annotation-form';
 import { AnnotationList } from '../../shared/components/youtube-player/annotation-list/annotation-list';
 import { AnnotationService } from '../../services/annotation';
@@ -11,7 +11,7 @@ import { MovieAnnotation } from '../../models/models';
 @Component({
   selector: 'app-tutorials',
   imports: [    
-   YoutubePlayer,
+    YoutubePlayerComponent,
     AnnotationForm,
     AnnotationList,
     CommonModule,
@@ -23,7 +23,7 @@ import { MovieAnnotation } from '../../models/models';
   styleUrl: './tutorials.css'
 })
 export class Tutorials {
- @ViewChild('youtubePlayer') youtubePlayer!: YoutubePlayer;
+ @ViewChild('youtubePlayer') youtubePlayer!: YoutubePlayerComponent;
   
   youtubeUrl: string = '';
   currentVideoId: string = '';

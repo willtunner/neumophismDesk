@@ -1,7 +1,7 @@
 import { Component, Inject, ViewChild, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { YoutubePlayer } from '../../../shared/components/youtube-player/youtube-player';
+import { YoutubePlayerComponent } from '../../../shared/components/youtube-player/youtube-player';
 import { AnnotationForm } from '../../../shared/components/youtube-player/annotation-form/annotation-form';
 import { AnnotationList } from '../../../shared/components/youtube-player/annotation-list/annotation-list';
 import { MovieAnnotation } from '../../../models/models';
@@ -11,7 +11,7 @@ import { MovieAnnotation } from '../../../models/models';
   standalone: true,
   imports: [
     CommonModule, 
-    YoutubePlayer, 
+    YoutubePlayerComponent, 
     AnnotationForm, 
     AnnotationList
   ],
@@ -19,7 +19,7 @@ import { MovieAnnotation } from '../../../models/models';
   styleUrls: ['./show-video.css']
 })
 export class ShowVideo {
-  @ViewChild('youtubePlayer') youtubePlayer!: YoutubePlayer;
+  @ViewChild('youtubePlayer') youtubePlayer!: YoutubePlayerComponent;
   
   // Signal para armazenar todas as anotações
   private allAnnotations = signal<MovieAnnotation[]>(this.loadAnnotationsFromStorage());
