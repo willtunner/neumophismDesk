@@ -67,7 +67,8 @@ export class Call implements OnInit, OnDestroy {
       conexao: [''],
       titulo: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       descricao: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-      conteudo: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(5000)]]
+      conteudo: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(5000)]],
+      tags: [[], Validators.required]
     });
   }
 
@@ -315,4 +316,20 @@ export class Call implements OnInit, OnDestroy {
     this.conteudoControl.markAsTouched();
     this.conteudoControl.markAsDirty();
   }
+
+  // No call.ts, adicione este getter
+get tagsControl(): FormControl {
+  // Se não existir no formulário, crie um controle separado
+  if (this.callForm.contains('tags')) {
+    return this.callForm.get('tags') as FormControl;
+  } else {
+    // Cria um controle interno para as tags
+    const tagsControl = new FormControl([], { nonNullable: true });
+    
+    // Ou adicione ao formulário principal se quiser incluir na validação
+    // this.callForm.addControl('tags', tagsControl);
+    
+    return tagsControl;
+  }
+}
 }
