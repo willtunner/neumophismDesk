@@ -1,42 +1,43 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimelineMarkers } from './timeline-markers/timeline-markers';
 import { MovieAnnotation } from '../../../models/models';
+import { YouTubePlayer } from '@angular/youtube-player';
 
 @Component({
   selector: 'app-youtube-player',
   standalone: true,
-  imports: [CommonModule, TimelineMarkers],
+  imports: [CommonModule, TimelineMarkers, YouTubePlayer],
   templateUrl: './youtube-player.html',
   styleUrl: './youtube-player.css'
 })
-export class YoutubePlayer implements AfterViewInit, OnDestroy, OnInit {
-  @ViewChild('youTubePlayer') youTubePlayer!: ElementRef;
+export class YoutubePlayerComponent implements OnInit, OnDestroy {
   @Output() timestampSelected = new EventEmitter<number>();
   
   // Inputs para receber dados externos
   @Input() videoId: string = '';
   @Input() annotations: MovieAnnotation[] = [];
 
-  private player: any;
   public currentTime: number = 0;
   public duration: number = 0;
   public isPlaying: boolean = false;
   private updateInterval: any;
   private playerSize: string = 'large';
 
-  constructor(private ngZone: NgZone) {}
+  // Variáveis para o YouTube Player
+  private player: any;
+  public playerVars = {
+    playsinline: 1,
+    enablejsapi: 1,
+    modestbranding: 1,
+    rel: 0
+  };
 
   ngOnInit() {
     console.log('YoutubePlayer initialized with videoId:', this.videoId);
-  }
-
-  ngAfterViewInit() {
-    if (this.videoId) {
-      this.loadYouTubeAPI();
-    } else {
-      console.warn('No videoId provided to YoutubePlayer');
-    }
+    
+    // Carrega a API do YouTube
+    this.loadYouTubeApi();
   }
 
   ngOnDestroy() {
@@ -45,102 +46,52 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
-  private loadYouTubeAPI() {
-    if (!(window as any).YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.body.appendChild(tag);
-
-      (window as any).onYouTubeIframeAPIReady = () => {
-        this.createPlayer();
-      };
-    } else {
-      this.createPlayer();
-    }
+  private loadYouTubeApi() {
+    // Esta parte não é mais necessária pois o componente já cuida disso
+    console.log('YouTube API will be loaded by Angular YouTube Player component');
   }
 
-  private createPlayer() {
-    if (!this.videoId) {
-      console.error('No videoId available to create player');
-      return;
-    }
-
-    this.player = new (window as any).YT.Player(this.youTubePlayer.nativeElement, {
-      height: '400',
-      width: '100%',
-      videoId: this.videoId,
-      playerVars: {
-        playsinline: 1,
-        enablejsapi: 1,
-        modestbranding: 1,
-        rel: 0
-      },
-      events: {
-        'onReady': this.onPlayerReady.bind(this),
-        'onStateChange': this.onPlayerStateChange.bind(this),
-        'onError': this.onPlayerError.bind(this)
-      }
-    });
-  }
-
-  private onPlayerReady(event: any) {
+  // Event handlers do YouTube Player
+  onReady(event: any) {
     console.log('YouTube player ready');
+    this.player = event.target;
     this.duration = this.player.getDuration();
 
-    // 🔥 Rodar o intervalo dentro do NgZone para o Angular detectar as mudanças
-    this.ngZone.runOutsideAngular(() => {
-      this.updateInterval = setInterval(() => {
-        if (this.player && this.player.getCurrentTime) {
-          const current = this.player.getCurrentTime();
-          // Atualiza dentro do Angular para refletir na UI
-          this.ngZone.run(() => {
-            this.currentTime = current;
-          });
-        }
-      }, 200); // Atualização fluida a cada 200ms
-    });
-
-    // Atualiza duração periodicamente
-    setInterval(() => {
-      if (this.player && this.player.getDuration) {
-        const newDuration = this.player.getDuration();
-        if (newDuration !== this.duration) {
-          this.ngZone.run(() => {
-            this.duration = newDuration;
-          });
-        }
+    // Inicia o intervalo para atualizar o tempo atual
+    this.updateInterval = setInterval(() => {
+      if (this.player && this.player.getCurrentTime) {
+        this.currentTime = this.player.getCurrentTime();
       }
-    }, 5000);
+    }, 200);
   }
 
-  private onPlayerStateChange(event: any) {
-    const YTState = (window as any).YT.PlayerState;
+  onStateChange(event: any) {
+    const state = event.data;
 
-    this.ngZone.run(() => {
-      switch (event.data) {
-        case YTState.PLAYING:
-          this.isPlaying = true;
-          break;
-        case YTState.PAUSED:
-        case YTState.ENDED:
-          this.isPlaying = false;
-          break;
-      }
+    switch (state) {
+      case 1: // PLAYING
+        this.isPlaying = true;
+        break;
+      case 2: // PAUSED
+      case 0: // ENDED
+        this.isPlaying = false;
+        break;
+    }
 
-      if (event.data === YTState.PLAYING) {
-        setTimeout(() => {
-          if (this.player && this.player.getDuration) {
-            this.duration = this.player.getDuration();
-          }
-        }, 1000);
-      }
-    });
+    if (state === 1) { // PLAYING
+      setTimeout(() => {
+        if (this.player && this.player.getDuration) {
+          this.duration = this.player.getDuration();
+        }
+      }, 1000);
+    }
   }
 
-  private onPlayerError(event: any) {
+  onError(event: any) {
     console.error('YouTube player error:', event.data);
   }
 
+  // Métodos de controle do player
   seekTo(timestamp: number) {
     if (this.player) {
       this.player.seekTo(timestamp, true);
@@ -180,14 +131,12 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy, OnInit {
   togglePlayPause() {
     if (!this.player) return;
 
-    const YTState = (window as any).YT.PlayerState;
-
     const state = this.player.getPlayerState();
 
-    if (state === YTState.PAUSED || state === YTState.ENDED) {
+    if (state === 2 || state === 0) { // PAUSED or ENDED
       this.player.playVideo();
       this.isPlaying = true;
-    } else if (state === YTState.PLAYING) {
+    } else if (state === 1) { // PLAYING
       this.player.pauseVideo();
       this.isPlaying = false;
     }
@@ -224,20 +173,20 @@ export class YoutubePlayer implements AfterViewInit, OnDestroy, OnInit {
   // Método para ajustar o tamanho do video-container
   setSize(size: string) {
     this.playerSize = size;
-    const videoContainer = this.youTubePlayer.nativeElement.closest('.video-container');
+    const videoContainer = document.querySelector('.video-container');
     if (videoContainer) {
       switch (size) {
         case 'small':
-          videoContainer.style.width = '40%';
-          videoContainer.style.margin = '0 auto';
+          (videoContainer as HTMLElement).style.width = '40%';
+          (videoContainer as HTMLElement).style.margin = '0 auto';
           break;
         case 'medium':
-          videoContainer.style.width = '70%';
-          videoContainer.style.margin = '0 auto';
+          (videoContainer as HTMLElement).style.width = '70%';
+          (videoContainer as HTMLElement).style.margin = '0 auto';
           break;
         case 'large':
-          videoContainer.style.width = '100%';
-          videoContainer.style.margin = '0';
+          (videoContainer as HTMLElement).style.width = '100%';
+          (videoContainer as HTMLElement).style.margin = '0';
           break;
       }
     }

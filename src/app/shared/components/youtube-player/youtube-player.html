@@ -1,5 +1,12 @@
 <div class="video-container">
-  <div #youTubePlayer class="youtube-iframe"></div>
+  <!-- Player do YouTube usando a biblioteca oficial -->
+  <youtube-player
+    [videoId]="videoId"
+    [playerVars]="playerVars"
+    (ready)="onReady($event)"
+    (stateChange)="onStateChange($event)"
+    (error)="onError($event)"
+  ></youtube-player>
 
   <!-- Timeline com controles integrados -->
   <app-timeline-markers

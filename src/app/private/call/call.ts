@@ -68,7 +68,7 @@ export class Call implements OnInit, OnDestroy {
       titulo: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       descricao: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
       conteudo: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(5000)]],
-      tags: [[], Validators.required]
+      tags: [[], Validators.required],
     });
   }
 
