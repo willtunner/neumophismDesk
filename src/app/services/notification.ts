@@ -9,12 +9,12 @@ import {
   orderBy,
 } from '@angular/fire/firestore';
 import { SessionService } from './session.service';
-import { Notifications, User } from '../models/models';
+import { Notifications } from '../models/models';
+import { NotificationType } from '../enuns/notification-icon-types.enum';
+import { addDoc, getDoc } from 'firebase/firestore';
 
 const PATH_NOTIFICATIONS = 'notifications';
 
-
-export type NotificationType = 'SUCCESS' | 'INFO' | 'WARNING' | 'ERROR';
 
 @Injectable({
   providedIn: 'root'
@@ -180,4 +180,63 @@ export class NotificationService {
   getTotalUnreadCount(): number {
     return this.getUnreadCount(false) + this.getUnreadCount(true);
   }
+
+  /**
+ * Cria e salva uma nova notificação no Firestore
+ */
+async createNotification(
+  titleNotification: string, 
+  notificationType: NotificationType,
+  content: string,
+  isMessageNotification: boolean = true
+): Promise<void> {
+  try {
+    const currentUser = this._sessionService.getSession();
+
+    if (!currentUser) {
+      console.warn('⚠️ Nenhum usuário logado — notificação não criada.');
+      return;
+    }
+
+    // Monta o objeto da notificação (sem id ainda)
+    const notification: Omit<Notifications, 'id'> = {
+      title: titleNotification,
+      content,
+      created: new Date(),
+      iconType: notificationType,
+      isRead: false,
+      isMessageNotification,
+      userId: currentUser.id
+    };
+
+    // Adiciona ao Firestore (gera o id automaticamente)
+    const docRef = await addDoc(this._notificationsCollection, notification);
+
+    // Busca o id gerado
+    const savedDoc = await getDoc(docRef);
+    const savedNotification: Notifications = {
+      id: savedDoc.id,
+      ...notification
+    };
+
+    // Atualiza o signal correspondente localmente
+    if (isMessageNotification) {
+      this.messageNotifications.update((notifications) => [
+        savedNotification,
+        ...notifications
+      ]);
+    } else {
+      this.notifications.update((notifications) => [
+        savedNotification,
+        ...notifications
+      ]);
+    }
+
+    console.log(`✅ Notificação criada com ID Firestore: ${savedDoc.id}`, savedNotification);
+
+  } catch (error) {
+    console.error('❌ Erro ao criar notificação:', error);
+  }
+}
+
 }

@@ -1,0 +1,38 @@
+<div class="neu-modal-content neu-scrollbar-small">
+    <div class="modal-header">
+      <div class="modal-title neu-emboss">
+        {{ 'MODALS.NEW_COMPANY' | translate }}
+      </div>
+  
+      <button class="neu-button icon close" mat-dialog-close>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="4">
+          <line x1="15" y1="5" x2="5" y2="15"></line>
+          <line x1="5" y1="5" x2="15" y2="15"></line>
+        </svg>
+      </button>
+    </div>
+  
+    <form [formGroup]="companyForm" (ngSubmit)="onSave()" class="modal-body">
+      <app-input-dynamic [config]="nameConfig" [control]="getControl('name')"></app-input-dynamic>
+      <app-input-dynamic [config]="cnpjConfig" [control]="getControl('cnpj')"></app-input-dynamic>
+      <app-input-dynamic [config]="cityConfig" [control]="getControl('city')"></app-input-dynamic>
+      <app-input-dynamic [config]="stateConfig" [control]="getControl('state')"></app-input-dynamic>
+      <app-input-dynamic [config]="addressConfig" [control]="getControl('address')"></app-input-dynamic>
+      <app-input-dynamic [config]="zipcodeConfig" [control]="getControl('zipcode')"></app-input-dynamic>
+      <app-input-dynamic [config]="phoneConfig" [control]="getControl('phone')"></app-input-dynamic>
+      <app-input-dynamic [config]="connectionServConfig" [control]="getControl('connectionServ')"></app-input-dynamic>
+      <app-input-dynamic [config]="emailConfig" [control]="getControl('email')"></app-input-dynamic>
+      <app-input-dynamic [config]="versionServConfig" [control]="getControl('versionServ')"></app-input-dynamic>
+      
+  
+      <div class="modal-actions">
+        <button type="button" class="neu-button secondary" (click)="onCancel()">
+          {{ 'COMMON.CANCEL' | translate }}
+        </button>
+        <button type="submit" class="neu-button primary" [disabled]="!companyForm.valid">
+          {{ 'COMMON.SAVE' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+  

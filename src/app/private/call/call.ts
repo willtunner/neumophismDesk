@@ -10,7 +10,7 @@ import { ButtonDynamic } from '../../shared/components/button-dynamic/button-dyn
 import { RichTextDynamicComponent } from '../../shared/components/rich-text-dynamic/rich-text-dynamic';
 import { TagsNeuComponent } from '../../shared/components/tags-neu/tags-neu';
 
-import { Company, User } from '../../models/models';
+import { Client, Company, User } from '../../models/models';
 import { AuthService } from '../../services/auth.service';
 import { CallCompanyLoaderService } from './util/call-company-loader.service';
 import { CallClientLoaderService } from './util/call-client-loader.service';
@@ -19,6 +19,11 @@ import { buildInputConfigs } from './util/call-input-config.factory';
 import { buildSelectConfigs } from './util/call-select-config.factory';
 import { buildRichTextConfig } from './util/call-richtext-config.factory';
 import { CallService } from '../../services/call-service';
+import { MatDialog } from '@angular/material/dialog';
+import { CompanyModalComponent } from '../companies/create-company-modal/create-company-modal';
+import { ClientModalComponent } from '../clients/create-client-modal/create-client-modal';
+import { NotificationService } from '../../services/notification';
+import { NotificationTitle, NotificationType } from '../../enuns/notification-icon-types.enum';
 
 
 @Component({
@@ -64,6 +69,8 @@ export class Call implements OnInit, OnDestroy {
   private clientLoader = inject(CallClientLoaderService);
   private formBuilder = inject(CallFormBuilderService);
   private callService = inject(CallService);
+  private dialog = inject(MatDialog);
+  private notificationService = inject(NotificationService);
 
   private langSub!: Subscription;
   private loggedUser!: User;
@@ -140,17 +147,55 @@ export class Call implements OnInit, OnDestroy {
   async onSubmit() {
     if (this.callForm.valid) {
       console.log('📤 Dados do chamado:', this.callForm.value);
-      await this.callService.saveCall(this.callForm.value);
+     const call =  await this.callService.saveCall(this.callForm.value);
+     this.notificationService.createNotification(
+      NotificationTitle.CREATE_CLIENT, 
+      NotificationType.SUCCESS,
+      `${call.title} Cradastrado com sucesso!`,
+      false
+    );
     } else {
       this.callForm.markAllAsTouched();
     }
   }
 
   onAddEmpresa() {
-    console.log('add company');
+    const dialogRef = this.dialog.open(CompanyModalComponent, {
+      width: '600px',
+      data: {}
+    });
+  
+    dialogRef.afterClosed().subscribe((result: Company) => {
+      if (result) {
+        console.log('✅ Nova empresa cadastrada:', result);
+        this.notificationService.createNotification(
+          NotificationTitle.CREATE_COMPANY, 
+          NotificationType.SUCCESS,
+          `${result.name} Criada com sucesso!`,
+          false
+        );
+        // Aqui você pode salvar no Firestore, atualizar a lista etc.
+      }
+    });
   }
-
+  
   onAddCliente() {
-    console.log('add client');
+    const dialogRef = this.dialog.open(ClientModalComponent, {
+      width: '600px',
+      data: {}
+    });
+  
+    dialogRef.afterClosed().subscribe((result: Client) => {
+      if (result) {
+        console.log('✅ Novo cliente cadastrado:', result);
+        this.notificationService.createNotification(
+          NotificationTitle.CREATE_CLIENT, 
+          NotificationType.SUCCESS,
+          `${result.username} Cradastrado com sucesso!`,
+          false
+        );
+      }
+    });
   }
+  
 }

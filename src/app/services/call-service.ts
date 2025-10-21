@@ -36,7 +36,7 @@ export class CallService {
    * @param callData Dados do chamado (sem id para criar novo, com id para atualizar)
    * @returns ID do documento criado ou atualizado
    */
-  async saveCall(callData: Call): Promise<string> {
+  async saveCall(callData: Call): Promise<Call> {
     try {
       const currentUser = this._sessionService.getSession();
       if (!currentUser) throw new Error('Usuário não está logado');
@@ -68,8 +68,14 @@ export class CallService {
         // 🔹 Atualiza o campo `id` dentro do próprio documento
         await updateDoc(docRef, { id: docRef.id });
 
+        // 🔹 Monta o objeto completo com o id
+        const createdCall: Call = {
+          id: docRef.id,
+          ...newCall,
+        };
+
         console.log('✅ Chamado criado com ID Firebase:', docRef.id);
-        return docRef.id;
+        return createdCall;
       }
 
       // 🟢 Atualização de chamado existente
@@ -80,14 +86,20 @@ export class CallService {
       };
 
       await updateDoc(docRef, updatePayload);
+
+      const updatedCall: Call = {
+        ...updatePayload,
+      };
+
       console.log('✅ Chamado atualizado com ID:', callData.id);
-      return callData.id;
+      return updatedCall;
 
     } catch (error) {
       console.error('❌ Erro ao salvar chamado:', error);
       throw error;
     }
   }
+
 
   /**
    * 🔍 Busca todos os chamados (opcionalmente filtrando por operador)

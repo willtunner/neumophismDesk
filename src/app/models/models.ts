@@ -208,7 +208,7 @@ export interface Company {
   }
 
   export interface Notifications {
-    id: string;
+    id?: string;
     title: string;
     content: string;
     created: Date;
