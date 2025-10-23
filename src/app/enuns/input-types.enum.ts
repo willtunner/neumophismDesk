@@ -10,5 +10,10 @@ export enum InputType {
     TEXTAREA = 'TEXTAREA',
     AGE = 'AGE',
     PASSWORD = 'PASSWORD',
-    SELECT = 'SELECT'
+    SELECT = 'SELECT',
+    PHONE = 'PHONE',
+    IMAGE = 'IMAGE',
+    CONNECTION = 'CONNECTION',
+    TITLE = 'TITLE',
+    DESCRIPTION = 'DESCRIPTION',
   }

@@ -1,0 +1,41 @@
+<div class="neu-table-container neu-scrollbar-small">
+  <table class="neu-table">
+    <thead>
+      <tr>
+        <th *ngFor="let header of headers" matTooltip="{{ header.label | translate }}" matTooltipPosition="above">
+          {{ header.label | translate }}
+        </th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of data" class="table-row" (click)="onRowClick(item)">
+        <td *ngFor="let header of headers" [matTooltip]="getNestedValue(item, header.field)" matTooltipPosition="above">
+          <ng-container *ngIf="isDate(getNestedValue(item, header.field)); else normalValue">
+            {{ getNestedValue(item, header.field) | dateOnlyFormat }}
+          </ng-container>
+
+          <ng-template #normalValue>
+            {{ getNestedValue(item, header.field) }}
+          </ng-template>
+        </td>
+
+        <td class="actions" (click)="$event.stopPropagation()">
+          <button class="neu-btn edit" (click)="onEdit(item)">
+            <i class="material-icons">edit</i>
+          </button>
+          <button class="neu-btn delete" (click)="onRemove(item)">
+            <i class="material-icons">delete</i>
+          </button>
+        </td>
+      </tr>
+
+      <tr *ngIf="!data || data.length === 0">
+        <td [attr.colspan]="headers.length + 1" class="empty-state">
+          Nenhum registro encontrado.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

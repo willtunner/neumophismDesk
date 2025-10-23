@@ -24,6 +24,9 @@ import { CompanyModalComponent } from '../companies/create-company-modal/create-
 import { ClientModalComponent } from '../clients/create-client-modal/create-client-modal';
 import { NotificationService } from '../../services/notification';
 import { NotificationTitle, NotificationType } from '../../enuns/notification-icon-types.enum';
+import { CallList } from './call-list/call-list';
+import { Call } from '../../models/models';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -40,18 +43,20 @@ import { NotificationTitle, NotificationType } from '../../enuns/notification-ic
     RichTextDynamicComponent,
     ButtonDynamic,
     TagsNeuComponent,
+    CallList
   ]
 })
-export class Call implements OnInit, OnDestroy {
+export class CallComponent implements OnInit, OnDestroy {
 
-   // Ícones SVG
-   readonly addIcon = `
+  // Ícones SVG
+  readonly addIcon = `
    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
      <path d="M12 5v14M5 12h14"/>
    </svg>
  `;
-  
+
   callForm!: FormGroup;
+  callsList: Call[] = [];
   companies: Company[] = [];
   clients: User[] = [];
   isLoadingClients = false;
@@ -60,7 +65,7 @@ export class Call implements OnInit, OnDestroy {
   inputConfigs: any = {};
   selectConfigs: any = {};
   richTextConfig: any;
-  
+
 
   private cdr = inject(ChangeDetectorRef);
   private translate = inject(TranslateService);
@@ -71,20 +76,38 @@ export class Call implements OnInit, OnDestroy {
   private callService = inject(CallService);
   private dialog = inject(MatDialog);
   private notificationService = inject(NotificationService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   private langSub!: Subscription;
   private loggedUser!: User;
-  
+
 
   async ngOnInit() {
     this.loggedUser = this.auth.currentUser()!;
     this.callForm = this.formBuilder.createForm(this.loggedUser);
+    this.callsList = await this.callService.getAllCalls();
+    console.log('Chamado: ', this.callsList);
 
     this.setupCompanyChange();
     await this.loadCompanies();
 
     this.initializeConfigs();
+
+    // 🆕 Verifica se há ID na URL
+    this.route.paramMap.subscribe(async (params) => {
+      const callId = params.get('id');
+      if (callId) {
+        const call = await this.callService.getCallById(callId);
+        if (call) {
+          this.callForm.patchValue(call);
+        }
+      }
+    });
+
     this.langSub = this.translate.onLangChange.subscribe(() => this.initializeConfigs());
+
+    
   }
 
   ngOnDestroy() {
@@ -147,13 +170,13 @@ export class Call implements OnInit, OnDestroy {
   async onSubmit() {
     if (this.callForm.valid) {
       console.log('📤 Dados do chamado:', this.callForm.value);
-     const call =  await this.callService.saveCall(this.callForm.value);
-     this.notificationService.createNotification(
-      NotificationTitle.CREATE_CLIENT, 
-      NotificationType.SUCCESS,
-      `${call.title} Cradastrado com sucesso!`,
-      false
-    );
+      const call = await this.callService.saveCall(this.callForm.value);
+      this.notificationService.createNotification(
+        NotificationTitle.CREATE_CLIENT,
+        NotificationType.SUCCESS,
+        `${call.title} Cradastrado com sucesso!`,
+        false
+      );
     } else {
       this.callForm.markAllAsTouched();
     }
@@ -164,12 +187,12 @@ export class Call implements OnInit, OnDestroy {
       width: '600px',
       data: {}
     });
-  
+
     dialogRef.afterClosed().subscribe((result: Company) => {
       if (result) {
         console.log('✅ Nova empresa cadastrada:', result);
         this.notificationService.createNotification(
-          NotificationTitle.CREATE_COMPANY, 
+          NotificationTitle.CREATE_COMPANY,
           NotificationType.SUCCESS,
           `${result.name} Criada com sucesso!`,
           false
@@ -178,18 +201,18 @@ export class Call implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   onAddCliente() {
     const dialogRef = this.dialog.open(ClientModalComponent, {
       width: '600px',
       data: {}
     });
-  
+
     dialogRef.afterClosed().subscribe((result: Client) => {
       if (result) {
         console.log('✅ Novo cliente cadastrado:', result);
         this.notificationService.createNotification(
-          NotificationTitle.CREATE_CLIENT, 
+          NotificationTitle.CREATE_CLIENT,
           NotificationType.SUCCESS,
           `${result.username} Cradastrado com sucesso!`,
           false
@@ -197,5 +220,11 @@ export class Call implements OnInit, OnDestroy {
       }
     });
   }
-  
+
+   // 🆕 Quando clicar em uma linha na tabela
+  onViewDetails(call: Call) {
+    this.router.navigate(['/call', call.id]);
+    this.callForm.patchValue(call);
+  }
+
 }

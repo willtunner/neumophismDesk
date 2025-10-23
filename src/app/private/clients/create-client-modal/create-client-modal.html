@@ -13,20 +13,20 @@
   </div>
 
   <form [formGroup]="clientForm" (ngSubmit)="onSave()" class="modal-body">
-    <app-input-dynamic [config]="usernameConfig" [control]="getControl('username')"></app-input-dynamic>
-    <app-input-dynamic [config]="nameConfig" [control]="getControl('name')"></app-input-dynamic>
-    <app-input-dynamic [config]="phoneConfig" [control]="getControl('phone')"></app-input-dynamic>
-    <app-input-dynamic [config]="emailConfig" [control]="getControl('email')"></app-input-dynamic>
-    <app-input-dynamic [config]="passwordConfig" [control]="getControl('password')"></app-input-dynamic>
-    <app-input-dynamic [config]="imageUrlConfig" [control]="getControl('imageUrl')"></app-input-dynamic>
-    <app-input-dynamic [config]="connectionConfig" [control]="getControl('connection')"></app-input-dynamic>
+    <app-input-dynamic [config]="usernameConfig" [control]="getControl('username')" [submitted]="submitted"></app-input-dynamic>
+    <app-input-dynamic [config]="nameConfig" [control]="getControl('name')" [submitted]="submitted"></app-input-dynamic>
+    <app-input-dynamic [config]="phoneConfig" [control]="getControl('phone')" [submitted]="submitted"></app-input-dynamic>
+    <app-input-dynamic [config]="emailConfig" [control]="getControl('email')" [submitted]="submitted"></app-input-dynamic>
+    <app-input-dynamic [config]="passwordConfig" [control]="getControl('password')" [submitted]="submitted"></app-input-dynamic>
+    <app-input-dynamic [config]="imageUrlConfig" [control]="getControl('imageUrl')" [submitted]="submitted"></app-input-dynamic>
+    <app-input-dynamic [config]="connectionConfig" [control]="getControl('connection')" [submitted]="submitted"></app-input-dynamic>
 
 
     <div class="modal-actions">
       <button type="button" class="neu-button secondary" (click)="onCancel()">
         {{ 'COMMON.CANCEL' | translate }}
       </button>
-      <button type="submit" class="neu-button primary" [disabled]="!clientForm.valid">
+      <button type="submit" class="neu-button primary" >
         {{ 'COMMON.SAVE' | translate }}
       </button>
     </div>

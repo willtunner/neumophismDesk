@@ -50,7 +50,8 @@
   "NOTIFICATIONS": {
     "TITLE": "Notificações",
     "EMPTY": "Nenhuma notificação",
-    "VIEW_ALL": "Ver todas as notificações"
+    "VIEW_ALL": "Ver todas as notificações",
+    "MARK_ALL_READ": "Marcar todos como lida!"
   },
   "CHART": {
     "TITLE": "Distribuição de Chamados por Posto",
@@ -90,15 +91,29 @@
     "TITLE": "Título",
     "PLACEHOLDER_TITLE": "Digite o título",
     "EMAIL": "E-mail",
+    "PLACEHOLDER_EMAIL": "Digite o email",
     "PASSWORD": "Senha",
+    "PLACEHOLDER_PASSWORD": "Digite a senha",
     "CONFIRM_PASSWORD": "Confirmar Senha",
     "FIRST_NAME": "Nome",
+    "PLACEHOLDER_NAME": "Digite o nome",
     "LAST_NAME": "Sobrenome",
+    "USERNAME": "Nome do usuário",
+    "PLACEHOLDER_USERNAME": "Digite o nome do usuário",
     "PHONE": "Telefone",
+    "PLACEHOLDER_PHONE": "Digite o telefone",
     "ADDRESS": "Endereço",
+    "PLACEHOLDER_ADDRESS": "Digite o endereço",
     "CITY": "Cidade",
+    "PLACEHOLDER_CITY": "Digite a cidade",
+    "CNPJ": "CNPJ",
+    "PLACEHOLDER_CNPJ": "Digite o cnpj",
+    "CPF": "CPF",
+    "PLACEHOLDER_CPF": "Digite o cpf",
     "STATE": "Estado",
+    "PLACEHOLDER_STATE": "Digite o estado",
     "ZIP_CODE": "CEP",
+    "PLACEHOLDER_ZIP_CODE": "Digite o cep",
     "COUNTRY": "País",
     "COMPANY": "Empresa",
     "SELECT_COMPANY": "Selecione a empresa",
@@ -118,15 +133,43 @@
     "SELECT_CLIENT": "Selecione o cliente",
     "ADD_NEW_CLIENT": "Adicionar novo cliente",
     "CONECTION": "Conexão",
-    "NUMBER_CONECTION_PLACEHOLDER": "Número da Conexão",
+    "PLACEHOLDER_CONECTION": "Digite o código de acesso.",
     "SEARCH_CONECTION": "Buscar conexão",
-    "CONTENT": "Conteúdo",
-    "PLACEHOLDER_CONTENT": "Digite o conteúdo detalhado...",
+    "CONTENT": "Digite a resolução detalhada...",
+    "PLACEHOLDER_CONTENT": "Resolução",
     "SAVE_CALL": "Salvar Chamado",
     "UPDATE_CALL": "Atualizar Chamado",
-    "DELETE_CALL": "Excluir Chamado"
+    "DELETE_CALL": "Excluir Chamado",
+    "VERSION_SERV": "Versão do servidor",
+    "PLACEHOLDER_VERSION_SERV": "Digita a verção do servidor",
+    "URL_IMG": "Imagem"
   },
   "CALL_PAGE": {
-    "NEW_CALL": "Novo Chamado"
+    "NEW_CALL": "Novo Chamado",
+    "CALL_LIST": "Lista  de chamados",
+    "CALL_LIST_EMPTY": "Nenhum chamado encontrado",
+    "CALL_LIST_CLOSED": "Fechado",
+    "CALL_LIST_OPEM": "Aberto"
+  },
+  "MODALS": {
+    "NEW_COMPANY": "Cadastrar nova empresa",
+    "NEW_CLIENT": "Cadastrar novo cliente"
+  },
+  "TABLE": {
+    "OPERATOR": "Operador",
+    "TITLE": "Titulo",
+    "CONECTION":"Conexão",
+    "EMAIL":"Email",
+    "USERNAME":"Username",
+    "COMPANY":"Empresa",
+    "RESOLUTION":"Resolução",
+    "CREATED_AT": "Criado em",
+    "HELPDESK":"Empresa de Suporte",
+    "CLIENT":"Cliente",
+    "PHONE":"Telefone",
+    "CNPJ": "CNPJ",
+    "STATUS": "Status",
+    "NAME": "Nome",
+    "OBSERVATION": "Observação"
   }
 }

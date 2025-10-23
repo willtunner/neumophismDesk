@@ -18,13 +18,15 @@ export class InputDynamicComponent implements OnInit {
   @Input() config: InputConfig = {} as InputConfig;
   @Input() control: FormControl = new FormControl();
   @Input() isPasswordVisible: boolean = false;
-  @Input() showImage: boolean = true; // Nova propriedade para controlar exibição do ícone
+  @Input() showImage: boolean = true;
+  @Input() submitted: boolean = false;
   @Output() valueChange = new EventEmitter<any>();
 
   inputType: string = 'text';
   errorMessage: string = '';
   isFocused: boolean = false;
   safeIconSvg: SafeHtml = '';
+  touched: boolean = false;
 
   // Ícones SVG para cada tipo
   private readonly icons: { [key in InputType]: string } = {
@@ -103,10 +105,42 @@ export class InputDynamicComponent implements OnInit {
         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
       </svg>
-    `
+    `,
+    [InputType.PHONE]: `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+    `,
+    [InputType.IMAGE]: `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+    `,
+    [InputType.CONNECTION]: `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+        <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+        <line x1="12" y1="20" x2="12" y2="20"/>
+      </svg>
+    `,
+    [InputType.TITLE]: `
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M4 4h16v16H4z"/>
+    <path d="M12 7v10"/>
+    <path d="M8 7h8"/>
+  </svg>
+`,
+   [InputType.DESCRIPTION]: `
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M9 6h8.5M9 11h11.5M9 16h8.5M5 9l-2 2 2 2"/>
+  </svg>
+`,
   };
 
-  constructor(private validatorsService: InputValidatorsService, private sanitizer: DomSanitizer) {}
+  constructor(private validatorsService: InputValidatorsService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.setupInputType();
@@ -123,6 +157,11 @@ export class InputDynamicComponent implements OnInit {
       this.inputType = this.isPasswordVisible ? 'text' : 'password';
     }
     this.updateIcon();
+
+    // Atualiza mensagens de erro quando submitted muda
+    if (this.submitted) {
+      this.updateErrorMessage();
+    }
   }
 
   private updateIcon(): void {
@@ -161,9 +200,9 @@ export class InputDynamicComponent implements OnInit {
     // Usa o serviço para obter as validações padrão
     const defaultValidators = this.validatorsService.getDefaultValidators(this.config.type, this.config);
     const customValidators = this.config.validators || [];
-    
+
     const allValidators = [...defaultValidators, ...customValidators];
-    
+
     this.control.setValidators(allValidators);
     this.control.updateValueAndValidity();
   }
@@ -180,20 +219,21 @@ export class InputDynamicComponent implements OnInit {
   }
 
   private updateErrorMessage(): void {
-    // MUDANÇA: Agora verifica touched OU dirty
-    if (this.control.invalid && (this.control.touched || this.control.dirty)) {
+    // MUDANÇA PRINCIPAL: Mostra erro se o campo foi tocado OU se o formulário foi submetido
+    const shouldShowError = this.control.invalid && (this.touched || this.submitted || this.control.touched || this.control.dirty);
+
+    if (shouldShowError) {
       const errors = this.control.errors;
       if (errors) {
         const firstErrorKey = Object.keys(errors)[0];
         const errorValue = errors[firstErrorKey];
-        
-        // Verifica se há mensagem customizada
+
         if (this.config.customErrorMessages && this.config.customErrorMessages[firstErrorKey]) {
           this.errorMessage = this.config.customErrorMessages[firstErrorKey];
         } else {
           this.errorMessage = this.validatorsService.getDefaultErrorMessage(
-            firstErrorKey, 
-            errorValue, 
+            firstErrorKey,
+            errorValue,
             this.config
           );
         }
@@ -208,17 +248,17 @@ export class InputDynamicComponent implements OnInit {
     if (this.config.customIcon) {
       return this.config.customIcon;
     }
-    
+
     // Retorna ícone por nome do Material se fornecido
     if (this.config.iconName) {
       return this.getMaterialIcon(this.config.iconName);
     }
-    
+
     // Para campos de password, usa o ícone específico
     if (this.config.formControlName === 'password') {
       return this.icons[InputType.PASSWORD];
     }
-    
+
     // Retorna ícone padrão baseado no tipo
     return this.icons[this.config.type] || this.icons[InputType.TEXT];
   }
@@ -242,10 +282,17 @@ export class InputDynamicComponent implements OnInit {
   }
 
   markAsTouched(): void {
-    if (!this.control.touched) {
+    if (!this.touched) {
+      this.touched = true;
       this.control.markAsTouched();
       this.updateErrorMessage();
     }
+  }
+
+  // Método para forçar a exibição de erros (pode ser chamado pelo componente pai)
+  showErrors(): void {
+    this.touched = true;
+    this.updateErrorMessage();
   }
 
   get isTextarea(): boolean {
@@ -257,6 +304,7 @@ export class InputDynamicComponent implements OnInit {
   }
 
   get isInvalid(): boolean {
-    return this.control.invalid && (this.control.touched || this.control.dirty);
+    // MUDANÇA: Inclui submitted na verificação
+    return this.control.invalid && (this.touched || this.submitted || this.control.touched || this.control.dirty);
   }
 }

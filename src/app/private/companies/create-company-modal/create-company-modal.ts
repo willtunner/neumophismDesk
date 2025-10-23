@@ -56,11 +56,11 @@ export class CompanyModalComponent implements OnInit {
     this.nameConfig = {
       type: InputType.TEXT,
       formControlName: 'name',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'), //* mudar para nome
+      label: this.translate.instant('INPUTS-FIELS.FIRST_NAME'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_NAME'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -70,11 +70,11 @@ export class CompanyModalComponent implements OnInit {
     this.cnpjConfig = {
       type: InputType.TEXT,
       formControlName: 'cnpj',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      label: this.translate.instant('INPUTS-FIELS.CNPJ'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_CNPJ'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -84,11 +84,11 @@ export class CompanyModalComponent implements OnInit {
     this.cityConfig = {
       type: InputType.TEXT,
       formControlName: 'city',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      label: this.translate.instant('INPUTS-FIELS.CITY'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_CITY'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -98,11 +98,11 @@ export class CompanyModalComponent implements OnInit {
     this.stateConfig = {
       type: InputType.TEXT,
       formControlName: 'state',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      label: this.translate.instant('INPUTS-FIELS.STATE'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_STATE'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -112,11 +112,11 @@ export class CompanyModalComponent implements OnInit {
     this.addressConfig = {
       type: InputType.TEXT,
       formControlName: 'address',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      label: this.translate.instant('INPUTS-FIELS.ADDRESS'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_ADDRESS'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -126,11 +126,11 @@ export class CompanyModalComponent implements OnInit {
     this.zipcodeConfig = {
       type: InputType.TEXT,
       formControlName: 'zipcode',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      label: this.translate.instant('INPUTS-FIELS.ZIP_CODE'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_ZIP_CODE'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -140,11 +140,11 @@ export class CompanyModalComponent implements OnInit {
     this.phoneConfig = {
       type: InputType.TEXT,
       formControlName: 'phone',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      label: this.translate.instant('INPUTS-FIELS.PHONE'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_PHONE'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -154,11 +154,11 @@ export class CompanyModalComponent implements OnInit {
     this.connectionServConfig = {
       type: InputType.TEXT,
       formControlName: 'connectionServ',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      label: this.translate.instant('INPUTS-FIELS.CONECTION'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_CONECTION'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -168,11 +168,11 @@ export class CompanyModalComponent implements OnInit {
     this.emailConfig = {
       type: InputType.TEXT,
       formControlName: 'email',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      label: this.translate.instant('INPUTS-FIELS.EMAIL'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_EMAIL'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -182,11 +182,11 @@ export class CompanyModalComponent implements OnInit {
     this.versionServConfig = {
       type: InputType.TEXT,
       formControlName: 'versionServ',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'),
+      label: this.translate.instant('INPUTS-FIELS.VERSION_SERV'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_VERSION_SERV'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),

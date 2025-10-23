@@ -1,0 +1,7 @@
+<app-dynamic-table
+  [headers]="tableHeaders"
+  [data]="calls"
+  (edit)="onEdit($event)"
+  (remove)="onDelete($event)"
+  (rowClick)="onRowClick($event)"
+></app-dynamic-table>

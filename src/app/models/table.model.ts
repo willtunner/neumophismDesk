@@ -1,10 +1,8 @@
-// models/table.model.ts (opcional)
+
 export interface TableHeader {
-    key: string;
-    label: string;
-  }
-  
-  export interface TableRow {
-    [key: string]: any;
-  }
-  
+  label: string; // Nome que aparece na tabela
+  field: string; // Caminho para o valor (ex: "operator.name")
+}
+export interface TableRow {
+  [key: string]: any;
+}

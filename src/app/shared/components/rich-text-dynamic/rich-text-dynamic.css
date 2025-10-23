@@ -6,7 +6,7 @@
 }
 
 .rich-text-dynamic-container.error .input-group {
-  box-shadow: 
+  box-shadow:
     inset 8px 8px 16px rgba(255, 59, 92, 0.2),
     inset -8px -8px 16px var(--shadow-dark),
     0 0 0 2px var(--error-color) !important;
@@ -162,7 +162,7 @@
   border-radius: 6px;
   margin: 2px;
   background: var(--bg-primary);
-  box-shadow: 
+  box-shadow:
     2px 2px 4px var(--shadow-light),
     -2px -2px 4px var(--shadow-dark);
   border: none;
@@ -170,13 +170,13 @@
 }
 
 ::ng-deep .quill-editor .ql-toolbar button:hover {
-  box-shadow: 
+  box-shadow:
     inset 2px 2px 4px var(--shadow-light),
     inset -2px -2px 4px var(--shadow-dark);
 }
 
 ::ng-deep .quill-editor .ql-toolbar button.ql-active {
-  box-shadow: 
+  box-shadow:
     inset 2px 2px 4px var(--shadow-light),
     inset -2px -2px 4px var(--shadow-dark);
 }
@@ -275,6 +275,12 @@
 .error-message.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+.count-msg-error {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
 }
 
 /* Responsive - MESMO PADRÃO DO INPUT-DYNAMIC */
@@ -413,7 +419,7 @@
   margin: 12px auto;
   object-fit: contain;
   border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 }
 
 
@@ -520,7 +526,7 @@
 }
 
 .rich-text-dynamic-container.error .input-group {
-  box-shadow: 
+  box-shadow:
     inset 8px 8px 16px rgba(255, 59, 92, 0.2),
     inset -8px -8px 16px var(--shadow-dark),
     0 0 0 2px var(--error-color) !important;

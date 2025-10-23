@@ -1,0 +1,94 @@
+.neu-table-container {
+  padding: 20px;
+  border-radius: 20px;
+  background: var(--bg-primary);
+  box-shadow:
+    10px 10px 20px var(--shadow-light),
+    -10px -10px 20px var(--shadow-dark);
+  overflow-x: auto;
+}
+
+.neu-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-primary);
+  table-layout: fixed; /* 🔹 Garante limite fixo de largura */
+}
+
+.neu-table thead {
+  background: var(--bg-secondary);
+  box-shadow:
+    inset 2px 2px 5px var(--shadow-light),
+    inset -2px -2px 5px var(--shadow-dark);
+}
+
+.neu-table th,
+.neu-table td {
+  padding: 8px 5px;
+  text-align: center;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--border-color);
+  max-width: 250px;
+  width: 180px; /* 🔹 Garante largura fixa */
+  white-space: nowrap; /* 🔹 Impede quebra de linha */
+  overflow: hidden; /* 🔹 Oculta texto excedente */
+  text-overflow: ellipsis; /* 🔹 Adiciona os "..." */
+  vertical-align: middle;
+}
+
+.neu-table th {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-secondary);
+}
+
+/* 🔹 Linha interativa com cursor pointer */
+.neu-table tr.table-row:hover {
+  background: var(--bg-secondary);
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  transition: 0.25s;
+  cursor: pointer; /* 🔹 Mostra o ponteiro ao passar o mouse */
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.neu-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+  background: var(--bg-primary);
+  box-shadow:
+    4px 4px 8px var(--shadow-light),
+    -4px -4px 8px var(--shadow-dark);
+  transition: all 0.2s ease;
+}
+
+.neu-btn:hover {
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  transform: translateY(1px);
+}
+
+.neu-btn.edit i {
+  color: #00c896;
+}
+
+.neu-btn.delete i {
+  color: #ff3b5c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: var(--text-muted);
+}

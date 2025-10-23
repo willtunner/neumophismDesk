@@ -45,7 +45,7 @@
     <div *ngIf="showImage" class="input-icon" [innerHTML]="safeIconSvg"></div>
   </div>
 
-  <!-- Mensagem de erro -->
+  <!-- Mensagem de erro - Agora mostra quando isInvalid é true -->
   <span class="error-message" [class.show]="isInvalid && errorMessage">
     {{ errorMessage }}
   </span>

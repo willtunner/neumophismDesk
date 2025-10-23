@@ -16,6 +16,7 @@ import { InputType } from '../../../enuns/input-types.enum';
 })
 export class ClientModalComponent implements OnInit {
   clientForm!: FormGroup;
+  submitted = false;
 
   usernameConfig!: InputConfig;
   nameConfig!: InputConfig;
@@ -48,13 +49,13 @@ export class ClientModalComponent implements OnInit {
 
   initConfigs() {
     this.usernameConfig = {
-      type: InputType.TEXT,
+      type: InputType.USER,
       formControlName: 'username',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'), //* mudar para nome
+      label: this.translate.instant('INPUTS-FIELS.USERNAME'), 
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_USERNAME'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -62,13 +63,13 @@ export class ClientModalComponent implements OnInit {
       },
     };
     this.nameConfig = {
-      type: InputType.TEXT,
+      type: InputType.USER,
       formControlName: 'name',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'), //* mudar para nome
+      label: this.translate.instant('INPUTS-FIELS.FIRST_NAME'), 
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_NAME'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -76,55 +77,51 @@ export class ClientModalComponent implements OnInit {
       },
     };
     this.phoneConfig = {
-      type: InputType.TEXT,
+      type: InputType.PHONE,
       formControlName: 'phone',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'), //* mudar para nome
+      label: this.translate.instant('INPUTS-FIELS.PHONE'),
       required: true,
-      minLength: 2,
-      maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      minLength: 11,
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_PHONE'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 11 }),
       },
     };
     this.emailConfig = {
-      type: InputType.TEXT,
+      type: InputType.EMAIL,
       formControlName: 'email',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'), //* mudar para nome
+      label: this.translate.instant('INPUTS-FIELS.EMAIL'),
       required: true,
-      minLength: 2,
-      maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      minLength: 5,
+      maxLength: 264,
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_EMAIL'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 264 }),
       },
     };
     this.passwordConfig = {
-      type: InputType.TEXT,
+      type: InputType.PASSWORD,
       formControlName: 'password',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'), //* mudar para nome
+      label: this.translate.instant('INPUTS-FIELS.PASSWORD'),
       required: true,
-      minLength: 2,
-      maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      minLength: 6,
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_PASSWORD'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 6 }),
       },
     };
     this.imageUrlConfig = {
-      type: InputType.TEXT,
+      type: InputType.IMAGE,
       formControlName: 'imageUrl',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'), //* mudar para nome
+      label: this.translate.instant('INPUTS-FIELS.URL_IMG'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.URL_IMG'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -132,13 +129,13 @@ export class ClientModalComponent implements OnInit {
       },
     };
     this.connectionConfig = {
-      type: InputType.TEXT,
+      type: InputType.CONNECTION,
       formControlName: 'connection',
-      label: this.translate.instant('CALENDAR.CALENDAR_TITLE'), //* mudar para nome
+      label: this.translate.instant('INPUTS-FIELS.CONECTION'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('CALENDAR.PLACEHOLDER_TITLE'),
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_CONECTION'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -148,6 +145,7 @@ export class ClientModalComponent implements OnInit {
   }
 
   onSave() {
+    this.submitted = true;
     if (this.clientForm.valid) {
       this.dialogRef.close(this.clientForm.value);
     } else {

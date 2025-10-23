@@ -11,7 +11,7 @@
   background: var(--bg-primary);
   border-radius: clamp(16px, 2vw, 20px);
   z-index: 1000;
-  box-shadow: 
+  box-shadow:
     15px 15px 40px var(--shadow-light),
     -15px -15px 40px var(--shadow-dark);
   margin-bottom: 20px;
@@ -46,6 +46,21 @@
   text-transform: capitalize;
 }
 
+.neu-container2 {
+  background: var(--bg-primary);
+  border-radius: 25px;
+  padding: 5px;
+  box-shadow: 
+    20px 20px 60px var(--shadow-light),
+    -20px -20px 60px var(--shadow-dark);
+  position: relative;
+  transition: all 0.3s ease;
+  color: var(--text-primary);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 /* Container das ações (idioma, mensagens, notificações) */
 .header-actions {
   display: flex;
@@ -59,7 +74,7 @@
   position: relative;
   background: var(--input-bg);
   border-radius: 12px;
-  box-shadow: 
+  box-shadow:
     inset 4px 4px 8px var(--shadow-light),
     inset -4px -4px 8px var(--shadow-dark);
   transition: all 0.3s ease;
@@ -68,7 +83,7 @@
 }
 
 .language-selector:focus-within {
-  box-shadow: 
+  box-shadow:
     inset 2px 2px 4px var(--shadow-light),
     inset -2px -2px 4px var(--shadow-dark);
 }
@@ -139,7 +154,7 @@
 
 .icon-wrapper:active {
   transform: translateY(0);
-  box-shadow: 
+  box-shadow:
     inset 3px 3px 6px var(--shadow-light),
     inset -3px -3px 6px var(--shadow-dark);
 }
@@ -222,14 +237,14 @@
 /* Dropdown Panel - CORREÇÃO DO POSITION */
 .dropdown-panel {
   position: fixed;
-  top: clamp(75px, 11vw, 85px);
+  top: clamp(75px, 11vw, 70px);
   right: 50%;
   transform: translateX(50%);
   width: min(90vw, 380px);
   max-height: min(70vh, 500px);
   background: var(--bg-primary);
   border-radius: 20px;
-  box-shadow: 
+  box-shadow:
     15px 15px 30px var(--shadow-light),
     -15px -15px 30px var(--shadow-dark),
     inset 1px 1px 2px var(--shadow-dark),
@@ -246,6 +261,7 @@
     opacity: 0;
     transform: translateX(50%) translateY(-10px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateX(50%) translateY(0) scale(1);
@@ -315,7 +331,7 @@
   background-color: #f0e68c !important;
   border-radius: 12px;
   margin: 4px 8px;
-  box-shadow: 
+  box-shadow:
     2px 2px 6px rgba(210, 200, 120, 0.4),
     -2px -2px 6px rgba(255, 255, 220, 0.6) !important;
 }
@@ -350,6 +366,7 @@
     opacity: 0;
     transform: translateX(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -372,7 +389,7 @@
   font-weight: 600;
   color: var(--text-primary);
   font-size: clamp(14px, 1.2vw, 16px);
-  box-shadow: 
+  box-shadow:
     2px 2px 4px var(--shadow-light),
     -2px -2px 4px var(--shadow-dark);
 }
@@ -389,7 +406,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 
+  box-shadow:
     2px 2px 4px var(--shadow-light),
     -2px -2px 4px var(--shadow-dark);
 }
@@ -476,9 +493,245 @@
 
 /* Footer do Dropdown */
 .dropdown-footer {
-  padding: clamp(14px, 1.5vw, 20px) clamp(18px, 2vw, 24px);
+  padding: clamp(12px, 1.2vw, 16px) clamp(18px, 2vw, 24px);
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   background: rgba(0, 0, 0, 0.02);
+  display: flex;
+}
+
+/* ========== FOOTER LINKS COM FONT-SIZE RESPONSIVO ========== */
+
+/* Estilo base para os links do footer */
+.footer-link {
+  font-size: clamp(9px, 1.1vw, 11px); /* Agora começa em 11px e vai até 9px */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding: clamp(4px, 0.6vw, 6px) clamp(8px, 1vw, 10px);
+  border-radius: 6px;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin: 0;
+  line-height: 1.2;
+  
+  /* Efeito de fundo sutil */
+  background: transparent;
+  box-shadow: 
+    1px 1px 2px rgba(0, 0, 0, 0.05),
+    -1px -1px 2px rgba(255, 255, 255, 0.1);
+}
+
+/* Efeito de brilho no hover */
+.footer-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.footer-link:hover::before {
+  left: 100%;
+}
+
+/* Link "Ver Todos" - à esquerda */
+.footer-link.view-all {
+  color: var(--text-secondary);
+  margin-right: auto;
+  transform: translateX(0) scale(1);
+}
+
+.footer-link.view-all:hover {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.03);
+  transform: translateX(3px) scale(1.02);
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.08),
+    -3px -3px 6px rgba(255, 255, 255, 0.15);
+}
+
+/* Link "Marcar como Lidas" - à direita */
+.footer-link.mark-read {
+  color: var(--accent-color, #4facfe);
+  margin-left: auto;
+  font-weight: 600;
+  transform: translateX(0) scale(1);
+}
+
+.footer-link.mark-read:hover {
+  color: var(--accent-hover, #3a8fd4);
+  background: rgba(79, 172, 254, 0.08);
+  transform: translateX(-3px) scale(1.02);
+  box-shadow: 
+    3px 3px 6px rgba(79, 172, 254, 0.15),
+    -3px -3px 6px rgba(255, 255, 255, 0.1);
+}
+
+/* Efeito de clique nos links */
+.footer-link:active {
+  transform: translateY(1px) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+/* ========== MEDIA QUERIES PARA FONT-SIZE PROGRESSIVO ========== */
+
+/* Tablet: 768px - 1024px */
+@media (max-width: 1024px) {
+  .footer-link {
+    font-size: clamp(10px, 1vw, 11px);
+    padding: clamp(4px, 0.5vw, 5px) clamp(7px, 0.8vw, 9px);
+  }
+}
+
+/* Mobile Large: 480px - 768px */
+@media (max-width: 768px) {
+  .footer-link {
+    font-size: clamp(9px, 0.9vw, 10px);
+    padding: clamp(3px, 0.4vw, 4px) clamp(6px, 0.7vw, 8px);
+  }
+  
+  .footer-links {
+    gap: 10px;
+  }
+}
+
+/* Mobile Small: 360px - 480px */
+@media (max-width: 480px) {
+  .footer-link {
+    font-size: 9px;
+    padding: 3px 6px;
+    line-height: 1.1;
+  }
+  
+  .footer-links {
+    gap: 8px;
+  }
+  
+  .footer-link.view-all:hover {
+    transform: translateX(2px) scale(1.01);
+  }
+  
+  .footer-link.mark-read:hover {
+    transform: translateX(-2px) scale(1.01);
+  }
+}
+
+/* Mobile Extra Small: até 360px */
+@media (max-width: 360px) {
+  .footer-link {
+    font-size: 8px;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  
+  .footer-links {
+    gap: 6px;
+  }
+}
+
+/* ========== ESTADOS PARA TEMA ESCURO ========== */
+
+[data-theme="dark"] .footer-link.view-all {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .footer-link.view-all:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.3),
+    -3px -3px 6px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .footer-link.mark-read {
+  color: var(--accent-color, #6bb5ff);
+}
+
+[data-theme="dark"] .footer-link.mark-read:hover {
+  color: var(--accent-hover, #8fc7ff);
+  background: rgba(107, 181, 255, 0.12);
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.4),
+    -3px -3px 6px rgba(107, 181, 255, 0.1);
+}
+
+/* ========== ESTADOS PARA TEMA CLARO ========== */
+
+:root .footer-link.view-all {
+  color: var(--text-secondary);
+}
+
+:root .footer-link.view-all:hover {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+:root .footer-link.mark-read {
+  color: var(--accent-color, #4facfe);
+}
+
+:root .footer-link.mark-read:hover {
+  color: var(--accent-hover, #3a8fd4);
+  background: rgba(79, 172, 254, 0.1);
+}
+
+/* ========== LAYOUT ADAPTATIVO ========== */
+
+/* Para quando não há notificações não lidas - ajuste de layout */
+.footer-links:has(.mark-read:not(:only-child)) {
+  justify-content: space-between;
+}
+
+.footer-links:has(.view-all:only-child) {
+  justify-content: flex-start;
+}
+
+.footer-links:has(.mark-read:only-child) {
+  justify-content: flex-end;
+}
+
+/* Efeito de pulso sutil para links importantes */
+.footer-link.mark-read {
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    box-shadow: 
+      1px 1px 2px rgba(0, 0, 0, 0.05),
+      -1px -1px 2px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      2px 2px 4px rgba(79, 172, 254, 0.15),
+      -2px -2px 4px rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Melhorar a legibilidade em telas touch */
+@media (hover: none) {
+  .footer-link {
+    padding: 6px 10px;
+  }
+  
+  .footer-link:active {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(0.95);
+  }
+  
+  .footer-link.mark-read:active {
+    background: rgba(79, 172, 254, 0.2);
+  }
 }
 
 .full-width {
@@ -496,7 +749,7 @@
 
 /* Estados ativos para ícones */
 .icon-wrapper.active {
-  box-shadow: 
+  box-shadow:
     inset 3px 3px 6px var(--shadow-light),
     inset -3px -3px 6px var(--shadow-dark);
   transform: translateY(0);
@@ -521,6 +774,15 @@
   background: rgba(0, 0, 0, 0.3);
 }
 
+/* PARA UMA LINHA APENAS - NOVO ESTILO */
+.item-preview.single-line {
+  -webkit-line-clamp: 1 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block !important;
+}
+
 /* ========== RESPONSIVIDADE AVANÇADA ========== */
 
 /* Para telas médias (tablets) - texto do menu começa a diminuir */
@@ -530,7 +792,7 @@
     font-size: clamp(11px, 1vw, 12px);
     gap: clamp(3px, 0.4vw, 4px);
   }
-  
+
   .menu-btn .menu-text {
     font-size: 0.9em;
   }
@@ -545,27 +807,28 @@
     justify-content: center;
     border-radius: 12px;
   }
-  
+
   .menu-btn .menu-text {
-    display: none; /* Texto desaparece completamente */
+    display: none;
+    /* Texto desaparece completamente */
   }
-  
+
   .menu-btn svg {
     width: 18px;
     height: 18px;
     margin: 0;
   }
-  
+
   /* Ajuste adicional para header em mobile */
   .header-container {
     width: 95%;
     padding: 10px 15px;
   }
-  
+
   .header-content .header-text h1 {
     font-size: 1.2rem;
   }
-  
+
   .header-actions {
     gap: 4px;
   }
@@ -577,17 +840,17 @@
     width: 36px !important;
     height: 36px;
   }
-  
+
   .menu-btn svg {
     width: 16px;
     height: 16px;
   }
-  
+
   .header-container {
     width: 98%;
     padding: 8px 12px;
   }
-  
+
   .header-content .header-text h1 {
     font-size: 1.1rem;
   }
@@ -599,22 +862,22 @@
     top: 8px;
     padding: 8px 15px;
   }
-  
+
   .body-with-fixed-header {
     padding-top: 60px;
   }
-  
+
   .dropdown-panel {
     top: 60px;
     max-height: 60vh;
   }
-  
+
   /* Em landscape, manter o texto do menu visível se houver espaço */
   .menu-btn .menu-text {
     display: inline;
     font-size: 11px;
   }
-  
+
   .menu-btn {
     padding: 4px 8px;
   }

@@ -35,10 +35,11 @@ export interface Company {
      tags: string[];
      connection: string;
      closed: boolean;
-     finalizedDate: Date;
+     finalizedDate?: Date;
      operatorId: string;
      operator?: User;
      helpDeskCompanyId?: string;
+     helpDeskCompany?: HelpDeskCompany;
   }
 
   export interface HelpDeskCompany {
@@ -215,7 +216,8 @@ export interface Company {
     iconType: NotificationType;
     isRead?: boolean;
     isMessageNotification?: boolean; 
-    userId?: string;
+    userId?: string | null;
+    helpDeskId: string;
   }
 
 

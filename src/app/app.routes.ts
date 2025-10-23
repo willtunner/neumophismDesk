@@ -3,7 +3,7 @@ import { Login } from './public/login/login';
 import { Home } from './private/home/home';
 import { Profile } from './private/profile/profile';
 import { ChatComponent } from './private/chat/chat';
-import { Call } from './private/call/call';
+import { CallComponent } from './private/call/call';
 import { Companies } from './private/companies/companies';
 import { Clients } from './private/clients/clients';
 import { Tutorials } from './private/tutorials/tutorials';
@@ -20,7 +20,8 @@ export const routes: Routes = [
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [authGuard] },
   { path: 'companies', component: Companies, canActivate: [authGuard] },
-  { path: 'call', component: Call, canActivate: [authGuard] },
+  { path: 'call', component: CallComponent, canActivate: [authGuard] },
+  { path: 'call/:id', component: CallComponent, canActivate: [authGuard] },
   { path: 'clients', component: Clients, canActivate: [authGuard]},
   { path: 'calendar', component: Calendar, canActivate: [authGuard] },
   { path: 'tutorials', component: Tutorials, canActivate: [authGuard]},

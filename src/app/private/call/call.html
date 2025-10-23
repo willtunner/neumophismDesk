@@ -56,7 +56,8 @@
       <!-- Quarta Linha: Rich Text -->
       <div class="form-row">
         <div class="form-group-full">
-          <app-rich-text-dynamic [config]="richTextConfig" [control]="conteudoControl" [showImage]="true">
+          <app-rich-text-dynamic [config]="richTextConfig" [control]="conteudoControl" [showImage]="true" [count]="true"
+            [limit]="3000">
           </app-rich-text-dynamic>
         </div>
       </div>
@@ -103,4 +104,8 @@
       <pre>Touched: {{ callForm.touched }}</pre>
     </div>
   </div>
+</div>
+
+<div class="call-list-container neu-container call-container">
+  <app-call-list [calls]="callsList" (viewDetails)="onViewDetails($event)"></app-call-list>
 </div>

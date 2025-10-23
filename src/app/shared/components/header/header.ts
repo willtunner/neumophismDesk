@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -41,9 +41,9 @@ export class Header implements OnInit, OnDestroy {
     { code: 'en', name: 'English', flag: 'assets/images/usa-flag.png' }
   ];
 
-  // Agora usando as notificações reais do serviço
-  messages: Notifications[] = [];
-  notifications: Notifications[] = [];
+  // Usando computed signals para as notificações
+  messages = this.notificationService.messageNotifications;
+  notifications = this.notificationService.notifications;
 
   constructor(
     private globalMenuService: GlobalMenuService,
@@ -70,7 +70,7 @@ export class Header implements OnInit, OnDestroy {
       this.updateRouteTitle();
     });
 
-    // Carrega as notificações
+    // Carrega as notificações iniciais
     this.loadAllNotifications();
 
     // Atualiza o título inicial
@@ -84,14 +84,11 @@ export class Header implements OnInit, OnDestroy {
     try {
       console.log('📢 Iniciando carregamento de notificações...');
       
-      const result = await this.notificationService.loadAllUserNotifications();
+      await this.notificationService.loadAllUserNotifications();
       
-      this.messages = result.messages;
-      this.notifications = result.system;
-      
-      console.log('✅ Notificações carregadas:');
-      console.log('📨 Mensagens:', this.messages);
-      console.log('🔔 Notificações do sistema:', this.notifications);
+      console.log('✅ Notificações carregadas via signals');
+      console.log('📨 Mensagens:', this.messages());
+      console.log('🔔 Notificações do sistema:', this.notifications());
       
     } catch (error) {
       console.error('❌ Erro ao carregar notificações:', error);
@@ -104,7 +101,7 @@ export class Header implements OnInit, OnDestroy {
       this.showNotifications = false;
       
       // Quando abrir o dropdown de mensagens, marca como lidas
-      // if (this.showMessages) {
+      // if (this.showMessages && this.getUnreadMessagesCount() > 0) {
       //   this.markAllMessagesAsRead();
       // }
     } else {
@@ -112,9 +109,9 @@ export class Header implements OnInit, OnDestroy {
       this.showMessages = false;
       
       // Quando abrir o dropdown de notificações, marca como lidas
-      // if (this.showNotifications) {
-      //   this.markAllNotificationsAsRead();
-      // }
+      if (this.showNotifications && this.getUnreadNotificationsCount() > 0) {
+        this.markAllNotificationsAsRead();
+      }
     }
   }
 
@@ -140,16 +137,40 @@ export class Header implements OnInit, OnDestroy {
     return this.notificationService.getUnreadCount(false);
   }
 
-  markAllMessagesAsRead() {
-    this.notificationService.markAllAsRead(true);
-    // Atualiza a lista local
-    this.messages = this.messages.map(msg => ({ ...msg, isRead: true }));
+  /**
+   * Marca todas as mensagens como lidas
+   */
+  async markAllMessagesAsRead() {
+    try {
+      await this.notificationService.markAllAsRead(true);
+      console.log('✅ Todas as mensagens marcadas como lidas');
+    } catch (error) {
+      console.error('❌ Erro ao marcar mensagens como lidas:', error);
+    }
   }
 
-  markAllNotificationsAsRead() {
-    this.notificationService.markAllAsRead(false);
-    // Atualiza a lista local
-    this.notifications = this.notifications.map(notif => ({ ...notif, isRead: true }));
+  /**
+   * Marca todas as notificações como lidas
+   */
+  async markAllNotificationsAsRead() {
+    // try {
+    //   await this.notificationService.markAllAsRead(false);
+    //   console.log('✅ Todas as notificações marcadas como lidas');
+    // } catch (error) {
+    //   console.error('❌ Erro ao marcar notificações como lidas:', error);
+    // }
+  }
+
+  /**
+   * Marca uma notificação específica como lida
+   */
+  async markAsRead(notificationId: string, isMessage: boolean = false) {
+    try {
+      await this.notificationService.markAsRead(notificationId);
+      console.log(`✅ Notificação ${notificationId} marcada como lida`);
+    } catch (error) {
+      console.error('❌ Erro ao marcar notificação como lida:', error);
+    }
   }
 
   getNotificationType(iconType: string): string {
@@ -158,7 +179,8 @@ export class Header implements OnInit, OnDestroy {
       'SUCCESS': 'success',
       'INFO': 'info',
       'WARNING': 'warning',
-      'ERROR': 'warning' // ou crie uma classe 'error' se preferir
+      'ERROR': 'error',
+      'MESSAGE': 'message'
     };
     return typeMap[iconType] || 'info';
   }
@@ -167,18 +189,22 @@ export class Header implements OnInit, OnDestroy {
     console.log('Abrir todas as mensagens');
     this.showMessages = false;
     // Navegar para página de mensagens
+    // this.router.navigate(['/messages']);
   }
 
   openAllNotifications() {
     console.log('Abrir todas as notificações');
     this.showNotifications = false;
     // Navegar para página de notificações
+    // this.router.navigate(['/notifications']);
   }
 
   /**
    * Formata a data para exibição no template
    */
   formatTime(date: Date): string {
+    if (!date) return '';
+    
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
     const diffMins = Math.floor(diffMs / 60000);

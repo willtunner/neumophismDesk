@@ -39,17 +39,16 @@
 
         <!-- Dropdown de Mensagens -->
         @if (showMessages) {
-        <div class="dropdown-panel neu-container">
+        <div class="dropdown-panel neu-container2">
           <div class="dropdown-header">
             <h3 class="dropdown-title">{{ 'MESSAGES.TITLE' | translate }}</h3>
-            <span class="dropdown-count">{{ messages.length }}</span>
+            <span class="dropdown-count">{{ messages().length }}</span>
           </div>
 
           <div class="dropdown-content">
             <div class="dropdown-list">
-              <!-- No dropdown de Mensagens -->
-              @for (message of messages; track message.id) {
-              <div class="dropdown-item" [class.unread]="true">
+              @for (message of messages(); track message.id) {
+              <div class="dropdown-item" [class.unread]="!message.isRead" (click)="markAsRead(message.id!, true)">
                 <div class="item-avatar">
                   <div class="avatar-placeholder">M</div>
                 </div>
@@ -58,11 +57,12 @@
                     <strong class="item-sender">{{ message.title }}</strong>
                     <span class="item-time">{{ formatTime(message.created) }}</span>
                   </div>
-                  <p class="item-preview">{{ message.content }}</p>
+                  <!-- MENSAGEM: UMA LINHA COM ELLIPSIS -->
+                  <p class="item-preview single-line">{{ message.content }}</p>
                 </div>
               </div>
               }
-              @if (messages.length === 0) {
+              @if (messages().length === 0) {
               <div class="dropdown-empty">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -74,12 +74,20 @@
           </div>
 
           <div class="dropdown-footer">
-            <button class="neu-button small full-width" (click)="openAllMessages()">
-              {{ 'MESSAGES.VIEW_ALL' | translate }}
-            </button>
+            <!-- <button class="neu-button small full-width" (click)="openAllMessages()">
+              {{ 'NOTIFICATIONS.VIEW_ALL' | translate }}
+            </button> -->
+            <p class="footer-link view-all"   (click)="openAllMessages()">{{ 'NOTIFICATIONS.VIEW_ALL' | translate }}</p>
+            @if (getUnreadMessagesCount() > 0) {
+            <!-- <button class="neu-button small full-width secondary" (click)="markAllMessagesAsRead()">
+              {{ 'NOTIFICATIONS.MARK_ALL_READ' | translate }}
+            </button> -->
+            <p class="footer-link mark-read"  (click)="markAllMessagesAsRead()">{{ 'NOTIFICATIONS.MARK_ALL_READ' | translate }}</p>
+            }
           </div>
         </div>
         }
+
       </div>
 
       <!-- Ícone de Notificações -->
@@ -97,17 +105,17 @@
 
         <!-- Dropdown de Notificações -->
         @if (showNotifications) {
-        <div class="dropdown-panel neu-container">
+        <div class="dropdown-panel neu-container2 ">
           <div class="dropdown-header">
             <h3 class="dropdown-title">{{ 'NOTIFICATIONS.TITLE' | translate }}</h3>
-            <span class="dropdown-count">{{ notifications.length }}</span>
+            <span class="dropdown-count">{{ notifications().length }}</span>
           </div>
 
           <div class="dropdown-content">
             <div class="dropdown-list">
-              <!-- No dropdown de Notificações -->
-              @for (notification of notifications; track notification.id) {
-              <div class="dropdown-item" [class.unread]="!notification.isRead">
+              @for (notification of notifications(); track notification.id) {
+              <div class="dropdown-item" [class.unread]="!notification.isRead"
+                (click)="markAsRead(notification.id!, false)">
                 <div class="item-icon">
                   <div class="icon-circle" [class]="getNotificationType(notification.iconType)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -121,11 +129,12 @@
                     <strong class="item-title">{{ notification.title }}</strong>
                     <span class="item-time">{{ formatTime(notification.created) }}</span>
                   </div>
-                  <p class="item-message">{{ notification.content }}</p>
+                  <!-- NOTIFICAÇÃO: UMA LINHA COM ELLIPSIS -->
+                  <p class="item-preview single-line">{{ notification.content }}</p>
                 </div>
               </div>
               }
-              @if (notifications.length === 0) {
+              @if (notifications().length === 0) {
               <div class="dropdown-empty">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -138,18 +147,25 @@
           </div>
 
           <div class="dropdown-footer">
-            <button class="neu-button small full-width" (click)="openAllNotifications()">
+            <!-- <button class="neu-button small full-width" (click)="openAllNotifications()">
               {{ 'NOTIFICATIONS.VIEW_ALL' | translate }}
-            </button>
+            </button> -->
+            <p (click)="openAllNotifications()" class="footer-link view-all"> {{ 'NOTIFICATIONS.VIEW_ALL' | translate }} </p>
+            @if (getUnreadNotificationsCount() > 0) {
+            <!-- <button class="neu-button small full-width secondary" (click)="markAllNotificationsAsRead()">
+              {{ 'NOTIFICATIONS.MARK_ALL_READ' | translate }}
+            </button> -->
+            <p (click)="markAllNotificationsAsRead()" class="footer-link mark-read">{{ 'NOTIFICATIONS.MARK_ALL_READ' | translate }}</p>
+            }
           </div>
         </div>
         }
       </div>
     </div>
   </div>
-</div>
 
-<!-- Backdrop para fechar dropdowns ao clicar fora -->
-@if (showMessages || showNotifications) {
-<div class="dropdown-backdrop" (click)="closeAllDropdowns()"></div>
-}
+  <!-- Backdrop para fechar dropdowns ao clicar fora -->
+  @if (showMessages || showNotifications) {
+  <div class="dropdown-backdrop" (click)="closeAllDropdowns()"></div>
+  }
+</div>
