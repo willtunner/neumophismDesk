@@ -240,7 +240,7 @@
   top: clamp(75px, 11vw, 70px);
   right: 50%;
   transform: translateX(50%);
-  width: min(90vw, 380px);
+  width: min(90vw, 550px);
   max-height: min(70vh, 500px);
   background: var(--bg-primary);
   border-radius: 20px;

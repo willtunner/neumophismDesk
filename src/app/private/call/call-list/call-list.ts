@@ -2,13 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Call } from '../../../models/models';
-import { DateOnlyFormatPipe } from '../../../pipes/date-only-format.pipe';
 import { DynamicTableComponent } from '../../../shared/components/dynamic-table/dynamic-table';
 
 @Component({
   selector: 'app-call-list',
   standalone: true,
-  imports: [CommonModule, TranslateModule, DateOnlyFormatPipe, DynamicTableComponent],
+  imports: [CommonModule, TranslateModule, DynamicTableComponent],
   templateUrl: './call-list.html',
   styleUrl: './call-list.css'
 })

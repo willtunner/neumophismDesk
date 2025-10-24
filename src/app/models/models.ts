@@ -218,6 +218,7 @@ export interface Company {
     isMessageNotification?: boolean; 
     userId?: string | null;
     helpDeskId: string;
+    path: string;
   }
 
 

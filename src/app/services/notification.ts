@@ -137,7 +137,8 @@ export class NotificationService {
       isRead: data['isRead'] || false,
       isMessageNotification: data['isMessageNotification'] || false,
       userId: data['userId'],
-      helpDeskId: data['helpDeskId']
+      helpDeskId: data['helpDeskId'],
+      path: data['path']
     };
   }
 
@@ -309,44 +310,41 @@ export class NotificationService {
    * Cria e salva uma nova notificação no Firestore
    */
   async createNotification(
-    titleNotification: string, 
-    notificationType: NotificationType,
-    content: string,
-    isMessageNotification: boolean = true,
-    specificUserId?: string // Opcional: se especificado, a notificação é apenas para esse usuário
-  ): Promise<void> {
-    try {
-      const currentUser = this._sessionService.getSession();
-
-      if (!currentUser) {
-        console.warn('⚠️ Nenhum usuário logado — notificação não criada.');
-        return;
-      }
-
-      // Monta o objeto da notificação
-      const notification: Omit<Notifications, 'id'> = {
-        title: titleNotification,
-        content,
-        created: new Date(),
-        iconType: notificationType,
-        isRead: false,
-        isMessageNotification,
-        userId: specificUserId || null, 
-        helpDeskId: currentUser.helpDeskCompanyId!
-      };
-
-      // Adiciona ao Firestore
-      const docRef = await addDoc(this._notificationsCollection, notification);
-
-      console.log(`✅ Notificação criada com ID Firestore: ${docRef.id}`);
-
-      // O listener em tempo real irá atualizar automaticamente o signal
-
-    } catch (error) {
-      console.error('❌ Erro ao criar notificação:', error);
-      throw error;
+  titleNotification: string,
+  notificationType: NotificationType,
+  content: string,
+  isMessageNotification: boolean = false,
+  path: string // 🆕 adiciona o path opcional
+): Promise<void> {
+  try {
+    const currentUser = this._sessionService.getSession();
+    if (!currentUser) {
+      console.warn('⚠️ Nenhum usuário logado — notificação não criada.');
+      return;
     }
+
+    // Monta o objeto da notificação
+    const notification: Omit<Notifications, 'id'> = {
+      title: titleNotification,
+      content,
+      created: new Date(),
+      iconType: notificationType,
+      isRead: false,
+      isMessageNotification,
+      userId: this.userLogged.id || null,
+      helpDeskId: currentUser.helpDeskCompanyId!,
+      path: path
+    };
+
+    const docRef = await addDoc(this._notificationsCollection, notification);
+    console.log(`✅ Notificação criada com ID: ${docRef.id}`);
+
+  } catch (error) {
+    console.error('❌ Erro ao criar notificação:', error);
+    throw error;
   }
+}
+
 
   /**
    * Obtém o número de notificações não lidas

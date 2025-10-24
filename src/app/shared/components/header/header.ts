@@ -165,13 +165,28 @@ export class Header implements OnInit, OnDestroy {
    * Marca uma notificação específica como lida
    */
   async markAsRead(notificationId: string, isMessage: boolean = false) {
-    try {
-      await this.notificationService.markAsRead(notificationId);
-      console.log(`✅ Notificação ${notificationId} marcada como lida`);
-    } catch (error) {
-      console.error('❌ Erro ao marcar notificação como lida:', error);
+  try {
+    const notificationList = isMessage
+      ? this.notificationService.messageNotifications()
+      : this.notificationService.notifications();
+
+    const notification = notificationList.find(n => n.id === notificationId);
+    if (!notification) return;
+
+    // Marca como lida
+    await this.notificationService.markAsRead(notificationId);
+
+    // 🆕 Se houver path, navega
+    if (notification.path) {
+      console.log(`🔗 Navegando para: ${notification.path}`);
+      this.router.navigateByUrl(notification.path);
     }
+
+  } catch (error) {
+    console.error('❌ Erro ao marcar notificação como lida:', error);
   }
+}
+
 
   getNotificationType(iconType: string): string {
     // Mapeia os tipos do Firestore para as classes CSS

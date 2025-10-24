@@ -107,7 +107,7 @@ export class CallComponent implements OnInit, OnDestroy {
 
     this.langSub = this.translate.onLangChange.subscribe(() => this.initializeConfigs());
 
-    
+
   }
 
   ngOnDestroy() {
@@ -171,16 +171,22 @@ export class CallComponent implements OnInit, OnDestroy {
     if (this.callForm.valid) {
       console.log('📤 Dados do chamado:', this.callForm.value);
       const call = await this.callService.saveCall(this.callForm.value);
+
+      // 🆕 Monta o path dinâmico do chamado
+      const path = `/call/${call.id}`;
+
       this.notificationService.createNotification(
-        NotificationTitle.CREATE_CLIENT,
+        NotificationTitle.CREATE_CALL,
         NotificationType.SUCCESS,
-        `${call.title} Cradastrado com sucesso!`,
-        false
+        `${call.title} Chamado com sucesso!`,
+        false,
+        path,
       );
     } else {
       this.callForm.markAllAsTouched();
     }
   }
+
 
   onAddEmpresa() {
     const dialogRef = this.dialog.open(CompanyModalComponent, {
@@ -195,9 +201,9 @@ export class CallComponent implements OnInit, OnDestroy {
           NotificationTitle.CREATE_COMPANY,
           NotificationType.SUCCESS,
           `${result.name} Criada com sucesso!`,
-          false
+          false,
+          `/company/${result.id}`,
         );
-        // Aqui você pode salvar no Firestore, atualizar a lista etc.
       }
     });
   }
@@ -214,14 +220,15 @@ export class CallComponent implements OnInit, OnDestroy {
         this.notificationService.createNotification(
           NotificationTitle.CREATE_CLIENT,
           NotificationType.SUCCESS,
-          `${result.username} Cradastrado com sucesso!`,
-          false
+          `${result.name} Criada com sucesso!`,
+          false,
+          `/client/${result.id}`,
         );
       }
     });
   }
 
-   // 🆕 Quando clicar em uma linha na tabela
+  // 🆕 Quando clicar em uma linha na tabela
   onViewDetails(call: Call) {
     this.router.navigate(['/call', call.id]);
     this.callForm.patchValue(call);

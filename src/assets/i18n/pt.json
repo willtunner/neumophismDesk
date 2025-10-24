@@ -170,6 +170,7 @@
     "CNPJ": "CNPJ",
     "STATUS": "Status",
     "NAME": "Nome",
-    "OBSERVATION": "Observação"
+    "OBSERVATION": "Observação",
+    "ID": "ID"
   }
 }
