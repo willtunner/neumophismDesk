@@ -1,7 +1,8 @@
 <div class="page-container">
   <div class="neu-container call-container">
-    <h2>{{ 'CALL_PAGE.NEW_CALL' | translate }}</h2>
-
+    <div class="neu-emboss">
+      <h2>{{ 'CALL_PAGE.NEW_CALL' | translate }}</h2>
+    </div>
     <form *ngIf="isConfigsReady" [formGroup]="callForm" (ngSubmit)="onSubmit()">
       <!-- Primeira Linha: Empresa, Cliente, Conexão -->
       <div class="form-row">

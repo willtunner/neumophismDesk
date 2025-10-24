@@ -6,11 +6,18 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { InputDynamicComponent } from '../../../shared/components/input-dynamic/input-dynamic';
 import { InputConfig } from '../../../interfaces/input-config.interface';
 import { InputType } from '../../../enuns/input-types.enum';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-company-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule, InputDynamicComponent],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    TranslateModule, 
+    InputDynamicComponent, 
+    MatButtonModule
+  ],
   templateUrl: './create-company-modal.html',
   styleUrls: ['./create-company-modal.css']
 })

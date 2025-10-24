@@ -4,8 +4,9 @@ export interface Company {
     id: string;
     name: string;
     keywords: string[];
-    created: string;
-    updated: string | null; 
+    deleted: boolean;
+    created: Date; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
+    updated: Date | null; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
     cnpj: string;
     city: string;
     state: string;

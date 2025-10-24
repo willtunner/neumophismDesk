@@ -39,41 +39,91 @@ export class CompanyService {
     return collection(this._firestore, PATH_COMPANIES);
   }
 
-  /**
-   * Salva uma nova empresa
-   * @param companyData Dados da empresa (sem id)
+   /**
+   * 💾 Salva uma nova empresa (seguindo o padrão do Call Service)
+   * @param companyData Dados da empresa (pode ter id para atualização)
    * @returns Empresa salva com id e timestamps
    */
-  async saveCompany(companyData: Omit<Company, 'id' | 'created' | 'updated'>): Promise<Company> {
+  async saveCompany(companyData: Company): Promise<Company> {
     try {
-      console.log('💾 Salvando nova empresa:', companyData);
+      console.log('💾 Salvando empresa:', companyData);
 
       const currentUser = this._sessionService.getSession();
       if (!currentUser) {
         throw new Error('Usuário não está logado');
       }
 
-      const companyToSave = {
+      const now = new Date();
+
+      // 🟢 Nova empresa (sem id definido ou id vazio)
+      if (!companyData.id) {
+        const newCompany: Omit<Company, 'id'> = {
+          name: companyData.name,
+          cnpj: companyData.cnpj,
+          city: companyData.city,
+          state: companyData.state,
+          address: companyData.address,
+          zipcode: companyData.zipcode,
+          phone: companyData.phone,
+          connectionServ: companyData.connectionServ,
+          email: companyData.email,
+          versionServ: companyData.versionServ,
+          keywords: companyData.keywords || [],
+          clientsId: companyData.clientsId || [],
+          deleted: false,
+          created: now,
+          updated: null as any
+        };
+
+        // 🔹 Cria o documento e deixa o Firebase gerar o ID
+        const docRef = await addDoc(this._companiesCollection, newCompany);
+
+        // 🔹 Atualiza o campo `id` dentro do próprio documento (padrão do Call Service)
+        await updateDoc(docRef, { id: docRef.id });
+
+        // 🔹 Monta o objeto completo com o id
+        const createdCompany: Company = {
+          id: docRef.id,
+          ...newCompany,
+        };
+
+        console.log('✅ Empresa criada com ID Firebase:', docRef.id);
+        
+        // Atualiza o signal
+        this.companies.update(companies => [...companies, createdCompany]);
+        this.allCompanies.update(companies => [...companies, createdCompany]);
+        
+        return createdCompany;
+      }
+
+      // 🟢 Atualização de empresa existente
+      const docRef = doc(this._companiesCollection, companyData.id);
+      const updatePayload = {
         ...companyData,
-        created: new Date().toISOString(),
-        updated: null,
-        deleted: false // Campo para soft delete
+        updated: now,
       };
 
-      const docRef = await addDoc(this._companiesCollection, companyToSave);
-      
-      const savedCompany: Company = {
-        ...companyToSave,
-        id: docRef.id,
-        updated: null
+      await updateDoc(docRef, updatePayload);
+
+      const updatedCompany: Company = {
+        ...updatePayload,
       };
 
-      console.log('✅ Empresa salva com sucesso:', savedCompany);
+      console.log('✅ Empresa atualizada com ID:', companyData.id);
       
-      // Atualiza o signal
-      this.companies.update(companies => [...companies, savedCompany]);
-      
-      return savedCompany;
+      // Atualiza os signals
+      this.companies.update(companies => 
+        companies.map(company => 
+          company.id === companyData.id ? updatedCompany : company
+        )
+      );
+      this.allCompanies.update(companies => 
+        companies.map(company => 
+          company.id === companyData.id ? updatedCompany : company
+        )
+      );
+
+      return updatedCompany;
 
     } catch (error) {
       console.error('❌ Erro ao salvar empresa:', error);
@@ -99,7 +149,7 @@ export class CompanyService {
       
       await updateDoc(companyRef, {
         deleted: true,
-        updated: new Date().toISOString()
+        updated: new Date().toISOString() // Converter para string
       });
 
       console.log('✅ Empresa marcada como excluída:', companyId);
@@ -111,7 +161,7 @@ export class CompanyService {
       this.allCompanies.update(companies => 
         companies.map(company => 
           company.id === companyId 
-            ? { ...company, deleted: true, updated: new Date().toISOString() }
+            ? { ...company, deleted: true, updated: new Date() }
             : company
         )
       );
@@ -194,6 +244,7 @@ export class CompanyService {
           keywords: data['keywords'] || [],
           created: data['created'],
           updated: data['updated'],
+          deleted: data['deleted'],
           cnpj: data['cnpj'],
           city: data['city'],
           state: data['state'],

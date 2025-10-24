@@ -6,11 +6,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { InputDynamicComponent } from '../../../shared/components/input-dynamic/input-dynamic';
 import { InputConfig } from '../../../interfaces/input-config.interface';
 import { InputType } from '../../../enuns/input-types.enum';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-client-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule, InputDynamicComponent],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, InputDynamicComponent, MatButtonModule],
   templateUrl: './create-client-modal.html',
   styleUrls: ['./create-client-modal.css']
 })
@@ -25,6 +26,7 @@ export class ClientModalComponent implements OnInit {
   passwordConfig!: InputConfig;
   imageUrlConfig!: InputConfig;
   connectionConfig!: InputConfig;
+  companyInfoConfig!: InputConfig; // Novo config para mostrar a empresa
 
   constructor(
     private fb: FormBuilder,
@@ -41,13 +43,26 @@ export class ClientModalComponent implements OnInit {
       email: ['', Validators.email],
       password: ['', Validators.required],
       imageUrl: [''],
-      connection: ['']
+      connection: [''],
+      companyId: [this.data?.selectedCompany?.id || '', Validators.required] // Adiciona o companyId
     });
 
     this.initConfigs();
   }
 
   initConfigs() {
+    // Configuração para mostrar a empresa selecionada (campo somente leitura)
+    this.companyInfoConfig = {
+      type: InputType.TEXT,
+      formControlName: 'companyInfo',
+      label: this.translate.instant('INPUTS-FIELS.COMPANY'),
+      required: true,
+      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_COMPANY'),
+      customErrorMessages: {
+        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+      },
+    };
+
     this.usernameConfig = {
       type: InputType.USER,
       formControlName: 'username',
@@ -62,6 +77,7 @@ export class ClientModalComponent implements OnInit {
         maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
+
     this.nameConfig = {
       type: InputType.USER,
       formControlName: 'name',
@@ -76,6 +92,7 @@ export class ClientModalComponent implements OnInit {
         maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
+
     this.phoneConfig = {
       type: InputType.PHONE,
       formControlName: 'phone',
@@ -88,6 +105,7 @@ export class ClientModalComponent implements OnInit {
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 11 }),
       },
     };
+
     this.emailConfig = {
       type: InputType.EMAIL,
       formControlName: 'email',
@@ -102,6 +120,7 @@ export class ClientModalComponent implements OnInit {
         maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 264 }),
       },
     };
+
     this.passwordConfig = {
       type: InputType.PASSWORD,
       formControlName: 'password',
@@ -114,6 +133,7 @@ export class ClientModalComponent implements OnInit {
         minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 6 }),
       },
     };
+
     this.imageUrlConfig = {
       type: InputType.IMAGE,
       formControlName: 'imageUrl',
@@ -128,6 +148,7 @@ export class ClientModalComponent implements OnInit {
         maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
+
     this.connectionConfig = {
       type: InputType.CONNECTION,
       formControlName: 'connection',
@@ -147,7 +168,12 @@ export class ClientModalComponent implements OnInit {
   onSave() {
     this.submitted = true;
     if (this.clientForm.valid) {
-      this.dialogRef.close(this.clientForm.value);
+      // Garante que o companyId está incluído nos dados
+      const clientData = {
+        ...this.clientForm.value,
+        companyId: this.data?.selectedCompany?.id // Garante o companyId
+      };
+      this.dialogRef.close(clientData);
     } else {
       this.clientForm.markAllAsTouched();
     }
@@ -159,5 +185,13 @@ export class ClientModalComponent implements OnInit {
 
   getControl(name: string) {
     return this.clientForm.get(name) as FormControl;
+  }
+
+  // Método para obter o controle do campo de informação da empresa
+  getCompanyInfoControl() {
+    return new FormControl({
+      value: this.data?.selectedCompany?.name || '',
+      disabled: true
+    });
   }
 }

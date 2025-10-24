@@ -26,6 +26,7 @@
   padding: 8px 20px;
   box-shadow: inset 3px 3px 6px var(--shadow-light), inset -3px -3px 6px var(--shadow-dark);
   text-align: center;
+  margin: 0;
 }
 
 .close {
@@ -40,6 +41,38 @@
   cursor: pointer;
   box-shadow: 4px 4px 8px var(--shadow-light), -4px -4px 8px var(--shadow-dark);
   transition: all 0.3s ease;
+  position: relative;
+}
+
+/* ESTILOS PARA O SVG - ESSES SÃO OS QUE ESTÃO FALTANDO */
+.close svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text-primary); /* Cor padrão */
+  stroke-width: 1.5; /* Mais fino (era 4) */
+  fill: none;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: stroke 0.3s ease;
+}
+
+.close:hover {
+  box-shadow: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--shadow-dark);
+}
+
+.close:hover svg {
+  stroke: var(--accent-color); /* Verde no hover */
+}
+
+.close:focus {
+  outline: none;
+}
+
+.close:focus svg {
+  stroke: var(--accent-color);
 }
 
 .modal-body {
@@ -63,9 +96,20 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  border: none;
 }
 
 .neu-button.primary {
   background: linear-gradient(145deg, var(--accent-color), #00a884);
   color: #fff;
+}
+
+.neu-button.secondary {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: 5px 5px 10px var(--shadow-light), -5px -5px 10px var(--shadow-dark);
+}
+
+.neu-button.secondary:hover {
+  box-shadow: inset 3px 3px 6px var(--shadow-light), inset -3px -3px 6px var(--shadow-dark);
 }

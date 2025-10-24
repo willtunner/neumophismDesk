@@ -10,7 +10,7 @@ import { ButtonDynamic } from '../../shared/components/button-dynamic/button-dyn
 import { RichTextDynamicComponent } from '../../shared/components/rich-text-dynamic/rich-text-dynamic';
 import { TagsNeuComponent } from '../../shared/components/tags-neu/tags-neu';
 
-import { Client, Company, User } from '../../models/models';
+import { Company, User } from '../../models/models';
 import { AuthService } from '../../services/auth.service';
 import { CallCompanyLoaderService } from './util/call-company-loader.service';
 import { CallClientLoaderService } from './util/call-client-loader.service';
@@ -27,6 +27,8 @@ import { NotificationTitle, NotificationType } from '../../enuns/notification-ic
 import { CallList } from './call-list/call-list';
 import { Call } from '../../models/models';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CompanyService } from '../../services/company';
+import { ClientService } from '../../services/client';
 
 
 @Component({
@@ -76,8 +78,10 @@ export class CallComponent implements OnInit, OnDestroy {
   private callService = inject(CallService);
   private dialog = inject(MatDialog);
   private notificationService = inject(NotificationService);
+  private companyService = inject(CompanyService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private clientService = inject(ClientService);
 
   private langSub!: Subscription;
   private loggedUser!: User;
@@ -194,38 +198,89 @@ export class CallComponent implements OnInit, OnDestroy {
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe((result: Company) => {
-      if (result) {
-        console.log('✅ Nova empresa cadastrada:', result);
-        this.notificationService.createNotification(
-          NotificationTitle.CREATE_COMPANY,
-          NotificationType.SUCCESS,
-          `${result.name} Criada com sucesso!`,
-          false,
-          `/company/${result.id}`,
-        );
+    dialogRef.afterClosed().subscribe((company: Company) => {
+      if (company) {
+        //^ SALVAR NO BANCO
+        this.companyService.saveCompany(company).catch((company: Company) => {
+          console.log('✅ Nova empresa cadastrada:', company);
+          //^ ENVIO DE NOTIFICAÇÃO
+          this.notificationService.createNotification(
+            NotificationTitle.CREATE_COMPANY,
+            NotificationType.SUCCESS,
+            `${company.name} Criado com sucesso!`,
+            false,
+            `/company/${company.id}`,
+          );
+        })
       }
     });
   }
 
   onAddCliente() {
+    // Verifica se há uma empresa selecionada
+    const selectedCompanyId = this.empresaControl.value;
+
+    if (!selectedCompanyId) {
+      //! Se não há empresa selecionada, mostra um alerta
+      return;
+    }
+
+    // Encontra a empresa selecionada
+    const selectedCompany = this.companies.find(company => company.id === selectedCompanyId);
+
+    if (!selectedCompany) {
+      this.notificationService.createNotification(
+        NotificationTitle.CREATE_COMPANY,
+        NotificationType.ERROR,
+        'Empresa selecionada não encontrada',
+        false,
+        `/company/${selectedCompanyId}`,
+      );
+      return;
+    }
+
     const dialogRef = this.dialog.open(ClientModalComponent, {
       width: '600px',
-      data: {}
+      data: {
+        selectedCompany: selectedCompany // Passa a empresa selecionada
+      }
     });
 
-    dialogRef.afterClosed().subscribe((result: Client) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
+
+        //^ SALVA O CLIENTE NO BANCO DE DADOS
+
+
         console.log('✅ Novo cliente cadastrado:', result);
+        // O result já inclui o companyId
         this.notificationService.createNotification(
           NotificationTitle.CREATE_CLIENT,
           NotificationType.SUCCESS,
-          `${result.name} Criada com sucesso!`,
+          `${result.name} Criado com sucesso!`,
           false,
           `/client/${result.id}`,
         );
+
+        // Atualiza a lista de clientes após adicionar um novo
+        this.loadClientsBySelectedCompany();
       }
     });
+  }
+
+  // Método auxiliar para recarregar os clientes
+  private async loadClientsBySelectedCompany() {
+    const selectedCompanyId = this.empresaControl.value;
+    if (selectedCompanyId) {
+      const selectedCompany = this.companies.find(company => company.id === selectedCompanyId);
+      if (selectedCompany) {
+        this.isLoadingClients = true;
+        this.clients = await this.clientLoader.loadClientsByCompany(selectedCompany);
+        this.isLoadingClients = false;
+        this.updateConfigs();
+        this.cdr.detectChanges();
+      }
+    }
   }
 
   // 🆕 Quando clicar em uma linha na tabela

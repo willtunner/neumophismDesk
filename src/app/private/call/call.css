@@ -4,11 +4,29 @@
   padding: 20px;
 }
 
+.neu-emboss {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-radius: 30px;
+  padding: 8px 20px;
+  box-shadow:
+    inset 3px 3px 6px var(--shadow-light),
+    inset -3px -3px 6px var(--shadow-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 200px;
+  /* Adicionado min-width como no exemplo, removendo flex-grow: 1 */
+  text-align: center;
+  margin-bottom: 20px;
+
+}
+
 .call-container h2 {
   color: var(--text-primary);
   font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 30px;
   text-align: center;
 }
 
