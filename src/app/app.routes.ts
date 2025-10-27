@@ -20,6 +20,7 @@ export const routes: Routes = [
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [authGuard] },
   { path: 'companies', component: Companies, canActivate: [authGuard] },
+  { path: 'companies/:id', component: Companies, canActivate: [authGuard] },
   { path: 'call', component: CallComponent, canActivate: [authGuard] },
   { path: 'call/:id', component: CallComponent, canActivate: [authGuard] },
   { path: 'clients', component: Clients, canActivate: [authGuard]},

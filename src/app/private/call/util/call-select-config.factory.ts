@@ -9,6 +9,8 @@ export function buildSelectConfigs(
   clients: User[],
   isLoadingClients: boolean
 ): Record<string, SelectConfig> {
+  console.log('🔧 buildSelectConfigs - Empresas recebidas:', companies.length);
+  console.log('🔧 buildSelectConfigs - Clientes recebidos:', clients.length);
   return {
     empresa: {
       formControlName: 'companyId',

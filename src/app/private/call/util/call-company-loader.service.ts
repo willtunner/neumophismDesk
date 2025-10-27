@@ -8,7 +8,7 @@ export class CallCompanyLoaderService {
 
   async loadCompanies(): Promise<Company[]> {
     try {
-      return await this.companyService.loadAllCompanies(false);
+      return await this.companyService.loadAllCompanies();
     } catch (error) {
       console.error('Erro ao carregar empresas:', error);
       return [];

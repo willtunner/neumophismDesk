@@ -314,7 +314,7 @@ export class NotificationService {
   notificationType: NotificationType,
   content: string,
   isMessageNotification: boolean = false,
-  path: string // 🆕 adiciona o path opcional
+  path: string | null
 ): Promise<void> {
   try {
     const currentUser = this._sessionService.getSession();
@@ -333,7 +333,7 @@ export class NotificationService {
       isMessageNotification,
       userId: this.userLogged.id || null,
       helpDeskId: currentUser.helpDeskCompanyId!,
-      path: path
+      path: path 
     };
 
     const docRef = await addDoc(this._notificationsCollection, notification);

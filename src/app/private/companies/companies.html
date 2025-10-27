@@ -1,1 +1,199 @@
-<p>companie works!</p>
+<div class="page-container">
+    <!-- Container Principal -->
+    <div class="neu-container companies-container">
+
+        <!-- Cabeçalho -->
+        <div class="neu-emboss">
+            <h2>{{ 'COMPANIES.TITLE' | translate }}</h2>
+        </div>
+
+        <!-- Seção de Filtros -->
+        <div class="filters-section neu-emboss">
+            <h3>{{ 'COMPANIES.FILTERS.TITLE' | translate }}</h3>
+
+            <div class="filters-container" *ngIf="isConfigsReady">
+                <div class="filters-grid">
+                    <!-- Campo de Busca -->
+                    <div class="filter-field">
+                        <label class="filter-label">{{ 'COMPANIES.FILTERS.SEARCH' | translate }}</label>
+                        <app-input-dynamic [config]="inputConfigs.search" [control]="searchControl" [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Campo para Selecionar Filtro -->
+                    <div class="filter-field">
+                        <label class="filter-label">{{ 'COMPANIES.FIELDS.FILTER_BY' | translate }}</label>
+                        <app-select-dynamic [config]="selectConfigs.filterField" [control]="filterFieldControl"
+                            [showImage]="false">
+                        </app-select-dynamic>
+                    </div>
+
+                    <!-- Filtro por Data -->
+                    <div class="filter-field date-range">
+                        <label class="filter-label">{{ 'COMPANIES.FILTERS.DATE_RANGE' | translate }}</label>
+                        <div class="date-inputs">
+                            <div class="date-field">
+                                <label class="date-label">{{ 'COMPANIES.FILTERS.START_DATE' | translate }}</label>
+                                <input type="date" [formControl]="startDateControl" class="neu-input date-input">
+                            </div>
+                            <div class="date-field">
+                                <label class="date-label">{{ 'COMPANIES.FILTERS.END_DATE' | translate }}</label>
+                                <input type="date" [formControl]="endDateControl" class="neu-input date-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botão Limpar Filtros -->
+                    <div class="filter-actions">
+                        <button type="button" class="neu-button secondary clear-button" (click)="onClearFilters()">
+                            {{ 'COMPANIES.FILTERS.CLEAR' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário da Empresa -->
+        <div class="form-section neu-emboss">
+            <h3>{{ (isEditing ? 'COMPANIES.EDIT_TITLE' : 'COMPANIES.CREATE_TITLE') | translate }}</h3>
+
+            <form *ngIf="isConfigsReady" [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+
+                <div class="form-grid">
+                    <!-- Nome -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.name" [control]="nameControl" [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- CNPJ -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.cnpj" [control]="cnpjControl" [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.email" [control]="emailControl" [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Telefone -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.phone" [control]="phoneControl" [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Endereço (ocupa 2 colunas) -->
+                    <div class="form-group" style="grid-column: span 2;">
+                        <app-input-dynamic [config]="inputConfigs.address" [control]="addressControl"
+                            [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Cidade -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.city" [control]="cityControl" [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="form-group">
+                        <app-select-dynamic [config]="selectConfigs.state" [control]="stateControl" [showImage]="false">
+                        </app-select-dynamic>
+                    </div>
+
+                    <!-- CEP -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.zipcode" [control]="zipcodeControl"
+                            [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Conexão -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.connectionServ" [control]="connectionServControl"
+                            [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Versão -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.versionServ" [control]="versionServControl"
+                            [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Keywords (ocupa todas as colunas) -->
+                    <div class="form-group-full">
+                        <label class="tags-label">{{ 'COMPANIES.FIELDS.KEYWORDS' | translate }}</label>
+                        <app-tags-neu [control]="keywordsControl"></app-tags-neu>
+                    </div>
+
+                    <!-- Ações do Formulário -->
+                    <div class="form-actions">
+                        <button type="button" class="neu-button secondary" (click)="onNewCompany()" *ngIf="isEditing">
+                            {{ 'COMPANIES.ACTIONS.NEW' | translate }}
+                        </button>
+                        <button type="submit" class="neu-button primary">
+                            {{ (isEditing ? 'COMPANIES.ACTIONS.UPDATE' : 'COMPANIES.ACTIONS.SAVE') | translate }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Lista de Empresas -->
+        <div class="list-section neu-emboss">
+            <h3>{{ 'COMPANIES.LIST.TITLE' | translate }} ({{ filteredCompanies().length }})</h3>
+
+            <div class="companies-list" *ngIf="!isLoading; else loadingTemplate">
+                <div class="companies-table">
+                    <div class="table-header">
+                        <div class="table-cell">{{ 'COMPANIES.FIELDS.NAME' | translate }}</div>
+                        <div class="table-cell">{{ 'COMPANIES.FIELDS.CNPJ' | translate }}</div>
+                        <div class="table-cell">{{ 'COMPANIES.FIELDS.EMAIL' | translate }}</div>
+                        <div class="table-cell">{{ 'COMPANIES.FIELDS.CITY' | translate }}</div>
+                        <div class="table-cell">{{ 'COMPANIES.FIELDS.STATE' | translate }}</div>
+                        <div class="table-cell">{{ 'COMPANIES.FIELDS.CREATED' | translate }}</div>
+                        <div class="table-cell actions">{{ 'COMPANIES.ACTIONS.TITLE' | translate }}</div>
+                    </div>
+
+                    <div class="table-body">
+                        <div *ngFor="let company of filteredCompanies()" class="table-row"
+                            [class.selected]="currentCompanyId() === company.id" (click)="onEditCompany(company)">
+                            <div class="table-cell">{{ company.name }}</div>
+                            <div class="table-cell">{{ company.cnpj }}</div>
+                            <div class="table-cell">{{ company.email }}</div>
+                            <div class="table-cell">{{ company.city }}</div>
+                            <div class="table-cell">{{ company.state }}</div>
+                            <div class="table-cell">{{ company.created | date:'dd/MM/yyyy - HH:mm:ss' }}</div>
+                            <div class="table-cell actions">
+                                <div class="action-buttons">
+                                    <app-button-dynamic [iconSvg]="editIcon" [small]="true"
+                                        [ariaLabel]="'COMPANIES.ACTIONS.EDIT' | translate"
+                                        (onClick)="onEditCompany(company)">
+                                    </app-button-dynamic>
+                                    <app-button-dynamic [iconSvg]="deleteIcon" [small]="true"
+                                        [ariaLabel]="'COMPANIES.ACTIONS.DELETE' | translate"
+                                        (onClick)="onDeleteCompany(company)">
+                                    </app-button-dynamic>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-empty" *ngIf="filteredCompanies().length === 0">
+                        {{ 'COMPANIES.LIST.EMPTY' | translate }}
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #loadingTemplate>
+                <div class="loading-state">
+                    {{ 'COMPANIES.LIST.LOADING' | translate }}
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

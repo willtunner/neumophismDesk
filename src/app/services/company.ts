@@ -14,7 +14,9 @@ import {
   documentId
 } from '@angular/fire/firestore';
 import { SessionService } from './session.service';
-import { Company } from '../models/models';
+import { Company, User } from '../models/models';
+import { NotificationService } from './notification';
+import { NotificationTitle, NotificationType } from '../enuns/notification-icon-types.enum';
 
 const PATH_COMPANIES = 'companies';
 
@@ -24,14 +26,15 @@ const PATH_COMPANIES = 'companies';
 export class CompanyService {
   private _firestore = inject(Firestore);
   private _sessionService = inject(SessionService);
+  private notificationService = inject(NotificationService);
 
   // Signal para as empresas
   companies = signal<Company[]>([]);
   allCompanies = signal<Company[]>([]);
+  userLogged: User = this._sessionService.getSession()!;
 
   constructor() {
-    // Carrega as empresas iniciais se o usuário estiver logado
-    this.loadAllCompanies(false);
+
   }
 
   // Getter lazy para a coleção de companies
@@ -39,12 +42,68 @@ export class CompanyService {
     return collection(this._firestore, PATH_COMPANIES);
   }
 
-   /**
-   * 💾 Salva uma nova empresa (seguindo o padrão do Call Service)
-   * @param companyData Dados da empresa (pode ter id para atualização)
-   * @returns Empresa salva com id e timestamps
-   */
-  async saveCompany(companyData: Company): Promise<Company> {
+  async loadAllCompanies(): Promise<Company[]> {
+    try {
+      console.log('🏢 Buscando empresas com helpDeskCompanyId:', this.userLogged.helpDeskCompanyId);
+
+      // Verifica se o usuário tem helpDeskCompanyId
+      if (!this.userLogged.helpDeskCompanyId) {
+        console.log('❌ Usuário não possui helpDeskCompanyId');
+        return [];
+      }
+
+      // Cria a query para buscar empresas com o mesmo helpDeskCompanyId e deleted = false
+      const companiesQuery = query(
+        this._companiesCollection,
+        where('helpDeskCompanyId', '==', this.userLogged.helpDeskCompanyId),
+        where('deleted', '==', false),
+        orderBy('created', 'desc') // Ordena por data de criação decrescente
+      );
+
+      // Executa a query
+      const querySnapshot = await getDocs(companiesQuery);
+
+      // Mapeia os documentos para objetos Company
+      const companies = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        const company: Company = {
+          id: doc.id,
+          name: data['name'],
+          keywords: data['keywords'] || [],
+          deleted: data['deleted'] || false,
+          created: data['created'] || new Date(), // Converte Firestore Timestamp para Date
+          updated: data['updated'] || null, // Converte Firestore Timestamp para Date ou null
+          cnpj: data['cnpj'],
+          city: data['city'],
+          state: data['state'],
+          address: data['address'],
+          zipcode: data['zipcode'],
+          phone: data['phone'],
+          connectionServ: data['connectionServ'],
+          email: data['email'],
+          versionServ: data['versionServ'] || null,
+          clientsId: data['clientsId'] || [],
+          helpDeskCompanyId: data['helpDeskCompanyId']
+        };
+        return company;
+      });
+
+
+
+      // Atualiza o signal com as empresas encontradas
+      this.companies.set(companies);
+      // Exibe detalhes de cada empresa no console
+      console.log('empresas emcontradas: ', this.companies);
+
+      return companies;
+
+    } catch (error) {
+      console.error('❌ Erro ao buscar empresas por helpDeskCompanyId:', error);
+      return [];
+    }
+  }
+
+  async saveCompany(companyData: Omit<Company, 'id' | 'created' | 'updated'>): Promise<Company> {
     try {
       console.log('💾 Salvando empresa:', companyData);
 
@@ -55,75 +114,39 @@ export class CompanyService {
 
       const now = new Date();
 
-      // 🟢 Nova empresa (sem id definido ou id vazio)
-      if (!companyData.id) {
-        const newCompany: Omit<Company, 'id'> = {
-          name: companyData.name,
-          cnpj: companyData.cnpj,
-          city: companyData.city,
-          state: companyData.state,
-          address: companyData.address,
-          zipcode: companyData.zipcode,
-          phone: companyData.phone,
-          connectionServ: companyData.connectionServ,
-          email: companyData.email,
-          versionServ: companyData.versionServ,
-          keywords: companyData.keywords || [],
-          clientsId: companyData.clientsId || [],
-          deleted: false,
-          created: now,
-          updated: null as any
-        };
-
-        // 🔹 Cria o documento e deixa o Firebase gerar o ID
-        const docRef = await addDoc(this._companiesCollection, newCompany);
-
-        // 🔹 Atualiza o campo `id` dentro do próprio documento (padrão do Call Service)
-        await updateDoc(docRef, { id: docRef.id });
-
-        // 🔹 Monta o objeto completo com o id
-        const createdCompany: Company = {
-          id: docRef.id,
-          ...newCompany,
-        };
-
-        console.log('✅ Empresa criada com ID Firebase:', docRef.id);
-        
-        // Atualiza o signal
-        this.companies.update(companies => [...companies, createdCompany]);
-        this.allCompanies.update(companies => [...companies, createdCompany]);
-        
-        return createdCompany;
-      }
-
-      // 🟢 Atualização de empresa existente
-      const docRef = doc(this._companiesCollection, companyData.id);
-      const updatePayload = {
+      // Prepara os dados da nova empresa
+      const newCompany = {
         ...companyData,
-        updated: now,
+        helpDeskCompanyId: this.userLogged.helpDeskCompanyId,
+        deleted: false,
+        created: now,
+        updated: null
       };
 
-      await updateDoc(docRef, updatePayload);
+      // Adiciona a empresa no Firestore
+      const docRef = await addDoc(this._companiesCollection, newCompany);
 
-      const updatedCompany: Company = {
-        ...updatePayload,
+      // Cria o objeto Company completo com o ID gerado
+      const createdCompany: Company = {
+        id: docRef.id,
+        ...newCompany
       };
 
-      console.log('✅ Empresa atualizada com ID:', companyData.id);
-      
-      // Atualiza os signals
-      this.companies.update(companies => 
-        companies.map(company => 
-          company.id === companyData.id ? updatedCompany : company
-        )
-      );
-      this.allCompanies.update(companies => 
-        companies.map(company => 
-          company.id === companyData.id ? updatedCompany : company
-        )
+      console.log('✅ Empresa salva com ID:', docRef.id);
+
+      // Atualiza o signal adicionando a nova empresa
+      this.companies.update(companies => [createdCompany, ...companies]);
+
+      //^ ENVIO DE NOTIFICAÇÃO
+      this.notificationService.createNotification(
+        NotificationTitle.CREATE_COMPANY,
+        NotificationType.SUCCESS,
+        `${createdCompany.name} Criado com sucesso!`,
+        false,
+        `/company/${createdCompany.id}`,
       );
 
-      return updatedCompany;
+      return createdCompany;
 
     } catch (error) {
       console.error('❌ Erro ao salvar empresa:', error);
@@ -131,56 +154,7 @@ export class CompanyService {
     }
   }
 
-  /**
-   * Exclui uma empresa (soft delete)
-   * @param companyId ID da empresa
-   * @returns boolean indicando sucesso
-   */
-  async deleteCompany(companyId: string): Promise<boolean> {
-    try {
-      console.log('🗑️ Excluindo empresa:', companyId);
-
-      const currentUser = this._sessionService.getSession();
-      if (!currentUser) {
-        throw new Error('Usuário não está logado');
-      }
-
-      const companyRef = doc(this._firestore, PATH_COMPANIES, companyId);
-      
-      await updateDoc(companyRef, {
-        deleted: true,
-        updated: new Date().toISOString() // Converter para string
-      });
-
-      console.log('✅ Empresa marcada como excluída:', companyId);
-      
-      // Atualiza os signals
-      this.companies.update(companies => 
-        companies.filter(company => company.id !== companyId)
-      );
-      this.allCompanies.update(companies => 
-        companies.map(company => 
-          company.id === companyId 
-            ? { ...company, deleted: true, updated: new Date() }
-            : company
-        )
-      );
-
-      return true;
-
-    } catch (error) {
-      console.error('❌ Erro ao excluir empresa:', error);
-      return false;
-    }
-  }
-
-  /**
-   * Atualiza uma empresa
-   * @param companyId ID da empresa
-   * @param companyData Dados atualizados
-   * @returns Empresa atualizada
-   */
-  async updateCompany(companyId: string, companyData: Partial<Omit<Company, 'id' | 'created' | 'updated'>>): Promise<Company> {
+  async updateCompany(companyId: string, companyData: Partial<Omit<Company, 'id' | 'created' | 'helpDeskCompanyId'>>): Promise<Company> {
     try {
       console.log('📝 Atualizando empresa:', companyId, companyData);
 
@@ -191,31 +165,36 @@ export class CompanyService {
 
       const updateData = {
         ...companyData,
-        updated: new Date().toISOString()
+        updated: new Date()
       };
 
+      // Atualiza a empresa no Firestore
       const companyRef = doc(this._firestore, PATH_COMPANIES, companyId);
       await updateDoc(companyRef, updateData);
 
       // Busca a empresa atualizada
       const updatedCompany = await this.getCompanyById(companyId);
-      
+
       if (!updatedCompany) {
         throw new Error('Empresa não encontrada após atualização');
       }
 
       console.log('✅ Empresa atualizada:', updatedCompany);
-      
-      // Atualiza os signals
-      this.companies.update(companies => 
-        companies.map(company => 
+
+      // Atualiza o signal com a empresa modificada
+      this.companies.update(companies =>
+        companies.map(company =>
           company.id === companyId ? updatedCompany : company
         )
       );
-      this.allCompanies.update(companies => 
-        companies.map(company => 
-          company.id === companyId ? updatedCompany : company
-        )
+
+      //^ ENVIO DE NOTIFICAÇÃO
+      this.notificationService.createNotification(
+        NotificationTitle.CREATE_COMPANY,
+        NotificationType.SUCCESS,
+        `${updatedCompany.name} Criado com sucesso!`,
+        false,
+        `/company/${updatedCompany.id}`,
       );
 
       return updatedCompany;
@@ -226,11 +205,48 @@ export class CompanyService {
     }
   }
 
-  /**
-   * Busca empresa por ID
-   * @param companyId ID da empresa
-   * @returns Empresa encontrada ou null
-   */
+  async deleteCompany(companyId: string): Promise<boolean> {
+    try {
+      console.log('🗑️ Excluindo empresa:', companyId);
+
+      const currentUser = this._sessionService.getSession();
+      if (!currentUser) {
+        throw new Error('Usuário não está logado');
+      }
+
+      // Atualiza a empresa marcando como deletada
+      const companyRef = doc(this._firestore, PATH_COMPANIES, companyId);
+      await updateDoc(companyRef, {
+        deleted: true,
+        updated: new Date()
+      });
+
+      console.log('✅ Empresa marcada como excluída:', companyId);
+
+      // Remove a empresa do signal
+      this.companies.update(companies =>
+        companies.filter(company => company.id !== companyId)
+      );
+
+      this.getCompanyById(companyId).then(result => {
+     //^ ENVIO DE NOTIFICAÇÃO
+        this.notificationService.createNotification(
+          NotificationTitle.CREATE_COMPANY,
+          NotificationType.SUCCESS,
+          `Empresa ${result?.name} excluida com sucesso`,
+          false,
+          null
+        );
+      });
+   
+      return true;
+
+    } catch (error) {
+      console.error('❌ Erro ao excluir empresa:', error);
+      return false;
+    }
+  }
+
   async getCompanyById(companyId: string): Promise<Company | null> {
     try {
       const companyRef = doc(this._firestore, PATH_COMPANIES, companyId);
@@ -242,9 +258,9 @@ export class CompanyService {
           id: companySnap.id,
           name: data['name'],
           keywords: data['keywords'] || [],
-          created: data['created'],
-          updated: data['updated'],
-          deleted: data['deleted'],
+          deleted: data['deleted'] || false,
+          created: data['created'] || new Date(),
+          updated: data['updated'] || null,
           cnpj: data['cnpj'],
           city: data['city'],
           state: data['state'],
@@ -253,9 +269,12 @@ export class CompanyService {
           phone: data['phone'],
           connectionServ: data['connectionServ'],
           email: data['email'],
-          versionServ: data['versionServ'],
-          clientsId: data['clientsId'] || []
+          versionServ: data['versionServ'] || null,
+          clientsId: data['clientsId'] || [],
+          helpDeskCompanyId: data['helpDeskCompanyId']
         };
+
+
         return company;
       }
 
@@ -267,249 +286,28 @@ export class CompanyService {
     }
   }
 
-  /**
- * Busca todas as empresas
- * @param includeDeleted Flag para incluir empresas excluídas
- * @param companyIds Array opcional de IDs específicos
- * @returns Array de empresas
- */
-async loadAllCompanies(
-  includeDeleted: boolean = false,
-  companyIds?: string[]
-): Promise<Company[]> {
-  try {
-    console.log(`🏢 Carregando empresas - includeDeleted: ${includeDeleted}, IDs:`, companyIds);
-
-    const currentUser = this._sessionService.getSession();
-    if (!currentUser) {
-      console.log('❌ Usuário não está logado');
-      return [];
+  /*
+  export interface Company {
+      id: string;
+      name: string;
+      keywords: string[];
+      deleted: boolean;
+      created: Date; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
+      updated: Date | null; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
+      cnpj: string;
+      city: string;
+      state: string;
+      address: string;
+      zipcode: string;
+      phone: string;
+      connectionServ: string;
+      email: string;
+      versionServ: string | null;
+      clientsId: string[];
+      clients?: User[];
+      helpDeskCompanyId?: string;
     }
+  */
 
-    let companiesQuery;
 
-    if (companyIds && companyIds.length > 0) {
-      // Busca por IDs específicos
-      companiesQuery = query(
-        this._companiesCollection,
-        where(documentId(), 'in', companyIds.slice(0, 10)) // Firestore limita a 10 IDs por query
-      );
-    } else if (!includeDeleted) {
-      // Busca somente empresas não excluídas
-      companiesQuery = query(
-        this._companiesCollection,
-        where('deleted', '==', false),
-        orderBy('created', 'desc')
-      );
-    } else {
-      // Busca todas as empresas (incluindo excluídas)
-      companiesQuery = query(
-        this._companiesCollection,
-        orderBy('created', 'desc')
-      );
-    }
-
-    const querySnapshot = await getDocs(companiesQuery);
-    
-    const companies = querySnapshot.docs
-      .map(doc => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          name: data['name'],
-          keywords: data['keywords'] || [],
-          created: data['created'],
-          updated: data['updated'],
-          cnpj: data['cnpj'],
-          city: data['city'],
-          state: data['state'],
-          address: data['address'],
-          zipcode: data['zipcode'],
-          phone: data['phone'],
-          connectionServ: data['connectionServ'],
-          email: data['email'],
-          versionServ: data['versionServ'],
-          clientsId: data['clientsId'] || [],
-          deleted: data['deleted'] || false
-        } as Company & { deleted?: boolean };
-      })
-      .filter(company => includeDeleted || !company.deleted)
-      .map(company => {
-        // Remove o campo deleted do objeto final
-        const { deleted, ...companyWithoutDeleted } = company;
-        return companyWithoutDeleted as Company;
-      });
-
-    console.log(`✅ Empresas carregadas: ${companies.length} itens`);
-
-    // Atualiza os signals
-    if (!includeDeleted) {
-      this.companies.set(companies);
-    }
-    this.allCompanies.set(companies);
-
-    return companies;
-
-  } catch (error) {
-    console.error('❌ Erro ao carregar empresas:', error);
-    return [];
-  }
 }
-
-  /**
-   * Busca empresas por nome ou keywords
-   * @param searchTerm Termo de busca
-   * @param includeDeleted Flag para incluir empresas excluídas
-   * @returns Array de empresas encontradas
-   */
-  async searchCompaniesByName(
-    searchTerm: string,
-    includeDeleted: boolean = false
-  ): Promise<Company[]> {
-    try {
-      console.log(`🔍 Buscando empresas por: "${searchTerm}" - includeDeleted: ${includeDeleted}`);
-
-      const currentUser = this._sessionService.getSession();
-      if (!currentUser) {
-        console.log('❌ Usuário não está logado');
-        return [];
-      }
-
-      // Primeiro, carrega todas as empresas
-      const  allCompanies = await this.loadAllCompanies(includeDeleted);
-      
-      // Filtra localmente por nome ou keywords
-      const searchTermLower = searchTerm.toLowerCase();
-      
-      const filteredCompanies = allCompanies.filter(company => {
-        const nameMatch = company.name.toLowerCase().includes(searchTermLower);
-        const keywordMatch = company.keywords.some(keyword => 
-          keyword.toLowerCase().includes(searchTermLower)
-        );
-        
-        return nameMatch || keywordMatch;
-      });
-
-      console.log(`✅ Empresas encontradas: ${filteredCompanies.length} itens`);
-      
-      return filteredCompanies;
-
-    } catch (error) {
-      console.error('❌ Erro ao buscar empresas por nome:', error);
-      return [];
-    }
-  }
-
-  /**
-   * Busca empresas com filtro otimizado para grandes volumes
-   * @param searchTerm Termo de busca
-   * @param includeDeleted Flag para incluir empresas excluídas
-   * @returns Array de empresas encontradas
-   */
-  async searchCompaniesOptimized(
-    searchTerm: string,
-    includeDeleted: boolean = false
-  ): Promise<Company[]> {
-    try {
-      console.log(`🔍 Buscando empresas (otimizado) por: "${searchTerm}"`);
-
-      const currentUser = this._sessionService.getSession();
-      if (!currentUser) {
-        console.log('❌ Usuário não está logado');
-        return [];
-      }
-
-      let companiesQuery;
-
-      if (!includeDeleted) {
-        companiesQuery = query(
-          this._companiesCollection,
-          where('deleted', '==', false),
-          orderBy('name')
-        );
-      } else {
-        companiesQuery = query(
-          this._companiesCollection,
-          orderBy('name')
-        );
-      }
-
-      const querySnapshot = await getDocs(companiesQuery);
-      
-      const searchTermLower = searchTerm.toLowerCase();
-      
-      const filteredCompanies = querySnapshot.docs
-        .map(doc => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            name: data['name'],
-            keywords: data['keywords'] || [],
-            created: data['created'],
-            updated: data['updated'],
-            cnpj: data['cnpj'],
-            city: data['city'],
-            state: data['state'],
-            address: data['address'],
-            zipcode: data['zipcode'],
-            phone: data['phone'],
-            connectionServ: data['connectionServ'],
-            email: data['email'],
-            versionServ: data['versionServ'],
-            clientsId: data['clientsId'] || []
-          } as Company;
-        })
-        .filter(company => {
-          const nameMatch = company.name.toLowerCase().includes(searchTermLower);
-          const keywordMatch = company.keywords.some(keyword => 
-            keyword.toLowerCase().includes(searchTermLower)
-          );
-          
-          return nameMatch || keywordMatch;
-        });
-
-      console.log(`✅ Empresas encontradas (otimizado): ${filteredCompanies.length} itens`);
-      
-      return filteredCompanies;
-
-    } catch (error) {
-      console.error('❌ Erro na busca otimizada de empresas:', error);
-      return [];
-    }
-  }
-
-  /**
-   * Obtém o número total de empresas
-   * @param includeDeleted Flag para incluir empresas excluídas
-   */
-  getCompaniesCount(includeDeleted: boolean = false): number {
-    const companies = includeDeleted ? this.allCompanies() : this.companies();
-    return companies.length;
-  }
-
-  /**
-   * Limpa os signals (útil para logout)
-   */
-  clearCompanies(): void {
-    this.companies.set([]);
-    this.allCompanies.set([]);
-    console.log('🧹 Signals de empresas limpos');
-  }
-}
-
-
-
-/*
-* Buscar empresas não excluídas
-const companies = await this.companyService.loadAllCompanies(false);
-
-* Buscar todas as empresas (incluindo excluídas)
-const allCompanies = await this.companyService.loadAllCompanies(true);
-
-* Buscar empresas por IDs específicos
-const specificCompanies = await this.companyService.loadAllCompanies(false, ['id1', 'id2', 'id3']);
-
-* Buscar empresas excluídas por IDs
-const deletedCompanies = await this.companyService.loadAllCompanies(true, ['id4', 'id5']);
-
-*/

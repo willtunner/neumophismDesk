@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -30,7 +30,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyService } from '../../services/company';
 import { ClientService } from '../../services/client';
 
-
 @Component({
   selector: 'app-call',
   standalone: true,
@@ -50,25 +49,6 @@ import { ClientService } from '../../services/client';
 })
 export class CallComponent implements OnInit, OnDestroy {
 
-  // Ícones SVG
-  readonly addIcon = `
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-     <path d="M12 5v14M5 12h14"/>
-   </svg>
- `;
-
-  callForm!: FormGroup;
-  callsList: Call[] = [];
-  companies: Company[] = [];
-  clients: User[] = [];
-  isLoadingClients = false;
-  isConfigsReady = false;
-
-  inputConfigs: any = {};
-  selectConfigs: any = {};
-  richTextConfig: any;
-
-
   private cdr = inject(ChangeDetectorRef);
   private translate = inject(TranslateService);
   private auth = inject(AuthService);
@@ -86,19 +66,46 @@ export class CallComponent implements OnInit, OnDestroy {
   private langSub!: Subscription;
   private loggedUser!: User;
 
+  // Ícones SVG
+  readonly addIcon = `
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+     <path d="M12 5v14M5 12h14"/>
+   </svg>
+ `;
+
+  callForm!: FormGroup;
+  callsList: Call[] = [];
+  companies = this.companyService.companies;
+  clients = signal<User[]>([]);
+  isLoadingClients = false;
+  isConfigsReady = false;
+
+  inputConfigs: any = {};
+  selectConfigs: any = {};
+  richTextConfig: any;
+
+
+
+
+
 
   async ngOnInit() {
     this.loggedUser = this.auth.currentUser()!;
     this.callForm = this.formBuilder.createForm(this.loggedUser);
     this.callsList = await this.callService.getAllCalls();
-    console.log('Chamado: ', this.callsList);
 
+    console.log('📞 Chamados carregados:', this.callsList.length);
+
+    // Configura mudança de empresa
     this.setupCompanyChange();
+
+    // Carrega empresas iniciais
     await this.loadCompanies();
 
+    // Inicializa configurações
     this.initializeConfigs();
 
-    // 🆕 Verifica se há ID na URL
+    // Verifica se há ID na URL
     this.route.paramMap.subscribe(async (params) => {
       const callId = params.get('id');
       if (callId) {
@@ -109,9 +116,8 @@ export class CallComponent implements OnInit, OnDestroy {
       }
     });
 
+    // Atualiza configurações quando idioma mudar
     this.langSub = this.translate.onLangChange.subscribe(() => this.initializeConfigs());
-
-
   }
 
   ngOnDestroy() {
@@ -119,34 +125,87 @@ export class CallComponent implements OnInit, OnDestroy {
   }
 
   private async loadCompanies() {
-    this.companies = await this.companyLoader.loadCompanies();
+    try {
+      await this.companyService.loadAllCompanies();
+      console.log('🏢 Empresas carregadas do service:', this.companies().length);
+    } catch (error) {
+      console.error('❌ Erro ao carregar empresas:', error);
+    }
   }
 
   private setupCompanyChange() {
     this.empresaControl.valueChanges.subscribe(async (empresaId) => {
-      const empresa = this.companies.find(c => c.id === empresaId);
-      if (!empresa) {
-        this.clients = [];
+      console.log('🏢 Empresa selecionada:', empresaId);
+
+      // Limpa clientes anteriores e reseta o select de cliente
+      this.clients.set([]);
+      this.clienteControl.reset();
+
+      if (!empresaId) {
+        console.log('❌ Nenhuma empresa selecionada');
         this.updateConfigs();
         return;
       }
-      this.isLoadingClients = true;
-      this.clients = await this.clientLoader.loadClientsByCompany(empresa);
-      this.isLoadingClients = false;
-      this.updateConfigs();
-      this.cdr.detectChanges();
+
+      const empresa = this.companies().find(c => c.id === empresaId);
+      if (!empresa) {
+        console.log('❌ Empresa não encontrada');
+        this.updateConfigs();
+        return;
+      }
+
+      // Busca clientes da empresa selecionada
+      await this.loadClientsByCompany(empresaId);
     });
   }
 
+  private async loadClientsByCompany(companyId: string) {
+    this.isLoadingClients = true;
+    console.log('🔄 Buscando clientes da empresa...');
+
+    try {
+      const clientesDaEmpresa = await this.clientService.loadClientsByCompany(companyId);
+      console.log('✅ Clientes encontrados:', clientesDaEmpresa.length);
+
+      // Atualiza signal com os clientes encontrados
+      this.clients.set(clientesDaEmpresa);
+
+    } catch (error) {
+      console.error('❌ Erro ao carregar clientes:', error);
+      this.clients.set([]);
+    } finally {
+      this.isLoadingClients = false;
+      this.updateConfigs();
+      this.cdr.detectChanges();
+    }
+  }
+
+
   private initializeConfigs() {
     this.inputConfigs = buildInputConfigs(this.translate);
-    this.selectConfigs = buildSelectConfigs(this.translate, this.companies, this.clients, this.isLoadingClients);
+    this.selectConfigs = buildSelectConfigs(
+      this.translate,
+      this.companies(),
+      this.clients(),
+      this.isLoadingClients
+    );
     this.richTextConfig = buildRichTextConfig(this.translate);
     this.isConfigsReady = true;
   }
 
   private updateConfigs() {
-    this.selectConfigs = buildSelectConfigs(this.translate, this.companies, this.clients, this.isLoadingClients);
+    console.log('🔄 Atualizando configurações...');
+    console.log('🏢 Empresas:', this.companies().length);
+    console.log('👥 Clientes:', this.clients().length);
+    console.log('⏳ Carregando:', this.isLoadingClients);
+
+    this.selectConfigs = buildSelectConfigs(
+      this.translate,
+      this.companies(),
+      this.clients(),
+      this.isLoadingClients
+    );
+    this.cdr.detectChanges();
   }
 
   get empresaControl(): FormControl {
@@ -176,13 +235,12 @@ export class CallComponent implements OnInit, OnDestroy {
       console.log('📤 Dados do chamado:', this.callForm.value);
       const call = await this.callService.saveCall(this.callForm.value);
 
-      // 🆕 Monta o path dinâmico do chamado
       const path = `/call/${call.id}`;
 
       this.notificationService.createNotification(
         NotificationTitle.CREATE_CALL,
         NotificationType.SUCCESS,
-        `${call.title} Chamado com sucesso!`,
+        `${call.title} criado com sucesso!`,
         false,
         path,
       );
@@ -200,86 +258,89 @@ export class CallComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((company: Company) => {
       if (company) {
-        //^ SALVAR NO BANCO
-        this.companyService.saveCompany(company).catch((company: Company) => {
-          console.log('✅ Nova empresa cadastrada:', company);
-          //^ ENVIO DE NOTIFICAÇÃO
-          this.notificationService.createNotification(
-            NotificationTitle.CREATE_COMPANY,
-            NotificationType.SUCCESS,
-            `${company.name} Criado com sucesso!`,
-            false,
-            `/company/${company.id}`,
-          );
-        })
+        this.companyService.saveCompany(company).then((savedCompany) => {
+          console.log('✅ Nova empresa cadastrada:', savedCompany.name);
+          
+          // Atualiza configurações e seleciona a nova empresa
+          this.updateConfigs();
+          this.empresaControl.setValue(savedCompany.id);
+          
+        }).catch(error => {
+          console.error('❌ Erro ao salvar empresa:', error);
+        });
       }
     });
   }
 
   onAddCliente() {
-    // Verifica se há uma empresa selecionada
     const selectedCompanyId = this.empresaControl.value;
 
     if (!selectedCompanyId) {
-      //! Se não há empresa selecionada, mostra um alerta
+
+      //! CRIAR ALERTA DE ('Selecione uma empresa antes de adicionar um cliente')
+      // this.notificationService.createNotification(
+      //   NotificationTitle.CREATE_CLIENT,
+      //   NotificationType.SUCCESS,
+      //   'Selecione uma empresa antes de adicionar um cliente',
+      //   false,
+      //   null,
+      // );
       return;
     }
 
-    // Encontra a empresa selecionada
-    const selectedCompany = this.companies.find(company => company.id === selectedCompanyId);
+    const selectedCompany = this.companies().find(company => company.id === selectedCompanyId);
 
     if (!selectedCompany) {
-      this.notificationService.createNotification(
-        NotificationTitle.CREATE_COMPANY,
-        NotificationType.ERROR,
-        'Empresa selecionada não encontrada',
-        false,
-        `/company/${selectedCompanyId}`,
-      );
+      //! CRIAR ALERTA DE ('Selecione uma empresa antes de adicionar um cliente')
+      // this.notificationService.createNotification(
+      //   NotificationTitle.CREATE_COMPANY,
+      //   NotificationType.ERROR,
+      //   'Empresa selecionada não encontrada',
+      //   false,
+      //   `/company/${selectedCompanyId}`
+      // );
       return;
     }
 
     const dialogRef = this.dialog.open(ClientModalComponent, {
       width: '600px',
-      data: {
-        selectedCompany: selectedCompany // Passa a empresa selecionada
-      }
+      data: { selectedCompany }
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-
-        //^ SALVA O CLIENTE NO BANCO DE DADOS
-
-
-        console.log('✅ Novo cliente cadastrado:', result);
-        // O result já inclui o companyId
-        this.notificationService.createNotification(
-          NotificationTitle.CREATE_CLIENT,
-          NotificationType.SUCCESS,
-          `${result.name} Criado com sucesso!`,
-          false,
-          `/client/${result.id}`,
-        );
-
-        // Atualiza a lista de clientes após adicionar um novo
-        this.loadClientsBySelectedCompany();
+    dialogRef.afterClosed().subscribe((clientData: Omit<User, 'id' | 'created' | 'updated'>) => {
+      if (clientData) {
+        console.log('💾 Salvando novo cliente...');
+        
+        this.clientService.saveClient(clientData, selectedCompany).then((savedClient) => {
+          console.log('✅ Novo cliente cadastrado:', savedClient.name, ' do posto ', selectedCompany.name, '.');
+          
+          // Se o cliente pertence à empresa selecionada, adiciona ao signal
+          if (savedClient.companyId === selectedCompanyId) {
+            this.clients.update(clientes => [savedClient, ...clientes]);
+            
+            // Atualiza configurações e seleciona o novo cliente
+            this.updateConfigs();
+            this.clienteControl.setValue(savedClient.id);
+            
+            console.log('👥 Clientes atualizados:', this.clients().length);
+          }
+          
+        }).catch(error => {
+          console.error('❌ Erro ao salvar cliente:', error);
+        });
       }
     });
   }
 
-  // Método auxiliar para recarregar os clientes
+  // 🆕 Método auxiliar simplificado (agora o signal cuida da atualização)
   private async loadClientsBySelectedCompany() {
     const selectedCompanyId = this.empresaControl.value;
     if (selectedCompanyId) {
-      const selectedCompany = this.companies.find(company => company.id === selectedCompanyId);
-      if (selectedCompany) {
-        this.isLoadingClients = true;
-        this.clients = await this.clientLoader.loadClientsByCompany(selectedCompany);
-        this.isLoadingClients = false;
-        this.updateConfigs();
-        this.cdr.detectChanges();
-      }
+      this.isLoadingClients = true;
+      await this.clientService.loadClientsByCompany(selectedCompanyId);
+      this.isLoadingClients = false;
+      this.updateConfigs();
+      this.cdr.detectChanges();
     }
   }
 

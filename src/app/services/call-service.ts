@@ -221,7 +221,7 @@ export class CallService {
       console.log('Populando:', { companyIds, clientIds, operatorIds, helpDeskIds });
 
       const [companies, clients, operators, helpDesks] = await Promise.all([
-        this._companyService.loadAllCompanies(false, companyIds),
+        this._companyService.loadAllCompanies(),
         this._clientService.getClientsByIds(clientIds),
         this._operatorService.getOperatorsByIds(operatorIds),
         this._helpdeskCompanyService.getHelpdeskCompaniesByIds(helpDeskIds) // NOVO
