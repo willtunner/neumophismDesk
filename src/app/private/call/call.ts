@@ -80,19 +80,21 @@ export class CallComponent implements OnInit, OnDestroy {
   isLoadingClients = false;
   isConfigsReady = false;
 
+  // 🔹 NOVO: Signal para chamado selecionado
+  selectedCall = signal<Call | null>(null);
+
   inputConfigs: any = {};
   selectConfigs: any = {};
   richTextConfig: any;
 
-
-
-
-
-
   async ngOnInit() {
     this.loggedUser = this.auth.currentUser()!;
     this.callForm = this.formBuilder.createForm(this.loggedUser);
-    this.callsList = await this.callService.getAllCalls();
+    
+    // 🔹 ORDEM CORRETA: Primeiro configura os listeners, depois carrega os dados
+    this.setupRouteListener();
+    
+    await this.loadCalls();
 
     console.log('📞 Chamados carregados:', this.callsList.length);
 
@@ -105,23 +107,97 @@ export class CallComponent implements OnInit, OnDestroy {
     // Inicializa configurações
     this.initializeConfigs();
 
-    // Verifica se há ID na URL
-    this.route.paramMap.subscribe(async (params) => {
-      const callId = params.get('id');
-      if (callId) {
-        const call = await this.callService.getCallById(callId);
-        if (call) {
-          this.callForm.patchValue(call);
-        }
-      }
-    });
-
     // Atualiza configurações quando idioma mudar
     this.langSub = this.translate.onLangChange.subscribe(() => this.initializeConfigs());
   }
 
   ngOnDestroy() {
     this.langSub?.unsubscribe();
+  }
+
+  // 🔹 NOVO: Configura listener de rota
+  private setupRouteListener() {
+    this.route.paramMap.subscribe(async (params) => {
+      const callId = params.get('id');
+      console.log('🔄 Route param changed:', callId);
+      
+      if (callId) {
+        await this.selectCallById(callId);
+      } else {
+        this.clearFormAndSelection();
+      }
+    });
+  }
+
+  // 🔹 NOVO: Carrega chamados e verifica seleção inicial
+  private async loadCalls() {
+    this.callsList = await this.callService.getAllCalls();
+    
+    // 🔹 VERIFICA SE HÁ ID NA URL APÓS CARREGAR OS DADOS
+    const initialCallId = this.route.snapshot.paramMap.get('id');
+    if (initialCallId) {
+      await this.selectCallById(initialCallId);
+    }
+  }
+
+  // 🔹 NOVO: Seleciona chamado por ID
+  private async selectCallById(callId: string) {
+    try {
+      console.log('🔍 Procurando chamado com ID:', callId);
+      
+      // Primeiro procura nos dados locais
+      let call = this.callsList.find(c => c.id === callId) || null;
+      
+      // Se não encontrou, tenta carregar pelo service
+      if (!call) {
+        console.log('⚠️ Chamado não encontrado nos dados locais, buscando no service...');
+        call = await this.callService.getCallById(callId);
+      }
+      
+      if (call) {
+        console.log('✅ Chamado encontrado:', call.title);
+        this.setSelectedCall(call);
+      } else {
+        console.warn('❌ Chamado não encontrado com ID:', callId);
+        this.clearSelection();
+      }
+    } catch (error) {
+      console.error('❌ Erro ao selecionar chamado:', error);
+      this.clearSelection();
+    }
+  }
+
+  // 🔹 NOVO: Define chamado selecionado
+  private setSelectedCall(call: Call) {
+    this.selectedCall.set(call);
+    this.populateForm(call);
+    console.log('🎯 Chamado selecionado:', call.title);
+    this.cdr.detectChanges();
+  }
+
+  // 🔹 NOVO: Limpa seleção
+  private clearSelection() {
+    this.selectedCall.set(null);
+    this.cdr.detectChanges();
+  }
+
+  // 🔹 NOVO: Limpa formulário e seleção
+  private clearFormAndSelection() {
+    this.callForm.reset();
+    this.clearSelection();
+  }
+
+  // 🔹 NOVO: Popula formulário com dados do chamado
+  private populateForm(call: Call) {
+    this.callForm.patchValue({
+      companyId: call.companyId,
+      clientId: call.clientId,
+      connection: call.connection,
+      title: call.title,
+      description: call.description,
+      resolution: call.resolution,
+      tags: call.tags || []
+    });
   }
 
   private async loadCompanies() {
@@ -180,7 +256,6 @@ export class CallComponent implements OnInit, OnDestroy {
     }
   }
 
-
   private initializeConfigs() {
     this.inputConfigs = buildInputConfigs(this.translate);
     this.selectConfigs = buildSelectConfigs(
@@ -232,23 +307,32 @@ export class CallComponent implements OnInit, OnDestroy {
 
   async onSubmit() {
     if (this.callForm.valid) {
-      console.log('📤 Dados do chamado:', this.callForm.value);
-      const call = await this.callService.saveCall(this.callForm.value);
+      try {
+        console.log('📤 Dados do chamado:', this.callForm.value);
+        const call = await this.callService.saveCall(this.callForm.value);
 
-      const path = `call/${call.id}`;
+        const path = `call/${call.id}`;
 
-      this.notificationService.createNotification(
-        NotificationTitle.CREATE_CALL,
-        NotificationType.SUCCESS,
-        `${call.title} criado com sucesso!`,
-        false,
-        path,
-      );
+        this.notificationService.createNotification(
+          NotificationTitle.CREATE_CALL,
+          NotificationType.SUCCESS,
+          `${call.title} criado com sucesso!`,
+          false,
+          path,
+        );
+
+        // 🔹 ATUALIZADO: Recarrega lista e seleciona novo chamado
+        await this.loadCalls();
+        this.setSelectedCall(call);
+        this.router.navigate(['/call', call.id]);
+
+      } catch (error) {
+        console.error('❌ Erro ao salvar chamado:', error);
+      }
     } else {
       this.callForm.markAllAsTouched();
     }
   }
-
 
   onAddEmpresa() {
     const dialogRef = this.dialog.open(CompanyModalComponent, {
@@ -276,29 +360,14 @@ export class CallComponent implements OnInit, OnDestroy {
     const selectedCompanyId = this.empresaControl.value;
 
     if (!selectedCompanyId) {
-
       //! CRIAR ALERTA DE ('Selecione uma empresa antes de adicionar um cliente')
-      // this.notificationService.createNotification(
-      //   NotificationTitle.CREATE_CLIENT,
-      //   NotificationType.SUCCESS,
-      //   'Selecione uma empresa antes de adicionar um cliente',
-      //   false,
-      //   null,
-      // );
       return;
     }
 
     const selectedCompany = this.companies().find(company => company.id === selectedCompanyId);
 
     if (!selectedCompany) {
-      //! CRIAR ALERTA DE ('Selecione uma empresa antes de adicionar um cliente')
-      // this.notificationService.createNotification(
-      //   NotificationTitle.CREATE_COMPANY,
-      //   NotificationType.ERROR,
-      //   'Empresa selecionada não encontrada',
-      //   false,
-      //   `/company/${selectedCompanyId}`
-      // );
+      //! CRIAR ALERTA DE ('Empresa selecionada não encontrada')
       return;
     }
 
@@ -332,22 +401,14 @@ export class CallComponent implements OnInit, OnDestroy {
     });
   }
 
-  // 🆕 Método auxiliar simplificado (agora o signal cuida da atualização)
-  private async loadClientsBySelectedCompany() {
-    const selectedCompanyId = this.empresaControl.value;
-    if (selectedCompanyId) {
-      this.isLoadingClients = true;
-      await this.clientService.loadClientsByCompany(selectedCompanyId);
-      this.isLoadingClients = false;
-      this.updateConfigs();
-      this.cdr.detectChanges();
-    }
-  }
-
   // 🆕 Quando clicar em uma linha na tabela
   onViewDetails(call: Call) {
+    this.setSelectedCall(call);
     this.router.navigate(['/call', call.id]);
-    this.callForm.patchValue(call);
   }
 
+  // 🔹 NOVO: Getter para o CallList
+  getSelectedCall(): Call | null {
+    return this.selectedCall();
+  }
 }

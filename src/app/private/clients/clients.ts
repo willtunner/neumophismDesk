@@ -1,4 +1,4 @@
-// clients.ts - COMPONENTE ATUALIZADO
+// clients.ts - COMPONENTE ATUALIZADO COM DROPDOWN AUTOMÁTICO
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -177,10 +177,12 @@ export class Clients implements OnInit, OnDestroy {
   async ngOnInit() {
     this.loggedUser = this.auth.currentUser()!;
     this.initForms();
-    await this.loadData();
-
+    
+    // 🔹 ORDEM CORRETA: Primeiro configura os listeners, depois carrega os dados
     this.setupRouteListener();
     this.initializeConfigs();
+    
+    await this.loadData();
 
     this.langSub = this.translate.onLangChange.subscribe(() => this.initializeConfigs());
   }
@@ -210,20 +212,35 @@ export class Clients implements OnInit, OnDestroy {
     });
 
     // Listener para filtros
-    this.filterForm.valueChanges.subscribe(() => this.cdr.detectChanges());
+    this.filterForm.valueChanges.subscribe(() => {
+      this.cdr.detectChanges();
+      // 🔹 VERIFICA SE O CLIENTE SELECIONADO AINDA ESTÁ NOS DADOS FILTRADOS
+      this.checkSelectedClientInFilteredData();
+    });
     
     // Listener para datas
-    this.startDateControl.valueChanges.subscribe(() => this.cdr.detectChanges());
-    this.endDateControl.valueChanges.subscribe(() => this.cdr.detectChanges());
+    this.startDateControl.valueChanges.subscribe(() => {
+      this.cdr.detectChanges();
+      this.checkSelectedClientInFilteredData();
+    });
+    
+    this.endDateControl.valueChanges.subscribe(() => {
+      this.cdr.detectChanges();
+      this.checkSelectedClientInFilteredData();
+    });
   }
 
   private setupRouteListener() {
     this.route.paramMap.subscribe(async (params) => {
       const clientId = params.get('id');
+      console.log('🔄 Route param changed:', clientId);
+      
       if (clientId) {
-        await this.loadClientById(clientId);
+        await this.selectClientById(clientId);
       } else {
-        this.clearForm();
+        this.clearFormAndSelection();
+        // 🔹 FECHA TODOS OS DROPDOWNS QUANDO NÃO HÁ ID
+        this.openedDropdown = null;
       }
     });
   }
@@ -235,28 +252,113 @@ export class Clients implements OnInit, OnDestroy {
         this.clientService.loadAllClients(),
         this.companyService.loadAllCompanies()
       ]);
+      
+      // 🔹 VERIFICA SE HÁ ID NA URL APÓS CARREGAR OS DADOS
+      const initialClientId = this.route.snapshot.paramMap.get('id');
+      if (initialClientId) {
+        await this.selectClientById(initialClientId);
+      }
+      
       this.cdr.detectChanges();
     } catch (error) {
       console.error('❌ Erro ao carregar dados:', error);
-      //! NOTIFICAÇÃO: Erro ao carregar dados:
     } finally {
       this.isLoading = false;
     }
   }
 
-  private async loadClientById(clientId: string) {
-    try {
-      const client = await this.clientService.getClientById(clientId);
+  private async selectClientById(clientId: string) {
+  try {
+    console.log('🔍 Procurando cliente com ID:', clientId);
+    
+    // 🔹 PRIMEIRO: Encontra o cliente nos dados atuais (incluindo filtros)
+    let client = this.findClientInData(clientId);
+    
+    // 🔹 SEGUNDO: Se não encontrou, tenta carregar pelo service
+    if (!client) {
+      console.log('⚠️ Cliente não encontrado nos dados locais, buscando no service...');
+      client = await this.clientService.getClientById(clientId);
+      
+      // 🔹 CORREÇÃO: Se carregou do service, encontra o mesmo objeto nos dados locais
       if (client) {
-        this.populateForm(client);
-        this.currentClientId.set(clientId);
-        this.isEditing = true;
-        this.selectedClient.set(client);
-        this.cdr.detectChanges();
+        const localClient = this.findClientInData(clientId);
+        if (localClient) {
+          client = localClient; // Usa o objeto local para garantir referência igual
+        }
       }
-    } catch (error) {
-      console.error('❌ Erro ao carregar cliente:', error);
-     //! NOTIFICAÇÃO: Erro ao carregar cliente:
+    }
+    
+    if (client) {
+      console.log('✅ Cliente encontrado:', client.name);
+      this.setSelectedClient(client);
+      
+      // 🔹 ABRE O DROPDOWN DA EMPRESA DO CLIENTE
+      this.openCompanyDropdown(client.companyId);
+    } else {
+      console.warn('❌ Cliente não encontrado com ID:', clientId);
+      this.clearSelection();
+      this.openedDropdown = null;
+    }
+  } catch (error) {
+    console.error('❌ Erro ao selecionar cliente:', error);
+    this.clearSelection();
+    this.openedDropdown = null;
+  }
+}
+
+  // 🔹 NOVO: Método para abrir o dropdown da empresa automaticamente
+  private openCompanyDropdown(companyId: string | undefined) {
+    if (companyId) {
+      console.log('🏢 Abrindo dropdown da empresa:', companyId);
+      this.openedDropdown = companyId;
+      this.cdr.detectChanges();
+    }
+  }
+
+  private findClientInData(clientId: string): User | null {
+    // 🔹 PROCURA PRIMEIRO NOS DADOS FILTRADOS
+    let client = this.filteredClients().find(c => c.id === clientId) || null;
+    
+    // 🔹 SE NÃO ENCONTRAR, PROCURA EM TODOS OS DADOS
+    if (!client) {
+      client = this.clients().find(c => c.id === clientId) || null;
+    }
+    
+    return client;
+  }
+
+  private setSelectedClient(client: User) {
+    this.selectedClient.set(client);
+    this.populateForm(client);
+    this.currentClientId.set(client.id);
+    this.isEditing = true;
+    
+    console.log('🎯 Cliente selecionado na tabela:', client.name);
+    
+    // 🔹 FORÇA A ATUALIZAÇÃO DA UI
+    this.cdr.detectChanges();
+  }
+
+  private clearSelection() {
+    this.selectedClient.set(null);
+    this.currentClientId.set(null);
+    this.isEditing = false;
+    this.cdr.detectChanges();
+  }
+
+  private clearFormAndSelection() {
+    this.clientForm.reset();
+    this.clearSelection();
+    this.roles.set([]);
+  }
+
+  private checkSelectedClientInFilteredData() {
+    const selected = this.selectedClient();
+    if (selected && !this.filteredClients().some(c => c.id === selected.id)) {
+      console.log('⚠️ Cliente selecionado não está mais nos dados filtrados');
+      this.clearSelection();
+      // 🔹 FECHA O DROPDOWN SE O CLIENTE NÃO ESTÁ MAIS VISÍVEL
+      this.openedDropdown = null;
     }
   }
 
@@ -275,14 +377,6 @@ export class Clients implements OnInit, OnDestroy {
     
     // Atualiza as roles no signal
     this.roles.set(client.roles || []);
-  }
-
-  private clearForm() {
-    this.clientForm.reset();
-    this.currentClientId.set(null);
-    this.isEditing = false;
-    this.selectedClient.set(null);
-    this.roles.set([]);
   }
 
   private initializeConfigs() {
@@ -387,8 +481,12 @@ export class Clients implements OnInit, OnDestroy {
 
   // 🔹 MÉTODOS PARA A DYNAMIC TABLE
   onTableRowClick(client: User) {
-    this.selectedClient.set(client);
-    this.onEditClient(client);
+    console.log('🖱️ Clicou na linha:', client.name);
+    this.setSelectedClient(client);
+    this.router.navigate(['/clients', client.id]);
+    
+    // 🔹 GARANTE QUE O DROPDOWN DA EMPRESA ESTEJA ABERTO
+    this.openCompanyDropdown(client.companyId);
   }
 
   onSelectedRowChange(client: User | null) {
@@ -448,6 +546,14 @@ export class Clients implements OnInit, OnDestroy {
             false,
             `/clients/${this.currentClientId()}`
           );
+          
+          // 🔹 ATUALIZA A SELEÇÃO APÓS EDIÇÃO
+          const updatedClient = await this.clientService.getClientById(this.currentClientId()!);
+          if (updatedClient) {
+            this.setSelectedClient(updatedClient);
+            // 🔹 MANTÉM O DROPDOWN ABERTO
+            this.openCompanyDropdown(updatedClient.companyId);
+          }
         } else {
           // Criar novo cliente
           const newClient = await this.clientService.saveClient(clientData, selectedCompany);
@@ -458,22 +564,22 @@ export class Clients implements OnInit, OnDestroy {
             false,
             `/clients/${newClient.id}`
           );
-          this.clearForm();
+          
+          // 🔹 SELECIONA O NOVO CLIENTE
+          this.setSelectedClient(newClient);
+          this.router.navigate(['/clients', newClient.id]);
+          // 🔹 ABRE O DROPDOWN DA EMPRESA DO NOVO CLIENTE
+          this.openCompanyDropdown(newClient.companyId);
         }
 
         // Recarrega os dados para atualizar a lista
         await this.loadData();
-        this.updateConfigs();
 
       } catch (error) {
         console.error('❌ Erro ao salvar cliente:', error);
-        //! NOTIFICAÇÃO: Erro ao salvar cliente
       }
     } else {
       this.clientForm.markAllAsTouched();
-
-      //! NOTIFICAÇÃO: Preencha todos os campos obrigatórios
-   
     }
   }
 
@@ -493,16 +599,20 @@ export class Clients implements OnInit, OnDestroy {
             false,
             null
           );
+          
           // Recarrega a lista
           await this.loadData();
+          
           // Limpa seleção se o cliente excluído era o selecionado
           if (this.selectedClient()?.id === client.id) {
-            this.selectedClient.set(null);
+            this.clearFormAndSelection();
+            this.router.navigate(['/clients']);
+            // 🔹 FECHA O DROPDOWN
+            this.openedDropdown = null;
           }
         }
       } catch (error) {
         console.error('❌ Erro ao excluir cliente:', error);
-          //! Notificação de erro 
       }
     }
   }
@@ -518,7 +628,9 @@ export class Clients implements OnInit, OnDestroy {
 
   onNewClient() {
     this.router.navigate(['/clients']);
-    this.clearForm();
+    this.clearFormAndSelection();
+    // 🔹 FECHA TODOS OS DROPDOWNS
+    this.openedDropdown = null;
   }
 
   private updateConfigs() {

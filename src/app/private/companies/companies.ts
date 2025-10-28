@@ -84,10 +84,12 @@ export class Companies implements OnInit, OnDestroy {
   async ngOnInit() {
     this.loggedUser = this.auth.currentUser()!;
     this.initForms();
-    await this.loadCompanies();
-
+    
+    // 🔹 ORDEM CORRETA: Primeiro configura os listeners, depois carrega os dados
     this.setupRouteListener();
     this.initializeConfigs();
+    
+    await this.loadCompanies();
 
     this.langSub = this.translate.onLangChange.subscribe(() => this.initializeConfigs());
   }
@@ -129,10 +131,12 @@ export class Companies implements OnInit, OnDestroy {
   private setupRouteListener() {
     this.route.paramMap.subscribe(async (params) => {
       const companyId = params.get('id');
+      console.log('🔄 Route param changed:', companyId);
+      
       if (companyId) {
-        await this.loadCompanyById(companyId);
+        await this.selectCompanyById(companyId);
       } else {
-        this.clearForm();
+        this.clearFormAndSelection();
       }
     });
   }
@@ -141,27 +145,81 @@ export class Companies implements OnInit, OnDestroy {
     try {
       this.isLoading = true;
       await this.companyService.loadAllCompanies();
-      this.applyFilters(); // Aplica filtros iniciais
+      this.applyFilters();
+      
+      // 🔹 VERIFICA SE HÁ ID NA URL APÓS CARREGAR OS DADOS
+      const initialCompanyId = this.route.snapshot.paramMap.get('id');
+      if (initialCompanyId) {
+        await this.selectCompanyById(initialCompanyId);
+      }
     } catch (error) {
       console.error('❌ Erro ao carregar empresas:', error);
     } finally {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 
-  private async loadCompanyById(companyId: string) {
+  private async selectCompanyById(companyId: string) {
     try {
-      const company = await this.companyService.getCompanyById(companyId);
+      console.log('🔍 Procurando empresa com ID:', companyId);
+      
+      // 🔹 PRIMEIRO: Encontra a empresa nos dados atuais (incluindo filtros)
+      let company = this.findCompanyInData(companyId);
+      
+      // 🔹 SEGUNDO: Se não encontrou, tenta carregar pelo service
+      if (!company) {
+        console.log('⚠️ Empresa não encontrada nos dados locais, buscando no service...');
+        company = await this.companyService.getCompanyById(companyId);
+      }
+      
       if (company) {
-        this.populateForm(company);
-        this.currentCompanyId.set(companyId);
-        this.isEditing = true;
-        this.selectedCompany.set(company);
-        this.cdr.detectChanges(); // 🔹 CORREÇÃO: ADICIONADO
+        console.log('✅ Empresa encontrada:', company.name);
+        this.setSelectedCompany(company);
+      } else {
+        console.warn('❌ Empresa não encontrada com ID:', companyId);
+        this.clearSelection();
       }
     } catch (error) {
-      console.error('❌ Erro ao carregar empresa:', error);
+      console.error('❌ Erro ao selecionar empresa:', error);
+      this.clearSelection();
     }
+  }
+
+  private findCompanyInData(companyId: string): Company | null {
+    // 🔹 PROCURA PRIMEIRO NOS DADOS FILTRADOS
+    let company = this.filteredCompanies().find(c => c.id === companyId) || null;
+    
+    // 🔹 SE NÃO ENCONTRAR, PROCURA EM TODOS OS DADOS
+    if (!company) {
+      company = this.companies().find(c => c.id === companyId) || null;
+    }
+    
+    return company;
+  }
+
+  private setSelectedCompany(company: Company) {
+    this.selectedCompany.set(company);
+    this.populateForm(company);
+    this.currentCompanyId.set(company.id);
+    this.isEditing = true;
+    
+    console.log('🎯 Empresa selecionada na tabela:', company.name);
+    
+    // 🔹 FORÇA A ATUALIZAÇÃO DA UI
+    this.cdr.detectChanges();
+  }
+
+  private clearSelection() {
+    this.selectedCompany.set(null);
+    this.currentCompanyId.set(null);
+    this.isEditing = false;
+    this.cdr.detectChanges();
+  }
+
+  private clearFormAndSelection() {
+    this.companyForm.reset();
+    this.clearSelection();
   }
 
   private populateForm(company: Company) {
@@ -178,13 +236,6 @@ export class Companies implements OnInit, OnDestroy {
       versionServ: company.versionServ,
       keywords: company.keywords || []
     });
-  }
-
-  private clearForm() {
-    this.companyForm.reset();
-    this.currentCompanyId.set(null);
-    this.isEditing = false;
-    this.selectedCompany.set(null);
   }
 
   private applyFilters() {
@@ -229,6 +280,13 @@ export class Companies implements OnInit, OnDestroy {
     }
 
     this.filteredCompanies.set(filtered);
+    
+    // 🔹 VERIFICA SE A EMPRESA SELECIONADA AINDA ESTÁ NOS DADOS FILTRADOS
+    const selected = this.selectedCompany();
+    if (selected && !filtered.some(c => c.id === selected.id)) {
+      console.log('⚠️ Empresa selecionada não está mais nos dados filtrados');
+      this.clearSelection();
+    }
   }
 
   private initializeConfigs() {
@@ -239,66 +297,29 @@ export class Companies implements OnInit, OnDestroy {
 
   // 🔹 MÉTODOS PARA A DYNAMIC TABLE
   onTableRowClick(company: Company) {
-    this.selectedCompany.set(company);
-    this.onEditCompany(company);
+    console.log('🖱️ Clicou na linha:', company.name);
+    this.setSelectedCompany(company);
+    this.router.navigate(['/companies', company.id]);
   }
 
   onSelectedRowChange(company: Company | null) {
     this.selectedCompany.set(company);
   }
 
-  // Getters para os controles
-  get searchControl(): FormControl {
-    return this.filterForm.get('search') as FormControl;
-  }
-
-  get filterFieldControl(): FormControl {
-    return this.filterForm.get('filterField') as FormControl;
-  }
-
-  get nameControl(): FormControl {
-    return this.companyForm.get('name') as FormControl;
-  }
-
-  get cnpjControl(): FormControl {
-    return this.companyForm.get('cnpj') as FormControl;
-  }
-
-  get emailControl(): FormControl {
-    return this.companyForm.get('email') as FormControl;
-  }
-
-  get phoneControl(): FormControl {
-    return this.companyForm.get('phone') as FormControl;
-  }
-
-  get addressControl(): FormControl {
-    return this.companyForm.get('address') as FormControl;
-  }
-
-  get cityControl(): FormControl {
-    return this.companyForm.get('city') as FormControl;
-  }
-
-  get stateControl(): FormControl {
-    return this.companyForm.get('state') as FormControl;
-  }
-
-  get zipcodeControl(): FormControl {
-    return this.companyForm.get('zipcode') as FormControl;
-  }
-
-  get connectionServControl(): FormControl {
-    return this.companyForm.get('connectionServ') as FormControl;
-  }
-
-  get versionServControl(): FormControl {
-    return this.companyForm.get('versionServ') as FormControl;
-  }
-
-  get keywordsControl(): FormControl {
-    return this.companyForm.get('keywords') as FormControl;
-  }
+  // Getters para os controles (mantidos iguais)
+  get searchControl(): FormControl { return this.filterForm.get('search') as FormControl; }
+  get filterFieldControl(): FormControl { return this.filterForm.get('filterField') as FormControl; }
+  get nameControl(): FormControl { return this.companyForm.get('name') as FormControl; }
+  get cnpjControl(): FormControl { return this.companyForm.get('cnpj') as FormControl; }
+  get emailControl(): FormControl { return this.companyForm.get('email') as FormControl; }
+  get phoneControl(): FormControl { return this.companyForm.get('phone') as FormControl; }
+  get addressControl(): FormControl { return this.companyForm.get('address') as FormControl; }
+  get cityControl(): FormControl { return this.companyForm.get('city') as FormControl; }
+  get stateControl(): FormControl { return this.companyForm.get('state') as FormControl; }
+  get zipcodeControl(): FormControl { return this.companyForm.get('zipcode') as FormControl; }
+  get connectionServControl(): FormControl { return this.companyForm.get('connectionServ') as FormControl; }
+  get versionServControl(): FormControl { return this.companyForm.get('versionServ') as FormControl; }
+  get keywordsControl(): FormControl { return this.companyForm.get('keywords') as FormControl; }
 
   async onSubmit() {
     if (this.companyForm.valid) {
@@ -313,8 +334,14 @@ export class Companies implements OnInit, OnDestroy {
             NotificationType.SUCCESS,
             'Empresa atualizada com sucesso!',
             false,
-            `/companies/${this.currentCompanyId()}` // 🔹 CORREÇÃO: COM BARRA INICIAL
+            `/companies/${this.currentCompanyId()}`
           );
+          
+          // 🔹 ATUALIZA A SELEÇÃO APÓS EDIÇÃO
+          const updatedCompany = await this.companyService.getCompanyById(this.currentCompanyId()!);
+          if (updatedCompany) {
+            this.setSelectedCompany(updatedCompany);
+          }
         } else {
           // Criar nova empresa
           const newCompany = await this.companyService.saveCompany(companyData);
@@ -323,12 +350,17 @@ export class Companies implements OnInit, OnDestroy {
             NotificationType.SUCCESS,
             'Empresa criada com sucesso!',
             false,
-            `/companies/${newCompany.id}` // 🔹 CORREÇÃO: COM BARRA INICIAL
+            `/companies/${newCompany.id}`
           );
-          this.clearForm();
+          
+          // 🔹 SELECIONA A NOVA EMPRESA
+          this.setSelectedCompany(newCompany);
+          this.router.navigate(['/companies', newCompany.id]);
         }
 
-        this.updateConfigs();
+        // Recarrega os dados para atualizar a lista
+        await this.loadCompanies();
+        
       } catch (error) {
         console.error('❌ Erro ao salvar empresa:', error);
       }
@@ -341,9 +373,10 @@ export class Companies implements OnInit, OnDestroy {
     this.router.navigate(['/companies', company.id]);
   }
 
-  onDeleteCompany(company: Company) {
+  async onDeleteCompany(company: Company) {
     if (confirm(`Tem certeza que deseja excluir a empresa ${company.name}?`)) {
-      this.companyService.deleteCompany(company.id).then(success => {
+      try {
+        const success = await this.companyService.deleteCompany(company.id);
         if (success) {
           this.notificationService.createNotification(
             NotificationTitle.DELETED_COMPANY,
@@ -352,14 +385,19 @@ export class Companies implements OnInit, OnDestroy {
             false,
             null
           );
+          
           // Recarrega a lista
-          this.loadCompanies();
+          await this.loadCompanies();
+          
           // Limpa seleção se a empresa excluída era a selecionada
           if (this.selectedCompany()?.id === company.id) {
-            this.selectedCompany.set(null);
+            this.clearFormAndSelection();
+            this.router.navigate(['/companies']);
           }
         }
-      });
+      } catch (error) {
+        console.error('❌ Erro ao excluir empresa:', error);
+      }
     }
   }
 
@@ -374,7 +412,7 @@ export class Companies implements OnInit, OnDestroy {
 
   onNewCompany() {
     this.router.navigate(['/companies']);
-    this.clearForm();
+    this.clearFormAndSelection();
   }
 
   private updateConfigs() {

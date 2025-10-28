@@ -1,7 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
 import { InputConfig } from '../../../interfaces/input-config.interface';
 import { InputType } from '../../../enuns/input-types.enum';
-import { t, tParams } from './companies-translation.util';
+import { t, tParams } from './call-translation.util';
 
 export function buildInputConfigs(translate: TranslateService): Record<string, InputConfig> {
   return {

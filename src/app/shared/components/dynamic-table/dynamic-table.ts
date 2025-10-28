@@ -43,8 +43,9 @@ export class DynamicTableComponent {
   }
 
     // 🆕 Método para verificar se a linha está selecionada
-  isRowSelected(row: any): boolean {
-    return this.selectedRow === row;
+    isRowSelected(row: any): boolean {
+    if (!this.selectedRow || !row) return false;
+    return this.selectedRow.id === row.id;
   }
 
   getNestedValue(obj: any, path: string): any {

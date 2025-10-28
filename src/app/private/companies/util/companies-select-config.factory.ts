@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { SelectConfig } from '../../../interfaces/select-config.interface';
-import { t } from './companies-translation.util';
+import { t } from './call-translation.util';
 
 export function buildSelectConfigs(translate: TranslateService): Record<string, SelectConfig> {
   return {

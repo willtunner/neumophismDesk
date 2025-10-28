@@ -2,6 +2,7 @@
   [headers]="tableHeaders"
   [data]="calls"
   (edit)="onEdit($event)"
+  [selectedRow]="selectedCall"
   (remove)="onDelete($event)"
   (rowClick)="onRowClick($event)"
 ></app-dynamic-table>

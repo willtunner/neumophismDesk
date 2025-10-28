@@ -13,6 +13,7 @@ import { DynamicTableComponent } from '../../../shared/components/dynamic-table/
 })
 export class CallList implements OnInit {
   @Input() calls: Call[] = [];
+  @Input() selectedCall: Call | null = null; // 🔹 NOVA PROPRIEDADE
   @Output() viewDetails = new EventEmitter<Call>();
 
   tableHeaders = [
@@ -39,5 +40,10 @@ export class CallList implements OnInit {
 
   onDelete(call: Call) {
     console.log('Excluir:', call);
+  }
+
+  // 🔹 NOVO: Getter para passar a seleção para a DynamicTable
+  getSelectedRow(): Call | null {
+    return this.selectedCall;
   }
 }

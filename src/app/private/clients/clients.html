@@ -171,10 +171,14 @@
 
                         <div class="dropdown-content" [class.active]="openedDropdown === companyGroup.companyId">
                             <!-- Tabela de Clientes da Empresa -->
-                            <app-dynamic-table [headers]="tableHeaders" [data]="companyGroup.clients"
-                                [selectedRow]="selectedClient()" (edit)="onEditClient($event)"
-                                (remove)="onDeleteClient($event)" (rowClick)="onTableRowClick($event)"
-                                (selectedRowChange)="onSelectedRowChange($event)">
+                            <app-dynamic-table 
+                            [headers]="tableHeaders" 
+                            [data]="companyGroup.clients"
+                            [selectedRow]="selectedClient()"
+                            (edit)="onEditClient($event)"
+                            (remove)="onDeleteClient($event)" 
+                            (rowClick)="onTableRowClick($event)"
+                            (selectedRowChange)="onSelectedRowChange($event)">
                             </app-dynamic-table>
                         </div>
                     </div>

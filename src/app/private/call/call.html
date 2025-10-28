@@ -107,6 +107,11 @@
   </div>
 </div>
 
+<!-- 🔹 ATUALIZADO: Passa o selectedCall para o CallList -->
 <div class="call-list-container neu-container call-container">
-  <app-call-list [calls]="callsList" (viewDetails)="onViewDetails($event)"></app-call-list>
+  <app-call-list 
+    [calls]="callsList" 
+    [selectedCall]="selectedCall()"
+    (viewDetails)="onViewDetails($event)">
+  </app-call-list>
 </div>
