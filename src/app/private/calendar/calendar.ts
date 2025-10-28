@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EventModalComponent } from './event-modal/event-modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { Weather } from '../weather/weather';
+import { Clock } from '../../shared/components/clock/clock';
 
 export interface CalendarEvent {
   id: string;
@@ -15,12 +16,11 @@ export interface CalendarEvent {
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, FormsModule, TranslateModule, Weather ],
+  standalone: true,
+  imports: [CommonModule, FormsModule, TranslateModule, Weather, Clock],
   templateUrl: './calendar.html',
-  styleUrl: './calendar.scss'
+  styleUrls: ['./calendar.scss']
 })
-
-
 export class Calendar {
   // Signals
   currentYear = signal(new Date().getFullYear());
@@ -145,7 +145,7 @@ export class Calendar {
   }
 
   private saveEvent(event: CalendarEvent): void {
-    this.events.update(events => [...events, event]);
+    this.events.update(events => [...events, { ...event, id: this.generateId() }]);
     this.saveEventsToStorage();
   }
 
