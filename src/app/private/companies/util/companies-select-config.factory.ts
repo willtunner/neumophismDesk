@@ -23,7 +23,7 @@ export function buildSelectConfigs(translate: TranslateService): Record<string, 
       formControlName: 'state',
       label: t(translate, 'COMPANIES.FIELDS.STATE'),
       required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.STATE'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_STATE'),
       options: [
         { value: 'AC', label: 'Acre' },
         { value: 'AL', label: 'Alagoas' },

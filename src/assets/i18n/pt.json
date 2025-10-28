@@ -9,7 +9,7 @@
     "PRODUCTS": "Produtos",
     "REPORTS": "📊 Relatórios",
     "HELP": "❔ Ajuda",
-    "CHAT":"💬 Chat",
+    "CHAT": "💬 Chat",
     "CLIENTS": "💼 Clientes",
     "COMPANIES": "🏙️ Empresas",
     "CALENDAR": "📆 Calendário",
@@ -26,7 +26,7 @@
     "PRODUCTS": "Produtos",
     "REPORTS": "Relatórios",
     "HELP": "Ajuda",
-    "CHAT":"Chat",
+    "CHAT": "Chat",
     "CLIENTS": "Clientes",
     "COMPANIES": "Empresas",
     "CALENDAR": "Calendário",
@@ -78,7 +78,7 @@
     "LOGOUT": "Sair"
   },
   "CALENDAR": {
-    "NEW_EVENT":"Novo evento",
+    "NEW_EVENT": "Novo evento",
     "UPDATE_EVENT": "Editar evento",
     "CALENDAR_TITLE": "Titulo do evento",
     "DESCRIPTION": "Descrição do evento.",
@@ -142,7 +142,8 @@
     "DELETE_CALL": "Excluir Chamado",
     "VERSION_SERV": "Versão do servidor",
     "PLACEHOLDER_VERSION_SERV": "Digita a verção do servidor",
-    "URL_IMG": "Imagem"
+    "URL_IMG": "Imagem",
+    "FILTER_BY": "Filtrar por"
   },
   "CALL_PAGE": {
     "NEW_CALL": "Novo Chamado",
@@ -158,19 +159,64 @@
   "TABLE": {
     "OPERATOR": "Operador",
     "TITLE": "Titulo",
-    "CONECTION":"Conexão",
-    "EMAIL":"Email",
-    "USERNAME":"Username",
-    "COMPANY":"Empresa",
-    "RESOLUTION":"Resolução",
+    "CONECTION": "Conexão",
+    "EMAIL": "Email",
+    "USERNAME": "Username",
+    "COMPANY": "Empresa",
+    "RESOLUTION": "Resolução",
     "CREATED_AT": "Criado em",
-    "HELPDESK":"Empresa de Suporte",
-    "CLIENT":"Cliente",
-    "PHONE":"Telefone",
+    "HELPDESK": "Empresa de Suporte",
+    "CLIENT": "Cliente",
+    "PHONE": "Telefone",
     "CNPJ": "CNPJ",
     "STATUS": "Status",
     "NAME": "Nome",
     "OBSERVATION": "Observação",
     "ID": "ID"
+  },
+  "COMPANIES": {
+    "FILTERS": {
+      "TITLE": "Filtrar empresas",
+      "SEARCH": "Procurar empresas",
+      "SELECT_FIELD": "Selecione o filtro",
+      "FILTER_BY": "Filtrar por",
+      "DATE_RANGE": "Selecione a data",
+      "START_DATE": "Data inicial",
+      "END_DATE": "Data final",
+      "CLEAR": "Limpar campos",
+      "SEARCH_PLACEHOLDER": "Digite para pesquisar..."
+    },
+    "FIELDS": {
+      "NAME": "Nome",
+      "PLACEHOLDER_NAME": "Digite o nome",
+      "CNPJ": "CNPJ",
+      "PLACEHOLDER_CNPJ": "Digite o cnpj",
+      "EMAIL": "E-mail",
+      "PLACEHOLDER_EMAIL": "Digite o email",
+      "PHONE": "Telefone",
+      "PLACEHOLDER_PHONE": "Digite o telefone",
+      "ADDRESS": "Endereço",
+      "PLACEHOLDER_ADDRESS": "Digite o endereço",
+      "CITY": "Cidade",
+      "PLACEHOLDER_CITY": "Digite a cidade",
+      "STATE": "Estado",
+      "PLACEHOLDERS_STATE": "Digite o estado",
+      "ZIP_CODE": "CEP",
+      "PLACEHOLDERS_ZIPCODE": "Digite o cep",
+      "VERSION_SERV": "Versão do servidor",
+      "PLACEHOLDER_VERSION_SERV": "Digita a verção do servidor",
+      "CONECTION": "Conexão",
+      "PLACEHOLDER_CONECTION": "Digite o código de acesso."
+    },
+    "ACTIONS": {
+      "NEW": "Limpar campos",
+      "UPDATE": "Atualizar Empresa",
+      "SAVE": "Salvar"
+    },
+    "LIST": {
+      "TITLE": "Listar empresas"
+    },
+    "EDIT_TITLE": "Editar Empresa",
+    "CREATE_TITLE": "Cradastrar uma nova empresa"
   }
 }

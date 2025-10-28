@@ -1,4 +1,4 @@
-// companies.ts - VERSÃO CORRIGIDA
+// companies.ts - VERSÃO CORRIGIDA COM TRADUÇÕES
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -85,13 +85,18 @@ export class Companies implements OnInit, OnDestroy {
     this.loggedUser = this.auth.currentUser()!;
     this.initForms();
     
-    // 🔹 ORDEM CORRETA: Primeiro configura os listeners, depois carrega os dados
     this.setupRouteListener();
+       // 🔹 ORDEM MELHORADA: Primeiro carrega dados, depois configura traduções
+    await this.loadCompanies();
     this.initializeConfigs();
     
     await this.loadCompanies();
 
-    this.langSub = this.translate.onLangChange.subscribe(() => this.initializeConfigs());
+       // 🔹 CORREÇÃO: Atualiza configurações quando idioma mudar
+    this.langSub = this.translate.onLangChange.subscribe(() => {
+      console.log('🌐 Idioma alterado, atualizando configurações...');
+      this.updateConfigs();
+    });
   }
 
   ngOnDestroy() {
@@ -293,6 +298,7 @@ export class Companies implements OnInit, OnDestroy {
     this.inputConfigs = buildInputConfigs(this.translate);
     this.selectConfigs = buildSelectConfigs(this.translate);
     this.isConfigsReady = true;
+    this.cdr.detectChanges();
   }
 
   // 🔹 MÉTODOS PARA A DYNAMIC TABLE
@@ -306,7 +312,7 @@ export class Companies implements OnInit, OnDestroy {
     this.selectedCompany.set(company);
   }
 
-  // Getters para os controles (mantidos iguais)
+  // Getters para os controles
   get searchControl(): FormControl { return this.filterForm.get('search') as FormControl; }
   get filterFieldControl(): FormControl { return this.filterForm.get('filterField') as FormControl; }
   get nameControl(): FormControl { return this.companyForm.get('name') as FormControl; }
@@ -332,7 +338,7 @@ export class Companies implements OnInit, OnDestroy {
           this.notificationService.createNotification(
             NotificationTitle.UPDATE_COMPANY,
             NotificationType.SUCCESS,
-            'Empresa atualizada com sucesso!',
+            this.translate.instant('NOTIFICATIONS.UPDATE_COMPANY_SUCCESS'),
             false,
             `/companies/${this.currentCompanyId()}`
           );
@@ -348,7 +354,7 @@ export class Companies implements OnInit, OnDestroy {
           this.notificationService.createNotification(
             NotificationTitle.CREATE_COMPANY,
             NotificationType.SUCCESS,
-            'Empresa criada com sucesso!',
+            this.translate.instant('NOTIFICATIONS.CREATE_COMPANY_SUCCESS'),
             false,
             `/companies/${newCompany.id}`
           );
@@ -374,14 +380,14 @@ export class Companies implements OnInit, OnDestroy {
   }
 
   async onDeleteCompany(company: Company) {
-    if (confirm(`Tem certeza que deseja excluir a empresa ${company.name}?`)) {
+    if (confirm(this.translate.instant('COMPANIES.CONFIRM_DELETE', { name: company.name }))) {
       try {
         const success = await this.companyService.deleteCompany(company.id);
         if (success) {
           this.notificationService.createNotification(
             NotificationTitle.DELETED_COMPANY,
             NotificationType.SUCCESS,
-            'Empresa excluída com sucesso!',
+            this.translate.instant('NOTIFICATIONS.DELETE_COMPANY_SUCCESS'),
             false,
             null
           );
@@ -416,6 +422,9 @@ export class Companies implements OnInit, OnDestroy {
   }
 
   private updateConfigs() {
+        console.log('🔄 Atualizando configurações de tradução...');
+    this.inputConfigs = buildInputConfigs(this.translate);
+    this.selectConfigs = buildSelectConfigs(this.translate);
     this.cdr.detectChanges();
   }
 }

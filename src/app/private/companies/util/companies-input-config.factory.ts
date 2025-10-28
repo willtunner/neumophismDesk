@@ -10,7 +10,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       formControlName: 'name',
       label: t(translate, 'COMPANIES.FIELDS.NAME'),
       required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.NAME'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDER_NAME'),
       minLength: 2,
       maxLength: 100,
       customErrorMessages: {
@@ -23,7 +23,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       formControlName: 'cnpj',
       label: t(translate, 'COMPANIES.FIELDS.CNPJ'),
       required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.CNPJ'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDER_CNPJ'),
       customErrorMessages: {
         required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
       },
@@ -33,7 +33,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       formControlName: 'email',
       label: t(translate, 'COMPANIES.FIELDS.EMAIL'),
       required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.EMAIL'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_EMAIL'),
       customErrorMessages: {
         required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
         email: t(translate, 'VALIDATOR-ERROR-MESSAGES.EMAIL'),
@@ -44,7 +44,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       formControlName: 'phone',
       label: t(translate, 'COMPANIES.FIELDS.PHONE'),
       required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.PHONE'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_PHONE'),
       customErrorMessages: {
         required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
       },
@@ -54,7 +54,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       formControlName: 'address',
       label: t(translate, 'COMPANIES.FIELDS.ADDRESS'),
       required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.ADDRESS'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_ADDRESS'),
       customErrorMessages: {
         required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
       },
@@ -64,17 +64,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       formControlName: 'city',
       label: t(translate, 'COMPANIES.FIELDS.CITY'),
       required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.CITY'),
-      customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-      },
-    },
-    state: {
-      type: InputType.TEXT,
-      formControlName: 'state',
-      label: t(translate, 'COMPANIES.FIELDS.STATE'),
-      required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.STATE'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_CITY'),
       customErrorMessages: {
         required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
       },
@@ -82,9 +72,9 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
     zipcode: {
       type: InputType.CEP,
       formControlName: 'zipcode',
-      label: t(translate, 'COMPANIES.FIELDS.ZIPCODE'),
+      label: t(translate, 'COMPANIES.FIELDS.ZIP_CODE'),
       required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.ZIPCODE'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_ZIPCODE'),
       customErrorMessages: {
         required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
       },
@@ -92,9 +82,9 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
     connectionServ: {
       type: InputType.TEXT,
       formControlName: 'connectionServ',
-      label: t(translate, 'COMPANIES.FIELDS.CONNECTION_SERV'),
+      label: t(translate, 'COMPANIES.FIELDS.CONECTION'),
       required: true,
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.CONNECTION_SERV'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDER_CONECTION'),
       customErrorMessages: {
         required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
       },
@@ -103,7 +93,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       type: InputType.TEXT,
       formControlName: 'versionServ',
       label: t(translate, 'COMPANIES.FIELDS.VERSION_SERV'),
-      placeholder: t(translate, 'COMPANIES.PLACEHOLDERS.VERSION_SERV'),
+      placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDER_VERSION_SERV'),
     },
     search: {
       type: InputType.TEXT,

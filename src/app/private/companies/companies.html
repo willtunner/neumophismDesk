@@ -2,11 +2,6 @@
     <!-- Container Principal -->
     <div class="neu-container companies-container">
 
-        <!-- Cabeçalho -->
-        <div class="neu-emboss">
-            <h2>{{ 'COMPANIES.TITLE' | translate }}</h2>
-        </div>
-
         <!-- Seção de Filtros -->
         <div class="filters-section neu-emboss">
             <h3>{{ 'COMPANIES.FILTERS.TITLE' | translate }}</h3>
@@ -24,7 +19,7 @@
 
                         <!-- Campo para Selecionar Filtro -->
                         <div class="filter-field">
-                            <label class="filter-label">{{ 'COMPANIES.FIELDS.FILTER_BY' | translate }}</label>
+                            <label class="filter-label">{{ 'COMPANIES.FILTERS.FILTER_BY' | translate }}</label>
                             <app-select-dynamic [config]="selectConfigs.filterField" [control]="filterFieldControl"
                                 [showImage]="false">
                             </app-select-dynamic>
@@ -144,12 +139,11 @@
             </form>
         </div>
 
-        <!-- Lista de Empresas - AGORA COM DYNAMIC TABLE -->
+        <!-- Lista de Empresas -->
         <div class="list-section neu-emboss">
             <h3>{{ 'COMPANIES.LIST.TITLE' | translate }} ({{ filteredCompanies().length }})</h3>
 
             <div class="companies-list" *ngIf="!isLoading; else loadingTemplate">
-                <!-- 🔹 SUBSTITUÍDO PELA DYNAMIC TABLE -->
                 <app-dynamic-table
                   [headers]="tableHeaders"
                   [data]="filteredCompanies()"
