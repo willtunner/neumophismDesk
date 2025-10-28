@@ -143,7 +143,7 @@ export class CompanyService {
         NotificationType.SUCCESS,
         `${createdCompany.name} Criado com sucesso!`,
         false,
-        `/company/${createdCompany.id}`,
+        `companies/${createdCompany.id}`,
       );
 
       return createdCompany;
@@ -194,7 +194,7 @@ export class CompanyService {
         NotificationType.SUCCESS,
         `${updatedCompany.name} Criado com sucesso!`,
         false,
-        `/company/${updatedCompany.id}`,
+        `/companies/${updatedCompany.id}`,
       );
 
       return updatedCompany;

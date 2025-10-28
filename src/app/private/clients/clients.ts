@@ -8,11 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { SelectDynamicComponent } from '../../shared/components/select-dynamic/select-dynamic';
 import { InputDynamicComponent } from '../../shared/components/input-dynamic/input-dynamic';
-import { ButtonDynamic } from '../../shared/components/button-dynamic/button-dynamic';
-import { TagsNeuComponent } from '../../shared/components/tags-neu/tags-neu';
 import { DynamicTableComponent } from '../../shared/components/dynamic-table/dynamic-table';
 
-import { Client, Company, User } from '../../models/models';
+import { User } from '../../models/models';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification';
 import { NotificationTitle, NotificationType } from '../../enuns/notification-icon-types.enum';
@@ -36,8 +34,6 @@ interface CompanyGroup {
     TranslateModule,
     SelectDynamicComponent,
     InputDynamicComponent,
-    ButtonDynamic,
-    TagsNeuComponent,
     DynamicTableComponent
   ]
 })

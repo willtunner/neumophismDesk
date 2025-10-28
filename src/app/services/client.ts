@@ -131,7 +131,7 @@ export class ClientService {
       NotificationType.SUCCESS,
       `${createdClient.name} Criado com sucesso na empresa ${companySelected?.name }!`,
       false,
-      `/client/${createdClient.id}`,
+      `client/${createdClient.id}`,
     );
 
     return createdClient;

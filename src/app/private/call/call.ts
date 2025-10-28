@@ -235,7 +235,7 @@ export class CallComponent implements OnInit, OnDestroy {
       console.log('📤 Dados do chamado:', this.callForm.value);
       const call = await this.callService.saveCall(this.callForm.value);
 
-      const path = `/call/${call.id}`;
+      const path = `call/${call.id}`;
 
       this.notificationService.createNotification(
         NotificationTitle.CREATE_CALL,

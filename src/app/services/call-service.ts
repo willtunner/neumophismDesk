@@ -18,6 +18,8 @@ import { CompanyService } from './company';
 import { ClientService } from './client';
 import { OperatorService } from './operator-service';
 import { HelpdeskCompanyService } from './helpdesk-company-service';
+import { NotificationService } from './notification';
+import { NotificationTitle, NotificationType } from '../enuns/notification-icon-types.enum';
 
 const PATH_CALLS = 'calls';
 
@@ -31,6 +33,7 @@ export class CallService {
   private _clientService = inject(ClientService);
   private _operatorService = inject(OperatorService);
   private _helpdeskCompanyService = inject(HelpdeskCompanyService);
+  private notificationService = inject(NotificationService);
   
   currentUser = this._sessionService.getSession();
 
@@ -98,6 +101,13 @@ export class CallService {
     };
 
     console.log('✅ Chamado atualizado com ID:', callData.id);
+          this.notificationService.createNotification(
+            NotificationTitle.CREATE_CALL,
+            NotificationType.SUCCESS,
+            `Chamado ${updatedCall.title} Criado com sucesso!`,
+            false,
+            `call/${updatedCall.id}`,
+          );
     return updatedCall;
 
   } catch (error) {

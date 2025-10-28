@@ -1,3 +1,4 @@
+// companies.ts - VERSÃO CORRIGIDA
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -7,9 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { SelectDynamicComponent } from '../../shared/components/select-dynamic/select-dynamic';
 import { InputDynamicComponent } from '../../shared/components/input-dynamic/input-dynamic';
-import { ButtonDynamic } from '../../shared/components/button-dynamic/button-dynamic';
-import { TagsNeuComponent } from '../../shared/components/tags-neu/tags-neu';
-import { DynamicTableComponent } from '../../shared/components/dynamic-table/dynamic-table'; // 🔹 IMPORT ADICIONADO
+import { DynamicTableComponent } from '../../shared/components/dynamic-table/dynamic-table';
 
 import { Company, User } from '../../models/models';
 import { AuthService } from '../../services/auth.service';
@@ -30,9 +29,7 @@ import { buildSelectConfigs } from './util/companies-select-config.factory';
     TranslateModule,
     SelectDynamicComponent,
     InputDynamicComponent,
-    ButtonDynamic,
-    TagsNeuComponent,
-    DynamicTableComponent // 🔹 COMPONENTE ADICIONADO
+    DynamicTableComponent
   ]
 })
 export class Companies implements OnInit, OnDestroy {
@@ -159,7 +156,8 @@ export class Companies implements OnInit, OnDestroy {
         this.populateForm(company);
         this.currentCompanyId.set(companyId);
         this.isEditing = true;
-        this.selectedCompany.set(company); // 🔹 ATUALIZA LINHA SELECIONADA
+        this.selectedCompany.set(company);
+        this.cdr.detectChanges(); // 🔹 CORREÇÃO: ADICIONADO
       }
     } catch (error) {
       console.error('❌ Erro ao carregar empresa:', error);
@@ -186,7 +184,7 @@ export class Companies implements OnInit, OnDestroy {
     this.companyForm.reset();
     this.currentCompanyId.set(null);
     this.isEditing = false;
-    this.selectedCompany.set(null); // 🔹 LIMPA LINHA SELECIONADA
+    this.selectedCompany.set(null);
   }
 
   private applyFilters() {
@@ -239,7 +237,7 @@ export class Companies implements OnInit, OnDestroy {
     this.isConfigsReady = true;
   }
 
-  // 🔹 NOVOS MÉTODOS PARA A DYNAMIC TABLE
+  // 🔹 MÉTODOS PARA A DYNAMIC TABLE
   onTableRowClick(company: Company) {
     this.selectedCompany.set(company);
     this.onEditCompany(company);
@@ -249,7 +247,7 @@ export class Companies implements OnInit, OnDestroy {
     this.selectedCompany.set(company);
   }
 
-  // Getters para os controles (mantidos iguais)
+  // Getters para os controles
   get searchControl(): FormControl {
     return this.filterForm.get('search') as FormControl;
   }
@@ -315,7 +313,7 @@ export class Companies implements OnInit, OnDestroy {
             NotificationType.SUCCESS,
             'Empresa atualizada com sucesso!',
             false,
-            `/companies/${this.currentCompanyId()}`
+            `/companies/${this.currentCompanyId()}` // 🔹 CORREÇÃO: COM BARRA INICIAL
           );
         } else {
           // Criar nova empresa
@@ -325,7 +323,7 @@ export class Companies implements OnInit, OnDestroy {
             NotificationType.SUCCESS,
             'Empresa criada com sucesso!',
             false,
-            `/companies/${newCompany.id}`
+            `/companies/${newCompany.id}` // 🔹 CORREÇÃO: COM BARRA INICIAL
           );
           this.clearForm();
         }
