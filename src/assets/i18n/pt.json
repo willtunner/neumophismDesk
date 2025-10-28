@@ -206,7 +206,10 @@
       "VERSION_SERV": "Versão do servidor",
       "PLACEHOLDER_VERSION_SERV": "Digita a verção do servidor",
       "CONECTION": "Conexão",
-      "PLACEHOLDER_CONECTION": "Digite o código de acesso."
+      "PLACEHOLDER_CONECTION": "Digite o código de acesso.",
+      "SELECT_COMPANY": "Selecione a empresa",
+      "PLACEHOLDER_COMPANY": "Empresa aqui",
+      "ADD_NEW_COMPANY": "Adicionar nova empresa"
     },
     "ACTIONS": {
       "NEW": "Limpar campos",
@@ -218,5 +221,58 @@
     },
     "EDIT_TITLE": "Editar Empresa",
     "CREATE_TITLE": "Cradastrar uma nova empresa"
+  },
+  "CLIENTS": {
+    "FILTERS": {
+      "TITLE": "Filtrar Clientes",
+      "SEARCH": "Procurar Clientes",
+      "SELECT_FIELD": "Selecione o filtro",
+      "FILTER_BY": "Filtrar por",
+      "DATE_RANGE": "Selecione a data",
+      "START_DATE": "Data inicial",
+      "END_DATE": "Data final",
+      "CLEAR": "Limpar campos",
+      "SEARCH_PLACEHOLDER": "Digite para pesquisar..."
+    },
+    "FIELDS": {
+      "NAME": "Nome",
+      "PLACEHOLDER_NAME": "Digite o nome",
+      "CNPJ": "CNPJ",
+      "PLACEHOLDER_CNPJ": "Digite o cnpj",
+      "EMAIL": "E-mail",
+      "PLACEHOLDER_EMAIL": "Digite o email",
+      "PHONE": "Telefone",
+      "PLACEHOLDER_PHONE": "Digite o telefone",
+      "ADDRESS": "Endereço",
+      "PLACEHOLDER_ADDRESS": "Digite o endereço",
+      "CITY": "Cidade",
+      "PLACEHOLDER_CITY": "Digite a cidade",
+      "STATE": "Estado",
+      "PLACEHOLDERS_STATE": "Digite o estado",
+      "ZIP_CODE": "CEP",
+      "PLACEHOLDERS_ZIPCODE": "Digite o cep",
+      "VERSION_SERV": "Versão do servidor",
+      "PLACEHOLDER_VERSION_SERV": "Digita a verção do servidor",
+      "CONECTION": "Conexão",
+      "PLACEHOLDER_CONECTION": "Digite o código de acesso.",
+      "SELECT_COMPANY": "Selecione a empresa",
+      "COMPANY": "Empresa",
+      "PLACEHOLDER_COMPANY": "Escolha a empresa",
+      "USERNAME": "Nome do usuário",
+      "PLACEHOLDER_USERNAME": "Digite o nome do usuário",
+      "PASSWORD": "Senha",
+      "PLACEHOLDER_PASSWORD": "Digite a senha",
+      "CONFIRM_PASSWORD": "Confirmar Senha"
+    },
+    "LIST": {
+      "TITLE": "Listar Clientes"
+    },
+    "ACTIONS": {
+      "NEW": "Limpar campos",
+      "UPDATE": "Atualizar Empresa",
+      "SAVE": "Salvar"
+    },
+    "EDIT_TITLE": "Editar Cliente",
+    "CREATE_TITLE": "Cradastrar uma novo cliente"
   }
 }

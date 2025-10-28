@@ -2,11 +2,6 @@
     <!-- Container Principal -->
     <div class="neu-container clients-container">
 
-        <!-- Cabeçalho -->
-        <div class="neu-emboss">
-            <h2>{{ 'CLIENTS.TITLE' | translate }}</h2>
-        </div>
-
         <!-- Seção de Filtros -->
         <div class="filters-section neu-emboss">
             <h3>{{ 'CLIENTS.FILTERS.TITLE' | translate }}</h3>
@@ -25,7 +20,7 @@
 
                         <!-- Campo para Selecionar Filtro -->
                         <div class="filter-field">
-                            <label class="filter-label">{{ 'CLIENTS.FIELDS.FILTER_BY' | translate }}</label>
+                            <label class="filter-label">{{ 'CLIENTS.FILTERS.FILTER_BY' | translate }}</label>
                             <app-select-dynamic [config]="selectConfigs.filterField" [control]="filterFieldControl"
                                 [showImage]="false">
                             </app-select-dynamic>

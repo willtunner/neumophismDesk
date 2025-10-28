@@ -389,49 +389,68 @@ export class Clients implements OnInit, OnDestroy {
   private buildInputConfigs() {
     return {
       search: {
-        label: 'CLIENTS.FILTERS.SEARCH',
-        placeholder: 'CLIENTS.PLACEHOLDERS.SEARCH',
+        label: this.translate.instant('CLIENTS.FILTERS.SEARCH'),
+        placeholder: this.translate.instant('CLIENTS.FILTERS.SEARCH_PLACEHOLDER'),
         type: 'text',
         icon: 'search'
       },
       name: {
-        label: 'CLIENTS.FIELDS.NAME',
-        placeholder: 'CLIENTS.PLACEHOLDERS.NAME',
+        label: this.translate.instant('CLIENTS.FIELDS.NAME'),
+        placeholder: this.translate.instant('CLIENTS.FIELDS.PLACEHOLDER_NAME'),
         type: 'text',
         icon: 'person',
-        required: true
+        required: true,
+        customErrorMessages: {
+          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+          minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 })
+        }
       },
       username: {
-        label: 'CLIENTS.FIELDS.USERNAME',
-        placeholder: 'CLIENTS.PLACEHOLDERS.USERNAME',
+        label: this.translate.instant('CLIENTS.FIELDS.USERNAME'),
+        placeholder: this.translate.instant('CLIENTS.FIELDS.PLACEHOLDER_USERNAME'),
         type: 'text',
         icon: 'badge',
-        required: true
+        required: true,
+        customErrorMessages: {
+          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+          minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 3 })
+        }
       },
       email: {
-        label: 'CLIENTS.FIELDS.EMAIL',
-        placeholder: 'CLIENTS.PLACEHOLDERS.EMAIL',
+        label: this.translate.instant('CLIENTS.FIELDS.EMAIL'),
+        placeholder: this.translate.instant('CLIENTS.FIELDS.PLACEHOLDER_EMAIL'),
         type: 'email',
         icon: 'email',
-        required: true
+        required: true,
+        customErrorMessages: {
+          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+          email: this.translate.instant('VALIDATOR-ERROR-MESSAGES.EMAIL')
+        }
       },
       phone: {
-        label: 'CLIENTS.FIELDS.PHONE',
-        placeholder: 'CLIENTS.PLACEHOLDERS.PHONE',
+        label: this.translate.instant('CLIENTS.FIELDS.PHONE'),
+        placeholder: this.translate.instant('CLIENTS.FIELDS.PLACEHOLDER_PHONE'),
         type: 'tel',
         icon: 'phone',
-        required: true
+        required: true,
+        customErrorMessages: {
+          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED')
+        }
       },
       password: {
-        label: 'CLIENTS.FIELDS.PASSWORD',
-        placeholder: 'CLIENTS.PLACEHOLDERS.PASSWORD',
+        label: this.translate.instant('CLIENTS.FIELDS.PASSWORD'),
+        placeholder: this.translate.instant('CLIENTS.FIELDS.PLACEHOLDER_PASSWORD'),
         type: 'password',
         icon: 'lock',
-        required: true
+        required: true,
+        customErrorMessages: {
+          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+          minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 6 })
+        }
       },
       connection: {
-        label: 'CLIENTS.FIELDS.CONNECTION',
-        placeholder: 'CLIENTS.PLACEHOLDERS.CONNECTION',
+        label: this.translate.instant('CLIENTS.FIELDS.CONECTION'),
+        placeholder: this.translate.instant('CLIENTS.FIELDS.PLACEHOLDER_CONECTION'),
         type: 'text',
         icon: 'link'
       }
@@ -446,22 +465,25 @@ export class Clients implements OnInit, OnDestroy {
 
     return {
       filterField: {
-        label: 'CLIENTS.FIELDS.FILTER_BY',
+        label: this.translate.instant('CLIENTS.FILTERS.FILTER_BY'),
         options: [
-          { value: 'name', label: 'CLIENTS.FIELDS.NAME' },
-          { value: 'username', label: 'CLIENTS.FIELDS.USERNAME' },
-          { value: 'email', label: 'CLIENTS.FIELDS.EMAIL' },
-          { value: 'phone', label: 'CLIENTS.FIELDS.PHONE' },
-          { value: 'connection', label: 'CLIENTS.FIELDS.CONNECTION' }
+          { value: 'name', label: this.translate.instant('CLIENTS.FIELDS.NAME') },
+          { value: 'username', label: this.translate.instant('CLIENTS.FIELDS.USERNAME') },
+          { value: 'email', label: this.translate.instant('CLIENTS.FIELDS.EMAIL') },
+          { value: 'phone', label: this.translate.instant('CLIENTS.FIELDS.PHONE') },
+          { value: 'connection', label: this.translate.instant('CLIENTS.FIELDS.CONNECTION') }
         ],
         icon: 'filter_list'
       },
       company: {
-        label: 'CLIENTS.FIELDS.COMPANY',
+        label: this.translate.instant('CLIENTS.FIELDS.COMPANY'),
         options: companyOptions,
-        placeholder: 'CLIENTS.PLACEHOLDERS.SELECT_COMPANY',
+        placeholder: this.translate.instant('CLIENTS.FIELDS.PLACEHOLDER_COMPANY'),
         icon: 'business',
-        required: true
+        required: true,
+        customErrorMessages: {
+          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED')
+        }
       }
     };
   }
