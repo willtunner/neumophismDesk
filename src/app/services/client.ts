@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import {
   Firestore,
   collection,
@@ -11,7 +11,7 @@ import {
   documentId
 } from '@angular/fire/firestore';
 import { SessionService } from './session.service';
-import { Company, User } from '../models/models';
+import { Client, Company, User } from '../models/models';
 import { NotificationService } from './notification';
 import { NotificationTitle, NotificationType } from '../enuns/notification-icon-types.enum';
 
@@ -24,6 +24,7 @@ export class ClientService {
   private _firestore = inject(Firestore);
   private _sessionService = inject(SessionService);
   private notificationService = inject(NotificationService);
+  clients = signal<Client[]>([]);
 
   // Getter lazy para a coleção de clients
   private get _clientsCollection(): CollectionReference {
@@ -240,7 +241,7 @@ private async updateCompanyWithNewClient(companyId: string, clientId: string): P
    * @param includeDeleted Flag para incluir clientes excluídos
    * @returns Array de clientes
    */
-  async getAllClients(includeDeleted: boolean = false): Promise<User[]> {
+  async getAllClients(includeDeleted: boolean = false): Promise<Client[]> {
     try {
       console.log(`👥 Carregando todos os clientes - includeDeleted: ${includeDeleted}`);
 
@@ -275,7 +276,7 @@ private async updateCompanyWithNewClient(companyId: string, clientId: string): P
           email: data['email'],
           phone: data['phone'],
           ...data
-        } as User;
+        } as Client;
       });
 
       console.log(`✅ Todos os clientes carregados: ${clients.length} itens`);
@@ -286,4 +287,172 @@ private async updateCompanyWithNewClient(companyId: string, clientId: string): P
       return [];
     }
   }
+
+  /**
+ * Carrega todos os clientes
+ */
+async loadAllClients(): Promise<User[]> {
+  try {
+    console.log('👥 Carregando todos os clientes');
+
+    const clients = await this.getAllClients();
+    this.clients.set(clients);
+    return clients;
+
+  } catch (error) {
+    console.error('❌ Erro ao carregar todos os clientes:', error);
+    return [];
+  }
+}
+
+/**
+ * Busca cliente por ID
+ */
+async getClientById(clientId: string): Promise<Client | null> {
+  try {
+    console.log('🔍 Buscando cliente por ID:', clientId);
+
+    const currentUser = this._sessionService.getSession();
+    if (!currentUser) {
+      console.log('❌ Usuário não está logado');
+      return null;
+    }
+
+    const { doc, getDoc } = await import('@angular/fire/firestore');
+    const clientRef = doc(this._firestore, PATH_CLIENTS, clientId);
+    const clientSnap = await getDoc(clientRef);
+
+    if (clientSnap.exists()) {
+      const data = clientSnap.data();
+      const client: Client = {
+        id: clientSnap.id,
+        name: data['name'],
+        email: data['email'],
+        phone: data['phone'],
+        companyId: data['companyId'],
+        deleted: data['deleted'] || false,
+        created: data['created'] || new Date(),
+        updated: data['updated'] || null,
+        imageUrl: data['imageUrl'],
+        roles: data['roles'],
+        username: data['username'],
+        isLoggedIn: data['isLoggedIn'],
+        password: data['password'],
+        connection: data['connection'],
+        ...data
+      };
+      return client;
+    }
+
+    return null;
+
+  } catch (error) {
+    console.error('❌ Erro ao buscar cliente por ID:', error);
+    return null;
+  }
+}
+
+/**
+ * Atualiza um cliente existente
+ */
+async updateClient(clientId: string, clientData: Partial<Omit<Client, 'id' | 'created' | 'helpDeskCompanyId'>>): Promise<Client> {
+  try {
+    console.log('📝 Atualizando cliente:', clientId, clientData);
+
+    const currentUser = this._sessionService.getSession();
+    if (!currentUser) {
+      throw new Error('Usuário não está logado');
+    }
+
+    const { doc, updateDoc } = await import('@angular/fire/firestore');
+    
+    const updateData = {
+      ...clientData,
+      updated: new Date()
+    };
+
+    // Atualiza o cliente no Firestore
+    const clientRef = doc(this._firestore, PATH_CLIENTS, clientId);
+    await updateDoc(clientRef, updateData);
+
+    // Busca o cliente atualizado
+    const updatedClient = await this.getClientById(clientId);
+
+    if (!updatedClient) {
+      throw new Error('Cliente não encontrado após atualização');
+    }
+
+    console.log('✅ Cliente atualizado:', updatedClient);
+
+    // Atualiza o signal com o cliente modificado
+    this.clients.update(clients =>
+      clients.map(client =>
+        client.id === clientId ? updatedClient : client
+      )
+    );
+
+    // ENVIO DE NOTIFICAÇÃO
+    this.notificationService.createNotification(
+      NotificationTitle.UPDATE_CLIENT,
+      NotificationType.SUCCESS,
+      `${updatedClient.name} atualizado com sucesso!`,
+      false,
+      `/client/${updatedClient.id}`,
+    );
+
+    return updatedClient;
+
+  } catch (error) {
+    console.error('❌ Erro ao atualizar cliente:', error);
+    throw error;
+  }
+}
+
+/**
+ * Exclui um cliente (marca como deletado)
+ */
+async deleteClient(clientId: string): Promise<boolean> {
+  try {
+    console.log('🗑️ Excluindo cliente:', clientId);
+
+    const currentUser = this._sessionService.getSession();
+    if (!currentUser) {
+      throw new Error('Usuário não está logado');
+    }
+
+    const { doc, updateDoc } = await import('@angular/fire/firestore');
+
+    // Atualiza o cliente marcando como deletado
+    const clientRef = doc(this._firestore, PATH_CLIENTS, clientId);
+    await updateDoc(clientRef, {
+      deleted: true,
+      updated: new Date()
+    });
+
+    console.log('✅ Cliente marcado como excluído:', clientId);
+
+    // Remove o cliente do signal
+    this.clients.update(clients =>
+      clients.filter(client => client.id !== clientId)
+    );
+
+    // Busca o cliente para notificação
+    const deletedClient = await this.getClientById(clientId);
+    if (deletedClient) {
+      this.notificationService.createNotification(
+        NotificationTitle.DELETED_CLIENT,
+        NotificationType.SUCCESS,
+        `Cliente ${deletedClient.name} excluído com sucesso!`,
+        false,
+        null
+      );
+    }
+
+    return true;
+
+  } catch (error) {
+    console.error('❌ Erro ao excluir cliente:', error);
+    return false;
+  }
+}
 }

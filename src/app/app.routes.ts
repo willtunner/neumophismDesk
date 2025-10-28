@@ -24,6 +24,7 @@ export const routes: Routes = [
   { path: 'call', component: CallComponent, canActivate: [authGuard] },
   { path: 'call/:id', component: CallComponent, canActivate: [authGuard] },
   { path: 'clients', component: Clients, canActivate: [authGuard]},
+  { path: 'clients/:id', component: Clients, canActivate: [authGuard]},
   { path: 'calendar', component: Calendar, canActivate: [authGuard] },
   { path: 'tutorials', component: Tutorials, canActivate: [authGuard]},
   { path: 'notes', component: Notes , canActivate: [authGuard]},

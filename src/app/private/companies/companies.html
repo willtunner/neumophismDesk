@@ -13,41 +13,48 @@
 
             <div class="filters-container" *ngIf="isConfigsReady">
                 <div class="filters-grid">
-                    <!-- Campo de Busca -->
-                    <div class="filter-field">
-                        <label class="filter-label">{{ 'COMPANIES.FILTERS.SEARCH' | translate }}</label>
-                        <app-input-dynamic [config]="inputConfigs.search" [control]="searchControl" [showImage]="true">
-                        </app-input-dynamic>
+                    <!-- Primeira Linha: Dois inputs -->
+                    <div class="filter-row">
+                        <!-- Campo de Busca -->
+                        <div class="filter-field">
+                            <label class="filter-label">{{ 'COMPANIES.FILTERS.SEARCH' | translate }}</label>
+                            <app-input-dynamic [config]="inputConfigs.search" [control]="searchControl" [showImage]="true">
+                            </app-input-dynamic>
+                        </div>
+
+                        <!-- Campo para Selecionar Filtro -->
+                        <div class="filter-field">
+                            <label class="filter-label">{{ 'COMPANIES.FIELDS.FILTER_BY' | translate }}</label>
+                            <app-select-dynamic [config]="selectConfigs.filterField" [control]="filterFieldControl"
+                                [showImage]="false">
+                            </app-select-dynamic>
+                        </div>
                     </div>
 
-                    <!-- Campo para Selecionar Filtro -->
-                    <div class="filter-field">
-                        <label class="filter-label">{{ 'COMPANIES.FIELDS.FILTER_BY' | translate }}</label>
-                        <app-select-dynamic [config]="selectConfigs.filterField" [control]="filterFieldControl"
-                            [showImage]="false">
-                        </app-select-dynamic>
-                    </div>
-
-                    <!-- Filtro por Data -->
-                    <div class="filter-field date-range">
-                        <label class="filter-label">{{ 'COMPANIES.FILTERS.DATE_RANGE' | translate }}</label>
-                        <div class="date-inputs">
-                            <div class="date-field">
-                                <label class="date-label">{{ 'COMPANIES.FILTERS.START_DATE' | translate }}</label>
-                                <input type="date" [formControl]="startDateControl" class="neu-input date-input">
-                            </div>
-                            <div class="date-field">
-                                <label class="date-label">{{ 'COMPANIES.FILTERS.END_DATE' | translate }}</label>
-                                <input type="date" [formControl]="endDateControl" class="neu-input date-input">
+                    <!-- Segunda Linha: Datas -->
+                    <div class="filter-row">
+                        <div class="filter-field date-range">
+                            <label class="filter-label">{{ 'COMPANIES.FILTERS.DATE_RANGE' | translate }}</label>
+                            <div class="date-inputs">
+                                <div class="date-field">
+                                    <label class="date-label">{{ 'COMPANIES.FILTERS.START_DATE' | translate }}</label>
+                                    <input type="date" [formControl]="startDateControl" class="neu-input date-input">
+                                </div>
+                                <div class="date-field">
+                                    <label class="date-label">{{ 'COMPANIES.FILTERS.END_DATE' | translate }}</label>
+                                    <input type="date" [formControl]="endDateControl" class="neu-input date-input">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Botão Limpar Filtros -->
-                    <div class="filter-actions">
-                        <button type="button" class="neu-button secondary clear-button" (click)="onClearFilters()">
-                            {{ 'COMPANIES.FILTERS.CLEAR' | translate }}
-                        </button>
+                    <!-- Terceira Linha: Botão -->
+                    <div class="filter-row">
+                        <div class="filter-actions">
+                            <button type="button" class="neu-button secondary clear-button" (click)="onClearFilters()">
+                                {{ 'COMPANIES.FILTERS.CLEAR' | translate }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,12 +131,6 @@
                         </app-input-dynamic>
                     </div>
 
-                    <!-- Keywords (ocupa todas as colunas) -->
-                    <div class="form-group-full">
-                        <label class="tags-label">{{ 'COMPANIES.FIELDS.KEYWORDS' | translate }}</label>
-                        <app-tags-neu [control]="keywordsControl"></app-tags-neu>
-                    </div>
-
                     <!-- Ações do Formulário -->
                     <div class="form-actions">
                         <button type="button" class="neu-button secondary" (click)="onNewCompany()" *ngIf="isEditing">
@@ -143,50 +144,21 @@
             </form>
         </div>
 
-        <!-- Lista de Empresas -->
+        <!-- Lista de Empresas - AGORA COM DYNAMIC TABLE -->
         <div class="list-section neu-emboss">
             <h3>{{ 'COMPANIES.LIST.TITLE' | translate }} ({{ filteredCompanies().length }})</h3>
 
             <div class="companies-list" *ngIf="!isLoading; else loadingTemplate">
-                <div class="companies-table">
-                    <div class="table-header">
-                        <div class="table-cell">{{ 'COMPANIES.FIELDS.NAME' | translate }}</div>
-                        <div class="table-cell">{{ 'COMPANIES.FIELDS.CNPJ' | translate }}</div>
-                        <div class="table-cell">{{ 'COMPANIES.FIELDS.EMAIL' | translate }}</div>
-                        <div class="table-cell">{{ 'COMPANIES.FIELDS.CITY' | translate }}</div>
-                        <div class="table-cell">{{ 'COMPANIES.FIELDS.STATE' | translate }}</div>
-                        <div class="table-cell">{{ 'COMPANIES.FIELDS.CREATED' | translate }}</div>
-                        <div class="table-cell actions">{{ 'COMPANIES.ACTIONS.TITLE' | translate }}</div>
-                    </div>
-
-                    <div class="table-body">
-                        <div *ngFor="let company of filteredCompanies()" class="table-row"
-                            [class.selected]="currentCompanyId() === company.id" (click)="onEditCompany(company)">
-                            <div class="table-cell">{{ company.name }}</div>
-                            <div class="table-cell">{{ company.cnpj }}</div>
-                            <div class="table-cell">{{ company.email }}</div>
-                            <div class="table-cell">{{ company.city }}</div>
-                            <div class="table-cell">{{ company.state }}</div>
-                            <div class="table-cell">{{ company.created | date:'dd/MM/yyyy - HH:mm:ss' }}</div>
-                            <div class="table-cell actions">
-                                <div class="action-buttons">
-                                    <app-button-dynamic [iconSvg]="editIcon" [small]="true"
-                                        [ariaLabel]="'COMPANIES.ACTIONS.EDIT' | translate"
-                                        (onClick)="onEditCompany(company)">
-                                    </app-button-dynamic>
-                                    <app-button-dynamic [iconSvg]="deleteIcon" [small]="true"
-                                        [ariaLabel]="'COMPANIES.ACTIONS.DELETE' | translate"
-                                        (onClick)="onDeleteCompany(company)">
-                                    </app-button-dynamic>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="table-empty" *ngIf="filteredCompanies().length === 0">
-                        {{ 'COMPANIES.LIST.EMPTY' | translate }}
-                    </div>
-                </div>
+                <!-- 🔹 SUBSTITUÍDO PELA DYNAMIC TABLE -->
+                <app-dynamic-table
+                  [headers]="tableHeaders"
+                  [data]="filteredCompanies()"
+                  [selectedRow]="selectedCompany()"
+                  (edit)="onEditCompany($event)"
+                  (remove)="onDeleteCompany($event)"
+                  (rowClick)="onTableRowClick($event)"
+                  (selectedRowChange)="onSelectedRowChange($event)">
+                </app-dynamic-table>
             </div>
 
             <ng-template #loadingTemplate>

@@ -9,6 +9,7 @@ import { SelectDynamicComponent } from '../../shared/components/select-dynamic/s
 import { InputDynamicComponent } from '../../shared/components/input-dynamic/input-dynamic';
 import { ButtonDynamic } from '../../shared/components/button-dynamic/button-dynamic';
 import { TagsNeuComponent } from '../../shared/components/tags-neu/tags-neu';
+import { DynamicTableComponent } from '../../shared/components/dynamic-table/dynamic-table'; // 🔹 IMPORT ADICIONADO
 
 import { Company, User } from '../../models/models';
 import { AuthService } from '../../services/auth.service';
@@ -30,7 +31,8 @@ import { buildSelectConfigs } from './util/companies-select-config.factory';
     SelectDynamicComponent,
     InputDynamicComponent,
     ButtonDynamic,
-    TagsNeuComponent
+    TagsNeuComponent,
+    DynamicTableComponent // 🔹 COMPONENTE ADICIONADO
   ]
 })
 export class Companies implements OnInit, OnDestroy {
@@ -47,26 +49,18 @@ export class Companies implements OnInit, OnDestroy {
   private langSub!: Subscription;
   private loggedUser!: User;
 
-  // Ícones SVG
-  readonly addIcon = `
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-     <path d="M12 5v14M5 12h14"/>
-   </svg>
- `;
+  // 🔹 HEADERS PARA A DYNAMIC TABLE
+  tableHeaders = [
+    { label: 'COMPANIES.FIELDS.NAME', field: 'name' },
+    { label: 'COMPANIES.FIELDS.CNPJ', field: 'cnpj' },
+    { label: 'COMPANIES.FIELDS.EMAIL', field: 'email' },
+    { label: 'COMPANIES.FIELDS.CITY', field: 'city' },
+    { label: 'COMPANIES.FIELDS.STATE', field: 'state' },
+    { label: 'COMPANIES.FIELDS.CREATED', field: 'created' }
+  ];
 
-  readonly editIcon = `
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-   </svg>
- `;
-
-  readonly deleteIcon = `
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-     <path d="M3 6h18"/>
-     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-   </svg>
- `;
+  // 🔹 SIGNAL PARA LINHA SELECIONADA
+  selectedCompany = signal<Company | null>(null);
 
   // Forms
   filterForm!: FormGroup;
@@ -86,7 +80,7 @@ export class Companies implements OnInit, OnDestroy {
   inputConfigs: any = {};
   selectConfigs: any = {};
 
-  // Controles para datas (correção do erro de tipo)
+  // Controles para datas
   startDateControl = new FormControl('');
   endDateControl = new FormControl('');
 
@@ -165,6 +159,7 @@ export class Companies implements OnInit, OnDestroy {
         this.populateForm(company);
         this.currentCompanyId.set(companyId);
         this.isEditing = true;
+        this.selectedCompany.set(company); // 🔹 ATUALIZA LINHA SELECIONADA
       }
     } catch (error) {
       console.error('❌ Erro ao carregar empresa:', error);
@@ -191,6 +186,7 @@ export class Companies implements OnInit, OnDestroy {
     this.companyForm.reset();
     this.currentCompanyId.set(null);
     this.isEditing = false;
+    this.selectedCompany.set(null); // 🔹 LIMPA LINHA SELECIONADA
   }
 
   private applyFilters() {
@@ -243,7 +239,17 @@ export class Companies implements OnInit, OnDestroy {
     this.isConfigsReady = true;
   }
 
-  // Getters para os controles
+  // 🔹 NOVOS MÉTODOS PARA A DYNAMIC TABLE
+  onTableRowClick(company: Company) {
+    this.selectedCompany.set(company);
+    this.onEditCompany(company);
+  }
+
+  onSelectedRowChange(company: Company | null) {
+    this.selectedCompany.set(company);
+  }
+
+  // Getters para os controles (mantidos iguais)
   get searchControl(): FormControl {
     return this.filterForm.get('search') as FormControl;
   }
@@ -338,7 +344,6 @@ export class Companies implements OnInit, OnDestroy {
   }
 
   onDeleteCompany(company: Company) {
-    // Implementar confirmação e exclusão
     if (confirm(`Tem certeza que deseja excluir a empresa ${company.name}?`)) {
       this.companyService.deleteCompany(company.id).then(success => {
         if (success) {
@@ -351,6 +356,10 @@ export class Companies implements OnInit, OnDestroy {
           );
           // Recarrega a lista
           this.loadCompanies();
+          // Limpa seleção se a empresa excluída era a selecionada
+          if (this.selectedCompany()?.id === company.id) {
+            this.selectedCompany.set(null);
+          }
         }
       });
     }

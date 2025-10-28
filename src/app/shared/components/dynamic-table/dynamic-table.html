@@ -10,7 +10,11 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let item of data" class="table-row" (click)="onRowClick(item)">
+      <!-- 🆕 Adicionar classe 'selected' quando a linha estiver selecionada -->
+      <tr *ngFor="let item of data" 
+          class="table-row" 
+          [class.selected]="isRowSelected(item)"
+          (click)="onRowClick(item)">
         <td *ngFor="let header of headers" [matTooltip]="getNestedValue(item, header.field)" matTooltipPosition="above">
           <ng-container *ngIf="isDate(getNestedValue(item, header.field)); else normalValue">
             {{ getNestedValue(item, header.field) | dateOnlyFormat }}

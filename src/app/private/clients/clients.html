@@ -1,1 +1,192 @@
-<p>clients works!</p>
+<div class="page-container">
+    <!-- Container Principal -->
+    <div class="neu-container clients-container">
+
+        <!-- Cabeçalho -->
+        <div class="neu-emboss">
+            <h2>{{ 'CLIENTS.TITLE' | translate }}</h2>
+        </div>
+
+        <!-- Seção de Filtros -->
+        <div class="filters-section neu-emboss">
+            <h3>{{ 'CLIENTS.FILTERS.TITLE' | translate }}</h3>
+
+            <div class="filters-container" *ngIf="isConfigsReady">
+                <div class="filters-grid">
+                    <!-- Primeira Linha: Dois inputs -->
+                    <div class="filter-row">
+                        <!-- Campo de Busca -->
+                        <div class="filter-field">
+                            <label class="filter-label">{{ 'CLIENTS.FILTERS.SEARCH' | translate }}</label>
+                            <app-input-dynamic [config]="inputConfigs.search" [control]="searchControl"
+                                [showImage]="true">
+                            </app-input-dynamic>
+                        </div>
+
+                        <!-- Campo para Selecionar Filtro -->
+                        <div class="filter-field">
+                            <label class="filter-label">{{ 'CLIENTS.FIELDS.FILTER_BY' | translate }}</label>
+                            <app-select-dynamic [config]="selectConfigs.filterField" [control]="filterFieldControl"
+                                [showImage]="false">
+                            </app-select-dynamic>
+                        </div>
+                    </div>
+
+                    <!-- Segunda Linha: Datas -->
+                    <div class="filter-row">
+                        <div class="filter-field date-range">
+                            <label class="filter-label">{{ 'CLIENTS.FILTERS.DATE_RANGE' | translate }}</label>
+                            <div class="date-inputs">
+                                <div class="date-field">
+                                    <label class="date-label">{{ 'CLIENTS.FILTERS.START_DATE' | translate }}</label>
+                                    <input type="date" [formControl]="startDateControl" class="neu-input date-input">
+                                </div>
+                                <div class="date-field">
+                                    <label class="date-label">{{ 'CLIENTS.FILTERS.END_DATE' | translate }}</label>
+                                    <input type="date" [formControl]="endDateControl" class="neu-input date-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terceira Linha: Botão -->
+                    <div class="filter-row">
+                        <div class="filter-actions">
+                            <button type="button" class="neu-button secondary clear-button" (click)="onClearFilters()">
+                                {{ 'CLIENTS.FILTERS.CLEAR' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário do Cliente -->
+        <div class="form-section neu-emboss">
+            <h3>{{ (isEditing ? 'CLIENTS.EDIT_TITLE' : 'CLIENTS.CREATE_TITLE') | translate }}</h3>
+
+            <form *ngIf="isConfigsReady" [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+
+                <div class="form-grid">
+                    <!-- Nome -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.name" [control]="nameControl" [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.username" [control]="usernameControl"
+                            [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.email" [control]="emailControl" [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Telefone -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.phone" [control]="phoneControl" [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Empresa -->
+                    <div class="form-group">
+                        <app-select-dynamic [config]="selectConfigs.company" [control]="companyControl"
+                            [showImage]="false">
+                        </app-select-dynamic>
+                    </div>
+
+                    <!-- Conexão -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.connection" [control]="connectionControl"
+                            [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.password" [control]="passwordControl"
+                            [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Roles -->
+                    <div class="form-group" style="grid-column: span 2;">
+
+                    </div>
+
+                    <!-- Ações do Formulário -->
+                    <div class="form-actions">
+                        <button type="button" class="neu-button secondary" (click)="onNewClient()" *ngIf="isEditing">
+                            {{ 'CLIENTS.ACTIONS.NEW' | translate }}
+                        </button>
+                        <button type="submit" class="neu-button primary">
+                            {{ (isEditing ? 'CLIENTS.ACTIONS.UPDATE' : 'CLIENTS.ACTIONS.SAVE') | translate }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Lista de Clientes por Empresa -->
+        <div class="list-section neu-emboss">
+            <h3>{{ 'CLIENTS.LIST.TITLE' | translate }}</h3>
+
+            <div class="clients-list" *ngIf="!isLoading; else loadingTemplate">
+                <!-- Dropdowns por Empresa -->
+                <div class="dropdowns-container">
+                    @for (companyGroup of clientsByCompany(); track companyGroup.companyId) {
+                    <div class="dropdown-item" (mouseenter)="hoveredCompany = companyGroup.companyId"
+                        (mouseleave)="hoveredCompany = null">
+
+                        <div class="dropdown-header neu-container"
+                            [class.active]="openedDropdown === companyGroup.companyId"
+                            (click)="toggleDropdown(companyGroup.companyId)">
+                            <div class="header-content">
+                                <h3 class="company-title">{{ companyGroup.companyName }}</h3>
+
+                                <div class="header-info">
+                                    <span class="client-count">{{ companyGroup.clients.length }} clientes</span>
+
+                                    <!-- Ícones aparecem ao passar mouse -->
+                                    <div class="company-actions" *ngIf="hoveredCompany === companyGroup.companyId">
+                                        <button class="icon-btn" (click)="$event.stopPropagation()">
+                                            👁️
+                                        </button>
+                                    </div>
+
+                                    <div class="dropdown-icon">
+                                        <svg [class.rotated]="openedDropdown === companyGroup.companyId"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-content" [class.active]="openedDropdown === companyGroup.companyId">
+                            <!-- Tabela de Clientes da Empresa -->
+                            <app-dynamic-table [headers]="tableHeaders" [data]="companyGroup.clients"
+                                [selectedRow]="selectedClient()" (edit)="onEditClient($event)"
+                                (remove)="onDeleteClient($event)" (rowClick)="onTableRowClick($event)"
+                                (selectedRowChange)="onSelectedRowChange($event)">
+                            </app-dynamic-table>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <ng-template #loadingTemplate>
+                <div class="loading-state">
+                    {{ 'CLIENTS.LIST.LOADING' | translate }}
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

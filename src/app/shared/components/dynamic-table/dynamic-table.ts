@@ -14,10 +14,13 @@ import { TranslateModule } from '@ngx-translate/core';
 export class DynamicTableComponent {
   @Input() headers: { label: string; field: string }[] = [];
   @Input() data: any[] = [];
+  @Input() selectedRow: any = null;
 
   @Output() edit = new EventEmitter<any>();
   @Output() remove = new EventEmitter<any>();
   @Output() rowClick = new EventEmitter<any>(); // 🆕 Emitir clique da linha
+    // 🆕 Emitir quando a seleção mudar
+  @Output() selectedRowChange = new EventEmitter<any>();
 
   onEdit(row: any) {
     this.edit.emit(row);
@@ -28,7 +31,20 @@ export class DynamicTableComponent {
   }
 
   onRowClick(row: any) {
+    // 🆕 Alternar seleção: se clicar na mesma linha, desseleciona
+    if (this.selectedRow === row) {
+      this.selectedRow = null;
+    } else {
+      this.selectedRow = row;
+    }
+    
     this.rowClick.emit(row);
+    this.selectedRowChange.emit(this.selectedRow);
+  }
+
+    // 🆕 Método para verificar se a linha está selecionada
+  isRowSelected(row: any): boolean {
+    return this.selectedRow === row;
   }
 
   getNestedValue(obj: any, path: string): any {

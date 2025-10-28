@@ -12,7 +12,7 @@
   width: 100%;
   border-collapse: collapse;
   color: var(--text-primary);
-  table-layout: fixed; /* 🔹 Garante limite fixo de largura */
+  table-layout: fixed;
 }
 
 .neu-table thead {
@@ -29,11 +29,12 @@
   font-size: 0.95rem;
   border-bottom: 1px solid var(--border-color);
   max-width: 250px;
-  width: 180px; /* 🔹 Garante largura fixa */
-  white-space: nowrap; /* 🔹 Impede quebra de linha */
-  overflow: hidden; /* 🔹 Oculta texto excedente */
-  text-overflow: ellipsis; /* 🔹 Adiciona os "..." */
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   vertical-align: middle;
+  transition: all 0.3s ease;
 }
 
 .neu-table th {
@@ -43,14 +44,60 @@
   color: var(--text-secondary);
 }
 
-/* 🔹 Linha interativa com cursor pointer */
-.neu-table tr.table-row:hover {
-  background: var(--bg-secondary);
+/* 🔹 EFEITO DE BAIXO RELEVO NAS LINHAS NORMAIS */
+.neu-table tr.table-row {
+  background: var(--bg-primary);
   box-shadow:
-    inset 4px 4px 8px var(--shadow-light),
-    inset -4px -4px 8px var(--shadow-dark);
-  transition: 0.25s;
-  cursor: pointer; /* 🔹 Mostra o ponteiro ao passar o mouse */
+    inset 1px 1px 2px var(--shadow-light),
+    inset -1px -1px 2px var(--shadow-dark);
+  transition: all 0.3s ease;
+}
+
+/* 🔹 HOVER IGUAL AO CLIQUE E LINHA SELECIONADA */
+.neu-table tr.table-row:hover,
+.neu-table tr.table-row.selected,
+.neu-table tr.table-row:active {
+  background-color: #f0e68c !important;
+  box-shadow:
+    inset 5px 5px 10px rgba(180, 160, 80, 0.5),
+    inset -5px -5px 10px rgba(255, 255, 180, 0.6),
+    inset 0px 4px 8px rgba(0, 0, 0, 0.4) !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* 🔹 DESTAQUE EXTRA PARA LINHA SELECIONADA */
+.neu-table tr.table-row.selected {
+  border-left: 3px solid #daa520;
+  border-right: 3px solid #daa520;
+}
+
+/* 🔹 EFEITO DE ELEVAÇÃO NO HOVER */
+.neu-table tr.table-row:hover {
+  transform: translateY(-2px);
+}
+
+/* 🔹 EFEITO DE PRESSED NO ACTIVE */
+.neu-table tr.table-row:active {
+  transform: translateY(0);
+  transition: all 0.1s ease;
+}
+
+/* 🔹 MELHOR CONTRASTE PARA TEXTO NO FUNDO AMARELO */
+.neu-table tr.table-row:hover td,
+.neu-table tr.table-row.selected td,
+.neu-table tr.table-row:active td {
+  color: #5d4037;
+  font-weight: 500;
+  text-shadow: 0.5px 0.5px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* 🔹 REMOVER EFEITO DE BAIXO RELEVO DAS CÉLULAS QUANDO NA LINHA AMARELA */
+.neu-table tr.table-row:hover td,
+.neu-table tr.table-row.selected td,
+.neu-table tr.table-row:active td {
+  box-shadow: none !important;
+  background: transparent !important;
 }
 
 .actions {
@@ -68,7 +115,7 @@
   box-shadow:
     4px 4px 8px var(--shadow-light),
     -4px -4px 8px var(--shadow-dark);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .neu-btn:hover {
@@ -80,10 +127,12 @@
 
 .neu-btn.edit i {
   color: #00c896;
+  transition: color 0.3s ease;
 }
 
 .neu-btn.delete i {
   color: #ff3b5c;
+  transition: color 0.3s ease;
 }
 
 .empty-state {
@@ -91,4 +140,68 @@
   padding: 20px;
   font-style: italic;
   color: var(--text-muted);
+  background: var(--bg-primary);
+  box-shadow:
+    inset 2px 2px 4px var(--shadow-light),
+    inset -2px -2px 4px var(--shadow-dark);
+  border-radius: 10px;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
+
+/* 🔹 RESPONSIVIDADE */
+@media (max-width: 768px) {
+  .neu-table-container {
+    padding: 15px;
+  }
+  
+  .neu-table th,
+  .neu-table td {
+    padding: 6px 3px;
+    font-size: 0.85rem;
+    max-width: 120px;
+    width: 100px;
+  }
+  
+  .neu-table tr.table-row:hover,
+  .neu-table tr.table-row.selected,
+  .neu-table tr.table-row:active {
+    box-shadow:
+      inset 4px 4px 8px rgba(180, 160, 80, 0.4),
+      inset -4px -4px 8px rgba(255, 255, 180, 0.5),
+      inset 0px 3px 6px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  .neu-table tr.table-row:hover {
+    transform: translateY(-1px);
+  }
+  
+  .actions {
+    gap: 8px;
+  }
+  
+  .neu-btn {
+    padding: 6px;
+  }
+}
+
+/* 🔹 SCROLLBAR PERSONALIZADA */
+.neu-scrollbar-small::-webkit-scrollbar {
+  height: 8px;
+}
+
+.neu-scrollbar-small::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  box-shadow: inset 2px 2px 4px var(--shadow-light);
+}
+
+.neu-scrollbar-small::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 2px var(--shadow-dark);
+}
+
+.neu-scrollbar-small::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-hover);
 }
