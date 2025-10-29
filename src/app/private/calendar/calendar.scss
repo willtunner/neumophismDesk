@@ -617,6 +617,7 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
 .grid-item {
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 
 .grid-full-width {

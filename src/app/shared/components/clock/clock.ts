@@ -1,73 +1,95 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { interval, Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-clock',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './clock.html',
-  styleUrls: ['./clock.css']
+  styleUrls: ['./clock.scss']
 })
 export class Clock implements OnInit, OnDestroy {
-  private timeSubscription!: Subscription;
+  currentTime = signal<string>('--:--');
+  currentDate = signal<string>('');
+  isAnalog = signal<boolean>(true);
+  timeFormat = signal<string>('AM');
   
-  hours: number = 0;
-  minutes: number = 0;
-  seconds: number = 0;
-  currentTime: string = '';
-  isAnalog: boolean = true;
+  private intervalId: any;
 
-  ngOnInit(): void {
-    this.updateTime();
-    this.timeSubscription = interval(1000).subscribe(() => {
-      this.updateTime();
-    });
+  ngOnInit() {
+    this.updateClock();
+    this.intervalId = setInterval(() => {
+      this.updateClock();
+    }, 1000);
   }
 
-  ngOnDestroy(): void {
-    if (this.timeSubscription) {
-      this.timeSubscription.unsubscribe();
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
     }
   }
 
-  private updateTime(): void {
+  toggleClockType() {
+    this.isAnalog.set(!this.isAnalog());
+  }
+
+  private updateClock() {
     const now = new Date();
-    this.hours = now.getHours();
-    this.minutes = now.getMinutes();
-    this.seconds = now.getSeconds();
     
-    // Formato digital
-    this.currentTime = now.toLocaleTimeString('pt-BR', { 
-      hour: '2-digit', 
-      minute: '2-digit',
-      second: '2-digit'
-    });
+    // Atualizar relógio digital
+    const hours = this.handleZero(this.handleTimeFormat(now.getHours()));
+    const minutes = this.handleZero(now.getMinutes());
+    const seconds = this.handleZero(now.getSeconds());
+    
+    this.currentTime.set(`${hours}:${minutes}:${seconds}`);
+    this.currentDate.set(this.formatDate(now));
+
+    // Atualizar ponteiros do relógio analógico
+    this.updateAnalogClock(now);
   }
 
-  toggleMode(): void {
-    this.isAnalog = !this.isAnalog;
+  private handleZero(number: number): string {
+    return number < 10 ? `0${number}` : `${number}`;
   }
 
-  getHourRotation(): number {
-    return (this.hours % 12) * 30 + this.minutes * 0.5;
+  private handleTimeFormat(hours: number): number {
+    if (hours > 12) {
+      this.timeFormat.set('PM');
+      return hours - 12;
+    } else {
+      this.timeFormat.set('AM');
+      return hours === 0 ? 12 : hours;
+    }
   }
 
-  getMinuteRotation(): number {
-    return this.minutes * 6 + this.seconds * 0.1;
+  private formatDate(date: Date): string {
+    const day = date.getDate();
+    const month = date.toLocaleDateString('pt-BR', { month: 'short' });
+    const year = date.getFullYear();
+    return `${day} ${month}, ${year}`;
   }
 
-  getSecondRotation(): number {
-    return this.seconds * 6;
+  private updateAnalogClock(date: Date) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    // Calcular rotações
+    const hoursRotation = (hours % 12) * 30 + minutes * 0.5;
+    const minutesRotation = minutes * 6;
+    const secondsRotation = seconds * 6;
+
+    // Aplicar rotações aos ponteiros
+    this.setNeedleRotation('.hours-needle', hoursRotation);
+    this.setNeedleRotation('.minutes-needle', minutesRotation);
+    this.setNeedleRotation('.seconds-needle', secondsRotation);
   }
 
-  getCurrentDate(): string {
-  const now = new Date();
-  return now.toLocaleDateString('pt-BR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
-}
+  private setNeedleRotation(selector: string, rotation: number) {
+    const element = document.querySelector(selector) as HTMLElement;
+    if (element) {
+      element.style.transform = `translate(-50%, -100%) rotate(${rotation}deg)`;
+    }
+  }
 }

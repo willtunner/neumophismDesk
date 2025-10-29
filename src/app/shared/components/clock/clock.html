@@ -1,40 +1,53 @@
 <div class="clock-card neu-container">
-  <!-- Cabeçalho do Relógio -->
-  <div class="clock-header">
-    <h3>Relógio</h3>
-    <button class="mode-toggle" (click)="toggleMode()" [class.analog]="isAnalog">
-      {{ isAnalog ? 'Digital' : 'Analógico' }}
+  <!-- Seletor de tipo de relógio -->
+  <div class="clock-toggle">
+    <button 
+      class="toggle-btn" 
+      [class.active]="isAnalog()"
+      (click)="toggleClockType()">
+      {{ isAnalog() ? 'Analógico' : 'Digital' }}
     </button>
   </div>
 
   <!-- Relógio Analógico -->
-  <div *ngIf="isAnalog" class="analog-clock">
-    <div class="clock-face">
-      <!-- Marcadores das horas -->
-      <div class="hour-marker" *ngFor="let hour of [1,2,3,4,5,6,7,8,9,10,11,12]; let i = index" 
-           [style.transform]="'rotate(' + (i * 30) + 'deg)'">
-        <span class="hour-number" [style.transform]="'rotate(' + (-i * 30) + 'deg)'">{{ hour }}</span>
+  @if (isAnalog()) {
+    <div class="analog-clock">
+      <div class="clock-face">
+        <!-- Marcadores de horas -->
+        <span class="hour-marker text-1">3</span>
+        <span class="hour-marker text-2">6</span>
+        <span class="hour-marker text-3">9</span>
+        <span class="hour-marker text-4">12</span>
+        
+        <!-- Marcadores de minutos -->
+        <span class="minute-line" style="--deg: 30;"></span>
+        <span class="minute-line" style="--deg: 60;"></span>
+        <span class="minute-line" style="--deg: 120;"></span>
+        <span class="minute-line" style="--deg: 150;"></span>
+        <span class="minute-line" style="--deg: 210;"></span>
+        <span class="minute-line" style="--deg: 240;"></span>
+        <span class="minute-line" style="--deg: 300;"></span>
+        <span class="minute-line" style="--deg: 330;"></span>
+        
+        <!-- Centro do relógio -->
+        <div class="clock-center"></div>
+        
+        <!-- Ponteiros -->
+        <div class="needle hours-needle"></div>
+        <div class="needle minutes-needle"></div>
+        <div class="needle seconds-needle"></div>
       </div>
-      
-      <!-- Ponteiros -->
-      <div class="hand hour-hand" [style.transform]="'rotate(' + getHourRotation() + 'deg)'"></div>
-      <div class="hand minute-hand" [style.transform]="'rotate(' + getMinuteRotation() + 'deg)'"></div>
-      <div class="hand second-hand" [style.transform]="'rotate(' + getSecondRotation() + 'deg)'"></div>
-      
-      <!-- Centro do relógio -->
-      <div class="center-dot"></div>
     </div>
-  </div>
+  }
 
   <!-- Relógio Digital -->
-  <div *ngIf="!isAnalog" class="digital-clock">
-    <div class="digital-display neu-container-inset">
-      <span class="digital-time">{{ currentTime }}</span>
+  @if (!isAnalog()) {
+    <div class="digital-clock">
+      <div class="time-display">
+        <span class="time">{{ currentTime() }}</span>
+        <span class="time-format">{{ timeFormat() }}</span>
+      </div>
+      <div class="date">{{ currentDate() }}</div>
     </div>
-  </div>
-
-  <!-- Data Atual -->
-  <div class="current-date">
-    {{ getCurrentDate() }}
-  </div>
+  }
 </div>
