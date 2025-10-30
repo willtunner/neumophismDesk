@@ -1,45 +1,60 @@
-/* ========== VARIÁVEIS E MIXINS ========== */
-$transition-base: all 0.3s ease;
-$transition-slow: all 0.4s ease;
-$shadow-base: 2px 2px 4px var(--shadow-light), -2px -2px 4px var(--shadow-dark);
-$shadow-hover: 4px 4px 8px var(--shadow-light), -4px -4px 8px var(--shadow-dark);
-$shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--shadow-dark);
+$transition: all 0.3s ease;
 
-/* Mixin para efeito neumórfico */
 @mixin neu-effect($size: 2px) {
   box-shadow: 
     #{$size} #{$size} #{$size * 2} var(--shadow-light),
     -#{$size} -#{$size} #{$size * 2} var(--shadow-dark);
 }
 
-@mixin neu-effect-inset($size: 2px) {
+@mixin neu-inset($size: 2px) {
   box-shadow: 
     inset #{$size} #{$size} #{$size * 2} var(--shadow-light),
     inset -#{$size} -#{$size} #{$size * 2} var(--shadow-dark);
 }
 
-@mixin hover-lift {
-  transform: translateY(-3px);
-  @include neu-effect(4px);
-}
-
-/* ========== LAYOUT PRINCIPAL ========== */
+/* Layout principal */
 .calendar-page {
   padding: 20px;
   max-width: 1200px;
   margin: 120px auto 0;
-  min-height: 100vh;
 }
 
-/* ========== COMPONENTES DE CALENDÁRIO ========== */
-.weekdays-small {
+/* Grid principal */
+.calendar-main-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
-  margin-bottom: 8px;
-  text-align: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
+.grid-item {
+  display: flex;
+  justify-content: center;
+}
+
+.grid-full-width {
+  grid-column: 1 / -1;
+}
+
+/* Header do ano */
+.calendar-year-header {
+  margin-bottom: 25px;
+  padding: 20px 25px;
+}
+
+.year-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.year-controls h1 {
+  font-size: 2.2rem;
+  min-width: 110px;
+}
+
+/* Grid de meses */
 .months-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -49,20 +64,30 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
 
 .month-container {
   padding: 18px;
-  transition: $transition-base;
-  
-  &:hover {
-    transform: translateY(-5px);
-  }
+  transition: $transition;
 }
 
+.month-container:hover {
+  transform: translateY(-5px);
+}
+
+/* Dias da semana */
+.weekdays-small {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* Grid de dias */
 .days-grid-small {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 3px;
 }
 
-/* ========== DIAS DO CALENDÁRIO ========== */
+/* Dias */
 .day-tiny {
   aspect-ratio: 1;
   display: flex;
@@ -70,69 +95,39 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   justify-content: center;
   border-radius: 8px;
   cursor: pointer;
-  transition: $transition-base;
+  transition: $transition;
   position: relative;
   background: var(--bg-primary);
   @include neu-effect;
-  
-  &:hover {
-    @include neu-effect-inset;
-  }
-  
-  &.other-month {
-    color: var(--text-muted);
-    opacity: 0.5;
-  }
-  
-  /* DIA ATUAL */
-  &.today {
-    @include neu-effect-inset(3px);
-    background: linear-gradient(145deg, var(--accent-color), #00a884);
-    color: white;
-    font-weight: 600;
-    transform: scale(0.95);
-    
-    .day-number-tiny {
-      color: white;
-    }
-    
-    .event-icon {
-      filter: brightness(0) invert(1);
-    }
-    
-    /* Remover esfumaçado no tema escuro */
-    [data-theme="dark"] &::before {
-      display: none;
-    }
-  }
-  
-  /* DIAS COM EVENTOS */
-  &.has-events {
-    background: linear-gradient(145deg, #fff9c4, #fff59d);
-    color: #5d4037;
-    font-weight: 600;
-    box-shadow: 
-      2px 2px 4px rgba(255, 193, 7, 0.3),
-      -2px -2px 4px rgba(255, 235, 59, 0.3);
-    
-    .day-number-tiny {
-      color: #5d4037;
-    }
-    
-    &:hover {
-      background: linear-gradient(145deg, #fff59d, #fff176);
-      box-shadow: 
-        inset 2px 2px 4px rgba(255, 193, 7, 0.4),
-        inset -2px -2px 4px rgba(255, 235, 59, 0.4);
-    }
-  }
+}
+
+.day-tiny:hover {
+  @include neu-inset;
+}
+
+.day-tiny.other-month {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.day-tiny.today {
+  @include neu-inset(3px);
+  background: linear-gradient(145deg, var(--accent-color), #00a884);
+  color: white;
+  font-weight: 600;
+  transform: scale(0.95);
+}
+
+.day-tiny.has-events {
+  background: linear-gradient(145deg, #fff9c4, #fff59d);
+  color: #5d4037;
+  font-weight: 600;
 }
 
 .day-number-tiny {
   font-size: 0.75rem;
   font-weight: 500;
   color: var(--text-primary);
-  z-index: 1;
 }
 
 .event-icon {
@@ -140,60 +135,67 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   top: 2px;
   right: 2px;
   font-size: 0.6rem;
-  z-index: 2;
 }
 
-/* ========== LISTA DE EVENTOS ========== */
+/* Placeholder */
+.placeholder-content {
+  padding: 25px;
+  border-radius: 25px;
+  width: 100%;
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: $transition;
+}
+
+.placeholder-content:hover {
+  transform: translateY(-2px);
+  @include neu-effect(4px);
+}
+
+/* Seção de eventos */
+.events-section {
+  margin-top: 40px;
+  padding: 25px;
+  border-radius: 25px;
+}
+
+.section-header {
+  margin-bottom: 20px;
+}
+
 .events-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
+/* Itens de evento */
 .event-item {
   background: var(--bg-primary);
   border-radius: 20px;
-  padding: 0;
   @include neu-effect(6px);
-  transition: $transition-base;
-  overflow: hidden;
-  
-  &:hover {
-    @include hover-lift;
-  }
+  transition: $transition;
 }
 
-/* Container principal com efeito de baixo relevo */
+.event-item:hover {
+  transform: translateY(-3px);
+  @include neu-effect(8px);
+}
+
 .event-content-wrapper {
-  position: relative;
   padding: 20px;
   display: flex;
   gap: 20px;
   align-items: flex-start;
-  background: var(--bg-primary);
+  @include neu-inset(3px);
   border-radius: 20px;
-  @include neu-effect-inset(3px);
-  transition: $transition-slow;
   cursor: pointer;
-  
-  .event-item:hover & {    
-    /* Sombra específica para tema escuro */
-    [data-theme="dark"] & {
-      box-shadow: 
-        inset 4px 4px 8px rgba(120, 110, 60, 0.8),
-        inset -4px -4px 8px rgba(255, 250, 200, 0.4);
-    }
-    
-    /* Sombra para tema claro */
-    [data-theme="light"] & {
-      box-shadow: 
-        inset 4px 4px 8px rgba(210, 200, 120, 0.6),
-        inset -4px -4px 8px rgba(255, 255, 220, 0.8);
-    }
-  }
 }
 
-/* Data com efeito de baixo relevo */
 .event-date-neu {
   display: flex;
   flex-direction: column;
@@ -203,41 +205,23 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   padding: 15px 10px;
   background: var(--bg-primary);
   border-radius: 15px;
-  @include neu-effect-inset(2px);
-  transition: $transition-base;
-  position: relative;
-  
-  .event-day {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1;
-    margin-bottom: 4px;
-    transition: $transition-base;
-  }
-  
-  .event-month {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: $transition-base;
-  }
-  
-  .event-item:hover & {
-    background: var(--bg-primary);
-    transform: scale(1.05);
-    
-    .event-day {
-      color: #5a4d28;
-      transform: scale(1.1);
-    }
-    
-    .event-month {
-      color: #7a6d48;
-    }
-  }
+  @include neu-inset(2px);
+}
+
+.event-day {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.event-month {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .event-details {
@@ -253,20 +237,15 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   justify-content: space-between;
   align-items: flex-start;
   gap: 15px;
-  
-  .event-title {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.3;
-    flex: 1;
-    transition: $transition-base;
-    
-    .event-item:hover & {
-      color: #5a4d28;
-    }
-  }
+}
+
+.event-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  flex: 1;
 }
 
 .event-actions {
@@ -274,13 +253,43 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   gap: 8px;
   opacity: 0;
   transition: opacity 0.3s ease;
-  
-  .event-item:hover & {
-    opacity: 1;
-  }
 }
 
-/* ========== BOTÕES DE AÇÃO ========== */
+.event-item:hover .event-actions {
+  opacity: 1;
+}
+
+.event-description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Botões */
+.neu-button {
+  background: var(--bg-primary);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: $transition;
+  @include neu-effect(2px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.neu-button:hover {
+  @include neu-inset(2px);
+}
+
+.neu-button.icon {
+  padding: 10px;
+}
+
 .icon-button {
   background: var(--bg-primary);
   border: none;
@@ -292,149 +301,43 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   align-items: center;
   justify-content: center;
   @include neu-effect(2px);
-  transition: all 0.25s ease-in-out;
-
-  svg {
-    width: 18px;
-    height: 18px;
-    stroke: var(--text-secondary);
-    transition: stroke 0.25s ease;
-  }
-
-  /* efeito hover padrão */
-  &:hover {
-    @include neu-effect-inset(2px);
-    background: var(--bg-primary);
-    transform: translateY(0);
-
-    svg {
-      stroke: var(--text-primary); // mantém a cor igual ao texto no hover
-    }
-  }
-
-  /* botão editar */
-  &.edit svg {
-    stroke: #00a884;
-  }
-
-  &.edit:hover svg {
-    stroke: #00c896; // verde mais claro no hover
-  }
-
-  /* botão excluir */
-  &.delete svg {
-    stroke: #e57373;
-  }
-
-  &.delete:hover svg {
-    stroke: #ef5350; // vermelho mais vivo no hover
-  }
-
-  /* tema escuro */
-  [data-theme="dark"] & {
-    box-shadow:
-      3px 3px 6px rgba(0, 0, 0, 0.6),
-      -3px -3px 6px rgba(255, 255, 255, 0.05);
-
-    &:hover {
-      @include neu-effect-inset(2px);
-      svg {
-        stroke: var(--text-primary);
-      }
-    }
-  }
 }
 
-.section-header {
-  margin-bottom: 20px;
+.icon-button:hover {
+  @include neu-inset(2px);
 }
 
-.event-description {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  line-height: 1.4;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  transition: $transition-base;
-  
-  .event-item:hover & {
-    color: #7a6d48;
-  }
+.icon-button svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text-secondary);
 }
 
-/* ========== ESTADOS VAZIOS ========== */
+/* Estados vazios */
 .no-events {
   padding: 40px 20px;
   text-align: center;
-  
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    
-    svg {
-      color: var(--text-muted);
-      opacity: 0.7;
-    }
-    
-    p {
-      margin: 0;
-      font-weight: 600;
-      color: var(--text-primary);
-      font-size: 1.1rem;
-    }
-    
-    small {
-      color: var(--text-muted);
-      line-height: 1.4;
-      max-width: 300px;
-    }
-  }
 }
 
-/* ========== HEADER DO ANO ========== */
-.calendar-year-header {
-  margin-bottom: 25px;
-  padding: 20px 25px;
-  
-  .year-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    
-    h1 {
-      font-size: 2.2rem;
-      min-width: 110px;
-    }
-  }
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
-/* ========== ACESSIBILIDADE ========== */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-    animation: none !important;
-  }
-  
-  .event-item:hover .event-content-wrapper,
-  .event-item:hover .event-date-neu .event-day,
-  .event-item:hover .event-title {
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    transform: none;
-    box-shadow: inset 6px 6px 12px var(--shadow-light), inset -6px -6px 12px var(--shadow-dark);
-  }
+.empty-state svg {
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 
-/* ========== RESPONSIVIDADE ========== */
-
-/* Tablet: 768px - 1024px */
+/* Responsividade */
 @media (max-width: 1024px) {
+  .calendar-main-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
   .months-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
@@ -445,20 +348,20 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
     padding: 12px;
   }
   
-  .calendar-year-header {
-    padding: 18px 20px;
-    
-    .year-controls h1 {
-      font-size: 2rem;
-    }
+  .placeholder-item {
+    grid-column: 1 / -1;
+  }
+  
+  .placeholder-content {
+    min-height: 120px;
+    padding: 20px;
   }
 }
 
-/* Mobile Large: 480px - 768px */
 @media (max-width: 768px) {
-  .calendar-page {
-    margin-top: 100px;
-    padding: 10px;
+  .calendar-main-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
   
   .months-grid {
@@ -466,12 +369,9 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
     gap: 12px;
   }
   
-  .calendar-year-header {
-    padding: 15px;
-    
-    .year-controls h1 {
-      font-size: 1.8rem;
-    }
+  .calendar-page {
+    margin-top: 100px;
+    padding: 10px;
   }
   
   .month-container {
@@ -481,62 +381,30 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   .event-content-wrapper {
     padding: 16px;
     gap: 16px;
-    flex-direction: row;
-    align-items: stretch;
   }
   
   .event-date-neu {
-    min-width: auto;
-    width: 80px;
-    align-self: center;
+    min-width: 80px;
     padding: 12px 8px;
-    
-    .event-day {
-      font-size: 1.5rem;
-    }
-    
-    .event-month {
-      font-size: 0.7rem;
-    }
   }
   
-  .event-header {
-    flex-direction: row;
-    gap: 12px;
-    
-    .event-actions {
-      opacity: 1;
-      align-self: flex-end;
-    }
+  .event-day {
+    font-size: 1.5rem;
   }
   
-  .event-title {
-    font-size: 1rem;
+  .event-month {
+    font-size: 0.7rem;
+  }
+  
+  .event-actions {
+    opacity: 1;
   }
 }
 
-/* Mobile Small: até 480px */
 @media (max-width: 480px) {
   .calendar-page {
     margin-top: 90px;
     padding: 8px;
-  }
-  
-  .calendar-year-header {
-    padding: 12px;
-    
-    .year-controls {
-      gap: 12px;
-      
-      h1 {
-        font-size: 1.6rem;
-        min-width: 90px;
-      }
-    }
-  }
-  
-  .month-header h3 {
-    font-size: 1.1rem;
   }
   
   .event-content-wrapper {
@@ -547,217 +415,23 @@ $shadow-inset: inset 2px 2px 4px var(--shadow-light), inset -2px -2px 4px var(--
   .event-date-neu {
     width: 70px;
     padding: 10px 6px;
-    
-    .event-day {
-      font-size: 1.3rem;
-    }
-    
-    .event-month {
-      font-size: 0.65rem;
-    }
   }
   
-  .event-title {
-    font-size: 0.95rem;
+  .event-day {
+    font-size: 1.3rem;
+  }
+  
+  .event-month {
+    font-size: 0.65rem;
   }
   
   .icon-button {
     width: 32px;
     height: 32px;
-    
-    svg {
-      width: 16px;
-      height: 16px;
-    }
   }
   
-  .days-grid-small {
-    gap: 2px;
-  }
-}
-
-/* Mobile Extra Small: até 360px */
-@media (max-width: 360px) {
-  .calendar-page {
-    margin-top: 80px;
-    padding: 6px;
-  }
-  
-  .month-container {
-    padding: 12px;
-  }
-  
-  .day-number-tiny {
-    font-size: 0.7rem;
-  }
-}
-
-/* ========== SEÇÃO DO WEATHER ========== */
-.calendar-weather-section {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
-  
-  /* Garante que o weather ocupe a mesma largura dos cards de mês */
-  .weather-wrapper {
-    width: 100%;
-    max-width: calc(33.333% - 14px); /* Mesma largura dos cards de mês no grid de 3 colunas */
-  }
-}
-
-/* ========== GRID PRINCIPAL ========== */
-.calendar-main-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-bottom: 30px;
-  align-items: start;
-}
-
-.grid-item {
-  display: flex;
-  justify-content: center;
-  height: 100%;
-}
-
-.grid-full-width {
-  grid-column: 1 / -1;
-}
-
-/* ========== LAYOUT DOS COMPONENTES ========== */
-.weather-item {
-  grid-column: 1;
-}
-
-.clock-item {
-  grid-column: 2;
-}
-
-.placeholder-item {
-  grid-column: 3;
-}
-
-/* ========== PLACEHOLDER ========== */
-.placeholder-content {
-  padding: 25px;
-  border-radius: 25px;
-  width: 100%;
-  text-align: center;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: $transition-base;
-  
-  h3 {
-    margin: 0 0 10px 0;
-    color: var(--text-primary);
-    font-size: 1.1rem;
-  }
-  
-  p {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-  }
-  
-  &:hover {
-    transform: translateY(-2px);
-    @include hover-lift;
-  }
-}
-
-/* ========== RESPONSIVIDADE DO GRID ========== */
-
-/* Tablet: 768px - 1024px */
-@media (max-width: 1024px) {
-  .calendar-main-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-  
-  .weather-item {
-    grid-column: 1;
-  }
-  
-  .clock-item {
-    grid-column: 2;
-  }
-  
-  .placeholder-item {
-    grid-column: 1 / -1;
-    margin-top: 10px;
-    
-    .placeholder-content {
-      min-height: 120px;
-      padding: 20px;
-    }
-  }
-}
-
-/* Mobile Large: 480px - 768px */
-@media (max-width: 768px) {
-  .calendar-main-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-  
-  .weather-item,
-  .clock-item,
-  .placeholder-item {
-    grid-column: 1;
-  }
-  
-  .placeholder-item {
-    .placeholder-content {
-      min-height: 100px;
-      padding: 18px;
-      
-      h3 {
-        font-size: 1rem;
-      }
-      
-      p {
-        font-size: 0.85rem;
-      }
-    }
-  }
-}
-
-/* Mobile Small: até 480px */
-@media (max-width: 480px) {
-  .calendar-main-grid {
-    gap: 12px;
-  }
-  
-  .placeholder-item {
-    .placeholder-content {
-      min-height: 80px;
-      padding: 15px;
-      
-      h3 {
-        font-size: 0.95rem;
-        margin-bottom: 8px;
-      }
-    }
-  }
-}
-
-/* Remove a seção antiga do weather (se existir) */
-.calendar-weather-section {
-  display: none;
-}
-
-/* Responsividade da seção weather */
-@media (max-width: 1024px) {
-  .calendar-weather-section .weather-wrapper {
-    max-width: calc(50% - 10px); /* Grid de 2 colunas */
-  }
-}
-
-@media (max-width: 768px) {
-  .calendar-weather-section .weather-wrapper {
-    max-width: 100%; /* Grid de 1 coluna */
+  .icon-button svg {
+    width: 16px;
+    height: 16px;
   }
 }
