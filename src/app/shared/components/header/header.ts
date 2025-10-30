@@ -254,7 +254,8 @@ export class Header implements OnInit, OnDestroy {
       'companies': 'HEADER.COMPANIES',
       'calendar': 'HEADER.CALENDAR',
       'tutorials': 'HEADER.TUTORIALS',
-      'call': 'HEADER.CALL'
+      'call': 'HEADER.CALL',
+      'notes': 'HEADER.NOTES'
     };
 
     const translationKey = routeTranslationKeys[routeName];

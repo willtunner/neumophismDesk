@@ -6,8 +6,7 @@
   padding: 25px;
   border-radius: 25px;
   width: 100%;
-  max-width: 375px;
-
+  height: 100%;
   box-shadow:
     8px 8px 16px var(--shadow-light),
     -8px -8px 16px var(--shadow-dark);
@@ -79,6 +78,64 @@
 .date {
   font-size: 0.8rem;
   color: var(--text-secondary);
+}
+
+/* Estados de loading e erro */
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  min-height: 200px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--shadow-light);
+  border-top: 4px solid var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.error-state p {
+  margin: 10px 0;
+  color: var(--text-secondary);
+}
+
+.fallback-message {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-top: 15px;
+}
+
+.retry-btn {
+  margin-top: 15px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.weather-content {
+  width: 100%;
 }
 
 /* ===== Responsividade ===== */

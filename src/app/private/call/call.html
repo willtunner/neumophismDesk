@@ -98,20 +98,12 @@
     </form>
 
     <!-- Debug Preview -->
-    <div class="data-preview" *ngIf="false"> <!-- Remova *ngIf="false" para ver o preview -->
-      <h3>Dados do Formulário:</h3>
-      <pre>{{ callForm.value | json }}</pre>
-      <pre>Válido: {{ callForm.valid }}</pre>
-      <pre>Touched: {{ callForm.touched }}</pre>
-    </div>
+
   </div>
 </div>
 
 <!-- 🔹 ATUALIZADO: Passa o selectedCall para o CallList -->
 <div class="call-list-container neu-container call-container">
-  <app-call-list 
-    [calls]="callsList" 
-    [selectedCall]="selectedCall()"
-    (viewDetails)="onViewDetails($event)">
+  <app-call-list [calls]="callsList" [selectedCall]="selectedCall()" (viewDetails)="onViewDetails($event)">
   </app-call-list>
 </div>

@@ -14,7 +14,8 @@
     "COMPANIES": "🏙️ Empresas",
     "CALENDAR": "📆 Calendário",
     "TUTORIALS": "🎬 Tutoriais",
-    "CALL": "📞 Chamados"
+    "CALL": "📞 Chamados",
+    "NOTES": " Anotações"
   },
   "NAVIGATION_MENU": {
     "TITLE": "Sistema de Helpdesk",
@@ -31,7 +32,8 @@
     "COMPANIES": "Empresas",
     "CALENDAR": "Calendário",
     "TUTORIALS": "Tutoriais",
-    "CALL": "Chamados"
+    "CALL": "Chamados",
+    "NOTES": "Anotações"
   },
   "MESSAGES": {
     "TITLE": "Mensagens",
@@ -274,5 +276,11 @@
     },
     "EDIT_TITLE": "Editar Cliente",
     "CREATE_TITLE": "Cradastrar uma novo cliente"
+  },  
+  "NOTES": {
+    "TITLE": "Título",
+    "TITLE_PLACEHOLDER": "Digite o título da anotação",
+    "CONTENT": "Conteúdo",
+    "CONTENT_PLACEHOLDER": "Digite o conteúdo da anotação..."
   }
 }

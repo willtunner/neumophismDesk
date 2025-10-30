@@ -7,6 +7,8 @@ export class CallFormBuilderService {
   constructor(private fb: FormBuilder) {}
 
   createForm(loggedUser: User): FormGroup {
+    console.log('Usuáio logado para preencher o FORM: ', loggedUser);
+
     return this.fb.group({
       companyId: ['', Validators.required],
       clientId: ['', Validators.required],

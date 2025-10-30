@@ -1,1 +1,120 @@
-<p>notes works!</p>
+<div class="page-container">
+    <div class="notes-page">
+        <!-- Formulário de Anotações -->
+        <div class="notes-form-section">
+            <div class="notes-form-container neu-container">
+                <div class="form-header">
+                    <h2>{{ isEditing() ? 'Editar Anotação' : 'Nova Anotação' }}</h2>
+                    <button *ngIf="isEditing()" class="neu-button secondary" (click)="onNewDocument()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                        Nova Anotação
+                    </button>
+                </div>
+
+                <form [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+                    <!-- Título -->
+                    <div class="form-group">
+                        <app-input-dynamic [config]="inputConfigs.titulo" [control]="titleControl"
+                            [showImage]="true">
+                        </app-input-dynamic>
+                    </div>
+
+                    <!-- Conteúdo -->
+                    <div class="form-group">
+                        <app-rich-text-dynamic [config]="richTextConfig" [control]="contentControl"
+                            [showImage]="true" [count]="true" [limit]="5000">
+                        </app-rich-text-dynamic>
+                    </div>
+
+                    <!-- Ações -->
+                    <div class="form-actions">
+                        <button type="submit" class="neu-button primary" [disabled]="!noteForm.valid">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                <polyline points="17 21 17 13 7 13 7 21" />
+                                <polyline points="7 3 7 8 15 8" />
+                            </svg>
+                            {{ isEditing() ? 'Atualizar' : 'Salvar' }} Anotação
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista de Anotações -->
+        <div class="notes-list-section">
+            <div class="notes-list-container neu-container">
+                <div class="list-header">
+                    <h2>Minhas Anotações</h2>
+                    <div class="search-box">
+                        <input type="text" placeholder="Buscar anotações..." [value]="searchTerm()"
+                            (input)="onSearch($any($event.target).value)" class="neu-input">
+                    </div>
+                </div>
+
+                <div class="notes-list">
+                    <!-- Loading State -->
+                    <div *ngIf="isLoading()" class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Carregando anotações...</p>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div *ngIf="!isLoading() && filteredDocuments.length === 0" class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48"
+                            height="48">
+                            <path
+                                d="M9 3V5M12 3V5M15 3V5M13 9H9M15 13H9M8.2 21H15.8C16.9201 21 17.4802 21 17.908 20.782C18.2843 20.5903 18.5903 20.2843 18.782 19.908C19 19.4802 19 18.9201 19 17.8V7.2C19 6.0799 19 5.51984 18.782 5.09202C18.5903 4.71569 18.2843 4.40973 17.908 4.21799C17.4802 4 16.9201 4 15.8 4H8.2C7.0799 4 6.51984 4 6.09202 4.21799C5.71569 4.40973 5.40973 4.71569 5.21799 5.09202C5 5.51984 5 6.07989 5 7.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.07989 21 8.2 21Z" />
+                        </svg>
+                        <p *ngIf="!searchTerm()">Nenhuma anotação encontrada</p>
+                        <p *ngIf="searchTerm()">Nenhuma anotação encontrada para "{{ searchTerm() }}"</p>
+                        <small *ngIf="!searchTerm()">Crie sua primeira anotação usando o formulário acima</small>
+                    </div>
+
+                    <!-- Lista de Documentos -->
+                    <div *ngFor="let doc of filteredDocuments" class="note-item"
+                        [class.selected]="selectedDocument()?.id === doc.id"
+                        (click)="router.navigate(['/notes', doc.id])">
+
+                        <div class="note-content-wrapper">
+                            <div class="note-header">
+                                <h3 class="note-title">{{ doc.title }}</h3>
+                                <div class="note-actions">
+                                    <button class="icon-button edit"
+                                        (click)="router.navigate(['/notes', doc.id]); $event.stopPropagation()">
+                                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                                            stroke-width="1.5">
+                                            <path d="M9 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6" />
+                                            <path d="M16.5 2.5a2.121 2.121 0 0 1 3 3L10 13l-3 1 1-3 8.5-8.5z" />
+                                        </svg>
+                                    </button>
+                                    <button class="icon-button delete"
+                                        (click)="onDelete(doc); $event.stopPropagation()">
+                                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                                            stroke-width="1.5">
+                                            <polyline points="3 6 5 6 17 6" />
+                                            <path
+                                                d="M15 6v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- <p class="note-preview">{{ doc.content | slice:0:150 }}{{ doc.content.length > 150 ?
+                                '...' : '' }}</p> -->
+
+                            <div class="note-footer">
+                                <span class="note-date">Criado em: {{ formatDate(doc.created) }}</span>
+                                <span *ngIf="doc.updated" class="note-date updated">
+                                    Atualizado em: {{ formatDate(doc.updated) }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

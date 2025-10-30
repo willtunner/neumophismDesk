@@ -12,6 +12,7 @@ import { Calendar } from './private/calendar/calendar';
 import { authGuard } from './guards/auth.guard';
 import { SignupComponent } from './public/signup/signup';
 import { ForgotPasswordComponent } from './public/forgot-password/forgot-password';
+import { Settings } from './private/settings/settings';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,11 +24,15 @@ export const routes: Routes = [
   { path: 'companies/:id', component: Companies, canActivate: [authGuard] },
   { path: 'call', component: CallComponent, canActivate: [authGuard] },
   { path: 'call/:id', component: CallComponent, canActivate: [authGuard] },
-  { path: 'clients', component: Clients, canActivate: [authGuard]},
-  { path: 'clients/:id', component: Clients, canActivate: [authGuard]},
+  { path: 'clients', component: Clients, canActivate: [authGuard] },
+  { path: 'clients/:id', component: Clients, canActivate: [authGuard] },
+  { path: 'notes', component: Notes, canActivate: [authGuard] },
+  { path: 'notes/:id', component: Notes, canActivate: [authGuard] },
   { path: 'calendar', component: Calendar, canActivate: [authGuard] },
-  { path: 'tutorials', component: Tutorials, canActivate: [authGuard]},
-  { path: 'notes', component: Notes , canActivate: [authGuard]},
+  { path: 'tutorials', component: Tutorials, canActivate: [authGuard] },
+  { path: 'notes', component: Notes, canActivate: [authGuard] },
+  { path: 'notes/:id', component: Notes, canActivate: [authGuard] },
+  { path: 'settings', component: Settings, canActivate: [authGuard] },
   { path: 'signup', component: SignupComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: '**', redirectTo: '/login' }

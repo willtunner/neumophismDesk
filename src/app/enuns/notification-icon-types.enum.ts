@@ -20,4 +20,7 @@ export enum NotificationType {
     NEW_TUTORIAL = 'Tutorial adicionado',
     UPDATE_TUTORIAL = 'Tutorial atualizado',
     DELETED_TUTORIAL = 'Tutorial excluido',
+    CREATE_DOCUMENT = 'Novo documento criado',
+    UPDATE_DOCUMENT = 'Documento atualizado',
+    DELETE_DOCUMENT = 'Documento deletado'
   }

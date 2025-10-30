@@ -1,6 +1,24 @@
 <div class="weather-card neu-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Obtendo localização e dados meteorológicos...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="locationError() && !isLoading()" class="error-state">
+    <div class="error-icon">📍</div>
+    <p>{{ locationError() }}</p>
+    <button class="neu-button retry-btn" (click)="retryLocation()">
+      Tentar Novamente
+    </button>
+    <p class="fallback-message">Usando localização padrão (Campinas)</p>
+  </div>
+
+  <!-- Weather Content -->
+  <div *ngIf="!isLoading() && !locationError()" class="weather-content">
     <div class="weather-header">
-      <h3>Campinas</h3>
+      <h3>Sua Localização</h3>
   
       <div class="temperature">
         <span class="temp-value">
@@ -22,4 +40,4 @@
       </div>
     </div>
   </div>
-  
+</div>

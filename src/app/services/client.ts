@@ -131,7 +131,7 @@ export class ClientService {
       NotificationType.SUCCESS,
       `${createdClient.name} Criado com sucesso na empresa ${companySelected?.name }!`,
       false,
-      `client/${createdClient.id}`,
+      `clients/${createdClient.id}`,
     );
 
     return createdClient;
@@ -397,7 +397,7 @@ async updateClient(clientId: string, clientData: Partial<Omit<Client, 'id' | 'cr
       NotificationType.SUCCESS,
       `${updatedClient.name} atualizado com sucesso!`,
       false,
-      `/client/${updatedClient.id}`,
+      `/clients/${updatedClient.id}`,
     );
 
     return updatedClient;

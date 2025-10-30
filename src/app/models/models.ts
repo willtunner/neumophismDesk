@@ -204,7 +204,7 @@ export interface Company {
     title: string;
     content: string;
     created: Date;
-    updated?: Date;
+    updated?: Date | null;
     helpDeskCompanyId: string;
     userId?: string;
   }

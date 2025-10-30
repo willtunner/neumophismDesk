@@ -401,7 +401,7 @@
   overflow-y: auto;
   line-height: 1.6;
   font-size: 14px;
-  max-width: 690px;
+  /* max-width: 690px; */
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;

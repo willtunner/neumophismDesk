@@ -90,10 +90,12 @@ export class CallComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.loggedUser = this.auth.currentUser()!;
     this.callForm = this.formBuilder.createForm(this.loggedUser);
-    
+
+    console.log('form montado init: ', this.callForm.getRawValue());
+
     // 🔹 ORDEM CORRETA: Primeiro configura os listeners, depois carrega os dados
     this.setupRouteListener();
-    
+
     await this.loadCalls();
 
     console.log('📞 Chamados carregados:', this.callsList.length);
@@ -120,7 +122,7 @@ export class CallComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(async (params) => {
       const callId = params.get('id');
       console.log('🔄 Route param changed:', callId);
-      
+
       if (callId) {
         await this.selectCallById(callId);
       } else {
@@ -132,7 +134,7 @@ export class CallComponent implements OnInit, OnDestroy {
   // 🔹 NOVO: Carrega chamados e verifica seleção inicial
   private async loadCalls() {
     this.callsList = await this.callService.getAllCalls();
-    
+
     // 🔹 VERIFICA SE HÁ ID NA URL APÓS CARREGAR OS DADOS
     const initialCallId = this.route.snapshot.paramMap.get('id');
     if (initialCallId) {
@@ -144,16 +146,16 @@ export class CallComponent implements OnInit, OnDestroy {
   private async selectCallById(callId: string) {
     try {
       console.log('🔍 Procurando chamado com ID:', callId);
-      
+
       // Primeiro procura nos dados locais
       let call = this.callsList.find(c => c.id === callId) || null;
-      
+
       // Se não encontrou, tenta carregar pelo service
       if (!call) {
         console.log('⚠️ Chamado não encontrado nos dados locais, buscando no service...');
         call = await this.callService.getCallById(callId);
       }
-      
+
       if (call) {
         console.log('✅ Chamado encontrado:', call.title);
         this.setSelectedCall(call);
@@ -183,12 +185,30 @@ export class CallComponent implements OnInit, OnDestroy {
 
   // 🔹 NOVO: Limpa formulário e seleção
   private clearFormAndSelection() {
+    // Salva os valores que devem ser preservados
+    const preservedFields = {
+      helpDeskCompanyId: this.callForm.get('helpDeskCompanyId')?.value,
+      operatorId: this.callForm.get('operatorId')?.value
+    };
+
+    // Limpa o formulário
     this.callForm.reset();
+
+    // Restaura os campos preservados
+    this.callForm.patchValue(preservedFields);
+
     this.clearSelection();
+
+    console.log('🔄 Formulário limpo (campos preservados):', this.callForm.getRawValue());
   }
 
-  // 🔹 NOVO: Popula formulário com dados do chamado
+  // 🔹 CORRIGIDO: Popula formulário com dados do chamado SEM sobrescrever helpDeskCompanyId e operatorId
   private populateForm(call: Call) {
+    // Salva os valores atuais de helpDeskCompanyId e operatorId
+    const currentHelpDeskCompanyId = this.callForm.get('helpDeskCompanyId')?.value;
+    const currentOperatorId = this.callForm.get('operatorId')?.value;
+
+    // Aplica apenas os valores do chamado selecionado
     this.callForm.patchValue({
       companyId: call.companyId,
       clientId: call.clientId,
@@ -198,6 +218,16 @@ export class CallComponent implements OnInit, OnDestroy {
       resolution: call.resolution,
       tags: call.tags || []
     });
+
+    // Restaura os valores de helpDeskCompanyId e operatorId se necessário
+    if (currentHelpDeskCompanyId) {
+      this.callForm.patchValue({ helpDeskCompanyId: currentHelpDeskCompanyId });
+    }
+    if (currentOperatorId) {
+      this.callForm.patchValue({ operatorId: currentOperatorId });
+    }
+
+    console.log('📝 Formulário populado:', this.callForm.getRawValue());
   }
 
   private async loadCompanies() {
@@ -305,10 +335,30 @@ export class CallComponent implements OnInit, OnDestroy {
     return this.callForm.get('tags') as FormControl;
   }
 
+  get helpDeskCompanyIdControl(): FormControl {
+    return this.callForm.get('helpDeskCompanyId') as FormControl;
+  }
+
+  get operatorIdControl(): FormControl {
+    return this.callForm.get('operatorId') as FormControl;
+  }
+
   async onSubmit() {
+    console.log('🔄 Tentando submeter formulário...');
+    console.log('📋 Estado do formulário:', {
+      valid: this.callForm.valid,
+      touched: this.callForm.touched,
+      dirty: this.callForm.dirty,
+      values: this.callForm.getRawValue()
+    });
+
+    console.log('form montado submit ', this.callForm.getRawValue());
+
     if (this.callForm.valid) {
       try {
+        console.log('✅ Formulário válido, salvando chamado...');
         console.log('📤 Dados do chamado:', this.callForm.value);
+
         const call = await this.callService.saveCall(this.callForm.value);
 
         const path = `call/${call.id}`;
@@ -330,7 +380,13 @@ export class CallComponent implements OnInit, OnDestroy {
         console.error('❌ Erro ao salvar chamado:', error);
       }
     } else {
+      console.log('❌ Formulário inválido! Marcando todos como touched...');
+      console.log('🔍 Campos inválidos:', this.getInvalidFields());
+
       this.callForm.markAllAsTouched();
+
+      // Força a detecção de mudanças para atualizar a UI
+      this.cdr.detectChanges();
     }
   }
 
@@ -344,11 +400,11 @@ export class CallComponent implements OnInit, OnDestroy {
       if (company) {
         this.companyService.saveCompany(company).then((savedCompany) => {
           console.log('✅ Nova empresa cadastrada:', savedCompany.name);
-          
+
           // Atualiza configurações e seleciona a nova empresa
           this.updateConfigs();
           this.empresaControl.setValue(savedCompany.id);
-          
+
         }).catch(error => {
           console.error('❌ Erro ao salvar empresa:', error);
         });
@@ -379,21 +435,21 @@ export class CallComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((clientData: Omit<User, 'id' | 'created' | 'updated'>) => {
       if (clientData) {
         console.log('💾 Salvando novo cliente...');
-        
+
         this.clientService.saveClient(clientData, selectedCompany).then((savedClient) => {
           console.log('✅ Novo cliente cadastrado:', savedClient.name, ' do posto ', selectedCompany.name, '.');
-          
+
           // Se o cliente pertence à empresa selecionada, adiciona ao signal
           if (savedClient.companyId === selectedCompanyId) {
             this.clients.update(clientes => [savedClient, ...clientes]);
-            
+
             // Atualiza configurações e seleciona o novo cliente
             this.updateConfigs();
             this.clienteControl.setValue(savedClient.id);
-            
+
             console.log('👥 Clientes atualizados:', this.clients().length);
           }
-          
+
         }).catch(error => {
           console.error('❌ Erro ao salvar cliente:', error);
         });
@@ -411,4 +467,27 @@ export class CallComponent implements OnInit, OnDestroy {
   getSelectedCall(): Call | null {
     return this.selectedCall();
   }
+
+  // Adicione este método na classe CallComponent
+  getInvalidFields(): any {
+    if (!this.callForm) return {};
+
+    const invalidFields: any = {};
+
+    Object.keys(this.callForm.controls).forEach(key => {
+      const control = this.callForm.get(key);
+      if (control && control.invalid) {
+        invalidFields[key] = {
+          errors: control.errors,
+          value: control.value,
+          touched: control.touched,
+          dirty: control.dirty,
+          values: this.callForm.getRawValue()
+        };
+      }
+    });
+
+    return invalidFields;
+  }
+
 }
