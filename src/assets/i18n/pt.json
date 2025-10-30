@@ -283,5 +283,10 @@
     "TITLE_PLACEHOLDER": "Digite o título da anotação",
     "CONTENT": "Conteúdo",
     "CONTENT_PLACEHOLDER": "Digite o conteúdo da anotação..."
+  },
+  "TAGS": {
+    "ADD_TAG": "Adicionar tag",
+    "SUCCESS_MESSAGE": "Tag adicionada com sucesso!",
+    "PLACEHOLDER_TAG": "Digite a tag e pressione Enter"
   }
 }

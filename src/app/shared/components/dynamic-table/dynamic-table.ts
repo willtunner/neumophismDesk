@@ -3,11 +3,18 @@ import { CommonModule } from '@angular/common';
 import { DateOnlyFormatPipe } from '../../../pipes/date-only-format.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { FirestoreDateOnlyPipe } from '../../../pipes/firestore-timestamp-pipe';
 
 @Component({
   selector: 'app-dynamic-table',
   standalone: true,
-  imports: [CommonModule, DateOnlyFormatPipe, MatTooltipModule, TranslateModule],
+  imports: [
+    CommonModule, 
+    DateOnlyFormatPipe, 
+    FirestoreDateOnlyPipe, // Adicione aqui
+    MatTooltipModule, 
+    TranslateModule
+  ],
   templateUrl: './dynamic-table.html',
   styleUrl: './dynamic-table.css',
 })
@@ -18,8 +25,7 @@ export class DynamicTableComponent {
 
   @Output() edit = new EventEmitter<any>();
   @Output() remove = new EventEmitter<any>();
-  @Output() rowClick = new EventEmitter<any>(); // 🆕 Emitir clique da linha
-    // 🆕 Emitir quando a seleção mudar
+  @Output() rowClick = new EventEmitter<any>();
   @Output() selectedRowChange = new EventEmitter<any>();
 
   onEdit(row: any) {
@@ -31,7 +37,6 @@ export class DynamicTableComponent {
   }
 
   onRowClick(row: any) {
-    // 🆕 Alternar seleção: se clicar na mesma linha, desseleciona
     if (this.selectedRow === row) {
       this.selectedRow = null;
     } else {
@@ -42,8 +47,7 @@ export class DynamicTableComponent {
     this.selectedRowChange.emit(this.selectedRow);
   }
 
-    // 🆕 Método para verificar se a linha está selecionada
-    isRowSelected(row: any): boolean {
+  isRowSelected(row: any): boolean {
     if (!this.selectedRow || !row) return false;
     return this.selectedRow.id === row.id;
   }
@@ -52,8 +56,22 @@ export class DynamicTableComponent {
     return path.split('.').reduce((acc, part) => acc && acc[part], obj) ?? '—';
   }
 
+  // 🆕 Método para detectar se é FirestoreTimestamp
+  isFirestoreTimestamp(value: any): boolean {
+    return value && 
+           typeof value === 'object' && 
+           value.type === 'firestore/timestamp/1.0' &&
+           typeof value.seconds === 'number' &&
+           typeof value.nanoseconds === 'number';
+  }
+
+  // 🆕 Método para detectar se é Date normal
   isDate(value: any): boolean {
     if (!value) return false;
+    
+    // Se for FirestoreTimestamp, não é Date puro
+    if (this.isFirestoreTimestamp(value)) return false;
+    
     const date = new Date(value);
     return !isNaN(date.getTime());
   }

@@ -177,7 +177,7 @@ export class TagsNeuComponent implements OnInit, AfterViewInit {
     const success = await this.tagService.addTagToFirestore(name);
     if (success) {
       this.addToSelected(name);
-      this.successMessage = this.translate.instant('tags.successMessage');
+      this.successMessage = this.translate.instant('TAGS.SUCCESS_MESSAGE');
       setTimeout(() => (this.successMessage = null), 3000);
     }
   }

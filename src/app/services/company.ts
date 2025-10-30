@@ -46,24 +46,28 @@ export class CompanyService {
     try {
       console.log('🏢 Buscando empresas com helpDeskCompanyId:', this.userLogged.helpDeskCompanyId);
 
-      // Verifica se o usuário tem helpDeskCompanyId
       if (!this.userLogged.helpDeskCompanyId) {
         console.log('❌ Usuário não possui helpDeskCompanyId');
         return [];
       }
 
-      // Cria a query para buscar empresas com o mesmo helpDeskCompanyId e deleted = false
       const companiesQuery = query(
         this._companiesCollection,
         where('helpDeskCompanyId', '==', this.userLogged.helpDeskCompanyId),
         where('deleted', '==', false),
-        orderBy('created', 'desc') // Ordena por data de criação decrescente
+        orderBy('created', 'desc')
       );
 
-      // Executa a query
       const querySnapshot = await getDocs(companiesQuery);
 
-      // Mapeia os documentos para objetos Company
+      // 🆕 Função para converter FirestoreTimestamp para Date
+      const convertFirestoreTimestamp = (timestamp: any): Date => {
+        if (timestamp && typeof timestamp === 'object' && timestamp.type === 'firestore/timestamp/1.0') {
+          return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+        }
+        return timestamp instanceof Date ? timestamp : new Date(timestamp);
+      };
+
       const companies = querySnapshot.docs.map(doc => {
         const data = doc.data();
         const company: Company = {
@@ -71,8 +75,9 @@ export class CompanyService {
           name: data['name'],
           keywords: data['keywords'] || [],
           deleted: data['deleted'] || false,
-          created: data['created'] || new Date(), // Converte Firestore Timestamp para Date
-          updated: data['updated'] || null, // Converte Firestore Timestamp para Date ou null
+          // 🆕 Converte FirestoreTimestamp para Date
+          created: convertFirestoreTimestamp(data['created']),
+          updated: data['updated'] ? convertFirestoreTimestamp(data['updated']) : null,
           cnpj: data['cnpj'],
           city: data['city'],
           state: data['state'],
@@ -88,12 +93,8 @@ export class CompanyService {
         return company;
       });
 
-
-
-      // Atualiza o signal com as empresas encontradas
       this.companies.set(companies);
-      // Exibe detalhes de cada empresa no console
-      console.log('empresas emcontradas: ', this.companies);
+      console.log('empresas encontradas: ', companies);
 
       return companies;
 
@@ -229,7 +230,7 @@ export class CompanyService {
       );
 
       this.getCompanyById(companyId).then(result => {
-     //^ ENVIO DE NOTIFICAÇÃO
+        //^ ENVIO DE NOTIFICAÇÃO
         this.notificationService.createNotification(
           NotificationTitle.CREATE_COMPANY,
           NotificationType.SUCCESS,
@@ -238,7 +239,7 @@ export class CompanyService {
           null
         );
       });
-   
+
       return true;
 
     } catch (error) {

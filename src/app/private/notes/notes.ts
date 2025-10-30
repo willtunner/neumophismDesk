@@ -64,8 +64,8 @@ export class Notes implements OnInit, OnDestroy {
 
   private initializeForm(): void {
     this.noteForm = new FormGroup({
-      title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      content: new FormControl('', [Validators.required, Validators.minLength(10)])
+      title: new FormControl('', [Validators.minLength(3)]),
+      content: new FormControl('', [Validators.minLength(10)])
     });
   }
 
