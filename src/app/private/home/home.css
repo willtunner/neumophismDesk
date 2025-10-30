@@ -1,26 +1,23 @@
-/* home.component.css - Versão Profissional com Unidades Relativas */
-
+/* Container principal */
 .home-container {
   min-height: 100vh;
   background: var(--bg-primary);
-  padding: clamp(8px, 1.5vw, 20px);
-  transition: all 0.3s ease;
-  margin-top: clamp(70px, 10vw, 120px);
+  padding: 20px;
+  margin-top: 120px;
   width: 100%;
-  max-width: min(90%, 1200px);
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
 }
 
-/* GRID RESPONSIVO AVANÇADO */
+/* Grid responsivo */
 .components-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
-  gap: clamp(15px, 2vw, 30px);
-  margin-bottom: clamp(20px, 2.5vw, 30px);
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+  margin-bottom: 30px;
   width: 100%;
-  transition: all 0.3s ease;
 }
 
 /* Garantir que o grid tenha no máximo 2 colunas */
@@ -30,332 +27,26 @@
   }
 }
 
-/* ========== ESTILOS ESPECÍFICOS DO HOME COMPONENT ========== */
-
-/* Estilos específicos para elementos únicos do home */
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(6px, 0.8vw, 8px);
-}
-
-.radio-label {
-  display: flex;
-  align-items: center;
-  gap: clamp(12px, 1.2vw, 15px);
-  cursor: pointer;
-  user-select: none;
-  color: var(--text-primary);
-  font-weight: 500;
-  position: relative;
-  padding: clamp(6px, 0.8vw, 8px) clamp(10px, 1.2vw, 12px);
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.radio-label:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.radio-label input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.neu-radio {
-  width: clamp(20px, 2vw, 22px);
-  height: clamp(20px, 2vw, 22px);
-  background: var(--bg-primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow:
-    inset 3px 3px 6px var(--shadow-light),
-    inset -3px -3px 6px var(--shadow-dark);
-  transition: all 0.3s ease;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.radio-dot {
-  width: clamp(8px, 1vw, 10px);
-  height: clamp(8px, 1vw, 10px);
-  background: var(--accent-color);
-  border-radius: 50%;
-  opacity: 0;
-  transform: scale(0);
-  transition: all 0.3s ease;
-}
-
-.radio-label input[type="radio"]:checked + .neu-radio .radio-dot {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Toggle Switches - Estilos específicos */
-.toggle-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  color: var(--text-primary);
-  font-weight: 500;
-  position: relative;
-  padding: clamp(6px, 0.8vw, 8px) clamp(10px, 1.2vw, 12px);
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.toggle-label:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.neu-toggle-switch {
-  width: clamp(45px, 5vw, 50px);
-  height: clamp(24px, 2.5vw, 26px);
-  background: var(--bg-primary);
-  border-radius: 13px;
-  box-shadow:
-    inset 4px 4px 8px var(--shadow-light),
-    inset -4px -4px 8px var(--shadow-dark);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.neu-toggle-switch.active {
-  background: var(--accent-color);
-}
-
-.neu-toggle-switch.active .toggle-slider {
-  transform: translateX(clamp(20px, 2.2vw, 24px));
-}
-
-.toggle-slider {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: clamp(18px, 2vw, 20px);
-  height: clamp(18px, 2vw, 20px);
-  background: var(--bg-primary);
-  border-radius: 50%;
-  box-shadow:
-    2px 2px 4px var(--shadow-light),
-    -2px -2px 4px var(--shadow-dark);
-  transition: all 0.3s ease;
-}
-
-/* Slider - Estilos específicos */
-.slider-group {
-  margin-bottom: clamp(20px, 2.5vw, 25px);
-}
-
-.slider-label {
-  display: block;
-  color: var(--text-primary);
-  font-weight: 500;
-  margin-bottom: clamp(8px, 1vw, 10px);
-}
-
-.neu-slider {
-  position: relative;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: clamp(8px, 1vw, 10px) clamp(15px, 1.8vw, 20px);
-  box-shadow:
-    inset 4px 4px 8px var(--shadow-light),
-    inset -4px -4px 8px var(--shadow-dark);
-}
-
-.slider-track {
-  position: relative;
-  height: 6px;
-  background: var(--bg-primary);
-  border-radius: 3px;
-  box-shadow:
-    inset 2px 2px 4px var(--shadow-light),
-    inset -2px -2px 4px var(--shadow-dark);
-  overflow: hidden;
-}
-
-.slider-progress {
-  position: absolute;
-  height: 100%;
-  background: var(--accent-color);
-  border-radius: 3px;
-  transition: width 0.3s ease;
-}
-
-.slider {
-  position: absolute;
-  width: calc(100% - 40px);
-  height: 20px;
-  top: 50%;
-  left: 20px;
-  transform: translateY(-50%);
-  opacity: 0;
-  cursor: pointer;
-  z-index: 2;
-}
-
-/* Estilos para elementos de preview específicos do home */
-.rich-text-preview {
-  background: var(--input-bg);
-  padding: clamp(15px, 1.8vw, 20px);
-  border-radius: 10px;
-  margin-top: 10px;
-  max-height: min(50vh, 300px);
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.rich-text-preview .preview-content h4 {
-  color: var(--text-primary);
-  margin-bottom: 10px;
-  font-size: clamp(13px, 1.2vw, 14px);
-}
-
-.rich-text-preview .preview-content div {
-  color: var(--text-primary);
-  line-height: 1.5;
-  margin-bottom: 15px;
-}
-
-.rich-text-preview .preview-content:last-child {
-  margin-bottom: 0;
-}
-
-/* Garantir que os componentes dinâmicos tenham o estilo correto */
-app-input-dynamic,
-app-rich-text-dynamic,
-app-checkbox-dynamic {
-  display: block;
-  width: 100%;
-}
-
-/* Animações específicas do home */
-@keyframes homeGentlePulse {
-  0%, 100% { 
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% { 
-    opacity: 0.8;
-    transform: scale(1.02);
-  }
-}
-
-.home-pulse {
-  animation: homeGentlePulse 2s ease-in-out infinite;
-}
-
-/* Estados de loading específicos do home */
-.home-loading {
-  pointer-events: none;
-  opacity: 0.7;
-}
-
-/* Estilos para grupos de formulário específicos do home */
-.home-form-section {
-  border-left: 3px solid var(--accent-color);
-  padding-left: clamp(12px, 1.2vw, 15px);
-  margin-bottom: clamp(20px, 2.5vw, 25px);
-}
-
-/* Utilitários específicos do home */
-.home-divider {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--text-muted),
-    transparent
-  );
-  margin: clamp(20px, 2.5vw, 25px) 0;
-  border: none;
-}
-
-/* Ajustes de espaçamento específicos para o layout do home */
-.home-section + .home-section {
-  margin-top: clamp(30px, 3.5vw, 40px);
-}
-
-/* Estados de interação específicos do home */
-.home-interactive-element {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.home-interactive-element:hover {
-  transform: translateY(-2px);
-}
-
-.home-interactive-element:active {
-  transform: translateY(0);
-}
-
-/* Estilos para mensagens de status específicas do home */
-.home-status-message {
-  padding: clamp(10px, 1.2vw, 12px) clamp(12px, 1.5vw, 16px);
-  border-radius: 10px;
-  margin: 10px 0;
-  font-weight: 500;
-  text-align: center;
-}
-
-.home-status-success {
-  background: rgba(0, 200, 150, 0.1);
-  color: var(--accent-color);
-  border: 1px solid rgba(0, 200, 150, 0.2);
-}
-
-.home-status-error {
-  background: rgba(255, 59, 92, 0.1);
-  color: var(--error-color);
-  border: 1px solid rgba(255, 59, 92, 0.2);
-}
-
-.home-status-info {
-  background: rgba(109, 93, 255, 0.1);
-  color: #6d5dff;
-  border: 1px solid rgba(109, 93, 255, 0.2);
-}
-
-/* ========== RESPONSIVIDADE AVANÇADA ========== */
-
-/* Para telas muito estreitas */
-@media (max-width: 480px) {
-  .components-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+/* Responsividade */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 15px;
+    margin-top: 100px;
   }
   
-  .home-container {
-    padding: 6px;
+  .components-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
-/* Para orientação paisagem em mobile */
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-width: 480px) {
   .home-container {
-    margin-top: 60px;
     padding: 10px;
+    margin-top: 90px;
   }
   
   .components-grid {
     gap: 15px;
-  }
-}
-
-/* Ajustes para garantir que o conteúdo nunca ultrapasse o header */
-@media (min-width: 1400px) {
-  .home-container {
-    max-width: min(85%, 1400px);
   }
 }
