@@ -211,7 +211,8 @@
       "PLACEHOLDER_CONECTION": "Digite o código de acesso.",
       "SELECT_COMPANY": "Selecione a empresa",
       "PLACEHOLDER_COMPANY": "Empresa aqui",
-      "ADD_NEW_COMPANY": "Adicionar nova empresa"
+      "ADD_NEW_COMPANY": "Adicionar nova empresa",
+      "CREATED": "Criado em"
     },
     "ACTIONS": {
       "NEW": "Limpar campos",
