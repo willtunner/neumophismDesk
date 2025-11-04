@@ -1,0 +1,49 @@
+<div class="visao-container" [class.online]="isLoggedIn">
+  <!-- Cabeçalho -->
+  <header class="visao-header">
+    <h2>Visão de Atendimento</h2>
+    <button class="btn-login" (click)="toggleLogin()">
+      {{ isLoggedIn ? 'Sair' : 'Entrar' }}
+    </button>
+  </header>
+
+  <!-- Painel Cliente -->
+  <div class="painel cliente">
+    <h3>Cliente</h3>
+    <div class="status" [class.online]="isLoggedIn">
+      {{ isLoggedIn ? 'Online' : 'Offline' }}
+    </div>
+  </div>
+
+  <!-- Chat -->
+  <div class="chat-area">
+    <div class="chat-box" *ngIf="isLoggedIn; else offlineMsg">
+      <div class="messages">
+        <div *ngFor="let msg of messages" [ngClass]="msg.sender">
+          <span>{{ msg.text }}</span>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input
+          type="text"
+          placeholder="Digite sua mensagem..."
+          [(ngModel)]="newMessage"
+          (keyup.enter)="sendMessage()"
+        />
+        <button (click)="sendMessage()">Enviar</button>
+      </div>
+    </div>
+
+    <ng-template #offlineMsg>
+      <div class="offline-msg">Faça login para iniciar o chat</div>
+    </ng-template>
+  </div>
+
+  <!-- Painel Operador -->
+  <div class="painel operador">
+    <h3>Operador</h3>
+    <div class="status" [class.online]="isLoggedIn">
+      {{ isLoggedIn ? 'Online' : 'Offline' }}
+    </div>
+  </div>
+</div>

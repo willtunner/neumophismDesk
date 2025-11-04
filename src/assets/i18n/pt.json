@@ -53,7 +53,8 @@
     "TITLE": "Notificações",
     "EMPTY": "Nenhuma notificação",
     "VIEW_ALL": "Ver todas as notificações",
-    "MARK_ALL_READ": "Marcar todos como lida!"
+    "MARK_ALL_READ": "Marcar todos como lida!",
+    "CREATE_COMPANY_SUCCESS": "Empresa criada com sucesso!"
   },
   "CHART": {
     "TITLE": "Distribuição de Chamados por Posto",

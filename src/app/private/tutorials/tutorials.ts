@@ -1,7 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { YoutubePlayerComponent } from '../../shared/components/youtube-player/youtube-player';
-import { AnnotationForm } from '../../shared/components/youtube-player/annotation-form/annotation-form';
-import { AnnotationList } from '../../shared/components/youtube-player/annotation-list/annotation-list';
 import { AnnotationService } from '../../services/annotation';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,9 +9,6 @@ import { MovieAnnotation } from '../../models/models';
 @Component({
   selector: 'app-tutorials',
   imports: [    
-    YoutubePlayerComponent,
-    AnnotationForm,
-    AnnotationList,
     CommonModule,
     FormsModule, 
     ReactiveFormsModule, 

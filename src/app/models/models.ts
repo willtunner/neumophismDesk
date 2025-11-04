@@ -1,226 +1,239 @@
 import { NotificationType } from "../enuns/notification-icon-types.enum";
+import { StatusChat } from "../enuns/status-chat.enum";
 
 export interface Company {
-    id: string;
-    name: string;
-    keywords: string[];
-    deleted: boolean;
-    created: Date; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
-    updated: Date | null; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
-    cnpj: string;
-    city: string;
-    state: string;
-    address: string;
-    zipcode: string;
-    phone: string;
-    connectionServ: string;
-    email: string;
-    versionServ: string | null;
-    clientsId: string[];
-    clients?: User[];
-    helpDeskCompanyId?: string;
-  }
+  id: string;
+  name: string;
+  keywords: string[];
+  deleted: boolean;
+  created: Date; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
+  updated: Date | null; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
+  cnpj: string;
+  city: string;
+  state: string;
+  address: string;
+  zipcode: string;
+  phone: string;
+  connectionServ: string;
+  email: string;
+  versionServ: string | null;
+  clientsId: string[];
+  clients?: User[];
+  helpDeskCompanyId?: string;
+}
 
-  export interface Call {
-     id: string;
-     deleted: boolean;
-     created: Date;
-     updated: Date;
-     companyId: string;
-     company?: Company;
-     clientId: string;
-     client?: User;
-     title: string;
-     description: string;
-     resolution: string;
-     tags: string[];
-     connection: string;
-     closed: boolean;
-     finalizedDate?: Date;
-     operatorId: string;
-     operator?: User;
-     helpDeskCompanyId?: string;
-     helpDeskCompany?: HelpDeskCompany;
-  }
+export interface Call {
+  id: string;
+  deleted: boolean;
+  created: Date;
+  updated: Date;
+  companyId: string;
+  company?: Company;
+  clientId: string;
+  client?: User;
+  title: string;
+  description: string;
+  resolution: string;
+  tags: string[];
+  connection: string;
+  closed: boolean;
+  finalizedDate?: Date;
+  operatorId: string;
+  operator?: User;
+  helpDeskCompanyId?: string;
+  helpDeskCompany?: HelpDeskCompany;
+}
 
-  export interface HelpDeskCompany {
-    id?: string;
-    name: string;
-    keywords: string[]; // Lista de palavras-chave para busca, salvar o nome da empresa em palavra-chave em minusculo
-    created: Date; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
-    updated: Date; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
-    cnpj: number;
-    city: string;
-    state: string;
-    address: string;
-    neighborhood: string;
-    zipcode: number;
-    phone: number;
-    email: string;
-    companiesId?: string[];
-    companies?: Company[];
-    employeesId?: string[];
-    employees?: User[];
-    roles: string[];
-    password?: string;
-    active: boolean;
-  }
+export interface HelpDeskCompany {
+  id?: string;
+  name: string;
+  keywords: string[]; // Lista de palavras-chave para busca, salvar o nome da empresa em palavra-chave em minusculo
+  created: Date; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
+  updated: Date; // timestamp formato do firebase (1 de julho de 2025 às 11:35:36 UTC-3), salvar no formato Date e criar um pipe para exibir a data no formato "01/07/2025 - 11:35:36" 
+  cnpj: number;
+  city: string;
+  state: string;
+  address: string;
+  neighborhood: string;
+  zipcode: number;
+  phone: number;
+  email: string;
+  companiesId?: string[];
+  companies?: Company[];
+  employeesId?: string[];
+  employees?: User[];
+  roles: string[];
+  password?: string;
+  active: boolean;
+}
 
-  export interface User {
-    id: string;
-    deleted: boolean;
-    created: Date;
-    updated?: Date | null;
-    username: string;
-    name: string;
-    phone: string;
-    email: string;
-    password: string;
-    isLoggedIn: boolean;
-    imageUrl: string;
-    roles: string[];
-    connection?: string | null;
-    helpDeskCompanyId?: string;
-    helpDeskCompany?: HelpDeskCompany | null;
-    companyId?: string;
-    company?: Company | null;
-  }
+export interface User {
+  id: string;
+  deleted: boolean;
+  created: Date;
+  updated?: Date | null;
+  username: string;
+  name: string;
+  phone: string;
+  email: string;
+  password: string;
+  isLoggedIn: boolean;
+  imageUrl: string;
+  roles: string[];
+  connection?: string | null;
+  helpDeskCompanyId?: string;
+  helpDeskCompany?: HelpDeskCompany | null;
+  companyId?: string;
+  company?: Company | null;
+}
 
-  export interface Client {
-    id: string;
-    deleted: boolean;
-    created: Date;
-    updated: Date | null;
-    username: string;
-    name: string;
-    phone: string;
-    email: string;
-    password: string;
-    isLoggedIn: boolean;
-    imageUrl: string;
-    roles: string[];
-    connection: string | null;
-    companyId: string;
-    company?: Company;
-  }
+export interface Client {
+  id: string;
+  deleted: boolean;
+  created: Date;
+  updated: Date | null;
+  username: string;
+  name: string;
+  phone: string;
+  email: string;
+  password: string;
+  isLoggedIn: boolean;
+  imageUrl: string;
+  roles: string[];
+  connection: string | null;
+  companyId: string;
+  company?: Company;
+}
 
 
-  export interface ChatRoom {
-    id: string;
-    close: boolean;
-    created: Date;
-    updated?: Date | null;
-    operator?: User;
-    operatorId: string;
-    client?: User;
-    clientId: string;
-    mensages: Message[],
-    unreadCount?: number;
-    occurrence: string;
-    helpDeskCompanyId: string;
-  }
+export interface ChatRoom {
+  id: string;
+  close: boolean;
+  created: Date;
+  updated?: Date | null;
+  operator?: User;
+  operatorId: string;
+  client?: User;
+  clientId: string;
+  mensages: Message[],
+  unreadCount?: number;
+  occurrence: string;
+  helpDeskCompanyId: string;
+  status: StatusChat;
+  statusHistory: statusHistory[];
+}
 
-  export interface userChatLogged {
-    user: User;
-    occurrency?: string;
-    date: any;
-  }
+export interface statusHistory {
+  created: Date;
+  updated: Date | null;
+  status: StatusChat;
+}
 
-  export interface Message {
-    senderId: string;        
-    content: string;       
-    timestamp: Date;      
-    isRead?: boolean;  
-  }
+export interface userChatLogged {
+  userId: string;
+  occurrency?: string;
+  role: string;
+  status: string;
+  created: Date;
+  updated?: Date | null;
+}
 
-  export interface Tutorial {
-    id?: string;
-    dropdownTitle: string;
-    videos: Video[];
-    helpDeskCompanyId: string;
-  }
-  
-  export interface Video {
-    id?: string;
-    youtubeUrl: string;
-    videoTitle: string;
-    created?: Date;
-    sector: string;
-  }
 
-  export interface MovieAnnotation {
-    id: string;
-    videoId: string;
-    timestamp: number; // segundos
-    note: string;
-    created: Date;
-    userId: string;
-  }
+export interface Message {
+  senderId: string;
+  content: string;
+  timestamp: Date;
+  isRead?: boolean;
+}
 
-  export interface VersionSistem {
-    id?: string;
-    version: string;
-    overviewText: string;
-    summaryList: Sumary[];
-    newChangesReview: string;
-    aprovedBy: string[];
-    create: Date;
-  }
+export interface Tutorial {
+  id?: string;
+  dropdownTitle: string;
+  videos: Video[];
+  helpDeskCompanyId: string;
+}
 
-  export interface Sumary {
-    id?:  string;
-    userId: string;
-    title: string;
-    description: string;
-    author: string;
-    create: Date;
-    developer: string;
-    comments?: CommentsVersion[];
-    close: boolean;
-    images?: string[];
-  }
+export interface Video {
+  id?: string;
+  youtubeUrl: string;
+  videoTitle: string;
+  created?: Date;
+  sector: string;
+}
 
-  export interface CommentsVersion {
-    userId: string;
-    comment: string;
-    create: Date;
-  }
+export interface MovieAnnotation {
+  id: string;
+  videoId: string;
+  timestamp: number; // segundos
+  note: string;
+  created: Date;
+  userId: string;
+}
 
-  export interface SimplifiedCall {
-    callId: string;
-    date: string;
-    companyId: string;
-    companyName: string;
-  }
+export interface VersionSistem {
+  id?: string;
+  version: string;
+  overviewText: string;
+  summaryList: Sumary[];
+  newChangesReview: string;
+  aprovedBy: string[];
+  create: Date;
+}
 
-  export interface ChartData {
-    name: string;
-    y: number;
-    color?: string;
-  }
+export interface Sumary {
+  id?: string;
+  userId: string;
+  title: string;
+  description: string;
+  author: string;
+  create: Date;
+  developer: string;
+  comments?: CommentsVersion[];
+  close: boolean;
+  images?: string[];
+}
 
-  export interface Document {
-    id: string;
-    title: string;
-    content: string;
-    created: Date;
-    updated?: Date | null;
-    helpDeskCompanyId: string;
-    userId?: string;
-  }
+export interface CommentsVersion {
+  userId: string;
+  comment: string;
+  create: Date;
+}
 
-  export interface Notifications {
-    id?: string;
-    title: string;
-    content: string;
-    created: Date;
-    iconType: NotificationType;
-    isRead?: boolean;
-    isMessageNotification?: boolean; 
-    userId?: string | null;
-    helpDeskId: string;
-    path: string | null;
-  }
+export interface SimplifiedCall {
+  callId: string;
+  date: string;
+  companyId: string;
+  companyName: string;
+}
+
+export interface ChartData {
+  name: string;
+  y: number;
+  color?: string;
+}
+
+export interface Document {
+  id: string;
+  title: string;
+  content: string;
+  created: Date;
+  updated?: Date | null;
+  helpDeskCompanyId: string;
+  userId?: string;
+}
+
+export interface Notifications {
+  id?: string;
+  title: string;
+  content: string;
+  created: Date;
+  iconType: NotificationType;
+  isRead?: boolean;
+  isMessageNotification?: boolean;
+  userId?: string | null;
+  helpDeskId: string;
+  path: string | null;
+}
 
 
 
