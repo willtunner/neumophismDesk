@@ -1,1 +1,52 @@
-<p>operator-chat works!</p>
+<div class="operator-card neu-container" [class.waiting]="!operator || !operator?.online">
+  <!-- Cabeçalho -->
+  <div class="operator-header" [class.offline]="operator && !operator.online">
+    <span>{{ !operator ? 'Aguardando operador...' : (operator.online ? 'Operador' : 'Operador Offline') }}</span>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="operator-content">
+    <div class="profile-wrapper">
+      <!-- Quando operador existe (online ou offline) -->
+      <ng-container *ngIf="operator; else noOperator">
+        <img 
+          [src]="operator.foto" 
+          alt="Foto do operador" 
+          class="profile-image" 
+          [class.grayscale]="!operator.online"
+        />
+        <!-- Status dot vermelho quando offline -->
+        <span class="status-dot offline" *ngIf="!operator.online"></span>
+        <span class="status-dot" *ngIf="operator.online"></span>
+      </ng-container>
+
+      <!-- Quando operador é null -->
+      <ng-template #noOperator>
+        <div class="profile-placeholder">
+          <span>Aguardando...</span>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Informações do operador -->
+    <div class="operator-info" *ngIf="operator; else waitingOperator">
+      <h3>{{ operator.nome }}</h3>
+      <p *ngIf="operator.online; else offlineMessage">{{ operator.cargo }}</p>
+      <ng-template #offlineMessage>
+        <p>Usuário está offline</p>
+      </ng-template>
+    </div>
+    
+    <!-- Quando operador é null -->
+    <ng-template #waitingOperator>
+      <div class="operator-info">
+        <h3>Aguardando operador</h3>
+        <p>Quando um operador não tiver aceito o atendimento.</p>
+      </div>
+    </ng-template>
+
+    <button class="btn-end" [class.offline]="operator && !operator.online">
+      {{ !operator ? 'Cancelar Chamado' : (operator.online ? 'Finalizar Atendimento' : 'Cancelar Chamado') }}
+    </button>
+  </div>
+</div>

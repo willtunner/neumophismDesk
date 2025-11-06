@@ -10,26 +10,15 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./client-chat.scss']
 })
 export class ClientChat {
-  isLoggedIn = false;
-  newMessage = '';
-  messages: { sender: string; text: string }[] = [];
+  client = {
+    nome: 'Fabiana Golveia',
+    empresa: 'Posto Dantop',
+    cnpj: '13.670.585/0001-07',
+    status: true, // true = online (verde), false = offline (vermelho)
+    foto: 'https://static.vecteezy.com/ti/fotos-gratis/p2/3491968-imagem-retrato-de-mulher-linda-encantadora-close-up-gratis-foto.jpg'
+  };
 
-  toggleLogin() {
-    this.isLoggedIn = !this.isLoggedIn;
-    if (!this.isLoggedIn) {
-      this.messages = [];
-      this.newMessage = '';
-    }
-  }
-
-  sendMessage() {
-    if (this.newMessage.trim()) {
-      this.messages.push({ sender: 'cliente', text: this.newMessage });
-      this.newMessage = '';
-      // resposta simulada
-      setTimeout(() => {
-        this.messages.push({ sender: 'operador', text: 'Mensagem recebida!' });
-      }, 800);
-    }
+  toggleStatus() {
+    this.client.status = !this.client.status;
   }
 }

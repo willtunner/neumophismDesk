@@ -257,7 +257,7 @@
       "PLACEHOLDERS_ZIPCODE": "Digite o cep",
       "VERSION_SERV": "Versão do servidor",
       "PLACEHOLDER_VERSION_SERV": "Digita a verção do servidor",
-      "CONECTION": "Conexão",
+      "CONNECTION": "Conexão",
       "PLACEHOLDER_CONECTION": "Digite o código de acesso.",
       "SELECT_COMPANY": "Selecione a empresa",
       "COMPANY": "Empresa",
@@ -288,6 +288,7 @@
   "TAGS": {
     "ADD_TAG": "Adicionar tag",
     "SUCCESS_MESSAGE": "Tag adicionada com sucesso!",
-    "PLACEHOLDER_TAG": "Digite a tag e pressione Enter"
+    "PLACEHOLDER_TAG": "Digite a tag e pressione Enter",
+    "NO_TAG_MESSAGE": "Nenhuma tag disponível"
   }
 }

@@ -1,13 +1,22 @@
 <!-- chat.component.html -->
 <div class="chat-container" [class.client-view]="isClientView()">
 
-    <!-- Visão do Operador -->
-    @if (!isClientView()) {
-      <app-operator-chat></app-operator-chat>
-    }
-  
-    <!-- Visão do Cliente -->
-    @if (isClientView()) {
+  <!-- Visão do Operador -->
+  @if (!isClientView()) {
+  <app-operator-list></app-operator-list>
+  }
+
+  <!-- Visão do Cliente -->
+  @if (isClientView()) {
+  <div class="client-operator-section">
+    <div class="left-section">
       <app-client-chat></app-client-chat>
-    }
+      <br>
+      <app-operator-chat></app-operator-chat>
+    </div>
+    <div class="right-section">
+      <app-chat-messages></app-chat-messages>
+    </div>
   </div>
+  }
+</div>

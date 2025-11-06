@@ -413,7 +413,7 @@
 ::ng-deep .rich-text-viewer p img,
 ::ng-deep .rich-text-viewer span img {
   display: block;
-  max-width: 400px !important;
+  /* max-width: 400px !important; */
   width: auto !important;
   height: auto !important;
   margin: 12px auto;

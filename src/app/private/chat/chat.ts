@@ -6,11 +6,16 @@ import { OperatorChat } from './operator-chat/operator-chat';
 import { ClientChat } from './client-chat/client-chat';
 import { User } from '../../models/models';
 import { AuthService } from '../../services/auth.service';
+import { ChatMessagesComponent } from './chat-messages/chat-messages';
+import { OperatorList } from './operator-list/operator-list';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, OperatorChat, ClientChat ],
+  imports: [CommonModule, FormsModule, OperatorChat, ClientChat, 
+    ChatMessagesComponent,
+    OperatorList
+   ],
   templateUrl: './chat.html',
   styleUrls: ['./chat.css']
 })

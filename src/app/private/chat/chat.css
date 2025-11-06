@@ -735,3 +735,12 @@
 .messages-container::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.25);
 }
+
+.client-operator-section {
+  display: flex;
+  gap: 25px;
+}
+
+.right-section {
+  flex: 1;
+}

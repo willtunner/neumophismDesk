@@ -56,7 +56,7 @@
     
     <ng-container *ngIf="suggestedTags$ | async as suggestedTags">
       <div *ngIf="showNoTagMessage && suggestedTags.length === 0 && showSuggestions" class="neu-warning-message">
-        {{ 'tags.noTagMessage' | translate }}
+        {{ 'TAGS.NO_TAG_MESSAGE' | translate }}
       </div>
     </ng-container>
 

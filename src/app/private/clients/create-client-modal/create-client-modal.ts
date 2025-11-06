@@ -152,7 +152,7 @@ export class ClientModalComponent implements OnInit {
     this.connectionConfig = {
       type: InputType.CONNECTION,
       formControlName: 'connection',
-      label: this.translate.instant('INPUTS-FIELS.CONECTION'),
+      label: this.translate.instant('CLIENTS.FIELDS.CONNECTION'),
       required: true,
       minLength: 2,
       maxLength: 100,
