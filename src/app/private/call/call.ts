@@ -133,7 +133,7 @@ export class CallComponent implements OnInit, OnDestroy {
 
   // 🔹 NOVO: Carrega chamados e verifica seleção inicial
   private async loadCalls() {
-    this.callsList = await this.callService.getAllCalls();
+    this.callsList = await this.callService.getAllCalls(this.loggedUser.id, this.loggedUser.helpDeskCompanyId);
 
     // 🔹 VERIFICA SE HÁ ID NA URL APÓS CARREGAR OS DADOS
     const initialCallId = this.route.snapshot.paramMap.get('id');

@@ -122,6 +122,7 @@ export class CallService {
    */
   async getAllCalls(operatorId?: string, helpDeskCompanyId?: string): Promise<Call[]> {
     try {
+      console.log('Iniciando usuário', this.currentUser);
       const actualHelpDeskId = helpDeskCompanyId || this.currentUser?.helpDeskCompanyId;
       
       if (!actualHelpDeskId) {
