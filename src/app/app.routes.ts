@@ -13,6 +13,7 @@ import { authGuard } from './guards/auth.guard';
 import { SignupComponent } from './public/signup/signup';
 import { ForgotPasswordComponent } from './public/forgot-password/forgot-password';
 import { Settings } from './private/settings/settings';
+import { SuccessSignupComponent } from './public/success-signup/success-signup';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -35,5 +36,6 @@ export const routes: Routes = [
   { path: 'settings', component: Settings, canActivate: [authGuard] },
   { path: 'signup', component: SignupComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'signup-success', component: SuccessSignupComponent },
   { path: '**', redirectTo: '/login' }
 ];

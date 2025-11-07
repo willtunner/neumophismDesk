@@ -48,7 +48,9 @@ export class App implements OnInit, OnDestroy {
                     currentUrl === '/signup' ||
                     currentUrl.includes('/forgot-password') || 
                     currentUrl === '/forgot-password' ||
-                    currentUrl.includes('/auth');
+                    currentUrl.includes('/auth') ||
+                    currentUrl.includes('/signup-success') ||
+                    currentUrl === '/signup-success';
     
     this.isLoginRoute.set(isLogin);
   }

@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HelpDeskCompany } from '../../models/models';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
+import { HelpdeskCompanyService } from '../../services/helpdesk-company-service';
 
 @Component({
   selector: 'app-signup',
@@ -24,6 +25,7 @@ export class SignupComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private translate = inject(TranslateService);
+  private helpCompanyService = inject(HelpdeskCompanyService);
 
   signupForm: FormGroup;
   isLoading = false;
@@ -31,8 +33,8 @@ export class SignupComponent {
 
   // Estados brasileiros
   estados = [
-    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 
-    'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 
+    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+    'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
     'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
   ];
 
@@ -46,21 +48,21 @@ export class SignupComponent {
       name: ['', [Validators.required, Validators.minLength(3)]],
       cnpj: ['', [Validators.required, Validators.pattern(/^\d{14}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      
+
       // Localização
       cep: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
       address: ['', [Validators.required]],
       neighborhood: ['', [Validators.required]],
       city: ['', [Validators.required]],
       state: ['', [Validators.required]],
-      
+
       // Contato
       phone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]],
-      
+
       // Segurança
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
-      
+
       // Termos
       acceptTerms: [false, [Validators.requiredTrue]]
     }, { validators: this.passwordMatchValidator });
@@ -69,7 +71,7 @@ export class SignupComponent {
   private passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
-    
+
     if (password && confirmPassword && password.value !== confirmPassword.value) {
       confirmPassword.setErrors({ passwordMismatch: true });
     } else {
@@ -77,14 +79,13 @@ export class SignupComponent {
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.signupForm.valid) {
       this.isLoading = true;
-      
-      // Simula processamento
-      setTimeout(() => {
+
+      try {
         const formValue = this.signupForm.value;
-        
+
         // Cria objeto HelpDeskCompany
         const helpDeskCompany: HelpDeskCompany = {
           name: formValue.name,
@@ -99,20 +100,31 @@ export class SignupComponent {
           zipcode: Number(formValue.cep),
           phone: Number(formValue.phone),
           email: formValue.email,
-          roles: ['helpdesk_company'],
+          roles: ['ADMIN'],
           password: formValue.password,
           active: true
         };
 
-        // Print no console como solicitado
-        console.log('📋 Dados da Empresa HelpDesk:', helpDeskCompany);
-        
+        console.log('📋 Enviando empresa para salvar...', helpDeskCompany);
+
+        // 🔹 Aguarda salvar e captura o retorno da empresa criada/atualizada
+        const savedCompany = await this.helpCompanyService.saveHelpdeskCompany(helpDeskCompany);
+
+        // 🔹 Mostra no log o objeto realmente salvo (com id do Firestore)
+        console.log('✅ Empresa salva com sucesso:', savedCompany);
+
+        // 🔹 Armazena a empresa criada no serviço
+        this.helpCompanyService.setLastCreatedCompany(savedCompany);
+
+        // 🔹 Redireciona para a página de sucesso
+        this.router.navigate(['/signup-success']);
+
+      } catch (error) {
+        console.error('❌ Erro ao salvar empresa HelpDesk:', error);
+      } finally {
         this.isLoading = false;
-        
-        // Aqui você pode adicionar a lógica para salvar no Firebase
-        // await this.saveHelpDeskCompany(helpDeskCompany);
-        
-      }, 1500);
+      }
+
     } else {
       this.markFormGroupTouched();
     }
