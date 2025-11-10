@@ -1,15 +1,13 @@
 $transition: all 0.3s ease;
 
 @mixin neu-effect($size: 2px) {
-  box-shadow: 
-    #{$size} #{$size} #{$size * 2} var(--shadow-light),
-    -#{$size} -#{$size} #{$size * 2} var(--shadow-dark);
+  box-shadow: #{$size} #{$size} #{$size * 2} var(--shadow-light),
+  -#{$size} -#{$size} #{$size * 2} var(--shadow-dark);
 }
 
 @mixin neu-inset($size: 2px) {
-  box-shadow: 
-    inset #{$size} #{$size} #{$size * 2} var(--shadow-light),
-    inset -#{$size} -#{$size} #{$size * 2} var(--shadow-dark);
+  box-shadow: inset #{$size} #{$size} #{$size * 2} var(--shadow-light),
+  inset -#{$size} -#{$size} #{$size * 2} var(--shadow-dark);
 }
 
 /* Layout principal */
@@ -149,6 +147,7 @@ $transition: all 0.3s ease;
   align-items: center;
   justify-content: center;
   transition: $transition;
+  box-shadow: 8px 8px 16px var(--shadow-light), -8px -8px 16px var(--shadow-dark);
 }
 
 .placeholder-content:hover {
@@ -387,21 +386,21 @@ $transition: all 0.3s ease;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
   }
-  
+
   .months-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
   }
-  
+
   .calendar-page {
     margin-top: 110px;
     padding: 12px;
   }
-  
+
   .placeholder-item {
     grid-column: 1 / -1;
   }
-  
+
   .placeholder-content {
     min-height: 120px;
     padding: 20px;
@@ -413,39 +412,39 @@ $transition: all 0.3s ease;
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  
+
   .months-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  
+
   .calendar-page {
     margin-top: 100px;
     padding: 10px;
   }
-  
+
   .month-container {
     padding: 14px;
   }
-  
+
   .event-content-wrapper {
     padding: 16px;
     gap: 16px;
   }
-  
+
   .event-date-neu {
     min-width: 80px;
     padding: 12px 8px;
   }
-  
+
   .event-day {
     font-size: 1.5rem;
   }
-  
+
   .event-month {
     font-size: 0.7rem;
   }
-  
+
   .event-actions {
     opacity: 1;
   }
@@ -456,30 +455,30 @@ $transition: all 0.3s ease;
     margin-top: 90px;
     padding: 8px;
   }
-  
+
   .event-content-wrapper {
     padding: 14px;
     gap: 14px;
   }
-  
+
   .event-date-neu {
     width: 70px;
     padding: 10px 6px;
   }
-  
+
   .event-day {
     font-size: 1.3rem;
   }
-  
+
   .event-month {
     font-size: 0.65rem;
   }
-  
+
   .icon-button {
     width: 32px;
     height: 32px;
   }
-  
+
   .icon-button svg {
     width: 16px;
     height: 16px;

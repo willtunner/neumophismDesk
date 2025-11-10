@@ -105,3 +105,33 @@
   font-size: 14px;
   text-align: center;
 }
+
+.clock-toggle {
+  margin-bottom: 20px;
+
+  .toggle-btn {
+    background: var(--bg-primary);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    /* transition: $transition-base; */
+    box-shadow:
+      4px 4px 8px var(--shadow-light),
+      -4px -4px 8px var(--shadow-dark);
+
+    &.active {
+      color: var(--text-primary);
+      box-shadow:
+        inset 3px 3px 6px var(--shadow-light),
+        inset -3px -3px 6px var(--shadow-dark);
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
