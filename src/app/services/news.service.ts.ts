@@ -6,15 +6,16 @@ import { Observable } from 'rxjs';
 export class NewsService {
   private apiKey = '026fbb7f2981493ebfe52849126572cb';
 
-  // Se estiver em desenvolvimento → usa proxy local
-  // Caso contrário → usa URL completa da NewsAPI
-  private apiUrl = isDevMode()
-    ? '/newsapi/v2/everything'
-    : 'https://newsapi.org/v2/everything';
+  private baseUrl = 'https://newsapi.org/v2/everything';
+  private corsProxy = 'https://cors-anywhere.herokuapp.com/';
 
   constructor(private http: HttpClient) {}
 
   getNews(q: string, from: string): Observable<any> {
+    const url = isDevMode()
+      ? this.corsProxy + this.baseUrl // em dev usa o proxy CORS
+      : this.baseUrl; // em produção vai direto (se tiver backend próprio)
+
     const params = new HttpParams()
       .set('q', q)
       .set('from', from)
@@ -22,8 +23,8 @@ export class NewsService {
       .set('sortBy', 'publishedAt')
       .set('apiKey', this.apiKey);
 
-    console.log('📡 Requisição para:', `${this.apiUrl}?${params.toString()}`);
+    console.log('📡 Requisição para:', `${url}?${params.toString()}`);
 
-    return this.http.get(this.apiUrl, { params });
+    return this.http.get(url, { params });
   }
 }
