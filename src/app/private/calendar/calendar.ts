@@ -1,11 +1,13 @@
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
 import { EventModalComponent } from './event-modal/event-modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { Weather } from '../weather/weather';
 import { Clock } from '../../shared/components/clock/clock';
+import { NewsComponent } from '../../shared/components/news/news';
 
 export interface CalendarEvent {
   id: string;
@@ -14,17 +16,25 @@ export interface CalendarEvent {
   description: string;
 }
 
+interface Holiday {
+  date: string;
+  name: string;
+  type: string;
+}
+
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, Weather, Clock],
+  imports: [CommonModule, FormsModule, TranslateModule, Weather, Clock, NewsComponent],
   templateUrl: './calendar.html',
   styleUrls: ['./calendar.scss']
 })
-export class Calendar {
+export class Calendar implements OnInit {
   // Signals
   currentYear = signal(new Date().getFullYear());
   events = signal<CalendarEvent[]>(this.loadEventsFromStorage());
+  holidays = signal<Holiday[]>([]);
+  loading = signal(false);
   
   // Computed values
   monthsGrid = computed(() => {
@@ -49,9 +59,12 @@ export class Calendar {
   weekDaysMini = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
   private dialog = inject(MatDialog);
+  private http = inject(HttpClient);
+  private apiKey = '21075|Wiu4ByEDG4xvXHH8Lfnbm2GILonpwEiu';
 
   ngOnInit() {
     this.loadEventsFromStorage();
+    this.fetchHolidays();
   }
 
   private generateMonthDays(year: number, month: number, today: Date) {
@@ -92,20 +105,89 @@ export class Calendar {
       number,
       isCurrentMonth,
       isToday: this.isSameDay(date, today),
-      hasEvents: this.hasEventsOnDate(date)
+      hasEvents: this.hasEventsOnDate(date),
+      isHoliday: this.isHoliday(date)
     };
   }
 
-  // Navegação
+  // API de Feriados
+  private fetchHolidays(): void {
+    this.loading.set(true);
+    const year = this.currentYear();
+    const apiUrl = `https://api.invertexto.com/v1/holidays/${year}?token=${this.apiKey}`;
+
+    this.http.get<Holiday[]>(apiUrl).subscribe({
+      next: (data) => {
+        this.holidays.set(data);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        console.error('Erro ao carregar feriados:', err);
+        this.loading.set(false);
+      }
+    });
+  }
+
+  // Verifica se é feriado
+  private isHoliday(date: Date): boolean {
+    const dateStr = date.toISOString().split('T')[0];
+    return this.holidays().some(h => h.date === dateStr);
+  }
+
+  // Obtém o nome do feriado para tooltip
+  getHolidayName(date: Date): string | null {
+    const dateStr = date.toISOString().split('T')[0];
+    return this.holidays().find(h => h.date === dateStr)?.name || null;
+  }
+
+  // Tooltip para os dias
+  getDayTooltip(date: Date): string {
+    if (!date || !this.isSameDay(date, date)) return '';
+    
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    
+    // Se for hoje
+    if (this.isToday(date)) {
+      return `Hoje!\n${day}/${month}/${year}`;
+    }
+    
+    // Se for feriado
+    const holidayName = this.getHolidayName(date);
+    if (holidayName) {
+      return `${day}/${month}/${year}\n${holidayName}`;
+    }
+    
+    // Se tem eventos
+    const events = this.getEventsForDate(date);
+    if (events.length > 0) {
+      const eventText = events.length === 1 ? '1 Evento' : `${events.length} Eventos`;
+      return `${day}/${month}/${year}\n${eventText}`;
+    }
+    
+    // Data normal
+    return `${day}/${month}/${year}`;
+  }
+
+  // Verifica se é hoje
+  private isToday(date: Date): boolean {
+    const today = new Date();
+    return this.isSameDay(date, today);
+  }
+
+  // Navegação com recarregamento de feriados
   previousYear(): void {
     this.currentYear.update(year => year - 1);
+    this.fetchHolidays();
   }
 
   nextYear(): void {
     this.currentYear.update(year => year + 1);
+    this.fetchHolidays();
   }
 
-  // Métodos de eventos
+  // Métodos de eventos (mantidos do original)
   openEventModal(date: Date): void {
     const dialogRef = this.dialog.open(EventModalComponent, {
       width: '500px',
@@ -170,6 +252,10 @@ export class Calendar {
 
   private hasEventsOnDate(date: Date): boolean {
     return this.events().some(event => this.isSameDay(event.date, date));
+  }
+
+  private getEventsForDate(date: Date): CalendarEvent[] {
+    return this.events().filter(e => this.isSameDay(e.date, date));
   }
 
   private generateId(): string {

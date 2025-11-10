@@ -1,0 +1,63 @@
+<div class="waiting-card neu-container-no-padding">
+  <!-- Cabeçalho -->
+  <div class="waiting-header">
+    <span>Operadores</span>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="waiting-content">
+    <div *ngFor="let op of operadores" class="operator-card">
+      <!-- Cabeçalho do operador -->
+      <div class="operator-header" (click)="toggleDropdown(op)">
+        <div class="header-left">
+          <h3>{{ op.nome }}</h3>
+          <p *ngIf="op.assuntoSelecionado">{{ op.assuntoSelecionado }}</p>
+          <p *ngIf="!op.assuntoSelecionado && op.atendimentos.length === 0">Sem atendimento</p>
+        </div>
+        <div class="header-right">
+          <span>{{ getFinalizados(op) }}/{{ op.atendimentos.length }}</span>
+        </div>
+      </div>
+
+      <!-- Dropdown -->
+      <div class="operator-dropdown" *ngIf="op.dropdownOpen">
+        <div *ngIf="op.atendimentos.length > 0; else noData">
+          <table mat-table [dataSource]="op.atendimentos" class="mat-elevation-z0 waiting-table">
+
+            <!-- Nome -->
+            <ng-container matColumnDef="nome">
+              <th mat-header-cell *matHeaderCellDef> Nome </th>
+              <td mat-cell *matCellDef="let item" [class.finalizado]="item.finalized">
+                {{ item.nome }}
+              </td>
+            </ng-container>
+
+            <!-- Empresa -->
+            <ng-container matColumnDef="empresa">
+              <th mat-header-cell *matHeaderCellDef> Empresa </th>
+              <td mat-cell *matCellDef="let item" [class.finalizado]="item.finalized">
+                {{ item.empresa }}
+              </td>
+            </ng-container>
+
+            <!-- Assunto -->
+            <ng-container matColumnDef="assunto">
+              <th mat-header-cell *matHeaderCellDef> Assunto </th>
+              <td mat-cell *matCellDef="let item" [class.finalizado]="item.finalized">
+                {{ item.assunto }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+
+        <ng-template #noData>
+          <p class="no-data">Não há atendimentos para este operador.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+

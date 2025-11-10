@@ -1,23 +1,22 @@
 <div class="calendar-page">
   <!-- Grid Principal -->
   <div class="calendar-main-grid">
-  <!-- Componente de Tempo (Weather) -->
-  <div class="grid-item weather-item">
-    <app-weather></app-weather>
-  </div>
-
-  <!-- Relógio -->
-  <div class="grid-item clock-item">
-    <app-clock></app-clock>
-  </div>
-
-      <!-- Espaço Reservado -->
-  <div class="grid-item placeholder-item">
-    <div class="placeholder-content neu-container">
-      <h3>Espaço Livre</h3>
-      <p>Adicione conteúdo aqui</p>
+    <!-- Componente de Tempo (Weather) -->
+    <div class="grid-item weather-item">
+      <app-weather></app-weather>
     </div>
-  </div>
+
+    <!-- Relógio -->
+    <div class="grid-item clock-item">
+      <app-clock></app-clock>
+    </div>
+
+    <!-- Espaço Reservado -->
+    <div class="grid-item placeholder-item">
+      <div class="placeholder-content neu-container">
+        <app-news></app-news>
+      </div>
+    </div>
 
     <!-- Header do Calendário Anual -->
     <div class="calendar-year-header neu-container grid-full-width">
@@ -50,11 +49,17 @@
 
         <!-- Dias do mês -->
         <div class="days-grid-small">
-          <div *ngFor="let day of month.days" class="day-tiny" [class.other-month]="!day.isCurrentMonth"
-              [class.today]="day.isToday" [class.has-events]="day.hasEvents" (dblclick)="openEventModal(day.date)"
-              [title]="day.date | date:'fullDate'">
+          <div *ngFor="let day of month.days" 
+               class="day-tiny" 
+               [class.other-month]="!day.isCurrentMonth"
+               [class.today]="day.isToday" 
+               [class.has-events]="day.hasEvents"
+               [class.holiday]="day.isHoliday"
+               (dblclick)="openEventModal(day.date)"
+               [title]="getDayTooltip(day.date)">
             <span class="day-number-tiny">{{ day.number }}</span>
             <div class="event-icon" *ngIf="day.hasEvents">🎉</div>
+            <div class="holiday-icon" *ngIf="day.isHoliday">⭐</div>
           </div>
         </div>
       </div>

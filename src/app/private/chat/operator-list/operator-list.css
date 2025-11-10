@@ -1,0 +1,98 @@
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* lado direito maior */
+  gap: 16px;
+  padding: 16px;
+  height: 100vh;
+  box-sizing: border-box;
+  margin-bottom: 50px;
+}
+
+/* Coluna esquerda (Fila + Operadores) */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  height: 100%;
+}
+
+/* Coluna direita (Clientes + Chat) */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  height: 100%;
+}
+
+/* Define proporções internas */
+app-waiting-list {
+  flex: 0.8;
+}
+
+app-operators-online {
+  flex: 1;
+}
+
+app-waiting-list-clients {
+  flex: 0.3;
+}
+
+app-chat-messages {
+  flex: 1.7;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Ajustes visuais uniformes */
+app-waiting-list,
+app-operators-online,
+app-waiting-list-clients,
+app-chat-messages {
+  width: 100%;
+  min-height: 0; /* evita overflow no flex */
+}
+
+/* ===== Responsivo para tablets ===== */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  app-waiting-list,
+  app-operators-online,
+  app-waiting-list-clients,
+  app-chat-messages {
+    flex: unset;
+  }
+}
+
+/* ===== Responsivo para mobile ===== */
+@media (max-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+    height: auto;
+  }
+
+  .left-panel {
+    order: 2;
+  }
+
+  .right-panel {
+    order: 1;
+  }
+
+  app-chat-messages {
+    height: 60vh;
+  }
+}

@@ -1,0 +1,41 @@
+<div class="news-container">
+  <!-- Campo de busca com botão -->
+  <div class="search-box">
+    <input 
+      [(ngModel)]="query" 
+      placeholder="Digite o assunto..." 
+      class="search-input"
+      (keyup.enter)="loadNews()"
+    />
+    <button (click)="loadNews()" class="search-button">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Carregando notícias...</div>
+
+  <!-- Mensagem de erro -->
+  <div *ngIf="error && !loading" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Lista de notícias -->
+  <div class="articles-list neu-scrollbar" *ngIf="!loading && !error && articles.length">
+    <div 
+      *ngFor="let article of articles" 
+      class="article-item"
+      (click)="openArticle(article.url)"
+    >
+      <div class="article-content">
+        <strong class="article-title">{{ article.title }}</strong>
+        <p class="article-description">{{ article.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sem resultados (sem erro) -->
+  <div *ngIf="!loading && !error && articles.length === 0" class="no-results">
+    Nenhuma notícia encontrada.
+  </div>
+</div>

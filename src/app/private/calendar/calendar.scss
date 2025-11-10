@@ -331,6 +331,56 @@ $transition: all 0.3s ease;
   opacity: 0.7;
 }
 
+// Estilos para feriados
+.day-tiny.holiday {
+  background: linear-gradient(145deg, #ff5252, #d32f2f) !important;
+  color: white !important;
+  font-weight: 700 !important;
+  @include neu-inset(2px);
+}
+
+.day-tiny.holiday:hover {
+  background: linear-gradient(145deg, #ff6b6b, #e53935) !important;
+  @include neu-inset(3px);
+}
+
+.holiday-icon {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  font-size: 0.5rem;
+  color: white;
+}
+
+// Ajuste para quando é feriado E tem evento
+.day-tiny.holiday.has-events {
+  background: linear-gradient(145deg, #ff5252, #d32f2f) !important;
+}
+
+// Tooltip customizado (opcional, se quiser estilizar diferente)
+.day-tiny[title] {
+  position: relative;
+}
+
+.day-tiny[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: pre-line;
+  z-index: 1000;
+  min-width: 120px;
+  max-width: 200px;
+  text-align: center;
+  pointer-events: none;
+}
+
 /* Responsividade */
 @media (max-width: 1024px) {
   .calendar-main-grid {

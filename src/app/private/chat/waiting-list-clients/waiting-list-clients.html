@@ -1,0 +1,25 @@
+<div class="clients-card">
+  <div class="header">
+    <span>Atendimentos</span>
+  </div>
+
+  <div class="clients-container">
+    <div
+      *ngFor="let client of clients"
+      class="client"
+      [class.active]="client.ativo"
+      (click)="setActive(client)"
+    >
+      <img [src]="client.imagemUrl" [alt]="client.nome" />
+      <span>{{ client.nome }}</span>
+
+      <!-- Tooltip -->
+      <div class="tooltip">
+        <p><strong>Nome:</strong> {{ client.nome }}</p>
+        <p><strong>Empresa:</strong> {{ client.empresa }}</p>
+        <p><strong>Assunto:</strong> {{ client.assunto }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+

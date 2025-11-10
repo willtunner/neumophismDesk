@@ -191,6 +191,20 @@ body {
   box-sizing: border-box;
 }
 
+.neu-container-no-padding {
+  background: var(--bg-primary);
+  border-radius: 25px;
+  box-shadow: 
+    20px 20px 60px var(--shadow-light),
+    -20px -20px 60px var(--shadow-dark);
+  position: relative;
+  transition: all 0.3s ease;
+  color: var(--text-primary);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .neu-container:hover {
   transform: translateY(-5px);
 }

@@ -1,4 +1,4 @@
-<div class="operator-card neu-container" [class.waiting]="!operator || !operator?.online">
+<div class="operator-card neu-container" [class.waiting]="!operator || !operator.online ">
   <!-- Cabeçalho -->
   <div class="operator-header" [class.offline]="operator && !operator.online">
     <span>{{ !operator ? 'Aguardando operador...' : (operator.online ? 'Operador' : 'Operador Offline') }}</span>

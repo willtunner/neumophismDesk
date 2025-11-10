@@ -5,3 +5,4 @@
 > Reference: https://github.com/angular/angularfire#readme
 
 > Rodar app rede: ng serve --host 0.0.0.0 --port 4200
+> Rodar com proxy: ng serve --proxy-config proxy.conf.json
