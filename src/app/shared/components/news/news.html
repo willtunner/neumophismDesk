@@ -28,9 +28,10 @@
       (click)="openArticle(article.url)"
     >
       <div class="article-content">
-        <strong class="article-title">{{ article.title }}</strong>
+        <strong class="article-title" [title]="article.title">{{ article.title }}</strong>
         <p class="article-description">{{ article.description }}</p>
       </div>
+      <div class="custom-tooltip">{{ article.title }}</div>
     </div>
   </div>
 

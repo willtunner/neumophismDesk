@@ -5,6 +5,11 @@
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
+  background: var(--bg-primary);
+  border-radius: 20px;
+  box-shadow:
+    8px 8px 16px var(--shadow-light),
+    -8px -8px 16px var(--shadow-dark);
 }
 
 /* Campo de busca */
@@ -16,122 +21,332 @@
 
 .search-input {
   flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px 14px;
+  background: var(--input-bg);
+  border: none;
+  border-radius: 12px;
   font-size: 14px;
+  color: var(--text-primary);
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow:
+    inset 2px 2px 4px var(--shadow-light),
+    inset -2px -2px 4px var(--shadow-dark);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
 }
 
 .search-button {
-  padding: 8px 12px;
-  background-color: #1976d2;
-  color: white;
+  padding: 10px 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow:
+    4px 4px 8px var(--shadow-light),
+    -4px -4px 8px var(--shadow-dark);
+  transition: all 0.3s ease;
 }
 
 .search-button:hover {
-  background-color: #1565c0;
+  transform: translateY(-2px);
+  box-shadow:
+    6px 6px 12px var(--shadow-light),
+    -6px -6px 12px var(--shadow-dark);
+}
+
+.search-button:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 3px 3px 6px var(--shadow-light),
+    inset -3px -3px 6px var(--shadow-dark);
 }
 
 /* Lista de artigos */
 .articles-list {
   flex: 1;
   overflow-y: auto;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  background: var(--bg-primary);
+  border-radius: 12px;
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  padding: 4px;
 }
 
 .article-item {
   height: 50px;
-  padding: 6px 8px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  background: var(--bg-primary);
+  box-shadow: 2px 2px 4px var(--shadow-light), -2px -2px 4px var(--shadow-dark);
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
 }
 
+/* Hover para modo light (mantém o padrão) */
 .article-item:hover {
-  background-color: yellow;
+  transform: translateY(-1px);
+  box-shadow:
+    4px 4px 8px var(--shadow-light),
+    -4px -4px 8px var(--shadow-dark);
+  background: var(--bg-secondary);
+}
+
+/* Hover específico para modo dark */
+.article-item:hover {
+  background-color: #f0e68c !important;
+  box-shadow: 
+    2px 2px 6px rgba(210, 200, 120, 0.4), 
+    -2px -2px 6px rgba(255, 255, 220, 0.6) !important;
+  transform: translateY(-1px);
+}
+
+/* Cores do texto no hover do modo dark */
+.article-item:hover .article-title {
+  color: #2d3748 !important; /* Cor escura para o título */
+  font-weight: 700;
+}
+
+.article-item:hover .article-description {
+  color: #4a5568 !important; /* Cor escura para a descrição */
+}
+
+.article-item:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 2px 2px 4px var(--shadow-light),
+    inset -2px -2px 4px var(--shadow-dark);
 }
 
 .article-item:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .article-content {
   overflow: hidden;
+  flex: 1;
 }
 
 .article-title {
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 600;
   display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 2px;
+  color: var(--text-primary);
+  line-height: 1.2;
+  transition: color 0.3s ease;
 }
 
 .article-description {
   font-size: 11px;
-  color: #555;
+  color: var(--text-secondary);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
+  transition: color 0.3s ease;
 }
 
 /* Estados */
-.loading, .no-results {
+.loading,
+.no-results {
   text-align: center;
   padding: 20px;
-  color: #666;
+  color: var(--text-muted);
   font-size: 14px;
+  background: var(--bg-primary);
+  border-radius: 12px;
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
 }
 
 .error-message {
-  background-color: #ffebee;
-  color: #c62828;
+  background: var(--bg-primary);
+  color: var(--error-color);
   padding: 12px;
-  border-radius: 4px;
-  border: 1px solid #ffcdd2;
+  border-radius: 12px;
   margin: 10px 0;
   font-size: 14px;
   text-align: center;
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  border: 1px solid var(--error-color);
 }
 
-.clock-toggle {
-  margin-bottom: 20px;
+/* Scrollbar customizada para a lista */
+.articles-list::-webkit-scrollbar {
+  width: 6px;
+}
 
-  .toggle-btn {
-    background: var(--bg-primary);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    /* transition: $transition-base; */
-    box-shadow:
-      4px 4px 8px var(--shadow-light),
-      -4px -4px 8px var(--shadow-dark);
+.articles-list::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-radius: 10px;
+  margin: 4px 0;
+  box-shadow:
+    inset 2px 2px 4px var(--shadow-light),
+    inset -2px -2px 4px var(--shadow-dark);
+}
 
-    &.active {
-      color: var(--text-primary);
-      box-shadow:
-        inset 3px 3px 6px var(--shadow-light),
-        inset -3px -3px 6px var(--shadow-dark);
-    }
+.articles-list::-webkit-scrollbar-thumb {
+  background: var(--bg-primary);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow:
+    inset 1px 1px 2px var(--shadow-light),
+    inset -1px -1px 2px var(--shadow-dark),
+    2px 2px 4px var(--shadow-light),
+    -2px -2px 4px var(--shadow-dark);
+  transition: all 0.3s ease;
+}
 
-    &:hover {
-      transform: translateY(-2px);
-    }
+.articles-list::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-secondary);
+  box-shadow:
+    inset 1px 1px 2px var(--shadow-light),
+    inset -1px -1px 2px var(--shadow-dark),
+    3px 3px 6px var(--shadow-light),
+    -3px -3px 6px var(--shadow-dark);
+}
+
+/* Para Firefox */
+.articles-list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--shadow-light) var(--bg-primary);
+}
+
+/* Tooltip customizado avançado */
+.custom-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: normal;
+  max-width: 300px;
+  width: max-content;
+  text-align: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  line-height: 1.4;
+  word-wrap: break-word;
+  pointer-events: none;
+}
+
+.article-item {
+  position: relative;
+}
+
+.article-item:hover .custom-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+/* Ajuste para modo dark */
+[data-theme="dark"] .custom-tooltip {
+  background: rgba(255, 255, 255, 0.95);
+  color: #2d3748;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Seta do tooltip */
+.custom-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+}
+
+[data-theme="dark"] .custom-tooltip::after {
+  border-color: rgba(255, 255, 255, 0.95) transparent transparent transparent;
+}
+
+/* Responsividade do tooltip */
+@media (max-width: 480px) {
+  .custom-tooltip {
+    max-width: 250px;
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .custom-tooltip {
+    max-width: 200px;
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .news-container {
+    width: 100%;
+    height: 300px;
+    padding: 10px;
+  }
+
+  .search-box {
+    gap: 6px;
+  }
+
+  .search-input {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .search-button {
+    padding: 8px 12px;
+  }
+
+  .article-item {
+    height: 48px;
+    padding: 6px 8px;
+  }
+
+  .article-title {
+    font-size: 11px;
+  }
+
+  .article-description {
+    font-size: 10px;
   }
 }
