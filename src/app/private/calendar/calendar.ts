@@ -44,6 +44,7 @@ export class Calendar implements OnInit {
     return Array.from({ length: 12 }, (_, monthIndex) => {
       const monthDate = new Date(year, monthIndex, 1);
       const monthName = monthDate.toLocaleString('pt-BR', { month: 'long' });
+      console.log('monthName', monthName);
       const days = this.generateMonthDays(year, monthIndex, today);
       
       return { name: monthName, days };
