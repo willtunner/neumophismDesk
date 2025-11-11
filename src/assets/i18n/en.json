@@ -274,5 +274,47 @@
     },
     "EDIT_TITLE": "Edit Client",
     "CREATE_TITLE": "Register a new client"
+  },
+  "CALENDAR": {
+    "NEW_EVENT": "New event",
+    "UPDATE_EVENT": "Edit event",
+    "CALENDAR_TITLE": "Event title",
+    "DESCRIPTION": "Event description",
+    "SCHEDULE_EVENTS": "Scheduled Events",
+    "EVENTS": "event(s)",
+    "DOUBLE_CLICK_INSTRUCTION": "Double click on any day to add an event",
+    "NO_EVENTS": "No scheduled events",
+    "MONTHS": {
+      "JANUARY": "January",
+      "FEBRUARY": "February",
+      "MARCH": "March",
+      "APRIL": "April",
+      "MAY": "May",
+      "JUNE": "June",
+      "JULY": "July",
+      "AUGUST": "August",
+      "SEPTEMBER": "September",
+      "OCTOBER": "October",
+      "NOVEMBER": "November",
+      "DECEMBER": "December"
+    },
+    "WEEKDAYS": {
+      "SUNDAY": "S",
+      "MONDAY": "M",
+      "TUESDAY": "T",
+      "WEDNESDAY": "W",
+      "THURSDAY": "T",
+      "FRIDAY": "F",
+      "SATURDAY": "S"
+    },
+    "WEEKDAYS_FULL": {
+      "SUNDAY": "Sunday",
+      "MONDAY": "Monday",
+      "TUESDAY": "Tuesday",
+      "WEDNESDAY": "Wednesday",
+      "THURSDAY": "Thursday",
+      "FRIDAY": "Friday",
+      "SATURDAY": "Saturday"
+    }
   }
 }

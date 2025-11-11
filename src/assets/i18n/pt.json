@@ -88,7 +88,39 @@
     "SCHEDULE_EVENTS": "Eventos Agendados",
     "EVENTS": "evento(s)",
     "DOUBLE_CLICK_INSTRUCTION": "Dê dois cliques em qualquer dia para adicionar um evento",
-    "NO_EVENTS": "Nenhum evento agendado"
+    "NO_EVENTS": "Nenhum evento agendado",
+    "MONTHS": {
+      "JANUARY": "Janeiro",
+      "FEBRUARY": "Fevereiro",
+      "MARCH": "Março",
+      "APRIL": "Abril",
+      "MAY": "Maio",
+      "JUNE": "Junho",
+      "JULY": "Julho",
+      "AUGUST": "Agosto",
+      "SEPTEMBER": "Setembro",
+      "OCTOBER": "Outubro",
+      "NOVEMBER": "Novembro",
+      "DECEMBER": "Dezembro"
+    },
+    "WEEKDAYS": {
+      "SUNDAY": "D",
+      "MONDAY": "S",
+      "TUESDAY": "T",
+      "WEDNESDAY": "Q",
+      "THURSDAY": "Q",
+      "FRIDAY": "S",
+      "SATURDAY": "S"
+    },
+    "WEEKDAYS_FULL": {
+      "SUNDAY": "Domingo",
+      "MONDAY": "Segunda",
+      "TUESDAY": "Terça",
+      "WEDNESDAY": "Quarta",
+      "THURSDAY": "Quinta",
+      "FRIDAY": "Sexta",
+      "SATURDAY": "Sábado"
+    }
   },
   "INPUTS-FIELS": {
     "TITLE": "Título",

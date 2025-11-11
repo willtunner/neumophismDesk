@@ -274,5 +274,47 @@
     },
     "EDIT_TITLE": "Editar Cliente",
     "CREATE_TITLE": "Registrar un nuevo cliente"
+  },
+   "CALENDAR": {
+    "NEW_EVENT": "Nuevo evento",
+    "UPDATE_EVENT": "Editar evento",
+    "CALENDAR_TITLE": "Título del evento",
+    "DESCRIPTION": "Descripción del evento",
+    "SCHEDULE_EVENTS": "Eventos Programados",
+    "EVENTS": "evento(s)",
+    "DOUBLE_CLICK_INSTRUCTION": "Haga doble clic en cualquier día para agregar un evento",
+    "NO_EVENTS": "No hay eventos programados",
+    "MONTHS": {
+      "JANUARY": "Enero",
+      "FEBRUARY": "Febrero",
+      "MARCH": "Marzo",
+      "APRIL": "Abril",
+      "MAY": "Mayo",
+      "JUNE": "Junio",
+      "JULY": "Julio",
+      "AUGUST": "Agosto",
+      "SEPTEMBER": "Septiembre",
+      "OCTOBER": "Octubre",
+      "NOVEMBER": "Noviembre",
+      "DECEMBER": "Diciembre"
+    },
+    "WEEKDAYS": {
+      "SUNDAY": "D",
+      "MONDAY": "L",
+      "TUESDAY": "M",
+      "WEDNESDAY": "M",
+      "THURSDAY": "J",
+      "FRIDAY": "V",
+      "SATURDAY": "S"
+    },
+    "WEEKDAYS_FULL": {
+      "SUNDAY": "Domingo",
+      "MONDAY": "Lunes",
+      "TUESDAY": "Martes",
+      "WEDNESDAY": "Miércoles",
+      "THURSDAY": "Jueves",
+      "FRIDAY": "Viernes",
+      "SATURDAY": "Sábado"
+    }
   }
 }
