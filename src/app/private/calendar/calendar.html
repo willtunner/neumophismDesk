@@ -44,7 +44,9 @@
 
         <!-- Dias da semana - agora usa o signal -->
         <div class="weekdays-small">
-          <div class="weekday-tiny" *ngFor="let day of weekDaysMini()">{{ day }}</div>
+          <div class="weekday-tiny" *ngFor="let day of weekDaysMini(); let i = index" [title]="getWeekdayTooltip(i)">
+            {{ day }}
+          </div>
         </div>
 
         <!-- Dias do mês -->

@@ -114,11 +114,11 @@
     },
     "WEEKDAYS_FULL": {
       "SUNDAY": "Domingo",
-      "MONDAY": "Segunda",
-      "TUESDAY": "Terça",
-      "WEDNESDAY": "Quarta",
-      "THURSDAY": "Quinta",
-      "FRIDAY": "Sexta",
+      "MONDAY": "Segunda-feira",
+      "TUESDAY": "Terça-feira",
+      "WEDNESDAY": "Quarta-feira",
+      "THURSDAY": "Quinta-feira",
+      "FRIDAY": "Sexta-feira",
       "SATURDAY": "Sábado"
     }
   },
@@ -310,7 +310,7 @@
     },
     "EDIT_TITLE": "Editar Cliente",
     "CREATE_TITLE": "Cradastrar uma novo cliente"
-  },  
+  },
   "NOTES": {
     "TITLE": "Título",
     "TITLE_PLACEHOLDER": "Digite o título da anotação",

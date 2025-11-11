@@ -42,6 +42,9 @@ export class Calendar implements OnInit, OnDestroy {
   
   // Dias da semana - agora é um signal que será atualizado com as traduções
   weekDaysMini = signal<string[]>(['D', 'S', 'T', 'Q', 'Q', 'S', 'S']);
+
+  // NOVO: Dias da semana completos para tooltip
+  weekDaysFull = signal<string[]>([]);
   
   // Computed values - agora depende do languageChanged para atualizar
   monthsGrid = computed(() => {
@@ -102,6 +105,18 @@ export class Calendar implements OnInit, OnDestroy {
       this.translate.instant('CALENDAR.WEEKDAYS.SATURDAY')
     ];
     this.weekDaysMini.set(translatedWeekdays);
+
+        // NOVO: Atualiza os dias da semana completos
+    const translatedWeekdaysFull = [
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.SUNDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.MONDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.TUESDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.WEDNESDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.THURSDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.FRIDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.SATURDAY')
+    ];
+    this.weekDaysFull.set(translatedWeekdaysFull);
     
     // Força a atualização dos meses incrementando o signal
     this.languageChanged.update(val => val + 1);
@@ -147,6 +162,15 @@ export class Calendar implements OnInit, OnDestroy {
     }
     
     return days;
+  }
+
+    // NOVO: Método para obter tooltip do dia da semana
+  getWeekdayTooltip(dayIndex: number): string {
+    const weekDays = this.weekDaysFull();
+    if (weekDays[dayIndex]) {
+      return weekDays[dayIndex];
+    }
+    return '';
   }
 
   private createDayObject(date: Date, number: number, isCurrentMonth: boolean, today: Date) {
