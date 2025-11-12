@@ -322,5 +322,94 @@
     "SUCCESS_MESSAGE": "Tag adicionada com sucesso!",
     "PLACEHOLDER_TAG": "Digite a tag e pressione Enter",
     "NO_TAG_MESSAGE": "Nenhuma tag disponível"
+  },
+  "WEATHER": {
+    "TITLE": "Previsão do Tempo",
+    "YOUR_LOCATION": "Sua Localização",
+    "TODAY": "Hoje",
+    "LOADING": "Obtendo localização e dados meteorológicos...",
+    "LOCATION_ERROR": {
+      "UNSUPPORTED": "Geolocalização não suportada pelo navegador",
+      "PERMISSION_DENIED": "Permissão de localização negada pelo usuário",
+      "UNAVAILABLE": "Localização indisponível",
+      "TIMEOUT": "Tempo limite excedido ao obter localização",
+      "UNKNOWN": "Erro desconhecido ao obter localização"
+    },
+    "ACTIONS": {
+      "RETRY": "Tentar Novamente",
+      "USE_DEFAULT": "Usando localização padrão (Campinas)"
+    },
+    "WEATHER_CODES": {
+      "CLEAR_SKY": "Céu limpo",
+      "MAINLY_CLEAR": "Poucas nuvens",
+      "PARTLY_CLOUDY": "Parcialmente nublado",
+      "OVERCAST": "Nublado",
+      "FOG": "Nevoeiro",
+      "LIGHT_DRIZZLE": "Chuvisco leve",
+      "MODERATE_DRIZZLE": "Chuvisco moderado",
+      "DENSE_DRIZZLE": "Chuvisco denso",
+      "LIGHT_RAIN": "Chuva leve",
+      "MODERATE_RAIN": "Chuva moderada",
+      "HEAVY_RAIN": "Chuva forte",
+      "LIGHT_SNOW": "Neve leve",
+      "MODERATE_SNOW": "Neve moderada",
+      "HEAVY_SNOW": "Neve forte",
+      "SNOW_GRAINS": "Grãos de neve",
+      "LIGHT_SHOWERS": "Pancadas de chuva leves",
+      "MODERATE_SHOWERS": "Pancadas de chuva moderadas",
+      "VIOLENT_SHOWERS": "Pancadas de chuva violentas"
+    },
+    "DAYS": {
+      "MONDAY": "Seg",
+      "TUESDAY": "Ter",
+      "WEDNESDAY": "Qua",
+      "THURSDAY": "Qui",
+      "FRIDAY": "Sex",
+      "SATURDAY": "Sáb",
+      "SUNDAY": "Dom"
+    }
+  },
+  "NOTES": {
+    "TITLE": "Anotações",
+    "NEW_NOTE": "Nova Anotação",
+    "EDIT_NOTE": "Editar Anotação",
+    "MY_NOTES": "Minhas Anotações",
+    "SEARCH_PLACEHOLDER": "Buscar anotações...",
+    "SAVE_NOTE": "Salvar Anotação",
+    "UPDATE_NOTE": "Atualizar Anotação",
+    "CREATE_NEW_NOTE": "Nova Anotação",
+    "LOADING": "Carregando anotações...",
+    "EMPTY_STATE": {
+      "NO_NOTES": "Nenhuma anotação encontrada",
+      "NO_RESULTS": "Nenhuma anotação encontrada para \"{{searchTerm}}\"",
+      "CREATE_FIRST": "Crie sua primeira anotação usando o formulário acima"
+    },
+    "FIELDS": {
+      "TITLE": "Título",
+      "TITLE_PLACEHOLDER": "Digite o título da anotação",
+      "CONTENT": "Conteúdo",
+      "CONTENT_PLACEHOLDER": "Digite o conteúdo da anotação...",
+      "CHARACTERS": "caracteres",
+      "MAX_CHARACTERS": "Máximo de {{limit}} caracteres"
+    },
+    "ACTIONS": {
+      "EDIT": "Editar",
+      "DELETE": "Excluir",
+      "CONFIRM_DELETE": "Tem certeza que deseja excluir a anotação \"{{title}}\"?",
+      "CREATED_AT": "Criado em",
+      "UPDATED_AT": "Atualizado em"
+    },
+    "VALIDATION": {
+      "TITLE_MIN_LENGTH": "O título deve ter pelo menos 3 caracteres",
+      "CONTENT_MIN_LENGTH": "O conteúdo deve ter pelo menos 10 caracteres",
+      "REQUIRED": "Este campo é obrigatório"
+    },
+    "ERRORS": {
+      "LOAD_ERROR": "Erro ao carregar anotações",
+      "SAVE_ERROR": "Erro ao salvar anotação",
+      "UPDATE_ERROR": "Erro ao atualizar anotação",
+      "DELETE_ERROR": "Erro ao excluir anotação",
+      "SELECT_ERROR": "Erro ao selecionar anotação"
+    }
   }
 }

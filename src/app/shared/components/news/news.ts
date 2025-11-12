@@ -14,7 +14,7 @@ import { NewsService } from '../../../services/news.service.ts';
 export class NewsComponent implements OnInit {
   articles: any[] = [];
   query = 'ti'; // Valor padrão para TI
-  fromDate: string = '2025-10-10'; // Data fixa como na URL que funciona
+  fromDate: string = '2025-10-10'; // Mantém por compatibilidade, mas não é mais usado
   loading = false;
   error: string = '';
 
@@ -29,7 +29,7 @@ export class NewsComponent implements OnInit {
     this.error = '';
     
     const q = this.query.trim() || 'ti';
-    const from = this.fromDate;
+    const from = this.fromDate; // Parâmetro mantido mas não usado
 
     console.log('Buscando notícias:', { q, from });
 
