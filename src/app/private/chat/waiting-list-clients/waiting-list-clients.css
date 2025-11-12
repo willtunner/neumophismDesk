@@ -1,33 +1,91 @@
+/* Container principal - mantendo tamanho original */
 .clients-card {
   width: 100%;
-  border-radius: 8px;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  border-radius: 12px;
   overflow: hidden;
-  background: #fff;
-  border: 1px solid #ccc;
+  background: var(--bg-primary);
+  box-shadow:
+    6px 6px 12px var(--shadow-dark),
+    -6px -6px 12px var(--shadow-light);
+  transition: var(--transition-base);
+  margin-bottom: 40px;
 }
 
+.clients-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    8px 8px 16px var(--shadow-dark),
+    -8px -8px 16px var(--shadow-light);
+}
+
+/* Header com neumorfismo e cor original */
 .header {
   background-color: #3f4361;
   color: #fff;
-  font-weight: 600;
   text-align: center;
-  padding: 6px 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  padding: 8px 0;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  /* box-shadow: 
+    inset 0px -3px 6px rgba(0, 0, 0, 0.3),
+    inset 0px 3px 6px rgba(255, 255, 255, 0.1); */
 }
 
+.header span {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Container de clientes - mantendo layout original */
 .clients-container {
   display: flex;
   gap: 12px;
-  padding: 10px;
+  padding: 12px;
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
   overflow-x: auto;
+  background: var(--bg-primary);
+  box-shadow: 20px 20px 60px var(--shadow-light), -20px 35px 60px var(--shadow-dark);
+  margin-bottom: 10px;
+
 }
 
-/* Cada cliente */
+.chat-title {
+  /* padding: 10px 20px; */
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Scrollbar personalizada */
+.clients-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.clients-container::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-radius: 2px;
+  box-shadow: inset 1px 1px 2px var(--shadow-dark);
+}
+
+.clients-container::-webkit-scrollbar-thumb {
+  background: #3f4361;
+  border-radius: 2px;
+  box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Cada cliente - estilo neumórfico */
 .client {
   position: relative;
   display: flex;
@@ -36,60 +94,185 @@
   justify-content: center;
   width: 70px;
   height: 70px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  background: var(--bg-primary);
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
+  box-shadow:
+    3px 3px 6px var(--shadow-dark),
+    -3px -3px 6px var(--shadow-light);
+  border: none;
+  flex-shrink: 0;
 }
 
+/* Efeito de baixo relevo no hover */
 .client:hover {
-  transform: scale(1.03);
+  box-shadow:
+    inset 2px 2px 4px var(--shadow-dark),
+    inset -2px -2px 4px var(--shadow-light);
+  transform: scale(0.98);
 }
 
-/* Imagem e nome */
+/* Imagem e nome - mantendo tamanhos originais */
 .client img {
   width: 45px;
   height: 45px;
-  border-radius: 6px;
+  border-radius: 8px;
   object-fit: cover;
   margin-bottom: 3px;
+  box-shadow:
+    1px 1px 3px var(--shadow-dark),
+    -1px -1px 3px var(--shadow-light);
 }
 
 .client span {
   font-size: 0.7rem;
   font-weight: 600;
-  color: #3f4361;
+  color: var(--text-primary);
 }
 
-/* Ativo */
+/* Cliente ativo - mantendo amarelo original com neumorfismo */
 .client.active {
-  background-color: #ffec80; /* Amarelo claro */
+  background-color: #ffec80;
+  box-shadow:
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.3);
   border: 1px solid #c8b200;
-  box-shadow: 0 0 5px #ffec80;
 }
 
-/* Tooltip */
+.client.active span {
+  color: #3f4361;
+  font-weight: 700;
+}
+
+/* Tooltip neumórfico */
 .tooltip {
   display: none;
   position: absolute;
-  bottom: 80px;
+  bottom: 85px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #3f4361;
-  color: #fff;
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.7rem;
   white-space: nowrap;
   z-index: 10;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  box-shadow:
+    4px 4px 8px var(--shadow-dark),
+    -4px -4px 8px var(--shadow-light);
+  border: 1px solid var(--shadow-light);
 }
 
 .client:hover .tooltip {
   display: block;
+  animation: fadeInUp 0.2s ease;
 }
 
 .tooltip p {
   margin: 2px 0;
+  font-size: 0.65rem;
+}
+
+.tooltip strong {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Animações */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .clients-card {
+    border-radius: 10px;
+  }
+
+  .header {
+    padding: 6px 0;
+  }
+
+  .header span {
+    font-size: 0.85rem;
+  }
+
+  .clients-container {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .client {
+    width: 65px;
+    height: 65px;
+  }
+
+  .client img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tooltip {
+    bottom: 80px;
+    padding: 8px 10px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .clients-card {
+    border-radius: 8px;
+  }
+
+  .header {
+    padding: 5px 0;
+  }
+
+  .header span {
+    font-size: 0.8rem;
+  }
+
+  .clients-container {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .client {
+    width: 60px;
+    height: 60px;
+  }
+
+  .client img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .client span {
+    font-size: 0.65rem;
+  }
+
+  .tooltip {
+    bottom: 75px;
+    padding: 6px 8px;
+    font-size: 0.65rem;
+    white-space: normal;
+    min-width: 110px;
+    text-align: center;
+  }
+
+  .tooltip p {
+    font-size: 0.6rem;
+  }
 }

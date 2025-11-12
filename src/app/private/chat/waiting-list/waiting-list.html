@@ -1,8 +1,9 @@
 <div class="waiting-card neu-container-no-padding">
   <!-- Cabeçalho -->
-  <div class="waiting-header">
-    <span>Fila de espera</span>
+  <div class="waiting-header neu-emboss">
+    <div class="chat-title neu-emboss">Atendimentos</div>
   </div>
+
 
   <!-- Conteúdo -->
   <div class="waiting-content">
@@ -38,8 +39,13 @@
 
     <!-- Infos abaixo da tabela -->
     <div class="footer-info">
-      <p>Na fila: <span class="highlight">{{ waitingList.length }}</span></p>
-      <p>Operadores livres: <span class="highlight-red">{{ operadoresLivres }}</span></p>
+      <div class="chat-title neu-emboss" style="width: 115px !important;">
+        <p>Na fila: <span class="highlight">{{ waitingList.length }}</span></p>
+      </div>
+
+      <div class="chat-title neu-emboss" style="padding-left: 5px;padding-right: 5px; width: 180px;">
+        <p>Operadores livres: <span class="highlight-red">{{ operadoresLivres }}</span></p>
+      </div>
     </div>
   </div>
 </div>

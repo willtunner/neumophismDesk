@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 2fr; /* lado direito maior */
   gap: 16px;
-  padding: 16px;
+  /* padding: 16px; */
   height: 100vh;
   box-sizing: border-box;
   margin-bottom: 50px;
