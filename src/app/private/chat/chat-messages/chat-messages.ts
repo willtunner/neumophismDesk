@@ -16,6 +16,9 @@ interface ChatMessage {
   styleUrls: ['./chat-messages.scss']
 })
 export class ChatMessagesComponent {
+
+  isOperatorActive: boolean = false;
+
   messages: ChatMessage[] = [
     { text: 'Olá, boa tarde!', time: '14:05', sender: 'client' },
     { text: 'Boa tarde! Em que posso ajudar?', time: '14:06', sender: 'operator' },

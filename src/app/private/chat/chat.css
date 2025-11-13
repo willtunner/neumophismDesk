@@ -30,7 +30,7 @@
     flex: 0 0 350px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    /* gap: 20px; */
   }
   
   .right-section {
@@ -121,10 +121,11 @@
   border-radius: 12px;
   overflow: hidden;
   background: var(--bg-primary);
-  box-shadow:
+  /* box-shadow:
     6px 6px 12px var(--shadow-dark),
-    -6px -6px 12px var(--shadow-light);
+    -6px -6px 12px var(--shadow-light); */
   transition: all 0.3s ease;
+  padding-bottom: 15px;
 }
 
 /* Efeito hover consistente */
@@ -132,9 +133,9 @@
 .left-section > *:hover,
 .right-section > *:hover {
   transform: translateY(-2px);
-  box-shadow:
+  /* box-shadow:
     8px 8px 16px var(--shadow-dark),
-    -8px -8px 16px var(--shadow-light);
+    -8px -8px 16px var(--shadow-light); */
 }
 
 /* ===== AJUSTES ESPECÍFICOS PARA MOBILE ===== */
@@ -173,7 +174,7 @@
   
   .left-section {
     flex: 0 0 400px;
-    gap: 25px;
+    /* gap: 25px; */
   }
 }
 

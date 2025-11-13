@@ -37,6 +37,51 @@
     inset -4px -4px 8px var(--shadow-dark);
 }
 
+/* Estado de espera */
+.waiting-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: var(--input-bg);
+  box-shadow:
+    inset 6px 6px 12px var(--shadow-light),
+    inset -6px -6px 12px var(--shadow-dark);
+  padding: 40px 20px;
+  margin-bottom: 15px;
+}
+
+.waiting-content {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.waiting-icon {
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.waiting-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.waiting-message {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+/* Chat content quando ativo */
+.chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Área de mensagens */
 .messages-area {
   flex: 1;
@@ -203,5 +248,42 @@
 
   .neu-button {
     width: 100%;
+  }
+
+  .waiting-state {
+    padding: 30px 15px;
+  }
+
+  .waiting-title {
+    font-size: 1.1rem;
+  }
+
+  .waiting-message {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-messages {
+    padding: 12px;
+    margin-top: 10px;
+  }
+
+  .waiting-state {
+    padding: 20px 12px;
+  }
+
+  .waiting-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 15px;
+  }
+
+  .waiting-title {
+    font-size: 1rem;
+  }
+
+  .waiting-message {
+    font-size: 0.8rem;
   }
 }

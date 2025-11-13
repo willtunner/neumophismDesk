@@ -1,0 +1,388 @@
+.support-modal-container {
+  background: var(--bg-primary);
+  border-radius: 25px;
+  overflow: hidden; // Voltamos para hidden no container principal
+  box-shadow:
+    15px 15px 30px var(--shadow-light),
+    -15px -15px 30px var(--shadow-dark);
+  animation: modalAppear 0.3s ease;
+  max-width: 500px;
+  width: 90vw;
+  position: relative;
+  min-height: 400px; // ALTURA MÍNIMA aumentada
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabeçalho - ALTURA 70PX COM TÍTULO CENTRALIZADO */
+.modal-header {
+  background-color: #3f4361;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  margin: 0;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  box-shadow:
+    inset 0px -2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header-content {
+  width: 100%;
+  padding: 0 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.2;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Conteúdo */
+.modal-content {
+  padding: 40px 30px;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.select-container {
+  width: 100%;
+  position: relative;
+}
+
+.select-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  text-align: center;
+  display: block;
+}
+
+.select-wrapper {
+  width: 100%;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Ações */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 30px 30px 30px;
+  margin: 0;
+  margin-top: auto;
+}
+
+.neu-button {
+  flex: 1;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  position: relative;
+  z-index: 5;
+
+  &.cancel-button {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    box-shadow:
+      4px 4px 8px var(--shadow-light),
+      -4px -4px 8px var(--shadow-dark);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        6px 6px 12px var(--shadow-light),
+        -6px -6px 12px var(--shadow-dark);
+    }
+  }
+
+  &.save-button {
+    background: var(--accent-color);
+    color: #fff;
+    box-shadow:
+      4px 4px 8px rgba(0, 150, 136, 0.3),
+      -4px -4px 8px rgba(0, 200, 180, 0.3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow:
+        6px 6px 12px rgba(0, 150, 136, 0.4),
+        -6px -6px 12px rgba(0, 200, 180, 0.4);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow:
+        4px 4px 8px var(--shadow-light),
+        -4px -4px 8px var(--shadow-dark);
+    }
+  }
+}
+
+/* CORREÇÃO CRÍTICA - OVERLAY DO MATERIAL DIALOG */
+::ng-deep .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: transparent !important;
+  --mdc-dialog-with-divider-divider-color: transparent !important;
+}
+
+::ng-deep .mat-mdc-dialog-surface {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important; // IMPORTANTE: Permite dropdown sair
+}
+
+/* Backdrop personalizado */
+::ng-deep .mat-mdc-dialog-backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+/* CORREÇÃO DO DROPDOWN DO SELECT - POSICIONAMENTO CORRETO */
+::ng-deep .select-group {
+  position: relative;
+  
+  &.open {
+    z-index: 10002;
+  }
+}
+
+::ng-deep .select-dropdown {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  z-index: 10003 !important;
+  background: var(--input-bg) !important;
+  border-radius: 0 0 15px 15px !important;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.3),
+    0 -2px 0 var(--shadow-light),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-top: none !important;
+  margin-top: -1px !important;
+  height: 150px;
+  
+  .dropdown-content {
+    background: var(--input-bg) !important;
+    padding: 8px 0 !important;
+    border-radius: 0 0 15px 15px !important;
+  }
+}
+
+/* MELHORIAS NO SELECT-TRIGGER */
+::ng-deep .select-trigger {
+  min-height: 60px !important;
+  padding: 18px 24px !important;
+  padding-right: 50px !important;
+  font-size: 16px !important;
+  background: var(--input-bg) !important;
+  border-radius: 15px !important;
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark) !important;
+  border: 2px solid transparent !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .select-group.open .select-trigger {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark) !important;
+}
+
+/* MELHORIAS NAS OPÇÕES */
+::ng-deep .select-option {
+  padding: 16px 24px !important;
+  min-height: 52px !important;
+  font-size: 15px !important;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  transition: all 0.2s ease !important;
+  
+  &:last-child {
+    border-bottom: none !important;
+  }
+  
+  &:hover {
+    background: var(--bg-secondary) !important;
+    transform: none !important;
+  }
+  
+  &.selected {
+    background: rgba(var(--accent-color-rgb), 0.1) !important;
+    color: var(--accent-color) !important;
+  }
+}
+
+/* Z-INDEX GLOBAL PARA OVERLAY */
+::ng-deep .cdk-overlay-container {
+  z-index: 100000 !important;
+}
+
+::ng-deep .cdk-global-overlay-wrapper {
+  z-index: 100000 !important;
+}
+
+::ng-deep .cdk-overlay-pane {
+  z-index: 100000 !important;
+  position: relative !important;
+}
+
+/* Garante que o dropdown fique acima de tudo */
+::ng-deep .cdk-overlay-connected-position-bounding-box {
+  z-index: 100001 !important;
+}
+
+/* Animação */
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .support-modal-container {
+    width: 95vw;
+    max-width: 400px;
+    min-height: 380px;
+  }
+
+  .modal-header {
+    height: 70px;
+  }
+
+  .header-content {
+    padding: 0 20px;
+  }
+
+  .modal-title {
+    font-size: 1.2rem;
+  }
+
+  .modal-content {
+    padding: 30px 25px;
+  }
+
+  .select-label {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+
+  .modal-actions {
+    padding: 0 25px 25px 25px;
+    gap: 15px;
+  }
+
+  .neu-button {
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    min-height: 48px;
+  }
+
+  /* Ajustes do select para mobile */
+  ::ng-deep .select-trigger {
+    min-height: 55px !important;
+    padding: 16px 20px !important;
+  }
+
+  ::ng-deep .select-option {
+    padding: 14px 20px !important;
+    min-height: 48px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .support-modal-container {
+    border-radius: 20px;
+    min-height: 350px;
+  }
+
+  .modal-header {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 65px;
+  }
+
+  .header-content {
+    padding: 0 15px;
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+  }
+
+  .modal-content {
+    padding: 25px 20px;
+  }
+
+  .select-label {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+
+  .modal-actions {
+    padding: 0 20px 20px 20px;
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .neu-button {
+    width: 100%;
+    padding: 12px 18px;
+    font-size: 0.9rem;
+    min-height: 45px;
+  }
+
+  /* Ajustes do select para mobile pequeno */
+  ::ng-deep .select-trigger {
+    min-height: 50px !important;
+    padding: 14px 18px !important;
+    font-size: 15px !important;
+  }
+
+  ::ng-deep .select-option {
+    padding: 12px 18px !important;
+    min-height: 44px !important;
+    font-size: 14px !important;
+  }
+}
