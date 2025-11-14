@@ -11,6 +11,7 @@
   transition: all 0.3s ease;
   margin-left: auto;
   margin-right: auto;
+  height: 400px;
 }
 
 .client-card:hover {
@@ -57,7 +58,7 @@
   width: calc(100% - 40px);
   padding: 20px;
   text-align: center;
-  max-height: 140px;
+  max-height: 200px;
   box-sizing: border-box;
   margin-bottom: 60px;
   margin-top: 35px;
@@ -74,7 +75,7 @@
 .btn-end {
   width: 160px;
   padding: 8px 0;
-  margin-top: 10px;
+  margin-top: 0px;
   border-radius: 20px;
   color: #fff;
   font-weight: 500;

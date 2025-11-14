@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SupportModalComponent, SupportSelection } from '../support-modal/support-modal';
 import { AuthService } from '../../../services/auth.service';
-import { User, Company, Client } from '../../../models/models';
+import { Company, Client, WaintingListClients } from '../../../models/models';
+import { Chat2Service } from '../../../services/chat2-service';
 
 @Component({
   selector: 'app-client-chat',
@@ -16,9 +17,10 @@ import { User, Company, Client } from '../../../models/models';
 export class ClientChat implements OnInit {
   private auth = inject(AuthService);
   private dialog = inject(MatDialog);
+  private chat2Service = inject(Chat2Service); // Injete o serviço
 
   // Inicializar com valores padrão para evitar undefined
-  loggedUser: User | null = null;
+  loggedUser: Client | null = null;
   isLoading = true;
 
   client = {
@@ -29,17 +31,17 @@ export class ClientChat implements OnInit {
     foto: 'https://static.vecteezy.com/ti/fotos-gratis/p2/3491968-imagem-retrato-de-mulher-linda-encantadora-close-up-gratis-foto.jpg'
   };
 
-  constructor() {}
+  constructor() { }
 
   async ngOnInit() {
     try {
       const currentUser = this.auth.currentUser();
-      
+
       if (currentUser) {
         // Popula os dados do usuário
-        this.loggedUser = await this.auth.populateObjectRelations(currentUser);
+        this.loggedUser = await this.auth.populateObjectRelations(currentUser) as Client;
         console.log('Logged User', this.loggedUser);
-        
+
         // Atualiza os dados do client baseado no usuário logado
         this.updateClientData();
       } else {
@@ -60,10 +62,10 @@ export class ClientChat implements OnInit {
 
     // Usar dados reais do usuário logado
     this.client.nome = this.loggedUser.name;
-    
+
     // Tentar obter dados da company do helpDeskCompany
     const company = this.getUserCompany();
-    
+
     if (company) {
       this.client.empresa = company.name;
       this.client.cnpj = company.cnpj;
@@ -91,11 +93,6 @@ export class ClientChat implements OnInit {
   private getUserCompany(): Company | null {
     if (!this.loggedUser) return null;
 
-    // Tentar obter company do helpDeskCompany
-    if (this.loggedUser.helpDeskCompany?.companies?.length) {
-      return this.loggedUser.helpDeskCompany.companies[0];
-    }
-
     // Tentar obter company diretamente do usuário
     if (this.loggedUser.company) {
       return this.loggedUser.company;
@@ -110,19 +107,24 @@ export class ClientChat implements OnInit {
     return company?.name || this.client.empresa;
   }
 
-  // getCompanyCnpj(): string {
-  //   return this.loggedUser?.company?.cnpj || 'Sem CNPJ';
-  // }
-
-  toggleStatus() {
-    if (!this.client.status) {
-      this.openSupportModal();
-    } else {
-      this.client.status = !this.client.status;
-      // Aqui você pode atualizar o status no backend se necessário
-      this.updateUserStatus();
+  // E no toggleStatus(), atualize para async:
+async toggleStatus() {
+  if (!this.client.status) {
+    this.openSupportModal();
+  } else {
+    this.client.status = !this.client.status;
+    // Quando o usuário clica em sair, remove da lista de espera
+    if (this.loggedUser && !this.client.status) {
+      try {
+        await this.chat2Service.removeClientFromWaitingList(this.loggedUser.id);
+        console.log('✅ Cliente removido da lista de espera');
+      } catch (error) {
+        console.error('❌ Erro ao remover cliente:', error);
+      }
     }
+    this.updateUserStatus();
   }
+}
 
   private updateUserStatus(): void {
     // Atualizar o status do usuário no objeto loggedUser
@@ -132,43 +134,64 @@ export class ClientChat implements OnInit {
     }
   }
 
-  openSupportModal(): void {
-    // const dialogData: SupportModalData = {
-    //   clientData: {
-    //     ...this.client,
-    //     nome: this.loggedUser?.name || this.client.nome,
-    //     empresa: this.getCompanyName(),
-    //     cnpj: this.loggedUser?.company?.cnpj || 'Sem CNPJ'
-    //   }
-    // };
+  // No método openSupportModal(), atualize a parte onde adiciona o cliente:
+openSupportModal(): void {
+  const dialogRef = this.dialog.open(SupportModalComponent, {
+    width: '500px',
+    disableClose: true,
+    panelClass: 'support-modal-panel'
+  });
 
-    const dialogRef = this.dialog.open(SupportModalComponent, {
-      width: '500px',
-      // data: dialogData,
-      disableClose: true,
-      panelClass: 'support-modal-panel'
-    });
+  dialogRef.afterClosed().subscribe(async (result: SupportSelection | undefined) => {
+    if (result) {
+      console.log('Resultado da modal:', result);
+      this.client.status = true;
+      this.updateUserStatus();
 
-    dialogRef.afterClosed().subscribe((result: SupportSelection | undefined) => {
-      if (result) {
-        console.log('Resultado da modal:', result);
-        this.client.status = true;
-        this.updateUserStatus();
-      
-        const dataFormated = {
-          nome: this.loggedUser?.name,
-          empresa: this.loggedUser?.company?.name,
+      if (this.loggedUser) {
+        const dataFormated: WaintingListClients = {
+          name: this.loggedUser.name,
           occurrence: result.assunto,
           timestamp: result.horario,
-          idCliente: this.loggedUser?.id
+          client: this.loggedUser
+        };
+
+        console.log('Adicionando cliente à lista de espera:', dataFormated);
+
+        try {
+          //! Adiciona o cliente na lista de espera no signal E no Firebase
+          await this.chat2Service.addClientToWaitingList(dataFormated);
+          console.log('✅ Cliente adicionado à lista de espera e Firebase');
+        } catch (error) {
+          console.error('❌ Erro ao adicionar cliente à lista de espera:', error);
         }
-        
+
         console.log('Dados para occurrence:', dataFormated);
-      } else {
-        console.log('Modal fechada sem seleção');
-        this.client.status = false;
-        this.updateUserStatus();
+
+        
       }
-    });
+    } else {
+      console.log('Modal fechada sem seleção');
+      this.client.status = false;
+      this.updateUserStatus();
+    }
+  });
+}
+
+
+
+  // Método para quando o componente for destruído (opcional)
+  ngOnDestroy() {
+    // Se quiser remover o cliente da lista quando o componente for destruído
+    // if (this.loggedUser) {
+    //   this.chat2Service.removeClientFromWaitingList(this.loggedUser.id);
+    // }
   }
+
+  getCompanyCnpj(): string {
+  if (!this.loggedUser?.company?.cnpj) {
+    return 'CNPJ não disponível';
+  }
+  return this.loggedUser.company.cnpj;
+}
 }

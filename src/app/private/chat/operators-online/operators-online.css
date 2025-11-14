@@ -1,8 +1,10 @@
+/* CSS ATUALIZADO PARA OPERATORS-ONLINE - MESMA LARGURA E PADRÃO */
 .waiting-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 380px;
+  width: 360px;
+  /* MUDEI: mesma largura do waiting-list */
   background: var(--bg-primary);
   border-radius: 25px;
   overflow: hidden;
@@ -10,6 +12,8 @@
     10px 10px 20px var(--shadow-light),
     -10px -10px 20px var(--shadow-dark);
   transition: all 0.3s ease;
+  height: fit-content;
+  min-height: 200px;
 }
 
 .waiting-header {
@@ -26,7 +30,6 @@
 }
 
 .chat-title {
-  /* padding: 10px 20px; */
   border-radius: 18px;
   font-weight: 600;
   font-size: 1rem;
@@ -41,14 +44,14 @@
   margin-right: auto;
 }
 
-.waiting-header span {
-  color: #fff;
-}
-
 .waiting-content {
   width: 100%;
-  padding: 15px;
+  padding: 12px 10px;
+  /* MUDEI: mesmo padding do waiting-list */
   box-sizing: border-box;
+  flex: 1;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 /* ===== OPERADOR CARD ===== */
@@ -61,6 +64,7 @@
   margin-bottom: 12px;
   padding: 8px;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .operator-header {
@@ -74,6 +78,7 @@
   box-shadow:
     4px 4px 8px var(--shadow-light),
     -4px -4px 8px var(--shadow-dark);
+  position: relative;
 }
 
 .operator-header:hover {
@@ -84,42 +89,138 @@
   margin: 0;
   font-weight: 700;
   color: var(--text-primary);
+  font-size: 0.9rem;
+  /* ADICIONEI: tamanho consistente */
 }
 
 .operator-header p {
-  margin: 0;
-  font-size: 0.8rem;
+  margin: 2px 0 0 0;
+  /* AJUSTEI: margem mais compacta */
+  font-size: 0.75rem;
+  /* MUDEI: mesmo tamanho do waiting-list */
   color: var(--text-secondary);
 }
 
 .header-right {
   font-weight: 600;
   color: var(--text-primary);
+  font-size: 0.85rem;
 }
 
+/* ===== DROPDOWN COM ESPAÇAMENTO CORRETO ===== */
 .operator-dropdown {
   margin-top: 8px;
   border-radius: 10px;
   overflow: hidden;
+  background: var(--bg-primary);
+  box-shadow:
+    8px 8px 16px var(--shadow-light),
+    -8px -8px 16px var(--shadow-dark);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  animation: dropdownSlide 0.3s ease;
+  position: relative;
+  margin-left: 2px;
+  /* ADICIONEI: espaço lateral para sombra */
+  margin-right: 2px;
+  /* ADICIONEI: espaço lateral para sombra */
 }
 
-/* ===== TABELA ===== */
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    max-height: 400px;
+    transform: translateY(0);
+  }
+}
+
+/* ===== TABELA COMPACTA IGUAL AO WAITING-LIST ===== */
 .waiting-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.78rem;
+  table-layout: fixed;
+  /* ADICIONEI: mesma configuração */
 }
 
 .mat-header-cell,
 .mat-cell {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 4px 6px;
-  text-align: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  /* MUDEI: mesma borda */
+  padding: 6px 3px;
+  /* MUDEI: mesmo padding */
+  text-align: center;
+  /* MUDEI: centralizado igual */
+  position: relative;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  /* ADICIONEI */
+  text-overflow: ellipsis;
+  /* ADICIONEI */
+}
+
+/* LARGURAS FIXAS COMPACTAS - AJUSTADAS PARA 3 COLUNAS */
+.mat-header-cell:nth-child(1),
+.mat-cell:nth-child(1) {
+  width: 100px;
+  /* Nome - mais larga */
+  max-width: 100px;
+  min-width: 100px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.mat-header-cell:nth-child(2),
+.mat-cell:nth-child(2) {
+  width: 110px;
+  /* Empresa */
+  max-width: 110px;
+  min-width: 110px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.mat-header-cell:nth-child(3),
+.mat-cell:nth-child(3) {
+  width: 90px;
+  /* Assunto */
+  max-width: 90px;
+  min-width: 90px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+/* Centralização igual ao waiting-list */
+.mat-header-cell .mat-sort-header-container {
+  justify-content: center !important;
+  padding: 0;
 }
 
 .mat-header-cell {
   font-weight: 600;
   color: var(--text-primary);
+  vertical-align: middle;
+  font-size: 0.75rem;
+  /* MUDEI: mesmo tamanho */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-row {
+  height: 40px;
+  /* ADICIONEI: mesma altura */
+}
+
+.mat-header-row {
+  height: 40px;
+  /* ADICIONEI: mesma altura */
 }
 
 .mat-row:hover {
@@ -137,4 +238,100 @@
   text-align: center;
 }
 
+/* Scrollbar igual ao waiting-list */
+.waiting-content::-webkit-scrollbar {
+  width: 6px;
+}
 
+.waiting-content::-webkit-scrollbar-track {
+  background: var(--shadow-light);
+  border-radius: 3px;
+}
+
+.waiting-content::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 3px;
+}
+
+.waiting-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-primary);
+}
+
+.operator-dropdown {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.operator-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.operator-dropdown::-webkit-scrollbar-track {
+  background: var(--shadow-light);
+  border-radius: 3px;
+}
+
+.operator-dropdown::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 3px;
+}
+
+.operator-dropdown::-webkit-scrollbar-thumb:hover {
+  background: var(--text-primary);
+}
+
+/* Para telas pequenas - MESMO RESPONSIVO */
+@media (max-width: 380px) {
+  .waiting-card {
+    width: 340px;
+    /* mesma responsividade */
+  }
+
+  .waiting-content {
+    padding: 10px 8px;
+    max-height: 450px;
+  }
+
+  .operator-dropdown {
+    max-height: 250px;
+  }
+
+  .waiting-table {
+    font-size: 0.75rem;
+  }
+
+  .mat-header-cell,
+  .mat-cell {
+    padding: 3px 4px;
+  }
+
+  /* LARGURAS RESPONSIVAS */
+  .mat-header-cell:nth-child(1),
+  .mat-cell:nth-child(1) {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+  }
+
+  .mat-header-cell:nth-child(2),
+  .mat-cell:nth-child(2) {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+  }
+
+  .mat-header-cell:nth-child(3),
+  .mat-cell:nth-child(3) {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+  }
+
+  /* ADICIONE: classe single-line para ellipsis */
+  .single-line {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    width: 100%;
+  }
+}
