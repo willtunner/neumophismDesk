@@ -1,95 +1,325 @@
+/* Container principal - AJUSTADO para padrão dos outros componentes */
 .clients-card {
-  width: 100%;
-  border-radius: 8px;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  width: calc(100% - 20px); /* REDUZI: largura para dar espaço para a sombra */
+  border-radius: 25px; /* AUMENTEI: raio maior para combinar */
   overflow: hidden;
-  background: #fff;
-  border: 1px solid #ccc;
+  background: var(--bg-primary);
+  box-shadow:
+    10px 10px 20px var(--shadow-light), /* AUMENTEI: sombra mais pronunciada */
+    -10px -10px 20px var(--shadow-dark); /* AUMENTEI: sombra mais pronunciada */
+  transition: var(--transition-base);
+  margin: 10px auto; /* ADICIONEI: margin centralizada */
+  position: relative;
 }
 
+.clients-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    12px 12px 24px var(--shadow-light), /* AUMENTEI: sombra no hover */
+    -12px -12px 24px var(--shadow-dark); /* AUMENTEI: sombra no hover */
+}
+
+/* Header com neumorfismo e cor original - AJUSTADO */
 .header {
   background-color: #3f4361;
   color: #fff;
-  font-weight: 600;
   text-align: center;
-  padding: 6px 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  padding: 8px 0;
+  border-top-left-radius: 20px; /* AUMENTEI: raio maior */
+  border-top-right-radius: 20px; /* AUMENTEI: raio maior */
+  height: 40px; /* ADICIONEI: altura fixa */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -5px; /* ADICIONEI: compensação */
+  margin-left: -5px; /* ADICIONEI: compensação */
+  margin-right: -5px; /* ADICIONEI: compensação */
+  width: calc(100% + 10px); /* ADICIONEI: largura expandida */
 }
 
+.header span {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Container de clientes - AJUSTADO */
 .clients-container {
   display: flex;
   gap: 12px;
-  padding: 10px;
+  padding: 15px; /* AUMENTEI: padding interno */
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
   overflow-x: auto;
+  background: var(--bg-primary);
+  margin: 8px 5px 12px 5px; /* ADICIONEI: margens internas para sombra */
+  min-height: 100px; /* ADICIONEI: altura mínima */
 }
 
-/* Cada cliente */
+.chat-title {
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Scrollbar personalizada - MELHORADA */
+.clients-container::-webkit-scrollbar {
+  height: 6px; /* AUMENTEI: scrollbar mais visível */
+}
+
+.clients-container::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-radius: 3px;
+  box-shadow: inset 1px 1px 2px var(--shadow-dark);
+  margin: 0 10px; /* ADICIONEI: margem lateral */
+}
+
+.clients-container::-webkit-scrollbar-thumb {
+  background: #3f4361;
+  border-radius: 3px;
+  box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.clients-container::-webkit-scrollbar-thumb:hover {
+  background: #4a5078; /* ADICIONEI: hover na scrollbar */
+}
+
+/* Cada cliente - estilo neumórfico MELHORADO */
 .client {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 70px;
-  height: 70px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  width: 75px; /* AUMENTEI: ligeiramente maior */
+  height: 75px; /* AUMENTEI: ligeiramente maior */
+  background: var(--bg-primary);
+  border-radius: 15px; /* AUMENTEI: raio maior */
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
+  box-shadow:
+    4px 4px 8px var(--shadow-light), /* AUMENTEI: sombra mais suave */
+    -4px -4px 8px var(--shadow-dark); /* AUMENTEI: sombra mais suave */
+  border: none;
+  flex-shrink: 0;
 }
 
+/* Efeito de baixo relevo no hover - MELHORADO */
 .client:hover {
-  transform: scale(1.03);
+  box-shadow:
+    inset 3px 3px 6px var(--shadow-light),
+    inset -3px -3px 6px var(--shadow-dark);
+  transform: scale(0.95); /* AJUSTEI: escala mais sutil */
 }
 
-/* Imagem e nome */
+/* Imagem e nome - AJUSTADO */
 .client img {
-  width: 45px;
-  height: 45px;
-  border-radius: 6px;
+  width: 48px; /* AUMENTEI: ligeiramente maior */
+  height: 48px; /* AUMENTEI: ligeiramente maior */
+  border-radius: 12px; /* AUMENTEI: raio maior */
   object-fit: cover;
-  margin-bottom: 3px;
+  margin-bottom: 4px; /* AUMENTEI: espaço */
+  box-shadow:
+    2px 2px 4px var(--shadow-light),
+    -2px -2px 4px var(--shadow-dark);
+  transition: transform 0.2s ease; /* ADICIONEI: transição suave */
+}
+
+.client:hover img {
+  transform: scale(1.05); /* ADICIONEI: efeito sutil no hover */
 }
 
 .client span {
-  font-size: 0.7rem;
+  font-size: 0.75rem; /* AUMENTEI: fonte ligeiramente maior */
   font-weight: 600;
-  color: #3f4361;
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.1;
 }
 
-/* Ativo */
+/* Cliente ativo - MELHORADO */
 .client.active {
-  background-color: #ffec80; /* Amarelo claro */
-  border: 1px solid #c8b200;
-  box-shadow: 0 0 5px #ffec80;
+  background-color: #ffec80;
+  box-shadow:
+    inset 3px 3px 6px rgba(0, 0, 0, 0.1),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.3);
+  border: 2px solid #ffd700; /* AUMENTEI: borda mais destacada */
 }
 
-/* Tooltip */
+.client.active span {
+  color: #3f4361;
+  font-weight: 700;
+}
+
+.client.active img {
+  box-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.2),
+    -2px -2px 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Tooltip neumórfico - MELHORADO */
 .tooltip {
   display: none;
   position: absolute;
-  bottom: 80px;
+  bottom: 90px; /* AJUSTEI: posição */
   left: 50%;
   transform: translateX(-50%);
-  background-color: #3f4361;
-  color: #fff;
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 12px 15px; /* AUMENTEI: padding */
+  border-radius: 12px; /* AUMENTEI: raio maior */
+  font-size: 0.75rem; /* AUMENTEI: fonte */
   white-space: nowrap;
-  z-index: 10;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  z-index: 100;
+  box-shadow:
+    6px 6px 12px var(--shadow-light), /* AUMENTEI: sombra */
+    -6px -6px 12px var(--shadow-dark); /* AUMENTEI: sombra */
+  border: 1px solid var(--shadow-light);
+  backdrop-filter: blur(10px); /* ADICIONEI: efeito de blur */
 }
 
 .client:hover .tooltip {
   display: block;
+  animation: fadeInUp 0.3s ease; /* AUMENTEI: duração */
 }
 
 .tooltip p {
-  margin: 2px 0;
+  margin: 3px 0; /* AUMENTEI: espaço */
+  font-size: 0.7rem; /* AUMENTEI: fonte */
+}
+
+.tooltip strong {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Animações */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px); /* AUMENTEI: movimento */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ADICIONEI: Container para garantir espaço */
+:host {
+  display: block;
+  padding: 10px;
+  overflow: visible !important;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .clients-card {
+    border-radius: 20px;
+    width: calc(100% - 15px);
+    margin: 8px auto;
+  }
+
+  .header {
+    padding: 6px 0;
+    border-radius: 18px;
+    height: 38px;
+  }
+
+  .header span {
+    font-size: 0.9rem;
+  }
+
+  .clients-container {
+    padding: 12px;
+    gap: 10px;
+    margin: 6px 4px 10px 4px;
+  }
+
+  .client {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+  }
+
+  .client img {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+  }
+
+  .tooltip {
+    bottom: 85px;
+    padding: 10px 12px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .clients-card {
+    border-radius: 18px;
+    width: calc(100% - 10px);
+    margin: 5px auto;
+  }
+
+  .header {
+    padding: 5px 0;
+    border-radius: 16px;
+    height: 35px;
+  }
+
+  .header span {
+    font-size: 0.85rem;
+  }
+
+  .clients-container {
+    padding: 10px;
+    gap: 8px;
+    margin: 5px 3px 8px 3px;
+  }
+
+  .client {
+    width: 65px;
+    height: 65px;
+    border-radius: 10px;
+  }
+
+  .client img {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+  }
+
+  .client span {
+    font-size: 0.7rem;
+  }
+
+  .tooltip {
+    bottom: 80px;
+    padding: 8px 10px;
+    font-size: 0.7rem;
+    white-space: normal;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .tooltip p {
+    font-size: 0.65rem;
+  }
+  
+  :host {
+    padding: 8px;
+  }
 }

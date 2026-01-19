@@ -1,30 +1,20 @@
-import { Injectable, isDevMode } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class NewsService {
-  private apiKey = '026fbb7f2981493ebfe52849126572cb';
-
-  private baseUrl = 'https://newsapi.org/v2/everything';
-  private corsProxy = 'https://cors-anywhere.herokuapp.com/';
+  private apiUrl = 'http://localhost:3000/api'; // Backend local
 
   constructor(private http: HttpClient) {}
 
+  // Mantém a mesma assinatura, mas ignora o parâmetro 'from'
   getNews(q: string, from: string): Observable<any> {
-    const url = isDevMode()
-      ? this.corsProxy + this.baseUrl // em dev usa o proxy CORS
-      : this.baseUrl; // em produção vai direto (se tiver backend próprio)
+    // Usa apenas o parâmetro 'q', ignora 'from' para compatibilidade
+    const params = new HttpParams().set('q', q);
 
-    const params = new HttpParams()
-      .set('q', q)
-      .set('from', from)
-      .set('language', 'pt')
-      .set('sortBy', 'publishedAt')
-      .set('apiKey', this.apiKey);
+    console.log('📡 Buscando notícias via backend NewsData.io:', { q });
 
-    console.log('📡 Requisição para:', `${url}?${params.toString()}`);
-
-    return this.http.get(url, { params });
+    return this.http.get(`${this.apiUrl}/news`, { params });
   }
 }

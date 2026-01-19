@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 380px;
+  width: 360px;
   background: var(--bg-primary);
   border-radius: 25px;
   overflow: hidden;
@@ -15,57 +15,176 @@
 .waiting-header {
   width: 100%;
   height: 40px;
-  background: var(--header-bg, #3f4361);
+  background-color: #3f4361;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 1rem;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
 
-.waiting-header span {
-  color: #fff;
+.chat-title {
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+  width: 150px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .waiting-content {
   width: 100%;
-  padding: 15px;
+  padding: 12px 10px;
   text-align: center;
   box-sizing: border-box;
 }
 
-/* Tabela Material */
+/* Tabela Material - MAIS COMPACTA */
 .waiting-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  table-layout: fixed;
 }
 
 .mat-header-cell,
 .mat-cell {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 6px;
-  text-align: left;
+  padding: 6px 3px;
+  text-align: center;
+  position: relative;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+/* LARGURAS FIXAS E MAIS COMPACTAS */
+.mat-header-cell:nth-child(1),
+.mat-cell:nth-child(1) {
+  width: 70px;
+  max-width: 70px;
+  min-width: 70px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.mat-header-cell:nth-child(2),
+.mat-cell:nth-child(2) {
+  width: 85px;
+  max-width: 85px;
+  min-width: 85px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.mat-header-cell:nth-child(3),
+.mat-cell:nth-child(3) {
+  width: 75px;
+  max-width: 75px;
+  min-width: 75px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.mat-header-cell:nth-child(4),
+.mat-cell:nth-child(4) {
+  width: 55px;
+  max-width: 55px;
+  min-width: 55px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+/* Centralização */
+.mat-header-cell,
+.mat-cell {
+  text-align: center !important;
+}
+
+.mat-header-cell .mat-sort-header-container {
+  justify-content: center !important;
+  padding: 0;
 }
 
 .mat-header-cell {
   font-weight: 600;
   color: var(--text-primary);
+  vertical-align: middle;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.mat-row:hover {
-  background: rgba(0, 0, 0, 0.05);
+/* HOVER AMARELO E CURSOR HAND PARA AS LINHAS */
+.clickable-row {
+  cursor: pointer !important;
+  transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover {
+  background-color: #fff9c4 !important; /* Amarelo claro */
+}
+
+.clickable-row:active {
+  background-color: #fff59d !important; /* Amarelo mais forte no click */
+}
+
+/* SINGLE-LINE COM ELLIPSIS */
+.single-line {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  cursor: pointer;
+  vertical-align: middle;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Para todas as células */
+.mat-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+/* Altura das linhas reduzida */
+.mat-row {
+  height: 40px;
+}
+
+.mat-header-row {
+  height: 40px;
+}
+
+/* Tooltip customizado */
+.custom-tooltip {
+  font-size: 0.75rem !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+  border-radius: 6px !important;
+  padding: 6px 10px !important;
+  max-width: 250px !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
 }
 
 .footer-info {
-  margin-top: 10px;
+  margin-top: 8px;
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 8px;
-  font-size: 0.9rem;
+  padding: 0 5px;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-primary);
 }
@@ -78,4 +197,61 @@
 .highlight-red {
   color: #e74c3c;
   font-weight: 700;
+}
+
+.mat-cell:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* Remove espaçamento extra do Material */
+.mat-header-cell .mat-sort-header-content {
+  margin: 0;
+}
+
+/* Garantir que não haja espaçamento extra entre colunas */
+.waiting-table {
+  border-spacing: 0;
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+  padding: 0 5px;
+}
+
+/* Para telas muito pequenas */
+@media (max-width: 380px) {
+  .waiting-card {
+    width: 340px;
+  }
+  
+  .waiting-content {
+    padding: 10px 8px;
+  }
+  
+  .mat-header-cell:nth-child(1),
+  .mat-cell:nth-child(1) {
+    width: 65px;
+    max-width: 65px;
+    min-width: 65px;
+  }
+
+  .mat-header-cell:nth-child(2),
+  .mat-cell:nth-child(2) {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+  }
+
+  .mat-header-cell:nth-child(3),
+  .mat-cell:nth-child(3) {
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+  }
+
+  .mat-header-cell:nth-child(4),
+  .mat-cell:nth-child(4) {
+    width: 50px;
+    max-width: 50px;
+    min-width: 50px;
+  }
 }

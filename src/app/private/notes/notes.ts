@@ -92,7 +92,7 @@ export class Notes implements OnInit, OnDestroy {
       const docs = await this.documentService.loadAllDocuments();
       this.documents.set(docs);
     } catch (error) {
-      console.error('❌ Erro ao carregar documentos:', error);
+      console.error('❌ ' + this.translate.instant('NOTES.ERRORS.LOAD_ERROR'), error);
     } finally {
       this.isLoading.set(false);
     }
@@ -107,7 +107,7 @@ export class Notes implements OnInit, OnDestroy {
         this.clearSelection();
       }
     } catch (error) {
-      console.error('❌ Erro ao selecionar documento:', error);
+      console.error('❌ ' + this.translate.instant('NOTES.ERRORS.SELECT_ERROR'), error);
       this.clearSelection();
     }
   }
@@ -145,55 +145,54 @@ export class Notes implements OnInit, OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
-  if (this.noteForm.valid) {
-    try {
-      const formData = this.noteForm.value;
-      const currentUser = this.sessionService.getSession()!;
+    if (this.noteForm.valid) {
+      try {
+        const formData = this.noteForm.value;
+        const currentUser = this.sessionService.getSession()!;
 
-      // ✅ Verificação para garantir que helpDeskCompanyId existe
-      if (!currentUser.helpDeskCompanyId) {
-        console.error('❌ Usuário não possui helpDeskCompanyId');
-        return;
+        if (!currentUser.helpDeskCompanyId) {
+          console.error('❌ Usuário não possui helpDeskCompanyId');
+          return;
+        }
+
+        const documentData: Omit<Document, 'id' | 'created' | 'updated'> = {
+          title: formData.title,
+          content: formData.content,
+          helpDeskCompanyId: currentUser.helpDeskCompanyId,
+          userId: currentUser.id
+        };
+
+        let savedDocument: Document;
+
+        if (this.isEditing() && this.selectedDocument()) {
+          savedDocument = await this.documentService.updateDocument(
+            this.selectedDocument()!.id,
+            documentData
+          );
+        } else {
+          savedDocument = await this.documentService.saveDocument(documentData);
+        }
+
+        await this.loadDocuments();
+        this.router.navigate(['/notes', savedDocument.id]);
+
+      } catch (error) {
+        console.error('❌ ' + this.translate.instant('NOTES.ERRORS.SAVE_ERROR'), error);
       }
-
-      const documentData: Omit<Document, 'id' | 'created' | 'updated'> = {
-        title: formData.title,
-        content: formData.content,
-        helpDeskCompanyId: currentUser.helpDeskCompanyId, // ✅ Agora é string, não string | undefined
-        userId: currentUser.id
-      };
-
-      let savedDocument: Document;
-
-      if (this.isEditing() && this.selectedDocument()) {
-        // Atualizar documento existente
-        savedDocument = await this.documentService.updateDocument(
-          this.selectedDocument()!.id,
-          documentData
-        );
-      } else {
-        // Criar novo documento
-        savedDocument = await this.documentService.saveDocument(documentData);
-      }
-
-      // Recarrega a lista e navega para o documento salvo
-      await this.loadDocuments();
-      this.router.navigate(['/notes', savedDocument.id]);
-
-    } catch (error) {
-      console.error('❌ Erro ao salvar documento:', error);
+    } else {
+      this.noteForm.markAllAsTouched();
     }
-  } else {
-    this.noteForm.markAllAsTouched();
   }
-}
 
   async onDelete(document: Document): Promise<void> {
-    if (confirm(`Tem certeza que deseja excluir a anotação "${document.title}"?`)) {
+    const confirmMessage = this.translate.instant('NOTES.ACTIONS.CONFIRM_DELETE', {
+      title: document.title
+    });
+
+    if (confirm(confirmMessage)) {
       try {
         await this.documentService.deleteDocument(document.id);
         
-        // Se estava editando o documento excluído, limpa o formulário
         if (this.selectedDocument()?.id === document.id) {
           this.clearFormAndSelection();
           this.router.navigate(['/notes']);
@@ -201,7 +200,7 @@ export class Notes implements OnInit, OnDestroy {
         
         await this.loadDocuments();
       } catch (error) {
-        console.error('❌ Erro ao excluir documento:', error);
+        console.error('❌ ' + this.translate.instant('NOTES.ERRORS.DELETE_ERROR'), error);
       }
     }
   }
@@ -213,7 +212,6 @@ export class Notes implements OnInit, OnDestroy {
 
   onSearch(searchTerm: string): void {
     this.searchTerm.set(searchTerm);
-    // A pesquisa é feita no template através de filter
   }
 
   get filteredDocuments(): Document[] {
@@ -227,12 +225,26 @@ export class Notes implements OnInit, OnDestroy {
   }
 
   formatDate(date: Date): string {
-    return new Date(date).toLocaleDateString('pt-BR', {
+    return new Date(date).toLocaleDateString(this.translate.currentLang, {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  // Método auxiliar para obter o texto do botão de submit
+  getSubmitButtonText(): string {
+    return this.isEditing() 
+      ? this.translate.instant('NOTES.UPDATE_NOTE')
+      : this.translate.instant('NOTES.SAVE_NOTE');
+  }
+
+  // Método auxiliar para obter o título do formulário
+  getFormTitle(): string {
+    return this.isEditing()
+      ? this.translate.instant('NOTES.EDIT_NOTE')
+      : this.translate.instant('NOTES.NEW_NOTE');
   }
 }

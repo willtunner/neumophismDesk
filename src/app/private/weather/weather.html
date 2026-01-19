@@ -2,7 +2,7 @@
   <!-- Loading State -->
   <div *ngIf="isLoading()" class="loading-state">
     <div class="loading-spinner"></div>
-    <p>Obtendo localização e dados meteorológicos...</p>
+    <p>{{ 'WEATHER.LOADING' | translate }}</p>
   </div>
 
   <!-- Error State -->
@@ -10,15 +10,15 @@
     <div class="error-icon">📍</div>
     <p>{{ locationError() }}</p>
     <button class="neu-button retry-btn" (click)="retryLocation()">
-      Tentar Novamente
+      {{ 'WEATHER.ACTIONS.RETRY' | translate }}
     </button>
-    <p class="fallback-message">Usando localização padrão (Campinas)</p>
+    <p class="fallback-message">{{ 'WEATHER.ACTIONS.USE_DEFAULT' | translate }}</p>
   </div>
 
   <!-- Weather Content -->
   <div *ngIf="!isLoading() && !locationError()" class="weather-content">
     <div class="weather-header">
-      <h3>Sua Localização</h3>
+      <h3>{{ 'WEATHER.YOUR_LOCATION' | translate }}</h3>
   
       <div class="temperature">
         <span class="temp-value">
@@ -29,14 +29,15 @@
         </div>
       </div>
   
-      <p class="today">Hoje</p>
+      <p class="today">{{ 'WEATHER.TODAY' | translate }}</p>
     </div>
   
     <div class="forecast">
-      <div *ngFor="let day of forecast.slice(1, 6)" class="day">
+      <!-- Agora usa translatedForecast() que já tem os dias traduzidos -->
+      <div *ngFor="let day of translatedForecast()" class="day">
         <span class="icon">{{ getWeatherIcon(day.code) }}</span>
         <span class="temp">{{ day.max | number:'1.0-0' }}°</span>
-        <span class="date">{{ day.date | date:'EEE' }}</span>
+        <span class="date">{{ day.translatedDay }}</span>
       </div>
     </div>
   </div>

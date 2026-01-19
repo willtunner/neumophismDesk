@@ -2,7 +2,6 @@
   display: grid;
   grid-template-columns: 1fr 2fr; /* lado direito maior */
   gap: 16px;
-  padding: 16px;
   height: 100vh;
   box-sizing: border-box;
   margin-bottom: 50px;
@@ -12,35 +11,40 @@
 .left-panel {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 12px;
-  height: 100%;
+  height: 105%
+  /* REMOVI: justify-content: space-between */
 }
 
 /* Coluna direita (Clientes + Chat) */
 .right-panel {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 12px;
-  height: 100%;
+  height: 100%
+  /* REMOVI: justify-content: space-between */
 }
 
-/* Define proporções internas */
+/* Define proporções internas FIXAS */
 app-waiting-list {
-  flex: 0.8;
+  flex: 0 0 auto; /* MUDEI: não cresce, não encolhe, tamanho automático */
+  min-height: 200px; /* Altura mínima fixa */
 }
 
 app-operators-online {
-  flex: 1;
+  flex: 1 1 auto; /* MUDEI: pode crescer e encolher */
+  min-height: 300px; /* Altura mínima fixa */
+  overflow: visible; /* Garante que o dropdown não seja cortado */
 }
 
 app-waiting-list-clients {
-  flex: 0.3;
+  flex: 0 0 auto; /* MUDEI: não cresce, não encolhe, tamanho automático */
+  min-height: 150px; /* Altura mínima fixa */
 }
 
 app-chat-messages {
-  flex: 1.7;
+  flex: 1 1 auto; /* MUDEI: pode crescer e encolher */
+  min-height: 400px; /* Altura mínima fixa */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -52,7 +56,31 @@ app-operators-online,
 app-waiting-list-clients,
 app-chat-messages {
   width: 100%;
-  min-height: 0; /* evita overflow no flex */
+}
+
+/* Garantir que o operators-online tenha scroll interno se necessário */
+app-operators-online {
+  overflow-y: auto; /* Adiciona scroll interno se o conteúdo for muito longo */
+  overflow-x: hidden;
+}
+
+/* Scrollbar customizada */
+app-operators-online::-webkit-scrollbar {
+  width: 6px;
+}
+
+app-operators-online::-webkit-scrollbar-track {
+  background: var(--shadow-light);
+  border-radius: 3px;
+}
+
+app-operators-online::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 3px;
+}
+
+app-operators-online::-webkit-scrollbar-thumb:hover {
+  background: var(--text-primary);
 }
 
 /* ===== Responsivo para tablets ===== */
@@ -62,11 +90,20 @@ app-chat-messages {
     gap: 12px;
   }
 
-  app-waiting-list,
-  app-operators-online,
-  app-waiting-list-clients,
+  app-waiting-list {
+    min-height: 180px;
+  }
+
+  app-operators-online {
+    min-height: 280px;
+  }
+
+  app-waiting-list-clients {
+    min-height: 130px;
+  }
+
   app-chat-messages {
-    flex: unset;
+    min-height: 350px;
   }
 }
 
@@ -94,5 +131,11 @@ app-chat-messages {
 
   app-chat-messages {
     height: 60vh;
+    min-height: 300px;
+  }
+
+  /* Remove scroll interno no mobile */
+  app-operators-online {
+    overflow-y: visible;
   }
 }

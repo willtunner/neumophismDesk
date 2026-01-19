@@ -1,13 +1,14 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { EventModalComponent } from './event-modal/event-modal';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Weather } from '../weather/weather';
 import { Clock } from '../../shared/components/clock/clock';
 import { NewsComponent } from '../../shared/components/news/news';
+import { Subscription } from 'rxjs';
 
 export interface CalendarEvent {
   id: string;
@@ -29,21 +30,31 @@ interface Holiday {
   templateUrl: './calendar.html',
   styleUrls: ['./calendar.scss']
 })
-export class Calendar implements OnInit {
+export class Calendar implements OnInit, OnDestroy {
   // Signals
   currentYear = signal(new Date().getFullYear());
   events = signal<CalendarEvent[]>(this.loadEventsFromStorage());
   holidays = signal<Holiday[]>([]);
   loading = signal(false);
   
-  // Computed values
+  // Signal para forçar atualização dos meses quando o idioma mudar
+  private languageChanged = signal(0);
+  
+  // Dias da semana - agora é um signal que será atualizado com as traduções
+  weekDaysMini = signal<string[]>(['D', 'S', 'T', 'Q', 'Q', 'S', 'S']);
+
+  // NOVO: Dias da semana completos para tooltip
+  weekDaysFull = signal<string[]>([]);
+  
+  // Computed values - agora depende do languageChanged para atualizar
   monthsGrid = computed(() => {
+    // Inclui languageChanged() na dependência para forçar recálculo
+    const languageTrigger = this.languageChanged();
     const year = this.currentYear();
     const today = new Date();
     
     return Array.from({ length: 12 }, (_, monthIndex) => {
-      const monthDate = new Date(year, monthIndex, 1);
-      const monthName = monthDate.toLocaleString('pt-BR', { month: 'long' });
+      const monthName = this.getMonthName(monthIndex);
       const days = this.generateMonthDays(year, monthIndex, today);
       
       return { name: monthName, days };
@@ -56,17 +67,71 @@ export class Calendar implements OnInit {
     );
   });
 
-  weekDaysMini = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
-
   private dialog = inject(MatDialog);
   private http = inject(HttpClient);
+  private translate = inject(TranslateService);
+  private translateSubscription!: Subscription;
   private apiKey = '21075|Wiu4ByEDG4xvXHH8Lfnbm2GILonpwEiu';
 
   ngOnInit() {
     this.loadEventsFromStorage();
     this.fetchHolidays();
+    
+    // Carrega as traduções iniciais
+    this.updateTranslations();
+    
+    // Escuta mudanças de idioma
+    this.translateSubscription = this.translate.onLangChange.subscribe(() => {
+      this.updateTranslations();
+    });
   }
 
+  ngOnDestroy() {
+    if (this.translateSubscription) {
+      this.translateSubscription.unsubscribe();
+    }
+  }
+
+  // Atualiza todas as traduções quando o idioma muda
+  private updateTranslations(): void {
+    // Atualiza os dias da semana
+    const translatedWeekdays = [
+      this.translate.instant('CALENDAR.WEEKDAYS.SUNDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS.MONDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS.TUESDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS.WEDNESDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS.THURSDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS.FRIDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS.SATURDAY')
+    ];
+    this.weekDaysMini.set(translatedWeekdays);
+
+        // NOVO: Atualiza os dias da semana completos
+    const translatedWeekdaysFull = [
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.SUNDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.MONDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.TUESDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.WEDNESDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.THURSDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.FRIDAY'),
+      this.translate.instant('CALENDAR.WEEKDAYS_FULL.SATURDAY')
+    ];
+    this.weekDaysFull.set(translatedWeekdaysFull);
+    
+    // Força a atualização dos meses incrementando o signal
+    this.languageChanged.update(val => val + 1);
+  }
+
+  // Método para obter nome do mês traduzido
+  private getMonthName(monthIndex: number): string {
+    const monthKeys = [
+      'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+      'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
+    ];
+    return this.translate.instant(`CALENDAR.MONTHS.${monthKeys[monthIndex]}`);
+  }
+
+  // Resto do código permanece igual...
   private generateMonthDays(year: number, month: number, today: Date) {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
@@ -97,6 +162,15 @@ export class Calendar implements OnInit {
     }
     
     return days;
+  }
+
+    // NOVO: Método para obter tooltip do dia da semana
+  getWeekdayTooltip(dayIndex: number): string {
+    const weekDays = this.weekDaysFull();
+    if (weekDays[dayIndex]) {
+      return weekDays[dayIndex];
+    }
+    return '';
   }
 
   private createDayObject(date: Date, number: number, isCurrentMonth: boolean, today: Date) {

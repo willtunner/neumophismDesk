@@ -1,36 +1,35 @@
-<div class="client-card neu-container">
+<div *ngIf="loggedUser && client" class="client-card neu-container">
   <!-- Cabeçalho -->
-  <div
-    class="client-header"
-    [ngStyle]="{ 'background': client.status ? '#2ecc71' : '#e74c3c' }"
-  >
-    <span>Cliente</span>
+  <div class="client-header neu-emboss" [ngStyle]="{ 'background': client.status ? '#2ecc71' : '#e74c3c' }">
+    <span class="neu-emboss">Cliente</span>
   </div>
 
   <!-- Conteúdo -->
-  <div class="client-content">
+  <div class="client-content neu-emboss">
     <div class="profile-wrapper">
-      <img [src]="client.foto" alt="Foto do cliente" class="profile-image" />
-      <span
-        class="status-dot"
-        [ngStyle]="{ 'background-color': client.status ? '#2ecc71' : '#e74c3c' }"
-      ></span>
+      <img [src]="loggedUser.imageUrl" alt="Foto do cliente" class="profile-image" />
+      <span class="status-dot" [ngStyle]="{ 'background-color': client.status ? '#2ecc71' : '#e74c3c' }"></span>
     </div>
 
     <div class="client-info">
-      <h3>{{ client.nome }}</h3>
-      <p>{{ client.empresa }}</p>
-      <small>{{ client.cnpj }}</small>
+      <h3>{{ loggedUser.name }}</h3>
+      <p>{{ getCompanyName() }}</p>
+      <small>{{ loggedUser?.company?.cnpj }}</small>
     </div>
 
     <h2 class="highlight-text">Diferença de caixa</h2>
 
-    <button
-      class="btn-end"
-      [ngStyle]="{ 'background': client.status ? '#2ecc71' : '#e74c3c' }"
-      (click)="toggleStatus()"
-    >
+    <button class="btn-end" [ngStyle]="{ 'background': client.status ? '#2ecc71' : '#e74c3c' }"
+      (click)="toggleStatus()">
       {{ client.status ? 'Sair' : 'Entrar' }}
     </button>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="!loggedUser" class="loading-container neu-container">
+  <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <p>Carregando dados do usuário...</p>
   </div>
 </div>

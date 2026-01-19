@@ -1,42 +1,45 @@
 <div class="chat-messages neu-container">
   <!-- Cabeçalho -->
-  <div class="chat-header">
-    <div class="chat-title neu-emboss">Conversação Ativa</div>
-  </div>
-
-  <!-- Corpo do chat -->
-  <div class="messages-area neu-scrollbar-small ">
-    <div
-      *ngFor="let msg of messages"
-      class="message"
-      [ngClass]="{ 'sent': msg.sender === 'client', 'received': msg.sender === 'operator' }"
-    >
-      <div class="message-content">
-        <div class="message-text">{{ msg.text }}</div>
-        <div class="message-time">{{ msg.time }}</div>
-      </div>
+  <div class="chat-header neu-emboss">
+    <div class="chat-title neu-emboss">
+      {{ isOperatorActive ? 'Conversação Ativa' : 'Aguardando Atendimento' }}
     </div>
   </div>
 
-  <!-- Input -->
-  <div class="message-input">
-    <input
-      type="text"
-      placeholder="Digite sua mensagem..."
-      [(ngModel)]="newMessage"
-      class="neu-input"
-      (keydown.enter)="sendMessage()"
-    />
-    <button class="neu-button primary" (click)="sendMessage()">
-      <svg viewBox="0 0 24 24" width="20" height="20">
-        <path
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          d="M3 12l18-9-7 9 7 9-18-9z"
-        />
-      </svg>
-    </button>
+  <!-- Estado de espera quando operador não está ativo -->
+  <div *ngIf="!isOperatorActive" class="waiting-state neu-emboss">
+    <div class="waiting-content">
+      <div class="waiting-icon">
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v2h-2zm0-8h2v6h-2z"/>
+        </svg>
+      </div>
+      <h3 class="waiting-title">Aguarde enquanto um operador lhe atende</h3>
+      <p class="waiting-message">Você será atendido em breve por um de nossos especialistas</p>
+    </div>
+  </div>
+
+  <!-- Corpo do chat (apenas quando operador está ativo) -->
+  <div *ngIf="isOperatorActive" class="chat-content">
+    <div class="messages-area neu-scrollbar-small">
+      <div *ngFor="let msg of messages" class="message"
+        [ngClass]="{ 'sent': msg.sender === 'client', 'received': msg.sender === 'operator' }">
+        <div class="message-content">
+          <div class="message-text">{{ msg.text }}</div>
+          <div class="message-time">{{ msg.time }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input (apenas quando operador está ativo) -->
+    <div class="message-input">
+      <input type="text" placeholder="Digite sua mensagem..." [(ngModel)]="newMessage" class="neu-input"
+        (keydown.enter)="sendMessage()" />
+      <button class="neu-button primary" (click)="sendMessage()">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="none" stroke="currentColor" stroke-width="2" d="M3 12l18-9-7 9 7 9-18-9z" />
+        </svg>
+      </button>
+    </div>
   </div>
 </div>
-

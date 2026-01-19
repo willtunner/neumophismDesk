@@ -14,7 +14,6 @@
     <!-- Espaço Reservado -->
     <div class="grid-item placeholder-item">
       <div class="placeholder-content neu-container">
-        <!--! CONPONENTE ABAIXO QUEBRANDO LAYOUT MOBILE/TAB  -->
         <app-news></app-news> 
       </div>
     </div>
@@ -43,9 +42,11 @@
           <h3>{{ month.name }}</h3>
         </div>
 
-        <!-- Dias da semana -->
+        <!-- Dias da semana - agora usa o signal -->
         <div class="weekdays-small">
-          <div class="weekday-tiny" *ngFor="let day of weekDaysMini">{{ day }}</div>
+          <div class="weekday-tiny" *ngFor="let day of weekDaysMini(); let i = index" [title]="getWeekdayTooltip(i)">
+            {{ day }}
+          </div>
         </div>
 
         <!-- Dias do mês -->
@@ -89,13 +90,13 @@
             <div class="event-header">
               <h4 class="event-title">{{ event.title }}</h4>
               <div class="event-actions">
-                <button class="icon-button edit" (click)="editEvent(event)" title="Editar">
+                <button class="icon-button edit" (click)="editEvent(event)" [title]="'COMMON.EDIT' | translate">
                   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M9 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6" />
                     <path d="M16.5 2.5a2.121 2.121 0 0 1 3 3L10 13l-3 1 1-3 8.5-8.5z" />
                   </svg>
                 </button>
-                <button class="icon-button delete" (click)="deleteEvent(event.id)" title="Excluir">
+                <button class="icon-button delete" (click)="deleteEvent(event.id)" [title]="'COMMON.DELETE' | translate">
                   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
                     <polyline points="3 6 5 6 17 6" />
                     <path

@@ -81,11 +81,43 @@
     "NEW_EVENT": "Nuevo evento",
     "UPDATE_EVENT": "Editar evento",
     "CALENDAR_TITLE": "Título del evento",
-    "DESCRIPTION": "Descripción del evento.",
+    "DESCRIPTION": "Descripción del evento",
     "SCHEDULE_EVENTS": "Eventos Programados",
     "EVENTS": "evento(s)",
     "DOUBLE_CLICK_INSTRUCTION": "Haga doble clic en cualquier día para agregar un evento",
-    "NO_EVENTS": "No hay eventos programados"
+    "NO_EVENTS": "No hay eventos programados",
+    "MONTHS": {
+      "JANUARY": "Enero",
+      "FEBRUARY": "Febrero",
+      "MARCH": "Marzo",
+      "APRIL": "Abril",
+      "MAY": "Mayo",
+      "JUNE": "Junio",
+      "JULY": "Julio",
+      "AUGUST": "Agosto",
+      "SEPTEMBER": "Septiembre",
+      "OCTOBER": "Octubre",
+      "NOVEMBER": "Noviembre",
+      "DECEMBER": "Diciembre"
+    },
+    "WEEKDAYS": {
+      "SUNDAY": "D",
+      "MONDAY": "L",
+      "TUESDAY": "M",
+      "WEDNESDAY": "M",
+      "THURSDAY": "J",
+      "FRIDAY": "V",
+      "SATURDAY": "S"
+    },
+    "WEEKDAYS_FULL": {
+      "SUNDAY": "Domingo",
+      "MONDAY": "Lunes",
+      "TUESDAY": "Martes",
+      "WEDNESDAY": "Miércoles",
+      "THURSDAY": "Jueves",
+      "FRIDAY": "Viernes",
+      "SATURDAY": "Sábado"
+    }
   },
   "INPUTS-FIELS": {
     "TITLE": "Título",
@@ -274,5 +306,94 @@
     },
     "EDIT_TITLE": "Editar Cliente",
     "CREATE_TITLE": "Registrar un nuevo cliente"
-  }
+  },
+  "WEATHER": {
+    "TITLE": "Pronóstico del Tiempo",
+    "YOUR_LOCATION": "Tu Ubicación",
+    "TODAY": "Hoy",
+    "LOADING": "Obteniendo ubicación y datos meteorológicos...",
+    "LOCATION_ERROR": {
+      "UNSUPPORTED": "Geolocalización no soportada por el navegador",
+      "PERMISSION_DENIED": "Permiso de ubicación denegado por el usuario",
+      "UNAVAILABLE": "Ubicación no disponible",
+      "TIMEOUT": "Tiempo de espera agotado al obtener la ubicación",
+      "UNKNOWN": "Error desconocido al obtener la ubicación"
+    },
+    "ACTIONS": {
+      "RETRY": "Intentar Nuevamente",
+      "USE_DEFAULT": "Usando ubicación predeterminada (Campinas)"
+    },
+    "WEATHER_CODES": {
+      "CLEAR_SKY": "Cielo despejado",
+      "MAINLY_CLEAR": "Mayormente despejado",
+      "PARTLY_CLOUDY": "Parcialmente nublado",
+      "OVERCAST": "Nublado",
+      "FOG": "Niebla",
+      "LIGHT_DRIZZLE": "Llovizna leve",
+      "MODERATE_DRIZZLE": "Llovizna moderada",
+      "DENSE_DRIZZLE": "Llovizna densa",
+      "LIGHT_RAIN": "Lluvia leve",
+      "MODERATE_RAIN": "Lluvia moderada",
+      "HEAVY_RAIN": "Lluvia fuerte",
+      "LIGHT_SNOW": "Nieve leve",
+      "MODERATE_SNOW": "Nieve moderada",
+      "HEAVY_SNOW": "Nieve fuerte",
+      "SNOW_GRAINS": "Granos de nieve",
+      "LIGHT_SHOWERS": "Chubascos leves",
+      "MODERATE_SHOWERS": "Chubascos moderados",
+      "VIOLENT_SHOWERS": "Chubascos violentos"
+    },
+    "DAYS": {
+      "MONDAY": "Lun",
+      "TUESDAY": "Mar",
+      "WEDNESDAY": "Mié",
+      "THURSDAY": "Jue",
+      "FRIDAY": "Vie",
+      "SATURDAY": "Sáb",
+      "SUNDAY": "Dom"
+    }
+  },
+  "NOTES": {
+    "TITLE": "Notas",
+    "NEW_NOTE": "Nueva Nota",
+    "EDIT_NOTE": "Editar Nota",
+    "MY_NOTES": "Mis Notas",
+    "SEARCH_PLACEHOLDER": "Buscar notas...",
+    "SAVE_NOTE": "Guardar Nota",
+    "UPDATE_NOTE": "Actualizar Nota",
+    "CREATE_NEW_NOTE": "Nueva Nota",
+    "LOADING": "Cargando notas...",
+    "EMPTY_STATE": {
+      "NO_NOTES": "Ninguna nota encontrada",
+      "NO_RESULTS": "Ninguna nota encontrada para \"{{searchTerm}}\"",
+      "CREATE_FIRST": "Crea tu primera nota usando el formulario anterior"
+    },
+    "FIELDS": {
+      "TITLE": "Título",
+      "TITLE_PLACEHOLDER": "Ingrese el título de la nota",
+      "CONTENT": "Contenido",
+      "CONTENT_PLACEHOLDER": "Ingrese el contenido de la nota...",
+      "CHARACTERS": "caracteres",
+      "MAX_CHARACTERS": "Máximo {{limit}} caracteres"
+    },
+    "ACTIONS": {
+      "EDIT": "Editar",
+      "DELETE": "Eliminar",
+      "CONFIRM_DELETE": "¿Está seguro de que desea eliminar la nota \"{{title}}\"?",
+      "CREATED_AT": "Creado en",
+      "UPDATED_AT": "Actualizado en"
+    },
+    "VALIDATION": {
+      "TITLE_MIN_LENGTH": "El título debe tener al menos 3 caracteres",
+      "CONTENT_MIN_LENGTH": "El contenido debe tener al menos 10 caracteres",
+      "REQUIRED": "Este campo es obligatorio"
+    },
+    "ERRORS": {
+      "LOAD_ERROR": "Error al cargar notas",
+      "SAVE_ERROR": "Error al guardar nota",
+      "UPDATE_ERROR": "Error al actualizar nota",
+      "DELETE_ERROR": "Error al eliminar nota",
+      "SELECT_ERROR": "Error al seleccionar nota"
+    }
+  } 
 }

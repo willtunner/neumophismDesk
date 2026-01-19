@@ -1,12 +1,12 @@
 <div class="waiting-card neu-container-no-padding">
   <!-- Cabeçalho -->
-  <div class="waiting-header">
-    <span>Operadores</span>
+  <div class="waiting-header neu-emboss">
+    <div class="chat-title neu-emboss">Operadores</div>
   </div>
 
   <!-- Conteúdo -->
   <div class="waiting-content">
-    <div *ngFor="let op of operadores" class="operator-card">
+    <div *ngFor="let op of operadores; let i = index" class="operator-card">
       <!-- Cabeçalho do operador -->
       <div class="operator-header" (click)="toggleDropdown(op)">
         <div class="header-left">
@@ -27,7 +27,7 @@
             <!-- Nome -->
             <ng-container matColumnDef="nome">
               <th mat-header-cell *matHeaderCellDef> Nome </th>
-              <td mat-cell *matCellDef="let item" [class.finalizado]="item.finalized">
+              <td mat-cell *matCellDef="let item" [class.finalizado]="item.finalized" class="single-line">
                 {{ item.nome }}
               </td>
             </ng-container>
@@ -35,7 +35,7 @@
             <!-- Empresa -->
             <ng-container matColumnDef="empresa">
               <th mat-header-cell *matHeaderCellDef> Empresa </th>
-              <td mat-cell *matCellDef="let item" [class.finalizado]="item.finalized">
+              <td mat-cell *matCellDef="let item" [class.finalizado]="item.finalized" class="single-line">
                 {{ item.empresa }}
               </td>
             </ng-container>
@@ -43,7 +43,7 @@
             <!-- Assunto -->
             <ng-container matColumnDef="assunto">
               <th mat-header-cell *matHeaderCellDef> Assunto </th>
-              <td mat-cell *matCellDef="let item" [class.finalizado]="item.finalized">
+              <td mat-cell *matCellDef="let item" [class.finalizado]="item.finalized" class="single-line">
                 {{ item.assunto }}
               </td>
             </ng-container>
@@ -60,4 +60,3 @@
     </div>
   </div>
 </div>
-

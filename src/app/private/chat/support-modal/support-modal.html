@@ -1,0 +1,42 @@
+<div class="support-modal-container">
+  <!-- Cabeçalho -->
+  <div class="modal-header neu-emboss">
+    <div class="header-content">
+      <h2 class="modal-title">Qual seria o suporte desejado?</h2>
+    </div>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="modal-content">
+    <!-- Select -->
+    <div class="select-container">
+      <div class="select-label">Escolha um assunto</div>
+      <div class="select-wrapper">
+        <app-select-dynamic 
+          [config]="supportOptionsConfig" 
+          [control]="supportControl"
+          [showImage]="false">
+        </app-select-dynamic>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ações -->
+  <div class="modal-actions">
+    <button 
+      mat-button 
+      class="neu-button cancel-button"
+      (click)="onNoClick()">
+      Cancelar
+    </button>
+    
+    <button 
+      mat-button 
+      class="neu-button save-button primary" 
+      (click)="saveSelection()"
+      [disabled]="!supportControl.value"
+      cdkFocusInitial>
+      Salvar
+    </button>
+  </div>
+</div>

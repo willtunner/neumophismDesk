@@ -31,7 +31,8 @@
     "COMPANIES": "Companies",
     "CALENDAR": "Calendar",
     "TUTORIALS": "Tutorials",
-    "CALL": "Calls"
+    "CALL": "Calls",
+    "NOTES": "Notes"
   },
   "MESSAGES": {
     "TITLE": "Messages",
@@ -81,11 +82,43 @@
     "NEW_EVENT": "New event",
     "UPDATE_EVENT": "Edit event",
     "CALENDAR_TITLE": "Event title",
-    "DESCRIPTION": "Event description.",
+    "DESCRIPTION": "Event description",
     "SCHEDULE_EVENTS": "Scheduled Events",
     "EVENTS": "event(s)",
     "DOUBLE_CLICK_INSTRUCTION": "Double click on any day to add an event",
-    "NO_EVENTS": "No scheduled events"
+    "NO_EVENTS": "No scheduled events",
+    "MONTHS": {
+      "JANUARY": "January",
+      "FEBRUARY": "February",
+      "MARCH": "March",
+      "APRIL": "April",
+      "MAY": "May",
+      "JUNE": "June",
+      "JULY": "July",
+      "AUGUST": "August",
+      "SEPTEMBER": "September",
+      "OCTOBER": "October",
+      "NOVEMBER": "November",
+      "DECEMBER": "December"
+    },
+    "WEEKDAYS": {
+      "SUNDAY": "S",
+      "MONDAY": "M",
+      "TUESDAY": "T",
+      "WEDNESDAY": "W",
+      "THURSDAY": "T",
+      "FRIDAY": "F",
+      "SATURDAY": "S"
+    },
+    "WEEKDAYS_FULL": {
+      "SUNDAY": "Sunday",
+      "MONDAY": "Monday",
+      "TUESDAY": "Tuesday",
+      "WEDNESDAY": "Wednesday",
+      "THURSDAY": "Thursday",
+      "FRIDAY": "Friday",
+      "SATURDAY": "Saturday"
+    }
   },
   "INPUTS-FIELS": {
     "TITLE": "Title",
@@ -274,5 +307,94 @@
     },
     "EDIT_TITLE": "Edit Client",
     "CREATE_TITLE": "Register a new client"
+  },
+  "WEATHER": {
+    "TITLE": "Weather Forecast",
+    "YOUR_LOCATION": "Your Location",
+    "TODAY": "Today",
+    "LOADING": "Getting location and weather data...",
+    "LOCATION_ERROR": {
+      "UNSUPPORTED": "Geolocation not supported by browser",
+      "PERMISSION_DENIED": "Location permission denied by user",
+      "UNAVAILABLE": "Location unavailable",
+      "TIMEOUT": "Timeout getting location",
+      "UNKNOWN": "Unknown error getting location"
+    },
+    "ACTIONS": {
+      "RETRY": "Try Again",
+      "USE_DEFAULT": "Using default location (Campinas)"
+    },
+    "WEATHER_CODES": {
+      "CLEAR_SKY": "Clear sky",
+      "MAINLY_CLEAR": "Mainly clear",
+      "PARTLY_CLOUDY": "Partly cloudy",
+      "OVERCAST": "Overcast",
+      "FOG": "Fog",
+      "LIGHT_DRIZZLE": "Light drizzle",
+      "MODERATE_DRIZZLE": "Moderate drizzle",
+      "DENSE_DRIZZLE": "Dense drizzle",
+      "LIGHT_RAIN": "Light rain",
+      "MODERATE_RAIN": "Moderate rain",
+      "HEAVY_RAIN": "Heavy rain",
+      "LIGHT_SNOW": "Light snow",
+      "MODERATE_SNOW": "Moderate snow",
+      "HEAVY_SNOW": "Heavy snow",
+      "SNOW_GRAINS": "Snow grains",
+      "LIGHT_SHOWERS": "Light showers",
+      "MODERATE_SHOWERS": "Moderate showers",
+      "VIOLENT_SHOWERS": "Violent showers"
+    },
+    "DAYS": {
+      "MONDAY": "Mon",
+      "TUESDAY": "Tue",
+      "WEDNESDAY": "Wed",
+      "THURSDAY": "Thu",
+      "FRIDAY": "Fri",
+      "SATURDAY": "Sat",
+      "SUNDAY": "Sun"
+    }
+  },
+  "NOTES": {
+    "TITLE": "Notes",
+    "NEW_NOTE": "New Note",
+    "EDIT_NOTE": "Edit Note",
+    "MY_NOTES": "My Notes",
+    "SEARCH_PLACEHOLDER": "Search notes...",
+    "SAVE_NOTE": "Save Note",
+    "UPDATE_NOTE": "Update Note",
+    "CREATE_NEW_NOTE": "New Note",
+    "LOADING": "Loading notes...",
+    "EMPTY_STATE": {
+      "NO_NOTES": "No notes found",
+      "NO_RESULTS": "No notes found for \"{{searchTerm}}\"",
+      "CREATE_FIRST": "Create your first note using the form above"
+    },
+    "FIELDS": {
+      "TITLE": "Title",
+      "TITLE_PLACEHOLDER": "Enter note title",
+      "CONTENT": "Content",
+      "CONTENT_PLACEHOLDER": "Enter note content...",
+      "CHARACTERS": "characters",
+      "MAX_CHARACTERS": "Maximum {{limit}} characters"
+    },
+    "ACTIONS": {
+      "EDIT": "Edit",
+      "DELETE": "Delete",
+      "CONFIRM_DELETE": "Are you sure you want to delete the note \"{{title}}\"?",
+      "CREATED_AT": "Created at",
+      "UPDATED_AT": "Updated at"
+    },
+    "VALIDATION": {
+      "TITLE_MIN_LENGTH": "Title must be at least 3 characters",
+      "CONTENT_MIN_LENGTH": "Content must be at least 10 characters",
+      "REQUIRED": "This field is required"
+    },
+    "ERRORS": {
+      "LOAD_ERROR": "Error loading notes",
+      "SAVE_ERROR": "Error saving note",
+      "UPDATE_ERROR": "Error updating note",
+      "DELETE_ERROR": "Error deleting note",
+      "SELECT_ERROR": "Error selecting note"
+    }
   }
 }

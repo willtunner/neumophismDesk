@@ -182,7 +182,7 @@ body {
   padding: 30px;
   box-shadow: 
     20px 20px 60px var(--shadow-light),
-    -20px -20px 60px var(--shadow-dark);
+    -20px -20px 60px var(#000);
   position: relative;
   transition: all 0.3s ease;
   color: var(--text-primary);
@@ -924,4 +924,15 @@ p, label, span {
     inset 8px 8px 16px rgba(255, 59, 92, 0.2),
     inset -8px -8px 16px var(--shadow-dark),
     0 0 0 2px var(--error-color) !important;
+}
+
+.support-modal-panel {
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-color: transparent !important;
+  }
+  
+  .mat-mdc-dialog-surface {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
 }

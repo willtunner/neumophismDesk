@@ -2,14 +2,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 280px;
+  width: 95%;
+  min-width: 280px;
   background: var(--bg-primary);
   border-radius: 25px;
   overflow: hidden;
-  box-shadow:
-    10px 10px 20px var(--shadow-light),
-    -10px -10px 20px var(--shadow-dark);
+  box-shadow: 5px 10px 5px var(--shadow-light), -10px -10px 20px var(--shadow-dark);
   transition: all 0.3s ease;
+  margin-left: auto;
+  margin-right: auto;
 
   &:hover {
     transform: translateY(-5px);
@@ -18,11 +19,11 @@
   /* Estado de espera */
   &.waiting {
     opacity: 0.8;
-    
+
     .operator-header {
       background: var(--waiting-bg, #6c757d);
     }
-    
+
     .btn-end {
       background: var(--waiting-bg, #6c757d);
     }
@@ -52,18 +53,39 @@
   }
 }
 
-/* Conteúdo */
-.operator-content {
+/* Estilo neu-emboss para o título */
+.operator-header .neu-emboss {
+  padding: 0px 25px;
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
+}
+
+/* Conteúdo principal com neu-emboss */
+.operator-content.neu-emboss {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 100%;
+  width: calc(100% - 40px);
   padding: 20px;
   text-align: center;
   max-height: 170px;
   box-sizing: border-box;
-  margin-bottom: 60px;
+  margin-top: 35px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 20px;
+  background: var(--bg-primary);
+  box-shadow:
+    inset 4px 4px 8px var(--shadow-light),
+    inset -4px -4px 8px var(--shadow-dark);
 }
 
 /* Foto do operador */
@@ -74,6 +96,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: -45px;
+  margin-bottom: 8px;
 
   .profile-image {
     width: 70px;
@@ -84,7 +108,7 @@
       4px 4px 8px var(--shadow-light),
       -4px -4px 8px var(--shadow-dark);
     transition: filter 0.3s ease;
-    
+
     /* Efeito cinza quando offline */
     &.grayscale {
       filter: grayscale(100%);
@@ -97,14 +121,15 @@
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background: #d1d5db; /* Cor cinza */
+    background: #d1d5db;
+    /* Cor cinza */
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow:
       4px 4px 8px var(--shadow-light),
       -4px -4px 8px var(--shadow-dark);
-    
+
     span {
       font-size: 0.7rem;
       color: #6b7280;
@@ -171,5 +196,95 @@
   /* Botão vermelho quando offline */
   &.offline {
     background: var(--offline-color, #dc3545);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .operator-card {
+    min-width: 250px;
+  }
+
+  .operator-content.neu-emboss {
+    padding: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    width: calc(100% - 30px);
+    max-height: 160px;
+  }
+
+  .profile-wrapper {
+    width: 80px;
+    height: 80px;
+    margin-top: -40px;
+  }
+
+  .profile-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .profile-placeholder {
+    width: 60px;
+    height: 60px;
+  }
+
+  .btn-end {
+    width: 140px;
+  }
+
+  .operator-info h3 {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .operator-card {
+    min-width: 280px;
+    border-radius: 20px;
+  }
+
+  .operator-content.neu-emboss {
+    padding: 12px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: calc(100% - 20px);
+    border-radius: 15px;
+    max-height: 150px;
+    margin-bottom: 50px;
+  }
+
+  .operator-header {
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .profile-wrapper {
+    width: 70px;
+    height: 70px;
+    margin-top: -35px;
+  }
+
+  .profile-image {
+    width: 55px;
+    height: 55px;
+  }
+
+  .profile-placeholder {
+    width: 55px;
+    height: 55px;
+  }
+
+  .btn-end {
+    width: 130px;
+    padding: 7px 0;
+  }
+
+  .operator-info h3 {
+    font-size: 0.9rem;
+  }
+
+  .operator-info p {
+    font-size: 0.8rem;
   }
 }

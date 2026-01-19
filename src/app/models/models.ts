@@ -235,5 +235,13 @@ export interface Notifications {
   path: string | null;
 }
 
+export interface WaintingListClients {
+  id?: string;
+  name: string;
+  occurrence: string;
+  timestamp: string;
+  client: Client
+}
+
 
 
