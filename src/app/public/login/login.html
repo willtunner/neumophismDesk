@@ -10,7 +10,7 @@
         </div>
       </div>
       <h2>HelpDesk Neo</h2>
-      <p>Please sign in to continue</p>
+      <p> {{ 'LOGIN.TITLE' | translate }} </p>
     </div>
 
     <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
@@ -20,7 +20,6 @@
       </app-input-dynamic>
       <span class="error-message" [class.show]="emailError">{{emailError}}</span>
 
-      <!-- Password -->
       <!-- Password -->
       <div class="password-wrapper">
         <app-input-dynamic [config]="inputConfigs.password" [control]="getControl('password')"
@@ -55,35 +54,23 @@
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            Remember me
+            {{ 'LOGIN.REMEMBER_ME' | translate }}
           </label>
         </div>
-        <a href="#" class="forgot-link" (click)="recover(); $event.preventDefault()">Forgot password?</a>
+        <a href="#" class="forgot-link" (click)="recover(); $event.preventDefault()">{{ 'LOGIN.FORGOT_PASSWORD' | translate }}</a>
       </div>
 
       <!-- Botão de Login -->
       <button type="submit" class="neu-button login-btn" [class.loading]="loading">
-        <span class="btn-text">Sign In</span>
+        <span class="btn-text"> {{ 'COMMON.LOGIN' | translate }} </span>
         <div class="btn-loader">
           <div class="neu-spinner"></div>
         </div>
       </button>
     </form>
 
-    <!-- <div class="divider">
-      <div class="divider-line"></div>
-      <span>or continue with</span>
-      <div class="divider-line"></div>
-    </div>
-
-    <div class="social-login">
-      <button type="button" class="social-btn neu-social" (click)="socialLogin('google')">Google</button>
-      <button type="button" class="social-btn neu-social" (click)="socialLogin('github')">GitHub</button>
-      <button type="button" class="social-btn neu-social" (click)="socialLogin('twitter')">Twitter</button>
-    </div> -->
-
     <div class="signup-link">
-      <p>Don't have an account? <a href="#" (click)="signup(); $event.preventDefault()">Sign up</a></p>
+      <p>{{ 'LOGIN.DONT_HEVE_ACCOUNT' | translate }} <a href="#" (click)="signup(); $event.preventDefault()"> {{ 'LOGIN.SINGUP' | translate }} </a></p>
     </div>
 
     <div class="neu-toggle-switch" [class.active]="darkMode" (click)="toggleDarkMode()">

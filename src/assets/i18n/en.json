@@ -39,7 +39,7 @@
     "EMPTY": "No messages",
     "VIEW_ALL": "View all messages"
   },
-  "VALIDATOR-ERROR-MESSAGES": {
+  "VALIDATOR_ERROR_MESSAGES": {
     "REQUIRED": "This field is required",
     "EMAIL": "Please enter a valid email",
     "MINLENGTH": "Value is too short, minimum {{requiredLength}} characters",

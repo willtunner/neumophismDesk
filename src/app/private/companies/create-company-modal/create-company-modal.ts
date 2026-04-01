@@ -69,9 +69,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_NAME'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
     this.cnpjConfig = {
@@ -83,9 +83,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_CNPJ'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
     this.cityConfig = {
@@ -97,9 +97,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_CITY'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
     this.stateConfig = {
@@ -111,9 +111,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_STATE'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
     this.addressConfig = {
@@ -125,9 +125,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_ADDRESS'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
     this.zipcodeConfig = {
@@ -139,9 +139,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_ZIP_CODE'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
     this.phoneConfig = {
@@ -153,9 +153,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_PHONE'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
     this.connectionServConfig = {
@@ -167,9 +167,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_CONECTION'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
     this.emailConfig = {
@@ -181,9 +181,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_EMAIL'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
     this.versionServConfig = {
@@ -195,9 +195,9 @@ export class CompanyModalComponent implements OnInit {
       maxLength: 100,
       placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_VERSION_SERV'),
       customErrorMessages: {
-        required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     };
   }

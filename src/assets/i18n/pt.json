@@ -40,7 +40,7 @@
     "EMPTY": "Nenhuma mensagem",
     "VIEW_ALL": "Ver todas as mensagens"
   },
-  "VALIDATOR-ERROR-MESSAGES": {
+  "VALIDATOR_ERROR_MESSAGES": {
     "REQUIRED": "Este campo é obrigatório",
     "EMAIL": "Por favor, insira um e-mail válido",
     "MINLENGTH": "O valor é muito curto, mínimo de {{requiredLength}} caracteres",
@@ -78,7 +78,8 @@
     "LOADING": "Carregando...",
     "HOME": "Inicial",
     "CLOSE": "Fechar",
-    "LOGOUT": "Sair"
+    "LOGOUT": "Sair",
+    "LOGIN": "Entrar"
   },
   "CALENDAR": {
     "NEW_EVENT": "Novo evento",
@@ -311,12 +312,6 @@
     "EDIT_TITLE": "Editar Cliente",
     "CREATE_TITLE": "Cradastrar uma novo cliente"
   },
-  "NOTES": {
-    "TITLE": "Título",
-    "TITLE_PLACEHOLDER": "Digite o título da anotação",
-    "CONTENT": "Conteúdo",
-    "CONTENT_PLACEHOLDER": "Digite o conteúdo da anotação..."
-  },
   "TAGS": {
     "ADD_TAG": "Adicionar tag",
     "SUCCESS_MESSAGE": "Tag adicionada com sucesso!",
@@ -370,7 +365,10 @@
     }
   },
   "NOTES": {
-    "TITLE": "Anotações",
+    "TITLE": "Título",
+    "TITLE_PLACEHOLDER": "Digite o título da anotação",
+    "CONTENT": "Conteúdo",
+    "CONTENT_PLACEHOLDER": "Digite o conteúdo da anotação...",
     "NEW_NOTE": "Nova Anotação",
     "EDIT_NOTE": "Editar Anotação",
     "MY_NOTES": "Minhas Anotações",
@@ -411,5 +409,18 @@
       "DELETE_ERROR": "Erro ao excluir anotação",
       "SELECT_ERROR": "Erro ao selecionar anotação"
     }
+  },
+  "LOGIN": {
+    "TITLE": "Faça login para continuar",
+    "EMAIL": "E-mail",
+    "PASSWORD": "Senha",
+    "PLACEHOLDER_EMAIL": "Digite seu e-mail",
+    "PLACEHOLDER_PASSWORD": "Digite sua senha",
+    "LOGIN_BUTTON": "Entrar",
+    "LOADING": "Verificando credenciais...",
+    "REMEMBER_ME": "Lembrar-me",
+    "FORGOT_PASSWORD": "Esqueci minha senha",
+    "DONT_HEVE_ACCOUNT": "Não tem uma conta? ",
+    "SINGUP": "Cadastre-se"
   }
 }

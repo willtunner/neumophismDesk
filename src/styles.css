@@ -224,11 +224,6 @@ body {
   margin-bottom: 20px;
 }
 
-.button-group.small .neu-button {
-  padding: 10px 20px;
-  font-size: 14px;
-}
-
 .button-group.vertical {
   flex-direction: column;
 }
@@ -254,6 +249,11 @@ body {
   margin: 0;
   position: relative;
   overflow: hidden;
+}
+
+.button-group.small .neu-button {
+  padding: 10px 20px;
+  font-size: 14px;
 }
 
 .neu-button::before {
@@ -935,4 +935,24 @@ p, label, span {
     background: transparent !important;
     box-shadow: none !important;
   }
+}
+
+/* Autofill mantendo estilo neumórfico */
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-box-shadow: 
+    inset 8px 8px 16px var(--shadow-light),
+    inset -8px -8px 16px var(--shadow-dark),
+    0 0 0 1000px var(--input-bg) inset !important;
+
+  box-shadow: 
+    inset 8px 8px 16px var(--shadow-light),
+    inset -8px -8px 16px var(--shadow-dark),
+    0 0 0 1000px var(--input-bg) inset !important;
+
+  -webkit-text-fill-color: var(--text-primary) !important;
+  caret-color: var(--text-primary);
+
+  border-radius: 15px;
+  transition: background-color 9999s ease-in-out 0s;
 }

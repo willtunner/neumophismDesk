@@ -38,7 +38,7 @@
     "EMPTY": "No hay mensajes",
     "VIEW_ALL": "Ver todos los mensajes"
   },
-  "VALIDATOR-ERROR-MESSAGES": {
+  "VALIDATOR_ERROR_MESSAGES": {
     "REQUIRED": "Este campo es obligatorio",
     "EMAIL": "Por favor, ingrese un email válido",
     "MINLENGTH": "El valor es muy corto, mínimo {{requiredLength}} caracteres",

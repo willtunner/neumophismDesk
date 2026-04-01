@@ -14,8 +14,8 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       minLength: 2,
       maxLength: 100,
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: tParams(translate, 'VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
       },
     },
     cnpj: {
@@ -25,7 +25,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       required: true,
       placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDER_CNPJ'),
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
       },
     },
     email: {
@@ -35,8 +35,8 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       required: true,
       placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_EMAIL'),
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        email: t(translate, 'VALIDATOR-ERROR-MESSAGES.EMAIL'),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        email: t(translate, 'VALIDATOR_ERROR_MESSAGES.EMAIL'),
       },
     },
     phone: {
@@ -46,7 +46,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       required: true,
       placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_PHONE'),
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
       },
     },
     address: {
@@ -56,7 +56,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       required: true,
       placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_ADDRESS'),
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
       },
     },
     city: {
@@ -66,7 +66,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       required: true,
       placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_CITY'),
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
       },
     },
     zipcode: {
@@ -76,7 +76,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       required: true,
       placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDERS_ZIPCODE'),
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
       },
     },
     connectionServ: {
@@ -86,7 +86,7 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       required: true,
       placeholder: t(translate, 'COMPANIES.FIELDS.PLACEHOLDER_CONECTION'),
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
       },
     },
     versionServ: {

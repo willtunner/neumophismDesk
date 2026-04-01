@@ -55,7 +55,7 @@ export function buildSelectConfigs(translate: TranslateService): Record<string, 
       ],
       iconName: 'location_on',
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
       },
     }
   };

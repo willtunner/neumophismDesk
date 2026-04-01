@@ -20,7 +20,7 @@ export class ClientChat implements OnInit {
   private chat2Service = inject(Chat2Service); // Injete o serviço
 
   // Inicializar com valores padrão para evitar undefined
-  loggedUser: Client | null = null;
+  loggedUser!: Client;
   isLoading = true;
 
   client = {

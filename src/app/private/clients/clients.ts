@@ -401,8 +401,8 @@ export class Clients implements OnInit, OnDestroy {
         icon: 'person',
         required: true,
         customErrorMessages: {
-          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-          minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 })
+          required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+          minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 })
         }
       },
       username: {
@@ -412,8 +412,8 @@ export class Clients implements OnInit, OnDestroy {
         icon: 'badge',
         required: true,
         customErrorMessages: {
-          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-          minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 3 })
+          required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+          minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 3 })
         }
       },
       email: {
@@ -423,8 +423,8 @@ export class Clients implements OnInit, OnDestroy {
         icon: 'email',
         required: true,
         customErrorMessages: {
-          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-          email: this.translate.instant('VALIDATOR-ERROR-MESSAGES.EMAIL')
+          required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+          email: this.translate.instant('VALIDATOR_ERROR_MESSAGES.EMAIL')
         }
       },
       phone: {
@@ -434,7 +434,7 @@ export class Clients implements OnInit, OnDestroy {
         icon: 'phone',
         required: true,
         customErrorMessages: {
-          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED')
+          required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED')
         }
       },
       password: {
@@ -444,8 +444,8 @@ export class Clients implements OnInit, OnDestroy {
         icon: 'lock',
         required: true,
         customErrorMessages: {
-          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-          minlength: this.translate.instant('VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 6 })
+          required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+          minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 6 })
         }
       },
       connection: {
@@ -482,7 +482,7 @@ export class Clients implements OnInit, OnDestroy {
         icon: 'business',
         required: true,
         customErrorMessages: {
-          required: this.translate.instant('VALIDATOR-ERROR-MESSAGES.REQUIRED')
+          required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED')
         }
       }
     };

@@ -19,7 +19,7 @@ export function buildSelectConfigs(
       placeholder: t(translate, 'INPUTS-FIELS.SELECT_COMPANY'),
       options: companies.map(c => ({ value: c.id, label: c.name })),
       iconName: 'business',
-      customErrorMessages: { required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED') },
+      customErrorMessages: { required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED') },
     },
     cliente: {
       formControlName: 'clientId',
@@ -32,7 +32,7 @@ export function buildSelectConfigs(
           : t(translate, 'INPUTS-FIELS.SELECT_CLIENT'),
       options: clients.map(c => ({ value: c.id, label: c.name })),
       iconName: 'person',
-      customErrorMessages: { required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED') },
+      customErrorMessages: { required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED') },
     },
   };
 }

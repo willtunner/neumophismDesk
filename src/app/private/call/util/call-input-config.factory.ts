@@ -14,9 +14,9 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       maxLength: 15,
       placeholder: t(translate, 'INPUTS-FIELS.PLACEHOLDER_CONECTION'),
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: tParams(translate, 'VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 5 }),
-        maxlength: tParams(translate, 'VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 15 }),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 5 }),
+        maxlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 15 }),
       },
     },
     titulo: {
@@ -28,9 +28,9 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       minLength: 50,
       maxLength: 70,
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: tParams(translate, 'VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 2 }),
-        maxlength: tParams(translate, 'VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 100 }),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
+        maxlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 100 }),
       },
     },
     descricao: {
@@ -43,9 +43,9 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
       minLength: 10,
       maxLength: 500,
       customErrorMessages: {
-        required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-        minlength: tParams(translate, 'VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 10 }),
-        maxlength: tParams(translate, 'VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 500 }),
+        required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+        minlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 10 }),
+        maxlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 500 }),
       },
     },
   };

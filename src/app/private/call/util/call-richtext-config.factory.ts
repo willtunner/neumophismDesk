@@ -13,9 +13,9 @@ export function buildRichTextConfig(translate: TranslateService): RichTextConfig
     maxLength: 5000,
     minHeight: '200px',
     customErrorMessages: {
-      required: t(translate, 'VALIDATOR-ERROR-MESSAGES.REQUIRED'),
-      minlength: tParams(translate, 'VALIDATOR-ERROR-MESSAGES.MINLENGTH', { requiredLength: 20 }),
-      maxlength: tParams(translate, 'VALIDATOR-ERROR-MESSAGES.MAXLENGTH', { requiredLength: 5000 }),
+      required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
+      minlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 20 }),
+      maxlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MAXLENGTH', { requiredLength: 5000 }),
     },
   };
 }
