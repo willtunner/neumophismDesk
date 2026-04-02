@@ -1,17 +1,17 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DateOnlyFormatPipe } from '../../../pipes/date-only-format.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
-import { FirestoreDateOnlyPipe } from '../../../pipes/firestore-timestamp-pipe';
+import { TranslateModule, TranslateService  } from '@ngx-translate/core';
+import { FirestoreRelativeTimePipe } from '../../../pipes/firestore-relative-time.pipe';
 
 @Component({
   selector: 'app-dynamic-table',
   standalone: true,
   imports: [
     CommonModule, 
-    DateOnlyFormatPipe, 
-    FirestoreDateOnlyPipe, // Adicione aqui
+    DateOnlyFormatPipe,
+    FirestoreRelativeTimePipe,
     MatTooltipModule, 
     TranslateModule
   ],
@@ -27,6 +27,9 @@ export class DynamicTableComponent {
   @Output() remove = new EventEmitter<any>();
   @Output() rowClick = new EventEmitter<any>();
   @Output() selectedRowChange = new EventEmitter<any>();
+
+    // 🔥 Adiciona o TranslateService para usar no template
+  translate = inject(TranslateService);
 
   onEdit(row: any) {
     this.edit.emit(row);
@@ -56,22 +59,31 @@ export class DynamicTableComponent {
     return path.split('.').reduce((acc, part) => acc && acc[part], obj) ?? '—';
   }
 
-  // 🆕 Método para detectar se é FirestoreTimestamp
+  // 🔥 CORREÇÃO: Método para detectar o _Timestamp do Firestore (formato que você está recebendo)
   isFirestoreTimestamp(value: any): boolean {
+    if (!value) return false;
+    
+    // Verifica se é o objeto _Timestamp do Firestore (sem o campo 'type')
+    // Formato que você mostrou: { seconds: 1761744567, nanoseconds: 507000000 }
     return value && 
            typeof value === 'object' && 
-           value.type === 'firestore/timestamp/1.0' &&
+           'seconds' in value && 
            typeof value.seconds === 'number' &&
+           'nanoseconds' in value &&
            typeof value.nanoseconds === 'number';
   }
 
-  // 🆕 Método para detectar se é Date normal
+  // Método para detectar se é Date normal
   isDate(value: any): boolean {
     if (!value) return false;
     
     // Se for FirestoreTimestamp, não é Date puro
     if (this.isFirestoreTimestamp(value)) return false;
     
+    // Se já for uma instância de Date
+    if (value instanceof Date) return true;
+    
+    // Tenta converter para Date
     const date = new Date(value);
     return !isNaN(date.getTime());
   }

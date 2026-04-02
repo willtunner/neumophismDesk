@@ -54,7 +54,7 @@ export class Clients implements OnInit, OnDestroy {
 
   // 🔹 HEADERS PARA A DYNAMIC TABLE
   tableHeaders = [
-    { label: 'CLIENTS.FIELDS.USERNAME', field: 'username' },
+    // { label: 'CLIENTS.FIELDS.USERNAME', field: 'username' },
     { label: 'CLIENTS.FIELDS.NAME', field: 'name' },
     { label: 'CLIENTS.FIELDS.EMAIL', field: 'email' },
     { label: 'CLIENTS.FIELDS.PHONE', field: 'phone' },
@@ -93,43 +93,66 @@ export class Clients implements OnInit, OnDestroy {
   endDateControl = new FormControl('');
 
   // 🔹 COMPUTED: Agrupa clientes por empresa
-  clientsByCompany = computed((): CompanyGroup[] => {
-    const clients = this.clients();
-    const companies = this.companies();
-    
-    const companyMap = new Map<string, CompanyGroup>();
-    
-    // Inicializa o mapa com todas as empresas
-    companies.forEach(company => {
-      companyMap.set(company.id, {
-        companyId: company.id,
-        companyName: company.name,
-        clients: []
-      });
-    });
-    
-    // Agrupa clientes por empresa
-    clients.forEach(client => {
-      const companyGroup = companyMap.get(client.companyId!);
-      if (companyGroup) {
-        companyGroup.clients.push(client);
-      } else {
-        // Se a empresa não foi encontrada, cria um grupo para "Empresa Desconhecida"
-        const unknownCompany = companyMap.get('unknown') || {
-          companyId: 'unknown',
-          companyName: 'Empresa Desconhecida',
-          clients: []
-        };
-        unknownCompany.clients.push(client);
-        companyMap.set('unknown', unknownCompany);
-      }
-    });
-    
-    // Filtra apenas empresas que têm clientes
-    return Array.from(companyMap.values())
-      .filter(group => group.clients.length > 0)
-      .sort((a, b) => b.clients.length - a.clients.length);
+clientsByCompany = computed((): CompanyGroup[] => {
+  const clients = this.clients();
+  const companies = this.companies();
+  
+  // Criar um mapa de empresas para busca rápida do nome
+  const companyNameMap = new Map<string, string>();
+  companies.forEach(company => {
+    companyNameMap.set(company.id, company.name);
   });
+  
+  // Adicionar empresa desconhecida ao mapa
+  companyNameMap.set('unknown', 'Empresa Desconhecida');
+  
+  const companyMap = new Map<string, CompanyGroup>();
+  
+  // Inicializa o mapa com todas as empresas
+  companies.forEach(company => {
+    companyMap.set(company.id, {
+      companyId: company.id,
+      companyName: company.name,
+      clients: []
+    });
+  });
+  
+  // Também inicializa o grupo para empresas desconhecidas
+  if (!companyMap.has('unknown')) {
+    companyMap.set('unknown', {
+      companyId: 'unknown',
+      companyName: 'Empresa Desconhecida',
+      clients: []
+    });
+  }
+  
+  // Agrupa clientes por empresa e ADICIONA O companyName EM CADA CLIENTE
+  clients.forEach(client => {
+    // 🔥 ADICIONA O NOME DA EMPRESA AO CLIENTE
+    const companyName = companyNameMap.get(client.companyId!) || 'Empresa Desconhecida';
+    
+    const clientWithCompanyName = {
+      ...client, // Copia todas as propriedades existentes
+      companyName: companyName // Adiciona o campo companyName
+    };
+    
+    const companyId = client.companyId || 'unknown';
+    const companyGroup = companyMap.get(companyId);
+    
+    if (companyGroup) {
+      companyGroup.clients.push(clientWithCompanyName);
+    } else {
+      // Fallback: adiciona ao grupo desconhecido
+      const unknownGroup = companyMap.get('unknown')!;
+      unknownGroup.clients.push(clientWithCompanyName);
+    }
+  });
+  
+  // Filtra apenas empresas que têm clientes
+  return Array.from(companyMap.values())
+    .filter(group => group.clients.length > 0)
+    .sort((a, b) => b.clients.length - a.clients.length);
+});
 
   // 🔹 COMPUTED: Clientes filtrados (para busca)
   filteredClients = computed(() => {
@@ -449,8 +472,8 @@ export class Clients implements OnInit, OnDestroy {
         }
       },
       connection: {
-        label: this.translate.instant('CLIENTS.FIELDS.CONECTION'),
-        placeholder: this.translate.instant('CLIENTS.FIELDS.PLACEHOLDER_CONECTION'),
+        label: this.translate.instant('CLIENTS.FIELDS.CONNECTION'),
+        placeholder: this.translate.instant('CLIENTS.FIELDS.PLACEHOLDER_CONNECTION'),
         type: 'text',
         icon: 'link'
       }

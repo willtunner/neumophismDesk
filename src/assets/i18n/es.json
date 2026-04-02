@@ -209,7 +209,9 @@
     "STATUS": "Estado",
     "NAME": "Nombre",
     "OBSERVATION": "Observación",
-    "ID": "ID"
+    "ID": "ID",
+    "NO_DATA": "Ningún dato encontrado.",
+    "ACTIONS": "Acciones"
   },
   "COMPANIES": {
     "FILTERS": {
@@ -301,7 +303,8 @@
       "PLACEHOLDER_USERNAME": "Ingrese el nombre de usuario",
       "PASSWORD": "Contraseña",
       "PLACEHOLDER_PASSWORD": "Ingrese la contraseña",
-      "CONFIRM_PASSWORD": "Confirmar Contraseña"
+      "CONFIRM_PASSWORD": "Confirmar Contraseña",
+      "CREATED": "Creado en"
     },
     "LIST": {
       "TITLE": "Listar Clientes"
@@ -424,5 +427,34 @@
     "FORGOT_PASSWORD": "Olvidé mi contraseña",
     "DONT_HEVE_ACCOUNT": "¿No tienes una cuenta? ",
     "SINGUP": "Regístrate"
+  },
+  "TIME": {
+    "JUST_NOW": "hace unos segundos",
+    "SECONDS_AGO": "hace unos segundos",
+    "MINUTE_AGO": "hace 1 minuto",
+    "MINUTES_AGO": "hace {{count}} minutos",
+    "HOUR_AGO": "hace 1 hora",
+    "HOURS_AGO": "hace {{count}} horas",
+    "DAY_AGO": "hace 1 día",
+    "DAYS_AGO": "hace {{count}} días",
+    "WEEK_AGO": "hace 1 semana",
+    "WEEKS_AGO": "hace {{count}} semanas",
+    "MONTH_AGO": "hace 1 mes",
+    "MONTHS_AGO": "hace {{count}} meses",
+    "YEAR_AGO": "hace 1 año",
+    "YEARS_AGO": "hace {{count}} años",
+    "IN_FEW_SECONDS": "en unos segundos",
+    "IN_MINUTE": "en 1 minuto",
+    "IN_MINUTES": "en {{count}} minutos",
+    "IN_HOUR": "en 1 hora",
+    "IN_HOURS": "en {{count}} horas",
+    "IN_DAY": "en 1 día",
+    "IN_DAYS": "en {{count}} días",
+    "IN_WEEK": "en 1 semana",
+    "IN_WEEKS": "en {{count}} semanas",
+    "IN_MONTH": "en 1 mes",
+    "IN_MONTHS": "en {{count}} meses",
+    "IN_YEAR": "en 1 año",
+    "IN_YEARS": "en {{count}} años"
   }
 }

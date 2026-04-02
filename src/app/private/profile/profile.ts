@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { User } from '../../models/models';
 import { AuthService } from '../../services/auth.service';
 import { FirestoreDateOnlyPipe } from '../../pipes/firestore-timestamp-pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 export interface HelpDeskCompany {
@@ -18,7 +19,7 @@ export interface Company {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FirestoreDateOnlyPipe],
+  imports: [CommonModule, FirestoreDateOnlyPipe, TranslateModule],
   templateUrl: './profile.html',
   styleUrls: ['./profile.scss']
 })

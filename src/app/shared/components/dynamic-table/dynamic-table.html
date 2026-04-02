@@ -5,7 +5,7 @@
         <th *ngFor="let header of headers" matTooltip="{{ header.label | translate }}" matTooltipPosition="above">
           {{ header.label | translate }}
         </th>
-        <th>Ações</th>
+        <th>{{ 'TABLE.ACTIONS' | translate }}</th>
       </tr>
     </thead>
 
@@ -14,29 +14,34 @@
           class="table-row" 
           [class.selected]="isRowSelected(item)"
           (click)="onRowClick(item)">
-        <td *ngFor="let header of headers" [matTooltip]="getNestedValue(item, header.field)" matTooltipPosition="above">
-          
-          <!-- 🆕 Primeiro verifica se é FirestoreTimestamp -->
-          <ng-container *ngIf="isFirestoreTimestamp(getNestedValue(item, header.field)); then firestoreDate; else normalDate"></ng-container>
-          
-          <ng-template #firestoreDate>
-            {{ getNestedValue(item, header.field) | firestoreDateOnly }}
-          </ng-template>
-          
-          <ng-template #normalDate>
-            <!-- Depois verifica se é Date normal -->
-            <ng-container *ngIf="isDate(getNestedValue(item, header.field)); then dateValue; else normalValue"></ng-container>
-          </ng-template>
-          
-          <ng-template #dateValue>
-            {{ getNestedValue(item, header.field) | dateOnlyFormat }}
-          </ng-template>
-          
-          <ng-template #normalValue>
-            {{ getNestedValue(item, header.field) }}
-          </ng-template>
+        
+        <!-- Para cada coluna -->
+        <td *ngFor="let header of headers">
+          <ng-container *ngIf="getNestedValue(item, header.field) as cellValue">
+            
+            <!-- Verifica se é FirestoreTimestamp -->
+            <ng-container *ngIf="isFirestoreTimestamp(cellValue); else checkDate">
+              {{ cellValue | firestoreRelativeTime : translate.currentLang }}
+            </ng-container>
+            
+            <!-- Verifica se é Date normal -->
+            <ng-template #checkDate>
+              <ng-container *ngIf="isDate(cellValue); else normalText">
+                {{ cellValue | dateOnlyFormat }}
+              </ng-container>
+            </ng-template>
+            
+            <!-- Mostra o texto normal -->
+            <ng-template #normalText>
+              <span [matTooltip]="cellValue" matTooltipPosition="above">
+                {{ cellValue }}
+              </span>
+            </ng-template>
+            
+          </ng-container>
         </td>
 
+        <!-- Coluna de ações -->
         <td class="actions" (click)="$event.stopPropagation()">
           <button class="neu-btn edit" (click)="onEdit(item)">
             <i class="material-icons">edit</i>
@@ -47,9 +52,10 @@
         </td>
       </tr>
 
+      <!-- Linha vazia -->
       <tr *ngIf="!data || data.length === 0">
         <td [attr.colspan]="headers.length + 1" class="empty-state">
-          Nenhum registro encontrado.
+          {{ 'CLIENTS.FIELDS.NO_DATA' | translate }}
         </td>
       </tr>
     </tbody>

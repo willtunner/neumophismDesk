@@ -156,6 +156,7 @@
 }
 
 .dropdown-header:hover {
+  background-color: indigo;
   transform: translateY(-2px);
   box-shadow: 
     25px 25px 50px var(--shadow-light),
@@ -163,6 +164,7 @@
 }
 
 .dropdown-header.active {
+  background-color: indigo;
   box-shadow:
     inset 5px 5px 10px var(--shadow-light),
     inset -5px -5px 10px var(--shadow-dark);

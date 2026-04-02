@@ -209,7 +209,9 @@
     "STATUS": "Status",
     "NAME": "Nome",
     "OBSERVATION": "Observação",
-    "ID": "ID"
+    "ID": "ID",
+    "NO_DATA": "Nenhum dado encontrado.",
+    "ACTIONS": "Ações"
   },
   "COMPANIES": {
     "FILTERS": {
@@ -293,7 +295,7 @@
       "VERSION_SERV": "Versão do servidor",
       "PLACEHOLDER_VERSION_SERV": "Digita a verção do servidor",
       "CONNECTION": "Conexão",
-      "PLACEHOLDER_CONECTION": "Digite o código de acesso.",
+      "PLACEHOLDER_CONNECTION": "Digite o código de acesso.",
       "SELECT_COMPANY": "Selecione a empresa",
       "COMPANY": "Empresa",
       "PLACEHOLDER_COMPANY": "Escolha a empresa",
@@ -301,7 +303,8 @@
       "PLACEHOLDER_USERNAME": "Digite o nome do usuário",
       "PASSWORD": "Senha",
       "PLACEHOLDER_PASSWORD": "Digite a senha",
-      "CONFIRM_PASSWORD": "Confirmar Senha"
+      "CONFIRM_PASSWORD": "Confirmar Senha",
+      "CREATED": "Criado em"
     },
     "LIST": {
       "TITLE": "Listar Clientes"
@@ -424,5 +427,34 @@
     "FORGOT_PASSWORD": "Esqueci minha senha",
     "DONT_HEVE_ACCOUNT": "Não tem uma conta? ",
     "SINGUP": "Cadastre-se"
+  },
+  "TIME": {
+    "JUST_NOW": "há poucos segundos",
+    "SECONDS_AGO": "há poucos segundos",
+    "MINUTE_AGO": "há 1 minuto",
+    "MINUTES_AGO": "há {{count}} minutos",
+    "HOUR_AGO": "há 1 hora",
+    "HOURS_AGO": "há {{count}} horas",
+    "DAY_AGO": "há 1 dia",
+    "DAYS_AGO": "há {{count}} dias",
+    "WEEK_AGO": "há 1 semana",
+    "WEEKS_AGO": "há {{count}} semanas",
+    "MONTH_AGO": "há 1 mês",
+    "MONTHS_AGO": "há {{count}} meses",
+    "YEAR_AGO": "há 1 ano",
+    "YEARS_AGO": "há {{count}} anos",
+    "IN_FEW_SECONDS": "em alguns segundos",
+    "IN_MINUTE": "em 1 minuto",
+    "IN_MINUTES": "em {{count}} minutos",
+    "IN_HOUR": "em 1 hora",
+    "IN_HOURS": "em {{count}} horas",
+    "IN_DAY": "em 1 dia",
+    "IN_DAYS": "em {{count}} dias",
+    "IN_WEEK": "em 1 semana",
+    "IN_WEEKS": "em {{count}} semanas",
+    "IN_MONTH": "em 1 mês",
+    "IN_MONTHS": "em {{count}} meses",
+    "IN_YEAR": "em 1 ano",
+    "IN_YEARS": "em {{count}} anos"
   }
 }

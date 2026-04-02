@@ -209,7 +209,9 @@
     "STATUS": "Status",
     "NAME": "Name",
     "OBSERVATION": "Observation",
-    "ID": "ID"
+    "ID": "ID",
+    "NO_DATA": "No data found.",
+    "ACTIONS": "Actions"
   },
   "COMPANIES": {
     "FILTERS": {
@@ -301,7 +303,8 @@
       "PLACEHOLDER_USERNAME": "Enter the username",
       "PASSWORD": "Password",
       "PLACEHOLDER_PASSWORD": "Enter the password",
-      "CONFIRM_PASSWORD": "Confirm Password"
+      "CONFIRM_PASSWORD": "Confirm Password",
+      "CREATED": "Created at"
     },
     "LIST": {
       "TITLE": "List Clients"
@@ -424,5 +427,34 @@
     "FORGOT_PASSWORD": "Forgot password",
     "DONT_HEVE_ACCOUNT": "Don't have an account? ",
     "SINGUP": "Sign up"
+  },
+  "TIME": {
+    "JUST_NOW": "just now",
+    "SECONDS_AGO": "just now",
+    "MINUTE_AGO": "1 minute ago",
+    "MINUTES_AGO": "{{count}} minutes ago",
+    "HOUR_AGO": "1 hour ago",
+    "HOURS_AGO": "{{count}} hours ago",
+    "DAY_AGO": "1 day ago",
+    "DAYS_AGO": "{{count}} days ago",
+    "WEEK_AGO": "1 week ago",
+    "WEEKS_AGO": "{{count}} weeks ago",
+    "MONTH_AGO": "1 month ago",
+    "MONTHS_AGO": "{{count}} months ago",
+    "YEAR_AGO": "1 year ago",
+    "YEARS_AGO": "{{count}} years ago",
+    "IN_FEW_SECONDS": "in a few seconds",
+    "IN_MINUTE": "in 1 minute",
+    "IN_MINUTES": "in {{count}} minutes",
+    "IN_HOUR": "in 1 hour",
+    "IN_HOURS": "in {{count}} hours",
+    "IN_DAY": "in 1 day",
+    "IN_DAYS": "in {{count}} days",
+    "IN_WEEK": "in 1 week",
+    "IN_WEEKS": "in {{count}} weeks",
+    "IN_MONTH": "in 1 month",
+    "IN_MONTHS": "in {{count}} months",
+    "IN_YEAR": "in 1 year",
+    "IN_YEARS": "in {{count}} years"
   }
 }

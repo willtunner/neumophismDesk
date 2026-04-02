@@ -148,11 +148,11 @@
                                     <span class="client-count">{{ companyGroup.clients.length }} clientes</span>
 
                                     <!-- Ícones aparecem ao passar mouse -->
-                                    <div class="company-actions" *ngIf="hoveredCompany === companyGroup.companyId">
+                                    <!-- <div class="company-actions" *ngIf="hoveredCompany === companyGroup.companyId">
                                         <button class="icon-btn" (click)="$event.stopPropagation()">
                                             👁️
                                         </button>
-                                    </div>
+                                    </div> -->
 
                                     <div class="dropdown-icon">
                                         <svg [class.rotated]="openedDropdown === companyGroup.companyId"
