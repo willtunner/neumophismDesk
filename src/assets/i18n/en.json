@@ -14,7 +14,8 @@
     "COMPANIES": "🏙️ Companies",
     "CALENDAR": "📆 Calendar",
     "TUTORIALS": "🎬 Tutorials",
-    "CALL": "📞 Calls"
+    "CALL": "📞 Calls",
+    "NOTES": " Annotations"
   },
   "NAVIGATION_MENU": {
     "TITLE": "Helpdesk System",
@@ -32,7 +33,7 @@
     "CALENDAR": "Calendar",
     "TUTORIALS": "Tutorials",
     "CALL": "Calls",
-    "NOTES": "Notes"
+    "NOTES": "Annotations"
   },
   "MESSAGES": {
     "TITLE": "Messages",
@@ -52,7 +53,8 @@
     "TITLE": "Notifications",
     "EMPTY": "No notifications",
     "VIEW_ALL": "View all notifications",
-    "MARK_ALL_READ": "Mark all as read"
+    "MARK_ALL_READ": "Mark all as read!",
+    "CREATE_COMPANY_SUCCESS": "Company created successfully!"
   },
   "CHART": {
     "TITLE": "Call Distribution by Location",
@@ -76,13 +78,14 @@
     "LOADING": "Loading...",
     "HOME": "Home",
     "CLOSE": "Close",
-    "LOGOUT": "Logout"
+    "LOGOUT": "Logout",
+    "LOGIN": "Login"
   },
   "CALENDAR": {
     "NEW_EVENT": "New event",
     "UPDATE_EVENT": "Edit event",
     "CALENDAR_TITLE": "Event title",
-    "DESCRIPTION": "Event description",
+    "DESCRIPTION": "Event description.",
     "SCHEDULE_EVENTS": "Scheduled Events",
     "EVENTS": "event(s)",
     "DOUBLE_CLICK_INSTRUCTION": "Double click on any day to add an event",
@@ -120,7 +123,7 @@
       "SATURDAY": "Saturday"
     }
   },
-  "INPUTS-FIELS": {
+  "INPUTS_FIELDS": {
     "TITLE": "Title",
     "PLACEHOLDER_TITLE": "Enter the title",
     "EMAIL": "Email",
@@ -183,7 +186,8 @@
     "CALL_LIST": "Call List",
     "CALL_LIST_EMPTY": "No calls found",
     "CALL_LIST_CLOSED": "Closed",
-    "CALL_LIST_OPEM": "Open"
+    "CALL_LIST_OPEM": "Open",
+    "NO_HAVE_CLIENTS": "No clients found"
   },
   "MODALS": {
     "NEW_COMPANY": "Register new company",
@@ -242,7 +246,8 @@
       "PLACEHOLDER_CONECTION": "Enter the access code.",
       "SELECT_COMPANY": "Select the company",
       "PLACEHOLDER_COMPANY": "Company here",
-      "ADD_NEW_COMPANY": "Add new company"
+      "ADD_NEW_COMPANY": "Add new company",
+      "CREATED": "Created at"
     },
     "ACTIONS": {
       "NEW": "Clear fields",
@@ -265,7 +270,8 @@
       "START_DATE": "Start date",
       "END_DATE": "End date",
       "CLEAR": "Clear fields",
-      "SEARCH_PLACEHOLDER": "Type to search..."
+      "SEARCH_PLACEHOLDER": "Type to search...",
+      "LOADING_CLIENTS": "Loading clients..."
     },
     "FIELDS": {
       "NAME": "Name",
@@ -286,7 +292,7 @@
       "PLACEHOLDERS_ZIPCODE": "Enter the ZIP code",
       "VERSION_SERV": "Server version",
       "PLACEHOLDER_VERSION_SERV": "Enter the server version",
-      "CONECTION": "Connection",
+      "CONNECTION": "Connection",
       "PLACEHOLDER_CONECTION": "Enter the access code.",
       "SELECT_COMPANY": "Select the company",
       "COMPANY": "Company",
@@ -307,6 +313,12 @@
     },
     "EDIT_TITLE": "Edit Client",
     "CREATE_TITLE": "Register a new client"
+  },
+  "TAGS": {
+    "ADD_TAG": "Add tag",
+    "SUCCESS_MESSAGE": "Tag added successfully!",
+    "PLACEHOLDER_TAG": "Enter the tag and press Enter",
+    "NO_TAG_MESSAGE": "No tags available"
   },
   "WEATHER": {
     "TITLE": "Weather Forecast",
@@ -355,7 +367,10 @@
     }
   },
   "NOTES": {
-    "TITLE": "Notes",
+    "TITLE": "Title",
+    "TITLE_PLACEHOLDER": "Enter the note title",
+    "CONTENT": "Content",
+    "CONTENT_PLACEHOLDER": "Enter the note content...",
     "NEW_NOTE": "New Note",
     "EDIT_NOTE": "Edit Note",
     "MY_NOTES": "My Notes",
@@ -371,9 +386,9 @@
     },
     "FIELDS": {
       "TITLE": "Title",
-      "TITLE_PLACEHOLDER": "Enter note title",
+      "TITLE_PLACEHOLDER": "Enter the note title",
       "CONTENT": "Content",
-      "CONTENT_PLACEHOLDER": "Enter note content...",
+      "CONTENT_PLACEHOLDER": "Enter the note content...",
       "CHARACTERS": "characters",
       "MAX_CHARACTERS": "Maximum {{limit}} characters"
     },
@@ -396,5 +411,18 @@
       "DELETE_ERROR": "Error deleting note",
       "SELECT_ERROR": "Error selecting note"
     }
+  },
+  "LOGIN": {
+    "TITLE": "Please log in to continue",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "PLACEHOLDER_EMAIL": "Enter your email",
+    "PLACEHOLDER_PASSWORD": "Enter your password",
+    "LOGIN_BUTTON": "Login",
+    "LOADING": "Verifying credentials...",
+    "REMEMBER_ME": "Remember me",
+    "FORGOT_PASSWORD": "Forgot password",
+    "DONT_HEVE_ACCOUNT": "Don't have an account? ",
+    "SINGUP": "Sign up"
   }
 }

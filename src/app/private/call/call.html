@@ -1,6 +1,6 @@
 <div class="page-container">
   <div class="neu-container call-container">
-    <div class="neu-emboss">
+    <div class="neu-emboss neu-soft neu-soft-hover">
       <h2>{{ 'CALL_PAGE.NEW_CALL' | translate }}</h2>
     </div>
     <form *ngIf="isConfigsReady" [formGroup]="callForm" (ngSubmit)="onSubmit()">
@@ -12,7 +12,7 @@
             <app-select-dynamic [config]="selectConfigs.empresa" [control]="empresaControl" [showImage]="false">
             </app-select-dynamic>
             <app-button-dynamic [iconSvg]="addIcon" [small]="true"
-              [ariaLabel]="('INPUTS-FIELS.ADD_NEW_COMPANY' | translate)" (onClick)="onAddEmpresa()">
+              [ariaLabel]="('INPUTS_FIELDS.ADD_NEW_COMPANY' | translate)" (onClick)="onAddEmpresa()">
             </app-button-dynamic>
           </div>
         </div>
@@ -24,7 +24,7 @@
             </app-select-dynamic>
 
             <app-button-dynamic [iconSvg]="addIcon" [small]="true"
-              [ariaLabel]="('INPUTS-FIELS.ADD_NEW_CLIENT' | translate)" (onClick)="onAddCliente()">
+              [ariaLabel]="('INPUTS_FIELDS.ADD_NEW_CLIENT' | translate)" (onClick)="onAddCliente()">
             </app-button-dynamic>
           </div>
         </div>
@@ -91,7 +91,7 @@
             <polyline points="17 21 17 13 7 13 7 21" />
             <polyline points="7 3 7 8 15 8" />
           </svg>
-          {{ 'INPUTS-FIELS.SAVE_CALL' | translate }}
+          {{ 'INPUTS_FIELDS.SAVE_CALL' | translate }}
         </button>
       </div>
 
@@ -104,6 +104,9 @@
 
 <!-- 🔹 ATUALIZADO: Passa o selectedCall para o CallList -->
 <div class="call-list-container neu-container call-container">
+  <div class="neu-emboss neu-soft neu-soft-hover">
+      <h2>{{ 'CALL_PAGE.CALL_LIST' | translate }}</h2>
+    </div>
   <app-call-list [calls]="callsList" [selectedCall]="selectedCall()" (viewDetails)="onViewDetails($event)">
   </app-call-list>
 </div>

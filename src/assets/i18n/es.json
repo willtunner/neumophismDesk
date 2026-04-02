@@ -14,7 +14,8 @@
     "COMPANIES": "🏙️ Empresas",
     "CALENDAR": "📆 Calendario",
     "TUTORIALS": "🎬 Tutoriales",
-    "CALL": "📞 Llamados"
+    "CALL": "📞 Llamados",
+    "NOTES": " Anotaciones"
   },
   "NAVIGATION_MENU": {
     "TITLE": "Sistema de Helpdesk",
@@ -31,7 +32,8 @@
     "COMPANIES": "Empresas",
     "CALENDAR": "Calendario",
     "TUTORIALS": "Tutoriales",
-    "CALL": "Llamados"
+    "CALL": "Llamados",
+    "NOTES": "Anotaciones"
   },
   "MESSAGES": {
     "TITLE": "Mensajes",
@@ -51,7 +53,8 @@
     "TITLE": "Notificaciones",
     "EMPTY": "No hay notificaciones",
     "VIEW_ALL": "Ver todas las notificaciones",
-    "MARK_ALL_READ": "Marcar todos como leídos"
+    "MARK_ALL_READ": "Marcar todos como leídos!",
+    "CREATE_COMPANY_SUCCESS": "¡Empresa creada con éxito!"
   },
   "CHART": {
     "TITLE": "Distribución de Llamados por Sede",
@@ -65,7 +68,7 @@
     "LANGUAGE": "Idioma",
     "PORTUGUESE": "Portugués",
     "SPANISH": "Español",
-    "ENGLISH": "English",
+    "ENGLISH": "Inglés",
     "SAVE": "Guardar",
     "CANCEL": "Cancelar",
     "DELETE": "Eliminar",
@@ -75,13 +78,14 @@
     "LOADING": "Cargando...",
     "HOME": "Inicio",
     "CLOSE": "Cerrar",
-    "LOGOUT": "Salir"
+    "LOGOUT": "Salir",
+    "LOGIN": "Iniciar sesión"
   },
   "CALENDAR": {
     "NEW_EVENT": "Nuevo evento",
     "UPDATE_EVENT": "Editar evento",
     "CALENDAR_TITLE": "Título del evento",
-    "DESCRIPTION": "Descripción del evento",
+    "DESCRIPTION": "Descripción del evento.",
     "SCHEDULE_EVENTS": "Eventos Programados",
     "EVENTS": "evento(s)",
     "DOUBLE_CLICK_INSTRUCTION": "Haga doble clic en cualquier día para agregar un evento",
@@ -119,11 +123,11 @@
       "SATURDAY": "Sábado"
     }
   },
-  "INPUTS-FIELS": {
+  "INPUTS_FIELDS": {
     "TITLE": "Título",
     "PLACEHOLDER_TITLE": "Ingrese el título",
-    "EMAIL": "E-mail",
-    "PLACEHOLDER_EMAIL": "Ingrese el email",
+    "EMAIL": "Correo electrónico",
+    "PLACEHOLDER_EMAIL": "Ingrese el correo electrónico",
     "PASSWORD": "Contraseña",
     "PLACEHOLDER_PASSWORD": "Ingrese la contraseña",
     "CONFIRM_PASSWORD": "Confirmar Contraseña",
@@ -182,7 +186,8 @@
     "CALL_LIST": "Lista de llamados",
     "CALL_LIST_EMPTY": "No se encontraron llamados",
     "CALL_LIST_CLOSED": "Cerrado",
-    "CALL_LIST_OPEM": "Abierto"
+    "CALL_LIST_OPEM": "Abierto",
+    "NO_HAVE_CLIENTS": "No se encontraron clientes"
   },
   "MODALS": {
     "NEW_COMPANY": "Registrar nueva empresa",
@@ -192,7 +197,7 @@
     "OPERATOR": "Operador",
     "TITLE": "Título",
     "CONECTION": "Conexión",
-    "EMAIL": "Email",
+    "EMAIL": "Correo",
     "USERNAME": "Usuario",
     "COMPANY": "Empresa",
     "RESOLUTION": "Resolución",
@@ -223,8 +228,8 @@
       "PLACEHOLDER_NAME": "Ingrese el nombre",
       "CNPJ": "CNPJ",
       "PLACEHOLDER_CNPJ": "Ingrese el CNPJ",
-      "EMAIL": "E-mail",
-      "PLACEHOLDER_EMAIL": "Ingrese el email",
+      "EMAIL": "Correo electrónico",
+      "PLACEHOLDER_EMAIL": "Ingrese el correo electrónico",
       "PHONE": "Teléfono",
       "PLACEHOLDER_PHONE": "Ingrese el teléfono",
       "ADDRESS": "Dirección",
@@ -241,7 +246,8 @@
       "PLACEHOLDER_CONECTION": "Ingrese el código de acceso.",
       "SELECT_COMPANY": "Seleccione la empresa",
       "PLACEHOLDER_COMPANY": "Empresa aquí",
-      "ADD_NEW_COMPANY": "Agregar nueva empresa"
+      "ADD_NEW_COMPANY": "Agregar nueva empresa",
+      "CREATED": "Creado en"
     },
     "ACTIONS": {
       "NEW": "Limpiar campos",
@@ -264,15 +270,16 @@
       "START_DATE": "Fecha inicial",
       "END_DATE": "Fecha final",
       "CLEAR": "Limpiar campos",
-      "SEARCH_PLACEHOLDER": "Escriba para buscar..."
+      "SEARCH_PLACEHOLDER": "Escriba para buscar...",
+      "LOADING_CLIENTS": "Cargando clientes..."
     },
     "FIELDS": {
       "NAME": "Nombre",
       "PLACEHOLDER_NAME": "Ingrese el nombre",
       "CNPJ": "CNPJ",
       "PLACEHOLDER_CNPJ": "Ingrese el CNPJ",
-      "EMAIL": "E-mail",
-      "PLACEHOLDER_EMAIL": "Ingrese el email",
+      "EMAIL": "Correo electrónico",
+      "PLACEHOLDER_EMAIL": "Ingrese el correo electrónico",
       "PHONE": "Teléfono",
       "PLACEHOLDER_PHONE": "Ingrese el teléfono",
       "ADDRESS": "Dirección",
@@ -285,7 +292,7 @@
       "PLACEHOLDERS_ZIPCODE": "Ingrese el código postal",
       "VERSION_SERV": "Versión del servidor",
       "PLACEHOLDER_VERSION_SERV": "Ingrese la versión del servidor",
-      "CONECTION": "Conexión",
+      "CONNECTION": "Conexión",
       "PLACEHOLDER_CONECTION": "Ingrese el código de acceso.",
       "SELECT_COMPANY": "Seleccione la empresa",
       "COMPANY": "Empresa",
@@ -306,6 +313,12 @@
     },
     "EDIT_TITLE": "Editar Cliente",
     "CREATE_TITLE": "Registrar un nuevo cliente"
+  },
+  "TAGS": {
+    "ADD_TAG": "Agregar etiqueta",
+    "SUCCESS_MESSAGE": "¡Etiqueta agregada con éxito!",
+    "PLACEHOLDER_TAG": "Ingrese la etiqueta y presione Enter",
+    "NO_TAG_MESSAGE": "No hay etiquetas disponibles"
   },
   "WEATHER": {
     "TITLE": "Pronóstico del Tiempo",
@@ -354,32 +367,35 @@
     }
   },
   "NOTES": {
-    "TITLE": "Notas",
-    "NEW_NOTE": "Nueva Nota",
-    "EDIT_NOTE": "Editar Nota",
-    "MY_NOTES": "Mis Notas",
-    "SEARCH_PLACEHOLDER": "Buscar notas...",
-    "SAVE_NOTE": "Guardar Nota",
-    "UPDATE_NOTE": "Actualizar Nota",
-    "CREATE_NEW_NOTE": "Nueva Nota",
-    "LOADING": "Cargando notas...",
+    "TITLE": "Título",
+    "TITLE_PLACEHOLDER": "Ingrese el título de la anotación",
+    "CONTENT": "Contenido",
+    "CONTENT_PLACEHOLDER": "Ingrese el contenido de la anotación...",
+    "NEW_NOTE": "Nueva Anotación",
+    "EDIT_NOTE": "Editar Anotación",
+    "MY_NOTES": "Mis Anotaciones",
+    "SEARCH_PLACEHOLDER": "Buscar anotaciones...",
+    "SAVE_NOTE": "Guardar Anotación",
+    "UPDATE_NOTE": "Actualizar Anotación",
+    "CREATE_NEW_NOTE": "Nueva Anotación",
+    "LOADING": "Cargando anotaciones...",
     "EMPTY_STATE": {
-      "NO_NOTES": "Ninguna nota encontrada",
-      "NO_RESULTS": "Ninguna nota encontrada para \"{{searchTerm}}\"",
-      "CREATE_FIRST": "Crea tu primera nota usando el formulario anterior"
+      "NO_NOTES": "Ninguna anotación encontrada",
+      "NO_RESULTS": "Ninguna anotación encontrada para \"{{searchTerm}}\"",
+      "CREATE_FIRST": "Crea tu primera anotación usando el formulario anterior"
     },
     "FIELDS": {
       "TITLE": "Título",
-      "TITLE_PLACEHOLDER": "Ingrese el título de la nota",
+      "TITLE_PLACEHOLDER": "Ingrese el título de la anotación",
       "CONTENT": "Contenido",
-      "CONTENT_PLACEHOLDER": "Ingrese el contenido de la nota...",
+      "CONTENT_PLACEHOLDER": "Ingrese el contenido de la anotación...",
       "CHARACTERS": "caracteres",
-      "MAX_CHARACTERS": "Máximo {{limit}} caracteres"
+      "MAX_CHARACTERS": "Máximo de {{limit}} caracteres"
     },
     "ACTIONS": {
       "EDIT": "Editar",
       "DELETE": "Eliminar",
-      "CONFIRM_DELETE": "¿Está seguro de que desea eliminar la nota \"{{title}}\"?",
+      "CONFIRM_DELETE": "¿Está seguro de que desea eliminar la anotación \"{{title}}\"?",
       "CREATED_AT": "Creado en",
       "UPDATED_AT": "Actualizado en"
     },
@@ -389,11 +405,24 @@
       "REQUIRED": "Este campo es obligatorio"
     },
     "ERRORS": {
-      "LOAD_ERROR": "Error al cargar notas",
-      "SAVE_ERROR": "Error al guardar nota",
-      "UPDATE_ERROR": "Error al actualizar nota",
-      "DELETE_ERROR": "Error al eliminar nota",
-      "SELECT_ERROR": "Error al seleccionar nota"
+      "LOAD_ERROR": "Error al cargar anotaciones",
+      "SAVE_ERROR": "Error al guardar anotación",
+      "UPDATE_ERROR": "Error al actualizar anotación",
+      "DELETE_ERROR": "Error al eliminar anotación",
+      "SELECT_ERROR": "Error al seleccionar anotación"
     }
-  } 
+  },
+  "LOGIN": {
+    "TITLE": "Inicie sesión para continuar",
+    "EMAIL": "Correo electrónico",
+    "PASSWORD": "Contraseña",
+    "PLACEHOLDER_EMAIL": "Digite su correo electrónico",
+    "PLACEHOLDER_PASSWORD": "Digite su contraseña",
+    "LOGIN_BUTTON": "Iniciar sesión",
+    "LOADING": "Verificando credenciales...",
+    "REMEMBER_ME": "Recordarme",
+    "FORGOT_PASSWORD": "Olvidé mi contraseña",
+    "DONT_HEVE_ACCOUNT": "¿No tienes una cuenta? ",
+    "SINGUP": "Regístrate"
+  }
 }

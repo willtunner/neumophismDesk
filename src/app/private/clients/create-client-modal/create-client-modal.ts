@@ -55,9 +55,9 @@ export class ClientModalComponent implements OnInit {
     this.companyInfoConfig = {
       type: InputType.TEXT,
       formControlName: 'companyInfo',
-      label: this.translate.instant('INPUTS-FIELS.COMPANY'),
+      label: this.translate.instant('INPUTS_FIELDS.COMPANY'),
       required: true,
-      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_COMPANY'),
+      placeholder: this.translate.instant('INPUTS_FIELDS.PLACEHOLDER_COMPANY'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
       },
@@ -66,11 +66,11 @@ export class ClientModalComponent implements OnInit {
     this.usernameConfig = {
       type: InputType.USER,
       formControlName: 'username',
-      label: this.translate.instant('INPUTS-FIELS.USERNAME'), 
+      label: this.translate.instant('INPUTS_FIELDS.USERNAME'), 
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_USERNAME'),
+      placeholder: this.translate.instant('INPUTS_FIELDS.PLACEHOLDER_USERNAME'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -81,11 +81,11 @@ export class ClientModalComponent implements OnInit {
     this.nameConfig = {
       type: InputType.USER,
       formControlName: 'name',
-      label: this.translate.instant('INPUTS-FIELS.FIRST_NAME'), 
+      label: this.translate.instant('INPUTS_FIELDS.FIRST_NAME'), 
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_NAME'),
+      placeholder: this.translate.instant('INPUTS_FIELDS.PLACEHOLDER_NAME'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -96,10 +96,10 @@ export class ClientModalComponent implements OnInit {
     this.phoneConfig = {
       type: InputType.PHONE,
       formControlName: 'phone',
-      label: this.translate.instant('INPUTS-FIELS.PHONE'),
+      label: this.translate.instant('INPUTS_FIELDS.PHONE'),
       required: true,
       minLength: 11,
-      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_PHONE'),
+      placeholder: this.translate.instant('INPUTS_FIELDS.PLACEHOLDER_PHONE'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 11 }),
@@ -109,11 +109,11 @@ export class ClientModalComponent implements OnInit {
     this.emailConfig = {
       type: InputType.EMAIL,
       formControlName: 'email',
-      label: this.translate.instant('INPUTS-FIELS.EMAIL'),
+      label: this.translate.instant('INPUTS_FIELDS.EMAIL'),
       required: true,
       minLength: 5,
       maxLength: 264,
-      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_EMAIL'),
+      placeholder: this.translate.instant('INPUTS_FIELDS.PLACEHOLDER_EMAIL'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -124,10 +124,10 @@ export class ClientModalComponent implements OnInit {
     this.passwordConfig = {
       type: InputType.PASSWORD,
       formControlName: 'password',
-      label: this.translate.instant('INPUTS-FIELS.PASSWORD'),
+      label: this.translate.instant('INPUTS_FIELDS.PASSWORD'),
       required: true,
       minLength: 6,
-      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_PASSWORD'),
+      placeholder: this.translate.instant('INPUTS_FIELDS.PLACEHOLDER_PASSWORD'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 6 }),
@@ -137,11 +137,11 @@ export class ClientModalComponent implements OnInit {
     this.imageUrlConfig = {
       type: InputType.IMAGE,
       formControlName: 'imageUrl',
-      label: this.translate.instant('INPUTS-FIELS.URL_IMG'),
+      label: this.translate.instant('INPUTS_FIELDS.URL_IMG'),
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('INPUTS-FIELS.URL_IMG'),
+      placeholder: this.translate.instant('INPUTS_FIELDS.URL_IMG'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),
@@ -156,7 +156,7 @@ export class ClientModalComponent implements OnInit {
       required: true,
       minLength: 2,
       maxLength: 100,
-      placeholder: this.translate.instant('INPUTS-FIELS.PLACEHOLDER_CONECTION'),
+      placeholder: this.translate.instant('INPUTS_FIELDS.PLACEHOLDER_CONECTION'),
       customErrorMessages: {
         required: this.translate.instant('VALIDATOR_ERROR_MESSAGES.REQUIRED'),
         minlength: this.translate.instant('VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 2 }),

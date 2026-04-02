@@ -123,7 +123,7 @@
       "SATURDAY": "Sábado"
     }
   },
-  "INPUTS-FIELS": {
+  "INPUTS_FIELDS": {
     "TITLE": "Título",
     "PLACEHOLDER_TITLE": "Digite o título",
     "EMAIL": "E-mail",
@@ -186,7 +186,8 @@
     "CALL_LIST": "Lista  de chamados",
     "CALL_LIST_EMPTY": "Nenhum chamado encontrado",
     "CALL_LIST_CLOSED": "Fechado",
-    "CALL_LIST_OPEM": "Aberto"
+    "CALL_LIST_OPEM": "Aberto",
+    "NO_HAVE_CLIENTS": "Nenhum cliente encontrado"
   },
   "MODALS": {
     "NEW_COMPANY": "Cadastrar nova empresa",
@@ -269,7 +270,8 @@
       "START_DATE": "Data inicial",
       "END_DATE": "Data final",
       "CLEAR": "Limpar campos",
-      "SEARCH_PLACEHOLDER": "Digite para pesquisar..."
+      "SEARCH_PLACEHOLDER": "Digite para pesquisar...",
+      "LOADING_CLIENTS": "Carregando clientes..."
     },
     "FIELDS": {
       "NAME": "Nome",

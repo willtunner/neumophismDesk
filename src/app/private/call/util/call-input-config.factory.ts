@@ -8,11 +8,11 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
     conexao: {
       type: InputType.CONNECTION,
       formControlName: 'connection',
-      label: t(translate, 'INPUTS-FIELS.CONECTION'),
+      label: t(translate, 'INPUTS_FIELDS.CONECTION'),
       required: true,
       minLength: 5,
       maxLength: 15,
-      placeholder: t(translate, 'INPUTS-FIELS.PLACEHOLDER_CONECTION'),
+      placeholder: t(translate, 'INPUTS_FIELDS.PLACEHOLDER_CONECTION'),
       customErrorMessages: {
         required: t(translate, 'VALIDATOR_ERROR_MESSAGES.REQUIRED'),
         minlength: tParams(translate, 'VALIDATOR_ERROR_MESSAGES.MINLENGTH', { requiredLength: 5 }),
@@ -22,9 +22,9 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
     titulo: {
       type: InputType.TITLE,
       formControlName: 'title',
-      label: t(translate, 'INPUTS-FIELS.TITLE'),
+      label: t(translate, 'INPUTS_FIELDS.TITLE'),
       required: true,
-      placeholder: t(translate, 'INPUTS-FIELS.PLACEHOLDER_TITLE'),
+      placeholder: t(translate, 'INPUTS_FIELDS.PLACEHOLDER_TITLE'),
       minLength: 50,
       maxLength: 70,
       customErrorMessages: {
@@ -36,9 +36,9 @@ export function buildInputConfigs(translate: TranslateService): Record<string, I
     descricao: {
       type: InputType.TEXTAREA,
       formControlName: 'description',
-      label: t(translate, 'INPUTS-FIELS.DESCRIPTION'),
+      label: t(translate, 'INPUTS_FIELDS.DESCRIPTION'),
       required: true,
-      placeholder: t(translate, 'INPUTS-FIELS.PLACEHOLDER_DESCRIPTION'),
+      placeholder: t(translate, 'INPUTS_FIELDS.PLACEHOLDER_DESCRIPTION'),
       rows: 4,
       minLength: 10,
       maxLength: 500,

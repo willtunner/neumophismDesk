@@ -956,3 +956,28 @@ textarea:-webkit-autofill {
   border-radius: 15px;
   transition: background-color 9999s ease-in-out 0s;
 }
+
+/* ===== BASE NEUMÓRFICA REUTILIZÁVEL ===== */
+.neu-soft {
+  background: var(--bg-primary);
+  box-shadow:
+    8px 8px 20px var(--shadow-light),
+    -8px -8px 20px var(--shadow-dark);
+  transition: all 0.3s ease;
+}
+
+/* Variante com hover interativo */
+.neu-soft-hover:hover {
+  box-shadow:
+    4px 4px 10px var(--shadow-light),
+    -4px -4px 10px var(--shadow-dark),
+    inset 4px 4px 10px var(--shadow-light),
+    inset -4px -4px 10px var(--shadow-dark);
+}
+
+/* Variante emboss (pressionado) */
+.neu-pressed {
+  box-shadow:
+    inset 4px 4px 10px var(--shadow-light),
+    inset -4px -4px 10px var(--shadow-dark);
+}

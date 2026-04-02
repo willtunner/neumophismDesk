@@ -7,13 +7,8 @@
 
 /* Header com efeito emboss */
 .neu-emboss {
-  background: var(--bg-primary);
-  color: var(--text-primary);
   border-radius: 30px;
-  padding: 8px 20px;
-  box-shadow:
-    inset 3px 3px 6px var(--shadow-light),
-    inset -3px -3px 6px var(--shadow-dark);
+  padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: center;

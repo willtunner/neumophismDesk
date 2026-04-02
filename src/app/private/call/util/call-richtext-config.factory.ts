@@ -6,9 +6,9 @@ export function buildRichTextConfig(translate: TranslateService): RichTextConfig
   return {
     formControlName: 'conteudo',
     type: 'rich-text',
-    label: t(translate, 'INPUTS-FIELS.CONTENT'),
+    label: t(translate, 'INPUTS_FIELDS.CONTENT'),
     required: true,
-    placeholder: t(translate, 'INPUTS-FIELS.PLACEHOLDER_CONTENT'),
+    placeholder: t(translate, 'INPUTS_FIELDS.PLACEHOLDER_CONTENT'),
     minLength: 20,
     maxLength: 5000,
     minHeight: '200px',
